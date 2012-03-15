@@ -1,19 +1,20 @@
 package ru.emerginggames.snappers;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.SystemClock;
 import android.view.Display;
 import com.e3roid.E3Activity;
 import com.e3roid.E3Engine;
 import com.e3roid.E3Scene;
-import com.e3roid.drawable.Sprite;
 import com.e3roid.drawable.sprite.AnimatedSprite;
 import com.e3roid.drawable.texture.AssetTexture;
-import com.e3roid.drawable.texture.Texture;
 import com.e3roid.drawable.texture.TiledTexture;
+import com.e3roid.event.FrameListener;
 import com.e3roid.event.SceneUpdateListener;
-import ru.emerginggames.snappers.sprites.OutlinedTextSprite;
+import ru.emerginggames.snappers.controller.GameController;
+import ru.emerginggames.snappers.model.Level;
 
+import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
 
 /**
@@ -22,18 +23,12 @@ import java.util.ArrayList;
  * Date: 14.03.12
  * Time: 3:07
  */
-public class GameActivity extends E3Activity implements SceneUpdateListener {
+public class GameActivity extends E3Activity implements SceneUpdateListener, FrameListener {
 
     private final static int WIDTH  = 480;
     private final static int HEIGHT = 800;
-
-    private final static int SPLASH_MSEC = 3000;
-
-    private Sprite logo;
-    private Texture logoTexture;
-    private OutlinedTextSprite label;
-    private AnimatedSprite eyesSprite;
-
+    private long lastTimeUpdate;
+    private GameController gameController;
 
     @Override
     public E3Engine onLoadEngine() {
@@ -48,33 +43,19 @@ public class GameActivity extends E3Activity implements SceneUpdateListener {
     @Override
     public E3Scene onLoadScene() {
         E3Scene scene = new E3Scene();
+        //scene.registerUpdateListener(10, this);
+        lastTimeUpdate = SystemClock.uptimeMillis();
+        scene.addFrameListener(this);
 
-        // start next activity after waiting 3 seconds.
-        scene.registerUpdateListener(SPLASH_MSEC, this);
-
-        int centerX = (getWidth()  - logoTexture.getWidth())  / 2;
-        int centerY = (getHeight() - logoTexture.getHeight()) / 2;
-
-        logo = new Sprite(logoTexture, centerX, centerY);
-
-        // show logo in 3 seconds and scale logo in 1 seconds.
-
-        scene.getTopLayer().add(logo);
         scene.setBackgroundColor(0, 1f, 1f);
+        createFremes();
+        gameController = new GameController(scene, getWidth(), getHeight());
+        Level level = new Level();
+        level.number = 1;
+        level.complexity = 1;
+        level.zappers = "333332222211111111111111122222";
 
-        label.move((getWidth() - label.getWidth()) / 2, (getHeight() - label.getHeight()) / 3 * 2);
-
-        scene.getTopLayer().add(label);
-
-        Resources.eyeFrames = makeForeBackFrames(5,5);
-        Resources.bangFrames = makeForeFrames(1, 4);
-        Resources.blastFrames = makeForeFrames(1, 3);
-
-        eyesSprite = new AnimatedSprite(Resources.eyesTexture, 200, 200);
-        eyesSprite.setPosition(100, 300);
-        eyesSprite.animate(50, Resources.eyeFrames);
-
-        scene.getTopLayer().add(eyesSprite);
+        gameController.launchLevel(level);
 
         return scene;
     }
@@ -108,73 +89,98 @@ public class GameActivity extends E3Activity implements SceneUpdateListener {
         return frames;
     }
 
+    private void createFremes(){
+        Resources.eyeFrames = makeForeBackFrames(5, 5);
+        Resources.bangFrames = makeForeFrames(1, 4);
+        Resources.blastFrames = makeForeFrames(1, 3);
+        Resources.snapperRedFrames = new ArrayList<AnimatedSprite.Frame>();
+        Resources.snapperRedFrames.add(new AnimatedSprite.Frame(0, 3));
+        Resources.snapperYellowFrames = new ArrayList<AnimatedSprite.Frame>();
+        Resources.snapperYellowFrames.add(new AnimatedSprite.Frame(0, 2));
+        Resources.snapperGreenFrames = new ArrayList<AnimatedSprite.Frame>();
+        Resources.snapperGreenFrames.add(new AnimatedSprite.Frame(0, 1));
+        Resources.snapperBlueFrames = new ArrayList<AnimatedSprite.Frame>();
+        Resources.snapperBlueFrames.add(new AnimatedSprite.Frame(0, 0));
+    }
+
     @Override
     public void onLoadResources() {
-        logoTexture = new AssetTexture("logo.png", this);
         Typeface fnt = Typeface.createFromAsset(getAssets(), "shag_lounge.otf");
-        label = new OutlinedTextSprite("Loading...",  50, Color.WHITE, Color.BLACK, Color.TRANSPARENT, fnt, this);
+        //label = new OutlinedTextSprite("Loading...",  50, Color.WHITE, Color.BLACK, Color.TRANSPARENT, fnt, this);
         int width = getWidth();
 
         String dir;
-        int eyeSpriteSize;
-        int bangSize;
-        int blastSize;
 
         if (width <=320) {
             dir = "lo/";
-            eyeSpriteSize = 32;
-            bangSize = 40;
-            blastSize = 9;
+            Metrics.snapperSize = 32;
+            Metrics.bangSize = 40;
+            Metrics.blastSize = 9;
         }
         else if (width < 600) {
             dir = "med/";
-            eyeSpriteSize = 48;
-            bangSize = 60;
-            blastSize = 18;
+            Metrics.snapperSize = 48;
+            Metrics.bangSize = 48;
+            Metrics.blastSize = 18;
         }
         else {
             dir = "hi/";
-            eyeSpriteSize = 96;
-            bangSize = 120;
-            blastSize = 36;
+            Metrics.snapperSize = 96;
+            Metrics.bangSize = 96;
+            Metrics.blastSize = 36;
         }
 
-        Resources.eyesTexture = new TiledTexture(dir + "eyes-s.png", eyeSpriteSize, eyeSpriteSize, 0, 0, 0, 0, this);
+        Resources.eyesTexture = new TiledTexture(dir + "eyes-s.png", Metrics.snapperSize, Metrics.snapperSize, 0, 0, 0, 0, this);
         Resources.shadowSnapper = new AssetTexture(dir + "shadow.png", this);
-        Resources.redSnapper = new AssetTexture(dir + "red.png", this);
-        Resources.yellowSnapper = new AssetTexture(dir + "yellow.png", this);
-        Resources.greenSnapper = new AssetTexture(dir + "green.png", this);
-        Resources.blueSnapper = new AssetTexture(dir + "blue.png", this);
-        Resources.bangTexture = new TiledTexture(dir + "bang.png", bangSize, bangSize, 0,0,0,0, this);
-        Resources.blastTexture = new TiledTexture(dir + "blast.png", blastSize, blastSize, 0,0,0,0, this);
+        Resources.bangTexture = new TiledTexture(dir + "bang.png", Metrics.bangSize, Metrics.bangSize, 0,0,0,0, this);
+        Resources.blastTexture = new TiledTexture(dir + "blast.png", Metrics.blastSize, Metrics.blastSize, 0,0,0,0, this);
+        Resources.snapperTexture = new TiledTexture(dir + "back.png", Metrics.snapperSize, Metrics.snapperSize, 0,0,0,0, this);
 
 
         Resources.eyesTexture.setReusable(true);
         Resources.shadowSnapper.setReusable(true);
-        Resources.redSnapper.setReusable(true);
-        Resources.yellowSnapper.setReusable(true);
-        Resources.greenSnapper.setReusable(true);
-        Resources.blueSnapper.setReusable(true);
         Resources.bangTexture.setReusable(true);
         Resources.blastTexture.setReusable(true);
+        Resources.snapperTexture.setReusable(true);
+
+
     }
 
     @Override
     public void onUpdateScene(E3Scene scene, long elapsedMsec) {
-        scene.unregisterUpdateListener(this);
+        gameController.update(elapsedMsec);
+    }
+
+    @Override
+    public void beforeOnDraw(E3Scene scene, GL10 gl) {
+        long now = SystemClock.uptimeMillis();
+        long elapsedMsec = now - lastTimeUpdate;
+        lastTimeUpdate = now;
+        gameController.update(elapsedMsec);
+    }
+
+    @Override
+    public void afterOnDraw(E3Scene scene, GL10 gl) {
     }
 
     public static class Resources {
         public static TiledTexture eyesTexture;
-        public static AssetTexture redSnapper;
-        public static AssetTexture yellowSnapper;
-        public static AssetTexture greenSnapper;
-        public static AssetTexture blueSnapper;
+        public static TiledTexture snapperTexture;
         public static AssetTexture shadowSnapper;
         public static TiledTexture bangTexture;
         public static TiledTexture blastTexture;
         public static ArrayList<AnimatedSprite.Frame> eyeFrames;
         public static ArrayList<AnimatedSprite.Frame> bangFrames;
         public static ArrayList<AnimatedSprite.Frame> blastFrames;
+        public static ArrayList<AnimatedSprite.Frame> snapperRedFrames;
+        public static ArrayList<AnimatedSprite.Frame> snapperYellowFrames;
+        public static ArrayList<AnimatedSprite.Frame> snapperGreenFrames;
+        public static ArrayList<AnimatedSprite.Frame> snapperBlueFrames;
+    }
+
+    public static class Metrics{
+        public static int snapperSize;
+        public static int bangSize;
+        public static int blastSize;
     }
 }

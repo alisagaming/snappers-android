@@ -3,6 +3,7 @@ package ru.emerginggames.snappers.view;
 import com.e3roid.E3Scene;
 import com.e3roid.drawable.Layer;
 import com.e3roid.drawable.Shape;
+import com.e3roid.drawable.modifier.AxisMoveModifier;
 import com.e3roid.drawable.modifier.MoveModifier;
 import com.e3roid.drawable.modifier.ProgressModifier;
 import com.e3roid.drawable.modifier.ShapeModifier;
@@ -22,7 +23,8 @@ import ru.emerginggames.snappers.model.Blast;
  */
 public class BlastView implements ModifierEventListener {
     private static final int BLAST_ANIMATION_DELAY = 50;
-    private static final int BLAST_CELL_FLIGHT_TIME = 500;
+    private static final int BLAST_CELL_FLIGHT_TIME = 300;
+    private static int shift;
     public Blast blast;
     private AnimatedSprite sprite;
     private GameController controller;
@@ -37,6 +39,7 @@ public class BlastView implements ModifierEventListener {
 
         sprite = new AnimatedSprite(GameActivity.Resources.blastTexture, Math.round(blast.x), Math.round(blast.y));
         sprite.animate(BLAST_ANIMATION_DELAY, 1, GameActivity.Resources.blastFrames);
+        shift = sprite.getWidth()/2;
         layer.add(sprite);
         sprite.hide();
     }
@@ -46,15 +49,29 @@ public class BlastView implements ModifierEventListener {
     }
 
     public void show(){
+        sprite.move(Math.round(blast.x - shift), Math.round(blast.y - shift));
         sprite.show();
     }
 
-    public void flyToNext(){
-        sprite.addModifier(new ProgressModifier(
-                new MoveModifier(
-                        blast.x, blast.x, blast.destX,
-                        blast.y, blast.y, blast.destY),
-                BLAST_CELL_FLIGHT_TIME, Linear.getInstance(), this));
+/*    public void flyToNext(){
+        switch (blast.direction){
+            case Left:
+            case Right:
+                sprite.addModifier(new ProgressModifier(
+                        new AxisMoveModifier(blast.x - shift, blast.x - shift, blast.destX - shift, AxisMoveModifier.AXIS_X),
+                        BLAST_CELL_FLIGHT_TIME, Linear.getInstance(), this));
+                break;
+            case Up:
+            case Down:
+                sprite.addModifier(new ProgressModifier(
+                        new AxisMoveModifier(blast.y - shift, blast.y - shift, blast.destY - shift, AxisMoveModifier.AXIS_Y),
+                        BLAST_CELL_FLIGHT_TIME, Linear.getInstance(), this));
+                break;
+        }
+    }*/
+
+    public void advance(){
+        sprite.move(Math.round(blast.x - shift), Math.round(blast.y - shift));
     }
 
     @Override

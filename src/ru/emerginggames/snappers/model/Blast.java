@@ -10,9 +10,9 @@ import ru.emerginggames.snappers.view.BlastView;
  */
 public class Blast {
     public enum Direction {Up, Right, Down, Left}
-    public int dest;
-    public int x;
-    public int y;
+    public float dest;
+    public float x;
+    public float y;
     public Direction direction;
     public int destI;
     public int destJ;

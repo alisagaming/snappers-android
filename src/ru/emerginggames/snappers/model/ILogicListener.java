@@ -10,4 +10,5 @@ public interface ILogicListener {
     public void snapperTouched(int i, int j);
     public void blastCreated(Blast blast);
     public void blastLaunched(Blast blast);
+    public void blastRemoved(Blast blast);
 }

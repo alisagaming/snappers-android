@@ -17,7 +17,7 @@ public class Snappers {
 
     public int touchSnapper(int i, int j){
         if (snappers[i][j] > 0)
-            return snappers[i][j]--;
+            return --snappers[i][j];
         else return -1;
     }
     
@@ -37,6 +37,6 @@ public class Snappers {
     }
 
     public static boolean isValidSnapper(int i, int j){
-        return i<0 || i>=WIDTH || j<0 || j>HEIGHT;
+        return i>=0 && i<WIDTH && j>=0 && j<HEIGHT;
     }
 }

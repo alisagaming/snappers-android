@@ -8,6 +8,7 @@ import ru.emerginggames.snappers.model.Snappers;
 import ru.emerginggames.snappers.view.BlastView;
 import ru.emerginggames.snappers.view.SnapperView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,11 +21,10 @@ public class GameController implements ILogicListener{
     public E3Scene scene;
     public GameLogic logic;
     public final SnapperView[][] snapperViews;
+    private final List<SnapperView> snappersTouched;
 
-    public GameController(E3Scene scene) {
+    public GameController(E3Scene scene, int width, int height) {
         this.scene = scene;
-        int width = scene.getWidth();
-        int height = scene.getHeight();
         logic = new GameLogic(width, height, 0, width, 50, height - 100, this);
 
         snapperViews = new SnapperView[Snappers.WIDTH][Snappers.HEIGHT];
@@ -33,15 +33,19 @@ public class GameController implements ILogicListener{
                 snapperViews[i][j] = new SnapperView(i, j, 0, this);
                 snapperViews[i][j].addToScene(scene);
             }
+
+        snappersTouched = new ArrayList<SnapperView>(4);
     }
 
 
-    public void blastHit(BlastView blastView){
-        if (logic.blastHitCell(blastView.blast))
-            blastView.hide();
-        else
-            blastView.flyToNext();
-    }
+/*    public void blastHit(BlastView blastView){
+        synchronized (this){
+            if (logic.blastHitCell(blastView.blast))
+                blastView.hide();
+            else
+                blastView.flyToNext();
+        }
+    }*/
 
     public void launchLevel(Level level){
         logic.startLevel(level);
@@ -52,8 +56,22 @@ public class GameController implements ILogicListener{
     }
 
     public void tapSnapper(SnapperView snapperView){
-        if (logic.touchSnapper(snapperView.i, snapperView.j)){
-            logic.tapRemains--;
+        if (snapperView.state>0)
+            snappersTouched.add(snapperView);
+    }
+
+    public void update(long elapsedMsec){
+        synchronized (this){
+            logic.advance(elapsedMsec/1000.0f);
+            for (int i=0; i< logic.activeBlasts.size(); i++)
+                logic.activeBlasts.get(i).view.advance();
+
+            for (int i=0; i<snappersTouched.size(); i++){
+                SnapperView snapperView = snappersTouched.get(i);
+                logic.touchSnapper(snapperView.i, snapperView.j);
+                logic.tapRemains--;
+            }
+            snappersTouched.clear();
         }
     }
 
@@ -71,6 +89,11 @@ public class GameController implements ILogicListener{
     @Override
     public void blastLaunched(Blast blast) {
         blast.view.show();
-        blast.view.flyToNext();
+        //blast.view.flyToNext();
+    }
+
+    @Override
+    public void blastRemoved(Blast blast) {
+        blast.view.hide();
     }
 }

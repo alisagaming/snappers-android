@@ -205,4 +205,8 @@ public class GameLogic {
         return false;//should never happen
     }
 
+    public boolean isGameOver(){
+        return tapRemains<1 && activeBlasts.size() == 0;
+    }
+
 }

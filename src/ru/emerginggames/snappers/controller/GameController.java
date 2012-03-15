@@ -56,8 +56,10 @@ public class GameController implements ILogicListener{
     }
 
     public void tapSnapper(SnapperView snapperView){
-        if (snapperView.state>0)
+        if (snapperView.state>0 && logic.tapRemains>0){
             snappersTouched.add(snapperView);
+            logic.tapRemains--;
+        }
     }
 
     public void update(long elapsedMsec){
@@ -69,7 +71,6 @@ public class GameController implements ILogicListener{
             for (int i=0; i<snappersTouched.size(); i++){
                 SnapperView snapperView = snappersTouched.get(i);
                 logic.touchSnapper(snapperView.i, snapperView.j);
-                logic.tapRemains--;
             }
             snappersTouched.clear();
         }

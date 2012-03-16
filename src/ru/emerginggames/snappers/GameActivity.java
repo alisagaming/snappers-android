@@ -81,7 +81,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         };
         width = getWidth();
         height = getHeight();
-        gameController = new GameController(scene, width, height, this);
+        gameController = new GameController(scene, width, height, gameOverListener, this);
         Level level = new Level();
         level.number = 123;
         level.complexity = 1;

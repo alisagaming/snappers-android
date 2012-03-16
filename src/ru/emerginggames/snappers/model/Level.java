@@ -12,4 +12,5 @@ public class Level {
     public String zappers;
     public String solutions;
     public int tapsCount;
+    public int packNumber;
 }

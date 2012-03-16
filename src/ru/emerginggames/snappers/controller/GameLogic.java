@@ -1,5 +1,6 @@
 package ru.emerginggames.snappers.controller;
 
+import android.graphics.Rect;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
 import ru.emerginggames.snappers.model.Level;
@@ -25,17 +26,15 @@ public class GameLogic {
     public int height;
     public float xSnapperMargin;
     public float ySnapperMargin;
-    private int minX;
-    private int minY;
-    private int maxX;
-    private int maxY;
+    private Rect snappersRect;
     public Level level;
     public int tapRemains;
     ILogicListener logicListener;
     private float grainSpeedX;
     private float grainSpeedY;
 
-    public GameLogic(int width, int height, int minX, int maxX, int minY, int maxY, ILogicListener listener) {
+    public GameLogic(int width, int height, Rect snappersRect, ILogicListener listener) {
+        this.snappersRect = snappersRect;
         this.width = width;
         this.height = height;
 
@@ -52,14 +51,11 @@ public class GameLogic {
         grainsToKill = new ArrayList<Blast>(MAX_GRAINS);
         snappers = new Snappers();
 
-        xSnapperMargin = width / 2.0f / Snappers.WIDTH;
-        ySnapperMargin = height / 2.0f / Snappers.HEIGHT;
+
+        xSnapperMargin = snappersRect.width() / 2.0f / Snappers.WIDTH;
+        ySnapperMargin = Math.abs(snappersRect.height() / 2.0f / Snappers.HEIGHT);
         grainSpeedX = xSnapperMargin * GRAIN_SPEED_MARGIN_PER_SECOND;
         grainSpeedY = ySnapperMargin * GRAIN_SPEED_MARGIN_PER_SECOND;
-        this.maxX = maxX;
-        this.minX = minX;
-        this.maxY = maxY;
-        this.minY = minY;
         logicListener = listener;
     }
 
@@ -72,25 +68,6 @@ public class GameLogic {
         this.level = level;
         //System.gc();
     }
-
-/*    public boolean blastHitCell(Blast blast) {
-        blast.x = blast.destX;
-        blast.y = blast.destY;
-
-        if (!Snappers.isValidSnapper(blast.destI, blast.destJ)) {
-            activeBlasts.remove(blast);
-            grainPool.free(blast);
-            return true;
-        } else if (touchSnapper(blast.destI, blast.destJ)) {
-
-            activeBlasts.remove(blast);
-            grainPool.free(blast);
-            return true;
-        } else {
-            setNextBlastDestination(blast);
-            return false;
-        }
-    }*/
 
     public boolean touchSnapper(int i, int j) {//return true if consumed touch
         int touchResult = snappers.touchSnapper(i, j);
@@ -108,11 +85,11 @@ public class GameLogic {
     }
 
     public int getSnapperXPosision(int i) {
-        return Math.round(xSnapperMargin * (2 * i + 1));
+        return snappersRect.left + Math.round(xSnapperMargin * (2 * i + 1));
     }
 
     public int getSnapperYPosision(int j) {
-        return Math.round(ySnapperMargin * (2 * j + 1));
+        return snappersRect.bottom + Math.round(ySnapperMargin * (2 * j + 1));
     }
 
     private Blast launchBlast(int x, int y, Blast.Direction direction, int i, int j) {
@@ -122,8 +99,6 @@ public class GameLogic {
         blast.direction = direction;
         blast.destI = i;
         blast.destJ = j;
-        //blast.destX = x;
-        //blast.destY = y;
         setNextBlastDestination(blast);
         activeBlasts.add(blast);
         logicListener.blastLaunched(blast);
@@ -135,26 +110,21 @@ public class GameLogic {
         switch (blast.direction) {
             case Up:
                 pos = ++blast.destJ;
-                blast.dest = pos >= Snappers.HEIGHT ? maxY : getSnapperYPosision(pos);
-                //blast.destY = blast.dest;
+                blast.dest = pos >= Snappers.HEIGHT ? height : getSnapperYPosision(pos);
                 break;
             case Right:
                 pos = ++blast.destI;
-                blast.dest = pos >= Snappers.WIDTH ? maxX : getSnapperXPosision(pos);
-                //blast.destX = blast.dest;
+                blast.dest = pos >= Snappers.WIDTH ? width : getSnapperXPosision(pos);
                 break;
             case Down:
                 pos = --blast.destJ;
-                blast.dest = pos < 0 ? minY : getSnapperYPosision(pos);
-                //blast.destY = blast.dest;
+                blast.dest = pos < 0 ? 0 : getSnapperYPosision(pos);
                 break;
             case Left:
                 pos = --blast.destI;
-                blast.dest = pos < 0 ? minX : getSnapperXPosision(pos);
-                //blast.destX = blast.dest;
+                blast.dest = pos < 0 ? 0 : getSnapperXPosision(pos);
                 break;
         }
-
     }
 
     public int advance(float deltaTime) {
@@ -207,6 +177,10 @@ public class GameLogic {
 
     public boolean isGameOver(){
         return tapRemains<1 && activeBlasts.size() == 0;
+    }
+
+    public boolean isGameLost(){
+        return snappers.countSnappers()>0;
     }
 
 }

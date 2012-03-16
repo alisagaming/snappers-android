@@ -21,7 +21,7 @@ import ru.emerginggames.snappers.model.Blast;
  * Date: 14.03.12
  * Time: 15:41
  */
-public class BlastView implements ModifierEventListener {
+public class BlastView{
     private static final int BLAST_ANIMATION_DELAY = 50;
     private static final int BLAST_CELL_FLIGHT_TIME = 300;
     private static int shift;
@@ -46,39 +46,29 @@ public class BlastView implements ModifierEventListener {
 
     public void hide(){
         sprite.hide();
+        //sprite.rotate(- getDirectionRotation());
     }
 
     public void show(){
         sprite.move(Math.round(blast.x - shift), Math.round(blast.y - shift));
+        sprite.rotate(getDirectionRotation());
         sprite.show();
     }
-
-/*    public void flyToNext(){
-        switch (blast.direction){
-            case Left:
-            case Right:
-                sprite.addModifier(new ProgressModifier(
-                        new AxisMoveModifier(blast.x - shift, blast.x - shift, blast.destX - shift, AxisMoveModifier.AXIS_X),
-                        BLAST_CELL_FLIGHT_TIME, Linear.getInstance(), this));
-                break;
-            case Up:
-            case Down:
-                sprite.addModifier(new ProgressModifier(
-                        new AxisMoveModifier(blast.y - shift, blast.y - shift, blast.destY - shift, AxisMoveModifier.AXIS_Y),
-                        BLAST_CELL_FLIGHT_TIME, Linear.getInstance(), this));
-                break;
-        }
-    }*/
 
     public void advance(){
         sprite.move(Math.round(blast.x - shift), Math.round(blast.y - shift));
     }
-
-    @Override
-    public void onModifierStart(ShapeModifier modifer, Shape shape) {}
-
-    @Override
-    public void onModifierFinished(ShapeModifier modifier, Shape shape) {
-        controller.blastHit(this);
+    
+    private int getDirectionRotation(){
+        switch (blast.direction){
+            case Right:
+                return 90;
+            case Up:
+                return 180;
+            case Left:
+                return -90;
+            default:
+                return 0;
+        }
     }
 }

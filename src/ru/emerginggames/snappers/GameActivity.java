@@ -3,16 +3,20 @@ package ru.emerginggames.snappers;
 import android.graphics.Typeface;
 import android.os.SystemClock;
 import android.view.Display;
+import android.view.MotionEvent;
 import com.e3roid.E3Activity;
 import com.e3roid.E3Engine;
 import com.e3roid.E3Scene;
+import com.e3roid.drawable.Shape;
 import com.e3roid.drawable.sprite.AnimatedSprite;
 import com.e3roid.drawable.texture.AssetTexture;
 import com.e3roid.drawable.texture.TiledTexture;
 import com.e3roid.event.FrameListener;
 import com.e3roid.event.SceneUpdateListener;
 import ru.emerginggames.snappers.controller.GameController;
+import ru.emerginggames.snappers.controller.IGameOverListener;
 import ru.emerginggames.snappers.model.Level;
+import ru.emerginggames.snappers.view.ButtonView;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
@@ -24,11 +28,25 @@ import java.util.ArrayList;
  * Time: 3:07
  */
 public class GameActivity extends E3Activity implements SceneUpdateListener, FrameListener {
+    public static enum SizeMode {
+        modeS, modeM, modeL
+    }
+    public static SizeMode sizeMode;
 
     private final static int WIDTH  = 480;
     private final static int HEIGHT = 800;
     private long lastTimeUpdate;
     private GameController gameController;
+
+    private ButtonView pauseButton;
+    private ButtonView hintButton;
+    private ButtonView nextButton;
+    private ButtonView restartButton;
+    private ButtonView shopButton;
+    private ButtonView menuButton;
+    
+    private int width;
+    private int height;
 
     @Override
     public E3Engine onLoadEngine() {
@@ -48,103 +66,130 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         scene.addFrameListener(this);
 
         scene.setBackgroundColor(0, 1f, 1f);
-        createFremes();
-        gameController = new GameController(scene, getWidth(), getHeight());
+
+        ResourceLoader.createFrames();
+        IGameOverListener gameOverListener = new IGameOverListener() {
+            @Override
+            public void gameWon() {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void gameLost() {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        };
+        width = getWidth();
+        height = getHeight();
+        gameController = new GameController(scene, width, height, this);
         Level level = new Level();
-        level.number = 1;
+        level.number = 123;
         level.complexity = 1;
-        level.zappers = "333332222211111111111111122222";
+        level.tapsCount = 99;
+        level.packNumber = 12;
+        level.zappers = "123412341234123412341234123412";
+
+        defineButtons(scene);
 
         gameController.launchLevel(level);
 
         return scene;
     }
 
-    private ArrayList<AnimatedSprite.Frame> makeForeBackFrames(int width, int height){
-        ArrayList<AnimatedSprite.Frame> frames = new ArrayList<AnimatedSprite.Frame>();
-
-        int i; int j;
-        for (i=0;i<height;i++)
-            for (j=0;j<width;j++)
-                frames.add(new AnimatedSprite.Frame(j, i));
-
-        for (j=width-2;j>=0;j--)
-            frames.add(new AnimatedSprite.Frame(j, height-1));
-
-        for (i=width-2;i>=0;i--)
-            for (j=width-1;j>=0;j--)
-                frames.add(new AnimatedSprite.Frame(j, i));
-
-        return frames;
-    }
-
-    private ArrayList<AnimatedSprite.Frame> makeForeFrames(int width, int height){
-        ArrayList<AnimatedSprite.Frame> frames = new ArrayList<AnimatedSprite.Frame>();
-
-        int i; int j;
-        for (i=0;i<height;i++)
-            for (j=0;j<width;j++)
-                frames.add(new AnimatedSprite.Frame(j, i));
-
-        return frames;
-    }
-
-    private void createFremes(){
-        Resources.eyeFrames = makeForeBackFrames(5, 5);
-        Resources.bangFrames = makeForeFrames(1, 4);
-        Resources.blastFrames = makeForeFrames(1, 3);
-        Resources.snapperRedFrames = new ArrayList<AnimatedSprite.Frame>();
-        Resources.snapperRedFrames.add(new AnimatedSprite.Frame(0, 3));
-        Resources.snapperYellowFrames = new ArrayList<AnimatedSprite.Frame>();
-        Resources.snapperYellowFrames.add(new AnimatedSprite.Frame(0, 2));
-        Resources.snapperGreenFrames = new ArrayList<AnimatedSprite.Frame>();
-        Resources.snapperGreenFrames.add(new AnimatedSprite.Frame(0, 1));
-        Resources.snapperBlueFrames = new ArrayList<AnimatedSprite.Frame>();
-        Resources.snapperBlueFrames.add(new AnimatedSprite.Frame(0, 0));
-    }
-
     @Override
     public void onLoadResources() {
-        Typeface fnt = Typeface.createFromAsset(getAssets(), "shag_lounge.otf");
+        ResourceLoader.onLoadResources(this, getWidth());
         //label = new OutlinedTextSprite("Loading...",  50, Color.WHITE, Color.BLACK, Color.TRANSPARENT, fnt, this);
-        int width = getWidth();
+    }
 
-        String dir;
+    public void defineButtons(E3Scene scene){
+        int buttonWidth = GameActivity.Metrics.squareButtonSize;
+        int margin = Metrics.screenMargin;
+        buttonWidth += margin;
+        pauseButton = new ButtonView(Resources.squareButtons, width -  buttonWidth, margin, Resources.squareButtonPause, Resources.squareButtonDim){
+            @Override
+            public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
+                onPauseBtn();
+                return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
+            }
+        };
+        pauseButton.addToScene(scene);
 
-        if (width <=320) {
-            dir = "lo/";
-            Metrics.snapperSize = 32;
-            Metrics.bangSize = 40;
-            Metrics.blastSize = 9;
-        }
-        else if (width < 600) {
-            dir = "med/";
-            Metrics.snapperSize = 48;
-            Metrics.bangSize = 48;
-            Metrics.blastSize = 18;
-        }
-        else {
-            dir = "hi/";
-            Metrics.snapperSize = 96;
-            Metrics.bangSize = 96;
-            Metrics.blastSize = 36;
-        }
+        hintButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 2, margin, Resources.squareButtonHint, Resources.squareButtonDim){
+            @Override
+            public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
+                onHintBtn();
+                return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
+            }
+        };
+        hintButton.addToScene(scene);
 
-        Resources.eyesTexture = new TiledTexture(dir + "eyes-s.png", Metrics.snapperSize, Metrics.snapperSize, 0, 0, 0, 0, this);
-        Resources.shadowSnapper = new AssetTexture(dir + "shadow.png", this);
-        Resources.bangTexture = new TiledTexture(dir + "bang.png", Metrics.bangSize, Metrics.bangSize, 0,0,0,0, this);
-        Resources.blastTexture = new TiledTexture(dir + "blast.png", Metrics.blastSize, Metrics.blastSize, 0,0,0,0, this);
-        Resources.snapperTexture = new TiledTexture(dir + "back.png", Metrics.snapperSize, Metrics.snapperSize, 0,0,0,0, this);
+        shopButton = new ButtonView(Resources.squareButtons, width - buttonWidth, margin, Resources.squareButtonShop, Resources.squareButtonDim){
+            @Override
+            public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
+                onShopBtn();
+                return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
+            }
+        };
+        shopButton.addToScene(scene);
+        shopButton.hide();
 
+        nextButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 2, margin, Resources.squareButtonForward, Resources.squareButtonDim){
+            @Override
+            public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
+                onNextBtn();
+                return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
+            }
+        };
+        nextButton.addToScene(scene);
+        nextButton.hide();
 
-        Resources.eyesTexture.setReusable(true);
-        Resources.shadowSnapper.setReusable(true);
-        Resources.bangTexture.setReusable(true);
-        Resources.blastTexture.setReusable(true);
-        Resources.snapperTexture.setReusable(true);
+        restartButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 3, margin, Resources.squareButtonRestart, Resources.squareButtonDim){
+            @Override
+            public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
+                onRestartBtn();
+                return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
+            }
+        };
+        restartButton.addToScene(scene);
+        restartButton.hide();
 
+        menuButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 4, margin, Resources.squareButtonMenu, Resources.squareButtonDim){
+            @Override
+            public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
+                onMenuBtn();
+                return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
+            }
+        };
+        menuButton.addToScene(scene);
+        menuButton.hide();
 
     }
+
+    private void onPauseBtn(){
+
+    }
+
+    private void onHintBtn(){
+
+    }
+
+    private void onShopBtn(){
+
+    }
+
+    private void onNextBtn(){
+
+    }
+
+    private void onRestartBtn(){
+        gameController.restartLevel();
+    }
+
+    private void onMenuBtn(){
+        finish();
+    }
+
 
     @Override
     public void onUpdateScene(E3Scene scene, long elapsedMsec) {
@@ -164,23 +209,43 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     }
 
     public static class Resources {
+        public static Typeface font;
         public static TiledTexture eyesTexture;
+        public static TiledTexture eyeShadowTexture;
         public static TiledTexture snapperTexture;
         public static AssetTexture shadowSnapper;
         public static TiledTexture bangTexture;
         public static TiledTexture blastTexture;
+        public static TiledTexture squareButtons;
         public static ArrayList<AnimatedSprite.Frame> eyeFrames;
         public static ArrayList<AnimatedSprite.Frame> bangFrames;
         public static ArrayList<AnimatedSprite.Frame> blastFrames;
-        public static ArrayList<AnimatedSprite.Frame> snapperRedFrames;
-        public static ArrayList<AnimatedSprite.Frame> snapperYellowFrames;
-        public static ArrayList<AnimatedSprite.Frame> snapperGreenFrames;
-        public static ArrayList<AnimatedSprite.Frame> snapperBlueFrames;
+        public static ArrayList<AnimatedSprite.Frame> snapper1Frames;
+        public static ArrayList<AnimatedSprite.Frame> snapper2Frames;
+        public static ArrayList<AnimatedSprite.Frame> snapper3Frames;
+        public static ArrayList<AnimatedSprite.Frame> snapper4Frames;
+        public static ArrayList<AnimatedSprite.Frame> squareButtonDim;
+        public static ArrayList<AnimatedSprite.Frame> squareButtonHint;
+        public static ArrayList<AnimatedSprite.Frame> squareButtonPause;
+        public static ArrayList<AnimatedSprite.Frame> squareButtonForward;
+        public static ArrayList<AnimatedSprite.Frame> squareButtonRestart;
+        public static ArrayList<AnimatedSprite.Frame> squareButtonShop;
+        public static ArrayList<AnimatedSprite.Frame> squareButtonMenu;
     }
 
     public static class Metrics{
         public static int snapperSize;
-        public static int bangSize;
         public static int blastSize;
+        public static int squareButtonSize;
+        public static int infoFontSize;
+        public static int screenMargin;
+        public static float snapperMult1;
+        public static float snapperMult2;
+        public static float snapperMult3;
+        public static float snapperMult4;
+
+        //fill screen width & height with values actual for tablets
+        public static int screenWidth;
+        public static int screenHeight;
     }
 }

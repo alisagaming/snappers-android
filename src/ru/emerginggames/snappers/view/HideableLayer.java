@@ -23,6 +23,10 @@ public class HideableLayer extends Layer{
         this.blockTouchEvents = blockTouchEvents;
     }
 
+    public void setVisibility(boolean visibility){
+        visible = visibility;
+    }
+
     public void show(){
         visible = true;
     }

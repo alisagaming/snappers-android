@@ -74,4 +74,10 @@ public class ButtonView extends AnimatedSprite{
 
         return false;
     }
+
+    @Override
+    public void show() {
+        super.show();
+        dimSprite.hide();
+    }
 }

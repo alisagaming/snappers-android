@@ -1,5 +1,6 @@
 package ru.emerginggames.snappers;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.SystemClock;
 import android.view.Display;
@@ -16,6 +17,7 @@ import com.e3roid.event.SceneUpdateListener;
 import ru.emerginggames.snappers.controller.GameController;
 import ru.emerginggames.snappers.controller.IGameOverListener;
 import ru.emerginggames.snappers.model.Level;
+import ru.emerginggames.snappers.sprites.OutlinedTextSprite;
 import ru.emerginggames.snappers.view.ButtonView;
 import ru.emerginggames.snappers.view.HideableLayer;
 
@@ -49,6 +51,12 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     private HideableLayer mainBtnLayer;
     private HideableLayer gameOverLayer;
     private HideableLayer pausedLayer;
+
+    private OutlinedTextSprite wonText;
+    private OutlinedTextSprite lostText;
+    private OutlinedTextSprite scoreText;
+    private Shape blackout;
+
     
     private int width;
     private int height;
@@ -101,12 +109,14 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         Level level = new Level();
         level.number = 123;
         level.complexity = 1;
-        level.tapsCount = 99;
+        level.tapsCount = 10;
         level.packNumber = 12;
         level.zappers = "123412341234123412341234123412";
 
+        defineMainButtons();
+        defineGameOverLayerContents();
+        definePauseLayerContents();
 
-        defineButtons(scene);
         scene.addLayer(mainBtnLayer);
         scene.addLayer(pausedLayer);
         scene.addLayer(gameOverLayer);
@@ -123,14 +133,15 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     @Override
     public void onLoadResources() {
         ResourceLoader.onLoadResources(this, getWidth());
+        blackout = new Shape(0,0, getWidth(), getHeight());
+        blackout.setColor(0,0,0, 0.5f);
         //label = new OutlinedTextSprite("Loading...",  50, Color.WHITE, Color.BLACK, Color.TRANSPARENT, fnt, this);
     }
-
-    public void defineButtons(E3Scene scene){
-        int buttonWidth = GameActivity.Metrics.squareButtonSize;
+    
+    private void defineMainButtons(){
         int margin = Metrics.screenMargin;
-        buttonWidth += margin;
-        pauseButton = new ButtonView(Resources.squareButtons, width -  buttonWidth, margin, Resources.squareButtonPause, Resources.squareButtonDim){
+
+        pauseButton = new ButtonView(Resources.squareButtons, getSquareButtonPosX(1), margin, Resources.squareButtonPause, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP)
@@ -140,7 +151,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         };
         pauseButton.addToLayer(mainBtnLayer);
 
-        hintButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 2, margin, Resources.squareButtonHint, Resources.squareButtonDim){
+        hintButton = new ButtonView(Resources.squareButtons, getSquareButtonPosX(2), margin, Resources.squareButtonHint, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP)
@@ -149,8 +160,13 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
             }
         };
         hintButton.addToLayer(mainBtnLayer);
+    }
 
-        shopButton = new ButtonView(Resources.squareButtons, width - buttonWidth, margin, Resources.squareButtonShop, Resources.squareButtonDim){
+    private void defineGameOverLayerContents(){
+        int margin = Metrics.screenMargin;
+        gameOverLayer.add(blackout);
+
+        shopButton = new ButtonView(Resources.squareButtons, getSquareButtonPosX(1), margin, Resources.squareButtonShop, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP)
@@ -160,7 +176,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         };
         shopButton.addToLayer(gameOverLayer);
 
-        nextButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 2, margin, Resources.squareButtonForward, Resources.squareButtonDim){
+        nextButton = new ButtonView(Resources.squareButtons, getSquareButtonPosX(2), margin, Resources.squareButtonForward, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP)
@@ -170,7 +186,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         };
         nextButton.addToLayer(gameOverLayer);
 
-        restartButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 3, margin, Resources.squareButtonRestart, Resources.squareButtonDim){
+        restartButton = new ButtonView(Resources.squareButtons, getSquareButtonPosX(3), margin, Resources.squareButtonRestart, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP)
@@ -180,7 +196,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         };
         restartButton.addToLayer(gameOverLayer);
 
-        menuButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 4, margin, Resources.squareButtonMenu, Resources.squareButtonDim){
+        menuButton = new ButtonView(Resources.squareButtons, getSquareButtonPosX(4), margin, Resources.squareButtonMenu, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
                 onMenuBtn();
@@ -189,20 +205,64 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         };
         menuButton.addToLayer(gameOverLayer);
 
+        wonText = new OutlinedTextSprite("Huzzah!", Metrics.infoFontSize * 3/2, Color.WHITE, Color.BLACK, Color.TRANSPARENT, Resources.font, this);
+        lostText = new OutlinedTextSprite("Level failed", Metrics.infoFontSize * 3/2, Color.WHITE, Color.BLACK, Color.TRANSPARENT, Resources.font, this);
+        scoreText = new OutlinedTextSprite("", Metrics.infoFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, Resources.font, this);
+        
+        int textPos = Math.round(height * 0.4f);
+        int center = width/2;
+        wonText.move((width - wonText.getWidth())/2, textPos);
+        lostText.move((width - lostText.getWidth())/2, textPos);
+        scoreText.move(width, textPos + wonText.getTextHeight());
+        gameOverLayer.add(wonText);
+        gameOverLayer.add(lostText);
+        gameOverLayer.add(scoreText);
     }
     
+    public int getSquareButtonPosX(int n){
+        return width - (Metrics.squareButtonSize + Metrics.screenMargin) * n;
+    }
+
+    private void definePauseLayerContents(){
+        pausedLayer.add(blackout);
+    }
     
 
-    private void showGameLostMenu(){
-        gameOverLayer.show();
+    private void showGameLostMenu() {
+        showBtnLayer(gameOverLayer);
+
+        wonText.hide();
+        lostText.show();
+        shopButton.moveX(getSquareButtonPosX(0));
+        nextButton.moveX(getSquareButtonPosX(0));
+        restartButton.moveX(getSquareButtonPosX(1));
+        menuButton.moveX(getSquareButtonPosX(2));
+        scoreText.setText(String.format("Possible in %d touches.", gameController.logic.level.tapsCount));
+        scoreText.moveX((width - scoreText.getWidth())/2);
+
     }
 
     private void showGameWonMenu(){
-        gameOverLayer.show();
+        showBtnLayer(gameOverLayer);
+        wonText.show();
+        lostText.hide();
+        scoreText.setText(String.format("Score: %d", gameController.logic.level.complexity));
+        scoreText.moveX((width - scoreText.getWidth()) / 2);
+        shopButton.moveX(getSquareButtonPosX(1));
+        nextButton.moveX(getSquareButtonPosX(2));
+        restartButton.moveX(getSquareButtonPosX(3));
+        menuButton.moveX(getSquareButtonPosX(4));
+
+    }
+    
+    private void showBtnLayer(HideableLayer layer){
+        mainBtnLayer.setVisibility(mainBtnLayer == layer);
+        gameOverLayer.setVisibility(gameOverLayer == layer);
+        pausedLayer.setVisibility(pausedLayer == layer);
     }
 
     private void onPauseBtn(){
-        gameOverLayer.hide();
+        showBtnLayer(pausedLayer);
     }
 
     private void onHintBtn(){
@@ -214,11 +274,13 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     }
 
     private void onNextBtn(){
-
+        //TODO: get next level
+        showBtnLayer(mainBtnLayer);
     }
 
     private void onRestartBtn(){
         gameController.restartLevel();
+        showBtnLayer(mainBtnLayer);
     }
 
     private void onMenuBtn(){

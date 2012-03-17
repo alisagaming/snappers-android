@@ -5,6 +5,7 @@ import android.graphics.*;
 import com.e3roid.drawable.Sprite;
 import com.e3roid.drawable.sprite.TextSprite;
 import com.e3roid.drawable.texture.BitmapTexture;
+import com.e3roid.drawable.texture.Texture;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
@@ -117,7 +118,7 @@ public class OutlinedTextSprite extends Sprite {
     /**
      * Draw text and update texture.
      */
-    public void createLabel() {
+    public void createLabel(GL10 gl) {
         Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
@@ -127,8 +128,10 @@ public class OutlinedTextSprite extends Sprite {
         canvas.drawText(text, paddingLeft , paddingTop , outlinePaint);
         canvas.drawText(text, paddingLeft, paddingTop, textPaint);
 
-        texture = new BitmapTexture(bitmap, getWidth(), getHeight(), context);
-        texture.recycleBitmap(false);
+        if (texture != null && texture.isLoaded())
+            texture.unloadTexture(gl);
+        Texture texture = new BitmapTexture(bitmap, getWidth(), getHeight(), context);
+        texture.recycleBitmap(true);
 
         updateTexture(texture);
     }
@@ -174,6 +177,13 @@ public class OutlinedTextSprite extends Sprite {
         onLoadSurface(gl, false);
     }
 
+    @Override
+    protected void setSize(int w, int h) {
+        if (getWidth() != w || getHeight() != h)
+            sizeChanged = true;
+        super.setSize(w, h);
+    }
+
     /**
      * Called when the sprite is created or recreated.
      */
@@ -182,7 +192,7 @@ public class OutlinedTextSprite extends Sprite {
         if (textChanged) {
             preparePaint();
         }
-        createLabel();
+        createLabel(gl);
         createBuffers();
         super.onLoadSurface(gl, force);
     }
@@ -195,7 +205,7 @@ public class OutlinedTextSprite extends Sprite {
     public void onDraw(GL10 gl) {
         if (textChanged) {
             preparePaint();
-            createLabel();
+            createLabel(gl);
             texture.loadTexture(gl, false);
 
             if (sizeChanged) {
@@ -261,6 +271,8 @@ public class OutlinedTextSprite extends Sprite {
     public void setText(String text) {
         this.text = text;
         this.textChanged = true;
+        if (fontMetrics != null)
+            setSize(getTextWidth(), getTextHeight());
     }
 
     /**

@@ -22,6 +22,7 @@ public class SnapperView {
     private static final int EYE_ANIMATION_DELAY = 20;
     private static final int BLAST_DELAY = 60;
     private static final float SHADOW_MULT = 1.125f;
+    private static final float SHADOW_OPACITY = 0.7f;
     public int i;
     public int j;
     public int x;
@@ -63,8 +64,8 @@ public class SnapperView {
         eyes.animate(EYE_ANIMATION_DELAY, GameActivity.Resources.eyeFrames);
         eyeShadow = new AnimatedSprite(GameActivity.Resources.eyeShadowTexture, x - sizeShift, y - sizeShift);
         eyeShadow.animate(EYE_ANIMATION_DELAY, GameActivity.Resources.eyeFrames);
-        eyeShadow.setAlpha(0.5f);
-        shadow.setAlpha(0.5f);
+        eyeShadow.setAlpha(SHADOW_OPACITY);
+        shadow.setAlpha(SHADOW_OPACITY);
 
         shadow.setScaleCenter(sizeShift, sizeShift);
         eyeShadow.setScaleCenter(sizeShift, sizeShift);

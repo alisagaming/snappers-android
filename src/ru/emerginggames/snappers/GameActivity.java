@@ -17,6 +17,7 @@ import ru.emerginggames.snappers.controller.GameController;
 import ru.emerginggames.snappers.controller.IGameOverListener;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.view.ButtonView;
+import ru.emerginggames.snappers.view.HideableLayer;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     private ButtonView shopButton;
     private ButtonView menuButton;
     
+    private HideableLayer mainBtnLayer;
+    private HideableLayer gameOverLayer;
+    private HideableLayer pausedLayer;
+    
     private int width;
     private int height;
 
@@ -68,15 +73,26 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         scene.setBackgroundColor(0, 1f, 1f);
 
         ResourceLoader.createFrames();
+
+        mainBtnLayer = new HideableLayer(false);
+        gameOverLayer = new HideableLayer(true);
+        pausedLayer = new HideableLayer(true);
+        scene.addEventListener(pausedLayer);
+        scene.addEventListener(gameOverLayer);
+        scene.addEventListener(mainBtnLayer);
+
+
+
+
         IGameOverListener gameOverListener = new IGameOverListener() {
             @Override
             public void gameWon() {
-                //To change body of implemented methods use File | Settings | File Templates.
+                showGameWonMenu();
             }
 
             @Override
             public void gameLost() {
-                //To change body of implemented methods use File | Settings | File Templates.
+                showGameLostMenu();
             }
         };
         width = getWidth();
@@ -89,9 +105,17 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         level.packNumber = 12;
         level.zappers = "123412341234123412341234123412";
 
+
         defineButtons(scene);
+        scene.addLayer(mainBtnLayer);
+        scene.addLayer(pausedLayer);
+        scene.addLayer(gameOverLayer);
+        pausedLayer.hide();
+        gameOverLayer.hide();
+
 
         gameController.launchLevel(level);
+
 
         return scene;
     }
@@ -109,50 +133,52 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         pauseButton = new ButtonView(Resources.squareButtons, width -  buttonWidth, margin, Resources.squareButtonPause, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
-                onPauseBtn();
-                return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    onPauseBtn();
+                return true;
             }
         };
-        pauseButton.addToScene(scene);
+        pauseButton.addToLayer(mainBtnLayer);
 
         hintButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 2, margin, Resources.squareButtonHint, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
-                onHintBtn();
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    onHintBtn();
                 return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
             }
         };
-        hintButton.addToScene(scene);
+        hintButton.addToLayer(mainBtnLayer);
 
         shopButton = new ButtonView(Resources.squareButtons, width - buttonWidth, margin, Resources.squareButtonShop, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
-                onShopBtn();
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    onShopBtn();
                 return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
             }
         };
-        shopButton.addToScene(scene);
-        shopButton.hide();
+        shopButton.addToLayer(gameOverLayer);
 
         nextButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 2, margin, Resources.squareButtonForward, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
-                onNextBtn();
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    onNextBtn();
                 return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
             }
         };
-        nextButton.addToScene(scene);
-        nextButton.hide();
+        nextButton.addToLayer(gameOverLayer);
 
         restartButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 3, margin, Resources.squareButtonRestart, Resources.squareButtonDim){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
-                onRestartBtn();
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    onRestartBtn();
                 return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
             }
         };
-        restartButton.addToScene(scene);
-        restartButton.hide();
+        restartButton.addToLayer(gameOverLayer);
 
         menuButton = new ButtonView(Resources.squareButtons, width - buttonWidth * 4, margin, Resources.squareButtonMenu, Resources.squareButtonDim){
             @Override
@@ -161,13 +187,22 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
                 return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
             }
         };
-        menuButton.addToScene(scene);
-        menuButton.hide();
+        menuButton.addToLayer(gameOverLayer);
 
+    }
+    
+    
+
+    private void showGameLostMenu(){
+        gameOverLayer.show();
+    }
+
+    private void showGameWonMenu(){
+        gameOverLayer.show();
     }
 
     private void onPauseBtn(){
-
+        gameOverLayer.hide();
     }
 
     private void onHintBtn(){
@@ -217,6 +252,10 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         public static TiledTexture bangTexture;
         public static TiledTexture blastTexture;
         public static TiledTexture squareButtons;
+        public static TiledTexture longButtons;
+        public static AssetTexture dialog;
+        public static AssetTexture longDialog;
+
         public static ArrayList<AnimatedSprite.Frame> eyeFrames;
         public static ArrayList<AnimatedSprite.Frame> bangFrames;
         public static ArrayList<AnimatedSprite.Frame> blastFrames;
@@ -237,6 +276,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         public static int snapperSize;
         public static int blastSize;
         public static int squareButtonSize;
+        public static int longButtonWidth;
         public static int infoFontSize;
         public static int screenMargin;
         public static float snapperMult1;

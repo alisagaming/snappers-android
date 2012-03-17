@@ -43,19 +43,22 @@ public class ResourceLoader {
             case modeS:
                 Metrics.snapperSize = 32;
                 Metrics.blastSize = 14;
-                Metrics.squareButtonSize = 48;
-                Metrics.infoFontSize = 22;
+                Metrics.squareButtonSize = 64;
+                Metrics.longButtonWidth = 300;
+                Metrics.infoFontSize = 32;
                 break;
             case modeM:
                 Metrics.snapperSize = 48;
                 Metrics.blastSize = 18;
-                Metrics.squareButtonSize = 64;
-                Metrics.infoFontSize = 30;
+                Metrics.squareButtonSize = 80;
+                Metrics.longButtonWidth = 250;
+                Metrics.infoFontSize = 38;
                 break;
             case modeL:
                 Metrics.snapperSize = 96;
                 Metrics.blastSize = 36;
                 Metrics.squareButtonSize = 128;
+                Metrics.longButtonWidth = 400;
                 Metrics.infoFontSize = 60;
                 break;
         }
@@ -79,11 +82,17 @@ public class ResourceLoader {
 
         Resources.eyesTexture = new TiledTexture(dir + "eyes.png", Metrics.snapperSize, Metrics.snapperSize, 0, 0, 1, 0, context, Texture.Option.BILINEAR);
         Resources.eyeShadowTexture= new TiledTexture(dir + "eyeShadow.png", Metrics.snapperSize, Metrics.snapperSize, 0, 0, 0, 0, context, Texture.Option.BILINEAR);
-        Resources.shadowSnapper = new AssetTexture(dir + "shadow.png", context);
         Resources.bangTexture = new TiledTexture(dir + "bang.png", Metrics.snapperSize, Metrics.snapperSize, 0,0,0,0, context);
         Resources.blastTexture = new TiledTexture(dir + "blast.png", Metrics.blastSize, Metrics.blastSize, 0,0,0,0, context);
         Resources.snapperTexture = new TiledTexture(dir + "back.png", Metrics.snapperSize, Metrics.snapperSize, 0,0,0,0, context, Texture.Option.BILINEAR);
-        Resources.squareButtons= new TiledTexture(dir + "btn-sq.png", Metrics.squareButtonSize, Metrics.squareButtonSize, 0,0,0,0, context);
+        Resources.squareButtons = new TiledTexture(dir + "btn-sq.png", Metrics.squareButtonSize, Metrics.squareButtonSize, 0,0,0,0, context);
+        Resources.longButtons = new TiledTexture(dir + "btn-sq.png", Metrics.squareButtonSize, Metrics.squareButtonSize, 0,0,0,0, context);
+        Resources.longButtons = new TiledTexture(dir + "btn-sq.png", Metrics.squareButtonSize, Metrics.squareButtonSize, 0,0,0,0, context);
+
+        Resources.shadowSnapper = new AssetTexture(dir + "shadow.png", context, Texture.Option.BILINEAR);
+        Resources.dialog = new AssetTexture(dir + "dialog.png", context);
+        Resources.longDialog = new AssetTexture(dir + "dialoglong.png", context);
+
 
         Resources.eyesTexture.setReusable(true);
         Resources.eyeShadowTexture.setReusable(true);
@@ -169,8 +178,8 @@ public class ResourceLoader {
         Resources.squareButtonRestart = new ArrayList<AnimatedSprite.Frame>(1);
         Resources.squareButtonRestart.add(new AnimatedSprite.Frame(0, 1));
         Resources.squareButtonShop = new ArrayList<AnimatedSprite.Frame>(1);
-        Resources.squareButtonShop.add(new AnimatedSprite.Frame(0, 2));
+        Resources.squareButtonShop.add(new AnimatedSprite.Frame(1, 1));
         Resources.squareButtonMenu = new ArrayList<AnimatedSprite.Frame>(1);
-        Resources.squareButtonMenu.add(new AnimatedSprite.Frame(0, 3));
+        Resources.squareButtonMenu.add(new AnimatedSprite.Frame(2, 1));
     }
 }

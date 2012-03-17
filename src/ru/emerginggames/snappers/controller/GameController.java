@@ -3,10 +3,8 @@ package ru.emerginggames.snappers.controller;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 import com.e3roid.E3Scene;
-import com.e3roid.drawable.Shape;
-import com.e3roid.drawable.sprite.AnimatedSprite;
+import com.e3roid.drawable.Layer;
 import ru.emerginggames.snappers.GameActivity;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
@@ -14,7 +12,6 @@ import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.Snappers;
 import ru.emerginggames.snappers.sprites.OutlinedTextSprite;
 import ru.emerginggames.snappers.view.BlastView;
-import ru.emerginggames.snappers.view.ButtonView;
 import ru.emerginggames.snappers.view.SnapperView;
 import ru.emerginggames.snappers.GameActivity.Resources;
 import ru.emerginggames.snappers.GameActivity.Metrics;
@@ -30,6 +27,7 @@ import java.util.List;
  */
 public class GameController implements ILogicListener{
     public E3Scene scene;
+    public Layer layer;
     public GameLogic logic;
     public final SnapperView[][] snapperViews;
     private final List<SnapperView> snappersTouched;
@@ -47,11 +45,15 @@ public class GameController implements ILogicListener{
         logic = new GameLogic(width, height, defineGameRect(width, height), this);
         this.gameOverListener = gameOverListener;
 
+        layer = new Layer();
+        scene.addLayer(layer);
+
+
         snapperViews = new SnapperView[Snappers.WIDTH][Snappers.HEIGHT];
         for (int i=0;i<Snappers.WIDTH; i++)
             for (int j=0;j<Snappers.HEIGHT; j++){
                 snapperViews[i][j] = new SnapperView(i, j, 0, this);
-                snapperViews[i][j].addToScene(scene);
+                snapperViews[i][j].addToScene(scene, layer);
             }
 
         snappersTouched = new ArrayList<SnapperView>(4);
@@ -60,8 +62,8 @@ public class GameController implements ILogicListener{
         tapsRemainingText = new OutlinedTextSprite("", Metrics.infoFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, Resources.font, context);
         levelText.move(Metrics.screenMargin, Metrics.screenMargin);
         tapsRemainingText.move(Metrics.screenMargin, Metrics.screenMargin + levelText.getTextHeight());
-        scene.getTopLayer().add(levelText);
-        scene.getTopLayer().add(tapsRemainingText);
+        layer.add(levelText);
+        layer.add(tapsRemainingText);
     }
 
     public Rect defineGameRect(int width, int height){
@@ -138,7 +140,7 @@ public class GameController implements ILogicListener{
     @Override
     public void blastCreated(Blast blast) {
         blast.view = new BlastView(blast, this);
-        blast.view.addToScene(scene);
+        blast.view.addToLayer(layer);
     }
 
     @Override

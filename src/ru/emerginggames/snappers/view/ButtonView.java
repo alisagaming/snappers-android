@@ -2,9 +2,11 @@ package ru.emerginggames.snappers.view;
 
 import android.view.MotionEvent;
 import com.e3roid.E3Scene;
+import com.e3roid.drawable.Layer;
 import com.e3roid.drawable.Shape;
 import com.e3roid.drawable.sprite.AnimatedSprite;
 import com.e3roid.drawable.texture.TiledTexture;
+import com.e3roid.event.ShapeEventListener;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
@@ -27,9 +29,9 @@ public class ButtonView extends AnimatedSprite{
         addChild(dimSprite);
     }
 
-    public void addToScene(E3Scene scene){
-        scene.getTopLayer().add(this);
-        scene.addEventListener(this);
+    public void addToLayer(HideableLayer layer){
+        layer.add(this);
+        layer.addEventListener(this);
     }
 
     @Override
@@ -46,5 +48,30 @@ public class ButtonView extends AnimatedSprite{
     public void onDraw(GL10 _gl) {
         super.onDraw(_gl);
         dimSprite.onDraw(_gl);
+    }
+
+    @Override
+    public boolean onSceneTouchEvent(E3Scene scene, MotionEvent motionEvent) {
+        if (isRemoved() || isTransparent() || !isVisible()) return false;
+
+        int pointerCount = motionEvent.getPointerCount();
+
+        for (int i = 0; i < pointerCount; i++) {
+            int globalX = scene.getEngine().getContext().getTouchEventX(scene, motionEvent, i);
+            int globalY = scene.getEngine().getContext().getTouchEventY(scene, motionEvent, i);
+            int localX = globalX - getRealX();
+            int localY = globalY - getRealY();
+
+            if (contains(globalX, globalY)) {
+                boolean consumed = false;
+                consumed |= this.onTouchEvent(scene, this, motionEvent, localX, localY);
+                for (ShapeEventListener listener : listeners) {
+                    consumed |= listener.onTouchEvent(scene, this, motionEvent, localX, localY);
+                }
+                return consumed;
+            }
+        }
+
+        return false;
     }
 }

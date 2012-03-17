@@ -176,11 +176,11 @@ public class GameLogic {
     }
 
     public boolean isGameOver(){
-        return tapRemains<1 && activeBlasts.size() == 0;
+        return (tapRemains<1 || snappers.snappersCount == 0) && activeBlasts.size() == 0 ;
     }
 
     public boolean isGameLost(){
-        return snappers.countSnappers()>0;
+        return snappers.snappersCount>0;
     }
 
 }

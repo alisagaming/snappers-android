@@ -48,9 +48,7 @@ public class SnapperView {
         setViewState();
     }
 
-    public void addToScene(E3Scene scene){
-        Layer layer = scene.getTopLayer();
-
+    public void addToScene(E3Scene scene, Layer layer){
         int sizeShift = GameActivity.Metrics.snapperSize / 2;
         shadow = new Sprite(GameActivity.Resources.shadowSnapper, x - sizeShift, y - sizeShift);
         back = new AnimatedSprite(GameActivity.Resources.snapperTexture, x - sizeShift, y - sizeShift);
@@ -88,10 +86,10 @@ public class SnapperView {
         state--;
         setViewState();
         if (state == 0)
-            addBang(controller.scene);
+            addBang();
     }
 
-    private void addBang(final E3Scene scene){
+    private void addBang(){
         int sizeShift = GameActivity.Metrics.snapperSize / 2;
         blastSprite = new AnimatedSprite(GameActivity.Resources.bangTexture, x - sizeShift, y - sizeShift);
         blastSprite.animate(BLAST_DELAY, 1, GameActivity.Resources.bangFrames);
@@ -101,10 +99,10 @@ public class SnapperView {
 
             @Override
             public void animationFinished(AnimatedSprite sprite) {
-                scene.getTopLayer().remove(blastSprite);
+                controller.layer.remove(blastSprite);
             }
         });
-        scene.getTopLayer().add(blastSprite);
+        controller.layer.add(blastSprite);
     }
 
     private void setViewState(){

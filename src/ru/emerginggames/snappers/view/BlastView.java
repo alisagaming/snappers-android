@@ -34,8 +34,7 @@ public class BlastView{
         this.blast = blast;
     }
 
-    public void addToScene(E3Scene scene){
-        Layer layer = scene.getTopLayer();
+    public void addToLayer(Layer layer){
 
         sprite = new AnimatedSprite(GameActivity.Resources.blastTexture, Math.round(blast.x), Math.round(blast.y));
         sprite.animate(BLAST_ANIMATION_DELAY, 1, GameActivity.Resources.blastFrames);

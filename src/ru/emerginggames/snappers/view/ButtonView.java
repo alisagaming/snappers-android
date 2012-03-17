@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public class ButtonView extends AnimatedSprite{
     private AnimatedSprite dimSprite;
+    private boolean hover = false;
     public ButtonView(TiledTexture texture, int x, int y, ArrayList<Frame> frames, ArrayList<Frame> dimFrames) {
         super(texture, x, y);
         animate(0, 1, frames);
@@ -36,10 +37,16 @@ public class ButtonView extends AnimatedSprite{
 
     @Override
     public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-            dimSprite.show();
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP){
-            dimSprite.hide();
+        switch (motionEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                dimSprite.show();
+                hover = true;
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                dimSprite.hide();
+                hover = false;
+                break;
         }
         return super.onTouchEvent(scene, shape, motionEvent, localX, localY);
     }
@@ -63,16 +70,26 @@ public class ButtonView extends AnimatedSprite{
             int localY = globalY - getRealY();
 
             if (contains(globalX, globalY)) {
-                boolean consumed = false;
-                consumed |= this.onTouchEvent(scene, this, motionEvent, localX, localY);
-                for (ShapeEventListener listener : listeners) {
-                    consumed |= listener.onTouchEvent(scene, this, motionEvent, localX, localY);
-                }
+                return sendTouchEventToListeners(scene, this, motionEvent, localX, localY);
+            }else if (hover && motionEvent.getAction() == MotionEvent.ACTION_MOVE){
+                motionEvent.setAction(MotionEvent.ACTION_CANCEL);
+                boolean consumed = sendTouchEventToListeners(scene, this, motionEvent, localX, localY);
+                motionEvent.setAction(MotionEvent.ACTION_MOVE);
                 return consumed;
             }
         }
 
         return false;
+    }
+
+    private boolean sendTouchEventToListeners(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY){
+        boolean consumed = false;
+        consumed |= this.onTouchEvent(scene, this, motionEvent, localX, localY);
+        for (ShapeEventListener listener : listeners) {
+            consumed |= listener.onTouchEvent(scene, this, motionEvent, localX, localY);
+        }
+        return consumed;
+
     }
 
     @Override

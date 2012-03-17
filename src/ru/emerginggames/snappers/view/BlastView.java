@@ -1,18 +1,9 @@
 package ru.emerginggames.snappers.view;
 
-import com.e3roid.E3Scene;
 import com.e3roid.drawable.Layer;
-import com.e3roid.drawable.Shape;
-import com.e3roid.drawable.modifier.AxisMoveModifier;
-import com.e3roid.drawable.modifier.MoveModifier;
-import com.e3roid.drawable.modifier.ProgressModifier;
-import com.e3roid.drawable.modifier.ShapeModifier;
-import com.e3roid.drawable.modifier.function.Linear;
 import com.e3roid.drawable.sprite.AnimatedSprite;
-import com.e3roid.event.ModifierEventListener;
-import ru.emerginggames.snappers.GameActivity;
+import ru.emerginggames.snappers.Resources;
 import ru.emerginggames.snappers.controller.GameController;
-import ru.emerginggames.snappers.controller.GameLogic;
 import ru.emerginggames.snappers.model.Blast;
 
 /**
@@ -36,8 +27,8 @@ public class BlastView{
 
     public void addToLayer(Layer layer){
 
-        sprite = new AnimatedSprite(GameActivity.Resources.blastTexture, Math.round(blast.x), Math.round(blast.y));
-        sprite.animate(BLAST_ANIMATION_DELAY, 1, GameActivity.Resources.blastFrames);
+        sprite = new AnimatedSprite(Resources.blastTexture, Math.round(blast.x), Math.round(blast.y));
+        sprite.animate(BLAST_ANIMATION_DELAY, 1, Resources.blastFrames);
         shift = sprite.getWidth()/2;
         layer.add(sprite);
         sprite.hide();

@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import com.e3roid.E3Scene;
 import com.e3roid.drawable.Layer;
-import ru.emerginggames.snappers.GameActivity;
+import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
 import ru.emerginggames.snappers.model.Level;
@@ -13,8 +13,6 @@ import ru.emerginggames.snappers.model.Snappers;
 import ru.emerginggames.snappers.sprites.OutlinedTextSprite;
 import ru.emerginggames.snappers.view.BlastView;
 import ru.emerginggames.snappers.view.SnapperView;
-import ru.emerginggames.snappers.GameActivity.Resources;
-import ru.emerginggames.snappers.GameActivity.Metrics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +56,8 @@ public class GameController implements ILogicListener{
 
         snappersTouched = new ArrayList<SnapperView>(4);
 
-        levelText = new OutlinedTextSprite("", Metrics.infoFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, Resources.font, context);
-        tapsRemainingText = new OutlinedTextSprite("", Metrics.infoFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, Resources.font, context);
+        levelText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, ru.emerginggames.snappers.Resources.font, context);
+        tapsRemainingText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, ru.emerginggames.snappers.Resources.font, context);
         levelText.move(Metrics.screenMargin, Metrics.screenMargin);
         tapsRemainingText.move(Metrics.screenMargin, Metrics.screenMargin + levelText.getTextHeight());
         layer.add(levelText);
@@ -67,9 +65,9 @@ public class GameController implements ILogicListener{
     }
 
     public Rect defineGameRect(int width, int height){
-        int marginTop = Math.round(GameActivity.Metrics.squareButtonSize * 1.1f);
+        int marginTop = Math.round(Metrics.squareButtonSize * 1.1f);
         int snapperAreaHeight = height - 2 * marginTop;
-        int marginBottom = Math.round(GameActivity.Metrics.squareButtonSize * 0.7f);;
+        int marginBottom = Math.round(Metrics.squareButtonSize * 0.7f);;
         if (snapperAreaHeight < width){
             snapperAreaHeight = width;
             marginBottom = height - marginTop - marginBottom;

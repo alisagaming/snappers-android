@@ -7,7 +7,8 @@ import com.e3roid.drawable.Shape;
 import com.e3roid.drawable.Sprite;
 import com.e3roid.drawable.sprite.AnimatedSprite;
 import com.e3roid.event.AnimationEventListener;
-import ru.emerginggames.snappers.GameActivity;
+import ru.emerginggames.snappers.Metrics;
+import ru.emerginggames.snappers.Resources;
 import ru.emerginggames.snappers.controller.GameController;
 
 import java.util.ArrayList;
@@ -50,10 +51,10 @@ public class SnapperView {
     }
 
     public void addToScene(E3Scene scene, Layer layer){
-        int sizeShift = GameActivity.Metrics.snapperSize / 2;
-        shadow = new Sprite(GameActivity.Resources.shadowSnapper, x - sizeShift, y - sizeShift);
-        back = new AnimatedSprite(GameActivity.Resources.snapperTexture, x - sizeShift, y - sizeShift);
-        eyes = new AnimatedSprite(GameActivity.Resources.eyesTexture, x - sizeShift, y - sizeShift){
+        int sizeShift = Metrics.snapperSize / 2;
+        shadow = new Sprite(Resources.shadowSnapper, x - sizeShift, y - sizeShift);
+        back = new AnimatedSprite(Resources.snapperTexture, x - sizeShift, y - sizeShift);
+        eyes = new AnimatedSprite(Resources.eyesTexture, x - sizeShift, y - sizeShift){
             @Override
             public boolean onTouchEvent(E3Scene scene, Shape shape, MotionEvent motionEvent, int localX, int localY) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP)
@@ -61,9 +62,9 @@ public class SnapperView {
                 return true;
             }
         };
-        eyes.animate(EYE_ANIMATION_DELAY, GameActivity.Resources.eyeFrames);
-        eyeShadow = new AnimatedSprite(GameActivity.Resources.eyeShadowTexture, x - sizeShift, y - sizeShift);
-        eyeShadow.animate(EYE_ANIMATION_DELAY, GameActivity.Resources.eyeFrames);
+        eyes.animate(EYE_ANIMATION_DELAY, Resources.eyeFrames);
+        eyeShadow = new AnimatedSprite(Resources.eyeShadowTexture, x - sizeShift, y - sizeShift);
+        eyeShadow.animate(EYE_ANIMATION_DELAY, Resources.eyeFrames);
         eyeShadow.setAlpha(SHADOW_OPACITY);
         shadow.setAlpha(SHADOW_OPACITY);
 
@@ -91,12 +92,13 @@ public class SnapperView {
     }
 
     private void addBang(){
-        int sizeShift = GameActivity.Metrics.snapperSize / 2;
-        blastSprite = new AnimatedSprite(GameActivity.Resources.bangTexture, x - sizeShift, y - sizeShift);
-        blastSprite.animate(BLAST_DELAY, 1, GameActivity.Resources.bangFrames);
+        int sizeShift = Metrics.snapperSize / 2;
+        blastSprite = new AnimatedSprite(Resources.bangTexture, x - sizeShift, y - sizeShift);
+        blastSprite.animate(BLAST_DELAY, 1, Resources.bangFrames);
         blastSprite.setEventListener(new AnimationEventListener() {
             @Override
-            public void animationStarted(AnimatedSprite sprite) {}
+            public void animationStarted(AnimatedSprite sprite) {
+            }
 
             @Override
             public void animationFinished(AnimatedSprite sprite) {
@@ -131,13 +133,13 @@ public class SnapperView {
     private ArrayList<AnimatedSprite.Frame> getStateFrame(){
         switch (state){
             case 1:
-                return GameActivity.Resources.snapper1Frames;
+                return Resources.snapper1Frames;
             case 2:
-                return GameActivity.Resources.snapper2Frames;
+                return Resources.snapper2Frames;
             case 3:
-                return GameActivity.Resources.snapper3Frames;
+                return Resources.snapper3Frames;
             case 4:
-                return GameActivity.Resources.snapper4Frames;
+                return Resources.snapper4Frames;
             default:
                 return null;
         }
@@ -146,13 +148,13 @@ public class SnapperView {
     private float getScale(){
         switch (state){
             case 1:
-                return GameActivity.Metrics.snapperMult1;
+                return Metrics.snapperMult1;
             case 2:
-                return GameActivity.Metrics.snapperMult2;
+                return Metrics.snapperMult2;
             case 3:
-                return GameActivity.Metrics.snapperMult3;
+                return Metrics.snapperMult3;
             case 4:
-                return GameActivity.Metrics.snapperMult4;
+                return Metrics.snapperMult4;
             default:
                 return 1;
         }

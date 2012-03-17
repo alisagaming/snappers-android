@@ -6,8 +6,6 @@ import com.e3roid.drawable.sprite.AnimatedSprite;
 import com.e3roid.drawable.texture.AssetTexture;
 import com.e3roid.drawable.texture.Texture;
 import com.e3roid.drawable.texture.TiledTexture;
-import ru.emerginggames.snappers.GameActivity.Resources;
-import ru.emerginggames.snappers.GameActivity.Metrics;
 
 import java.util.ArrayList;
 
@@ -44,25 +42,28 @@ public class ResourceLoader {
                 Metrics.snapperSize = 32;
                 Metrics.blastSize = 14;
                 Metrics.squareButtonSize = 64;
-                Metrics.longButtonWidth = 300;
-                Metrics.infoFontSize = 32;
+                Metrics.menuButtonWidth = 200;
+                Metrics.fontSize = 32;
                 break;
             case modeM:
                 Metrics.snapperSize = 48;
                 Metrics.blastSize = 18;
                 Metrics.squareButtonSize = 80;
-                Metrics.longButtonWidth = 250;
-                Metrics.infoFontSize = 38;
+                Metrics.menuButtonWidth = 312;
+                Metrics.menuButtonHeight = 100;
+                Metrics.fontSize = 38;
                 break;
             case modeL:
                 Metrics.snapperSize = 96;
                 Metrics.blastSize = 36;
                 Metrics.squareButtonSize = 128;
-                Metrics.longButtonWidth = 400;
-                Metrics.infoFontSize = 60;
+                Metrics.menuButtonWidth = 400;
+                Metrics.menuButtonHeight = 128;
+                Metrics.fontSize = 60;
                 break;
         }
-        Metrics.screenMargin = Metrics.squareButtonSize/12;
+        Metrics.screenMargin = Metrics.squareButtonSize /12;
+        Metrics.largeFontSize = Metrics.fontSize * 3/2;
     }
 
     private static void loadResources(Context context){
@@ -78,28 +79,28 @@ public class ResourceLoader {
                 break;
         }
 
-        Resources.font = Typeface.createFromAsset(context.getAssets(), "shag_lounge.otf");
+       Resources.font = Typeface.createFromAsset(context.getAssets(), "shag_lounge.otf");
 
-        Resources.eyesTexture = new TiledTexture(dir + "eyes.png", Metrics.snapperSize, Metrics.snapperSize, 0, 0, 1, 0, context, Texture.Option.BILINEAR);
-        Resources.eyeShadowTexture= new TiledTexture(dir + "eyeShadow.png", Metrics.snapperSize, Metrics.snapperSize, 0, 0, 0, 0, context, Texture.Option.BILINEAR);
-        Resources.bangTexture = new TiledTexture(dir + "bang.png", Metrics.snapperSize, Metrics.snapperSize, 0,0,0,0, context);
-        Resources.blastTexture = new TiledTexture(dir + "blast.png", Metrics.blastSize, Metrics.blastSize, 0,0,0,0, context);
-        Resources.snapperTexture = new TiledTexture(dir + "back.png", Metrics.snapperSize, Metrics.snapperSize, 0,0,0,0, context, Texture.Option.BILINEAR);
-        Resources.squareButtons = new TiledTexture(dir + "btn-sq.png", Metrics.squareButtonSize, Metrics.squareButtonSize, 0,0,0,0, context);
-        Resources.longButtons = new TiledTexture(dir + "btn-sq.png", Metrics.squareButtonSize, Metrics.squareButtonSize, 0,0,0,0, context);
-        Resources.longButtons = new TiledTexture(dir + "btn-sq.png", Metrics.squareButtonSize, Metrics.squareButtonSize, 0,0,0,0, context);
-
-        Resources.shadowSnapper = new AssetTexture(dir + "shadow.png", context, Texture.Option.BILINEAR);
-        Resources.dialog = new AssetTexture(dir + "dialog.png", context);
-        Resources.longDialog = new AssetTexture(dir + "dialoglong.png", context);
+       Resources.eyesTexture = new TiledTexture(dir + "eyes.png", Metrics.snapperSize, Metrics.snapperSize, 0, 0, 1, 0, context, Texture.Option.BILINEAR);
+       Resources.eyeShadowTexture = new TiledTexture(dir + "eyeShadow.png", Metrics.snapperSize, Metrics.snapperSize, 0, 0, 0, 0, context, Texture.Option.BILINEAR);
+       Resources.bangTexture = new TiledTexture(dir + "bang.png", Metrics.snapperSize, Metrics.snapperSize, 0,0,0,0, context);
+       Resources.blastTexture = new TiledTexture(dir + "blast.png", Metrics.blastSize, Metrics.blastSize, 0,0,0,0, context);
+       Resources.snapperTexture = new TiledTexture(dir + "back.png", Metrics.snapperSize, Metrics.snapperSize, 0,0,0,0, context, Texture.Option.BILINEAR);
+       Resources.squareButtons = new TiledTexture(dir + "btn-sq.png", Metrics.squareButtonSize, Metrics.squareButtonSize, 0,0,0,0, context);
+       Resources.menuButtons = new TiledTexture(dir + "btn-long.png", Metrics.menuButtonWidth, Metrics.menuButtonHeight, 0,0,0,0, context);
 
 
-        Resources.eyesTexture.setReusable(true);
-        Resources.eyeShadowTexture.setReusable(true);
-        Resources.shadowSnapper.setReusable(true);
-        Resources.bangTexture.setReusable(true);
-        Resources.blastTexture.setReusable(true);
-        Resources.snapperTexture.setReusable(true);
+       Resources.shadowSnapper = new AssetTexture(dir + "shadow.png", context, Texture.Option.BILINEAR);
+       Resources.dialog = new AssetTexture(dir + "dialog.png", context);
+       Resources.longDialog = new AssetTexture(dir + "dialoglong.png", context);
+
+
+        ru.emerginggames.snappers.Resources.eyesTexture.setReusable(true);
+        ru.emerginggames.snappers.Resources.eyeShadowTexture.setReusable(true);
+        ru.emerginggames.snappers.Resources.shadowSnapper.setReusable(true);
+        ru.emerginggames.snappers.Resources.bangTexture.setReusable(true);
+        ru.emerginggames.snappers.Resources.blastTexture.setReusable(true);
+        ru.emerginggames.snappers.Resources.snapperTexture.setReusable(true);
     }
 
     private static void setSnapperMult(){
@@ -167,8 +168,8 @@ public class ResourceLoader {
         Resources.snapper4Frames = new ArrayList<AnimatedSprite.Frame>(1);
         Resources.snapper4Frames.add(new AnimatedSprite.Frame(0, 0));
 
-        Resources.squareButtonDim = new ArrayList<AnimatedSprite.Frame>(1);
-        Resources.squareButtonDim.add(new AnimatedSprite.Frame(0, 0));
+        Resources.buttonDim = new ArrayList<AnimatedSprite.Frame>(1);
+        Resources.buttonDim.add(new AnimatedSprite.Frame(0, 0));
         Resources.squareButtonHint = new ArrayList<AnimatedSprite.Frame>(1);
         Resources.squareButtonHint.add(new AnimatedSprite.Frame(1, 0));
         Resources.squareButtonPause = new ArrayList<AnimatedSprite.Frame>(1);
@@ -181,5 +182,14 @@ public class ResourceLoader {
         Resources.squareButtonShop.add(new AnimatedSprite.Frame(1, 1));
         Resources.squareButtonMenu = new ArrayList<AnimatedSprite.Frame>(1);
         Resources.squareButtonMenu.add(new AnimatedSprite.Frame(2, 1));
+
+        Resources.menuButtonResume = new ArrayList<AnimatedSprite.Frame>(1);
+        Resources.menuButtonResume.add(new AnimatedSprite.Frame(0, 1));
+        Resources.menuButtonRestart = new ArrayList<AnimatedSprite.Frame>(1);
+        Resources.menuButtonRestart.add(new AnimatedSprite.Frame(0, 2));
+        Resources.menuButtonMenu = new ArrayList<AnimatedSprite.Frame>(1);
+        Resources.menuButtonMenu.add(new AnimatedSprite.Frame(0, 3));
+        Resources.menuButtonStore = new ArrayList<AnimatedSprite.Frame>(1);
+        Resources.menuButtonStore.add(new AnimatedSprite.Frame(0, 4));
     }
 }

@@ -110,7 +110,7 @@ public class OutlinedTextSprite extends Sprite {
 
         backPaint.setColor(this.backColor);
         backPaint.setStyle(Paint.Style.FILL);
-        fontMetrics = textPaint.getFontMetrics();
+        fontMetrics = outlinePaint.getFontMetrics();
 
         setSize(getTextWidth(), getTextHeight());
     }
@@ -124,7 +124,7 @@ public class OutlinedTextSprite extends Sprite {
 
         canvas.drawRect(0, 0, getWidth(), getHeight(), backPaint);
         float paddingLeft = getPreferredPaddingLeft();
-        float paddingTop  = Math.abs(fontMetrics.ascent) + strokeWidth;
+        float paddingTop  = Math.abs(fontMetrics.ascent) + strokeWidth * 2;
         canvas.drawText(text, paddingLeft , paddingTop , outlinePaint);
         canvas.drawText(text, paddingLeft, paddingTop, textPaint);
 
@@ -151,7 +151,7 @@ public class OutlinedTextSprite extends Sprite {
     }
 
     protected int measureTextWidth() {
-        return (int)Math.ceil(outlinePaint.measureText(text));
+        return (int)Math.ceil(outlinePaint.measureText(text) + strokeWidth * 2);
     }
 
     private int getPreferredPaddingLeft() {
@@ -166,7 +166,7 @@ public class OutlinedTextSprite extends Sprite {
      */
     public int getTextHeight() {
         return (int)Math.ceil(Math.abs(fontMetrics.ascent) +
-                Math.abs(fontMetrics.descent) + Math.abs(fontMetrics.leading)) + (int)(strokeWidth * 2);
+                Math.abs(fontMetrics.descent) + Math.abs(fontMetrics.leading)) + (int)(strokeWidth * 4);
     }
 
     /**

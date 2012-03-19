@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import com.e3roid.E3Scene;
 import com.e3roid.drawable.Layer;
 import ru.emerginggames.snappers.Metrics;
+import ru.emerginggames.snappers.Resources;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
 import ru.emerginggames.snappers.model.Level;
@@ -56,8 +57,8 @@ public class GameController implements ILogicListener{
 
         snappersTouched = new ArrayList<SnapperView>(4);
 
-        levelText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, ru.emerginggames.snappers.Resources.font, context);
-        tapsRemainingText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, ru.emerginggames.snappers.Resources.font, context);
+        levelText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, Resources.font, context);
+        tapsRemainingText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, Resources.font, context);
         levelText.move(Metrics.screenMargin, Metrics.screenMargin);
         tapsRemainingText.move(Metrics.screenMargin, Metrics.screenMargin + levelText.getTextHeight());
         layer.add(levelText);

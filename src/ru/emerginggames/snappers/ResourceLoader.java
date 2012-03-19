@@ -59,7 +59,7 @@ public class ResourceLoader {
                 Metrics.squareButtonSize = 128;
                 Metrics.menuButtonWidth = 400;
                 Metrics.menuButtonHeight = 128;
-                Metrics.fontSize = 60;
+                Metrics.fontSize = 48;
                 break;
         }
         Metrics.screenMargin = Metrics.squareButtonSize /12;

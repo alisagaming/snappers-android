@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.view.Display;
 import android.view.View;

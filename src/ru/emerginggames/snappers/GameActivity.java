@@ -33,8 +33,6 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     }
     public static SizeMode sizeMode;
 
-    private final static int WIDTH  = 480;
-    private final static int HEIGHT = 800;
     private long lastTimeUpdate;
     private GameController gameController;
 
@@ -48,17 +46,9 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     private Shape blackout;
     private Sprite dialogLong;
 
-
-
-    
-    private int width;
-    private int height;
-
     @Override
     public E3Engine onLoadEngine() {
-        Display display = getWindowManager().getDefaultDisplay();
-        //E3Engine engine = new E3Engine(this, WIDTH, HEIGHT);
-        E3Engine engine = new E3Engine(this, display.getWidth(), display.getHeight());
+        E3Engine engine = new E3Engine(this, Metrics.screenWidth, Metrics.screenHeight, E3Engine.RESOLUTION_EXACT);
         engine.requestFullScreen();
         engine.requestPortrait();
         return engine;
@@ -67,8 +57,6 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     @Override
     public E3Scene onLoadScene() {
         E3Scene scene = new E3Scene();
-        width = getWidth();
-        height = getHeight();
         //scene.registerUpdateListener(10, this);
         lastTimeUpdate = SystemClock.uptimeMillis();
         scene.addFrameListener(this);
@@ -78,8 +66,8 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         ResourceLoader.createFrames();
 
         mainBtnLayer = new HideableLayer(false);
-        gameOverLayer = new GameOverLayer(width, height, this, this);
-        pausedLayer = new MainMenuLayer(width, height, this, this);
+        gameOverLayer = new GameOverLayer(Metrics.screenWidth, Metrics.screenHeight, this, this);
+        pausedLayer = new MainMenuLayer(Metrics.screenWidth, Metrics.screenHeight, this, this);
         scene.addEventListener(pausedLayer);
         scene.addEventListener(gameOverLayer);
         scene.addEventListener(mainBtnLayer);
@@ -96,7 +84,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
             }
         };
 
-        gameController = new GameController(scene, width, height, gameOverListener, this);
+        gameController = new GameController(scene, Metrics.screenWidth, Metrics.screenHeight, gameOverListener, this);
         gameOverLayer.setGameController(gameController);
         Level level = new Level();
         level.number = 123;
@@ -107,6 +95,10 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
         defineMainButtons();
 
+
+        mainBtnLayer.moveReset();
+        pausedLayer.moveReset();
+        gameOverLayer.moveReset();
         scene.addLayer(mainBtnLayer);
         scene.addLayer(pausedLayer);
         scene.addLayer(gameOverLayer);
@@ -121,7 +113,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
     @Override
     public void onLoadResources() {
-        ResourceLoader.onLoadResources(this, getWidth());
+        ResourceLoader.onLoadResources(this, Metrics.screenWidth);
         blackout = new Shape(0,0, getWidth(), getHeight());
         blackout.setColor(0,0,0, 0.5f);
     }
@@ -153,7 +145,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     }
 
     public int getSquareButtonPosX(int n){
-        return width - (Metrics.squareButtonSize + Metrics.screenMargin) * n;
+        return Metrics.screenWidth - (Metrics.squareButtonSize + Metrics.screenMargin) * n;
     }
 
     private void showGameWonMenu(){

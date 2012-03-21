@@ -80,6 +80,8 @@ public class SnapperView {
         layer.add(eyes);
 
         setViewState();
+
+        addBang();
     }
 
     public void tap(){
@@ -88,13 +90,12 @@ public class SnapperView {
         state--;
         setViewState();
         if (state == 0)
-            addBang();
+            showBang();
     }
 
     private void addBang(){
         int sizeShift = Metrics.snapperSize / 2;
         blastSprite = new AnimatedSprite(Resources.bangTexture, x - sizeShift, y - sizeShift);
-        blastSprite.animate(BLAST_DELAY, 1, Resources.bangFrames);
         blastSprite.setEventListener(new AnimationEventListener() {
             @Override
             public void animationStarted(AnimatedSprite sprite) {
@@ -105,7 +106,13 @@ public class SnapperView {
                 controller.layer.remove(blastSprite);
             }
         });
+        blastSprite.hide();
         controller.layer.add(blastSprite);
+    }
+
+    private void showBang(){
+        blastSprite.show();
+        blastSprite.animate(BLAST_DELAY, 1, Resources.bangFrames);
     }
 
     private void setViewState(){

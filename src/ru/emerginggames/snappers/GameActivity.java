@@ -1,5 +1,6 @@
 package ru.emerginggames.snappers;
 
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -14,10 +15,7 @@ import ru.emerginggames.snappers.controller.GameController;
 import ru.emerginggames.snappers.controller.IGameOverListener;
 import ru.emerginggames.snappers.controller.IGameControlsListener;
 import ru.emerginggames.snappers.model.Level;
-import ru.emerginggames.snappers.view.ButtonView;
-import ru.emerginggames.snappers.view.GameOverLayer;
-import ru.emerginggames.snappers.view.HideableLayer;
-import ru.emerginggames.snappers.view.MainMenuLayer;
+import ru.emerginggames.snappers.view.*;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -43,8 +41,25 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     private GameOverLayer gameOverLayer;
     private MainMenuLayer pausedLayer;
 
-    private Shape blackout;
-    private Sprite dialogLong;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        IGameOverListener gameOverListener = new IGameOverListener() {
+            @Override
+            public void gameWon() {
+                showGameWonMenu();
+            }
+
+            @Override
+            public void gameLost() {
+                showGameLostMenu();
+            }
+        };
+
+        gameController = new GameController(gameOverListener, this);
+
+    }
 
     @Override
     public E3Engine onLoadEngine() {
@@ -56,7 +71,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
     @Override
     public E3Scene onLoadScene() {
-        E3Scene scene = new E3Scene();
+        MyScene scene = new MyScene();
         //scene.registerUpdateListener(10, this);
         lastTimeUpdate = SystemClock.uptimeMillis();
         scene.addFrameListener(this);
@@ -72,19 +87,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         scene.addEventListener(gameOverLayer);
         scene.addEventListener(mainBtnLayer);
 
-        IGameOverListener gameOverListener = new IGameOverListener() {
-            @Override
-            public void gameWon() {
-                showGameWonMenu();
-            }
-
-            @Override
-            public void gameLost() {
-                showGameLostMenu();
-            }
-        };
-
-        gameController = new GameController(scene, Metrics.screenWidth, Metrics.screenHeight, gameOverListener, this);
+        gameController.setScene(scene, Metrics.screenWidth, Metrics.screenHeight);
         gameOverLayer.setGameController(gameController);
         Level level = new Level();
         level.number = 123;
@@ -94,7 +97,6 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         level.zappers = "123412341234123412341234123412";
 
         defineMainButtons();
-
 
         mainBtnLayer.moveReset();
         pausedLayer.moveReset();
@@ -107,15 +109,29 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
         gameController.launchLevel(level);
 
+        scene.addTexture(Resources.eyesTexture);
+        scene.addTexture(Resources.eyeShadowTexture);
+        scene.addTexture(Resources.snapperTexture);
+        scene.addTexture(Resources.shadowSnapper);
+        scene.addTexture(Resources.bangTexture);
+        scene.addTexture(Resources.blastTexture);
+        scene.addTexture(Resources.squareButtons);
+        scene.addTexture(Resources.menuButtons);
+        scene.addTexture(Resources.dialog);
+        scene.addTexture(Resources.longDialog);
 
         return scene;
     }
 
     @Override
+    protected void resume() {
+        super.resume();
+
+    }
+
+    @Override
     public void onLoadResources() {
         ResourceLoader.onLoadResources(this, Metrics.screenWidth);
-        blackout = new Shape(0,0, getWidth(), getHeight());
-        blackout.setColor(0,0,0, 0.5f);
     }
     
     private void defineMainButtons(){

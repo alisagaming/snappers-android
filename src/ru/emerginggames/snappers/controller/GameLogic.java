@@ -19,7 +19,7 @@ public class GameLogic {
     private static final int MAX_GRAINS = 90;
     private static final float GRAIN_SPEED_MARGIN_PER_SECOND = 6;
     public final List<Blast> grainsToKill;
-    private final Pool<Blast> grainPool;
+    public final Pool<Blast> grainPool;
     public final List<Blast> activeBlasts;
     public final Snappers snappers;
     public int width;
@@ -33,10 +33,7 @@ public class GameLogic {
     private float grainSpeedX;
     private float grainSpeedY;
 
-    public GameLogic(int width, int height, Rect snappersRect, ILogicListener listener) {
-        this.snappersRect = snappersRect;
-        this.width = width;
-        this.height = height;
+    public GameLogic(ILogicListener listener) {
 
         PoolObjectFactory<Blast> grainFactory = new PoolObjectFactory<Blast>() {
             @Override
@@ -51,12 +48,18 @@ public class GameLogic {
         grainsToKill = new ArrayList<Blast>(MAX_GRAINS);
         snappers = new Snappers();
 
+        logicListener = listener;
+    }
+
+    public void setScreen(int width, int height, Rect snappersRect){
+        this.snappersRect = snappersRect;
+        this.width = width;
+        this.height = height;
 
         xSnapperMargin = snappersRect.width() / 2.0f / Snappers.WIDTH;
         ySnapperMargin = Math.abs(snappersRect.height() / 2.0f / Snappers.HEIGHT);
         grainSpeedX = xSnapperMargin * GRAIN_SPEED_MARGIN_PER_SECOND;
         grainSpeedY = ySnapperMargin * GRAIN_SPEED_MARGIN_PER_SECOND;
-        logicListener = listener;
     }
 
     public void startLevel(Level level) {

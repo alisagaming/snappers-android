@@ -21,7 +21,7 @@ public class ResourceLoader {
 
 
     public static void onLoadResources(Context context, int width) {
-        setScreenMode(width);
+        setScreenMode(Metrics.screenWidth);
         setMetrics();
         loadResources(context);
         setSnapperMult();

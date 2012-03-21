@@ -28,25 +28,29 @@ public class GameController implements ILogicListener{
     public E3Scene scene;
     public Layer layer;
     public GameLogic logic;
-    public final SnapperView[][] snapperViews;
-    private final List<SnapperView> snappersTouched;
+    public SnapperView[][] snapperViews;
+    private List<SnapperView> snappersTouched;
     private int width;
     private int height;
     private OutlinedTextSprite levelText;
     private OutlinedTextSprite tapsRemainingText;
     private IGameOverListener gameOverListener;
+    private Context context;
 
+    public GameController(IGameOverListener gameOverListener, Context context) {
+        this.gameOverListener = gameOverListener;
+        this.context = context;
+        logic = new GameLogic(this);
+    }
 
-    public GameController(E3Scene scene, int width, int height, IGameOverListener gameOverListener, Context context) {
+    public void setScene(E3Scene scene, int width, int height){
+        logic.setScreen(width, height, defineGameRect(width, height));
         this.scene = scene;
         this.width = width;
         this.height = height;
-        logic = new GameLogic(width, height, defineGameRect(width, height), this);
-        this.gameOverListener = gameOverListener;
 
         layer = new Layer();
         scene.addLayer(layer);
-
 
         snapperViews = new SnapperView[Snappers.WIDTH][Snappers.HEIGHT];
         for (int i=0;i<Snappers.WIDTH; i++)
@@ -129,8 +133,6 @@ public class GameController implements ILogicListener{
         }
     }
 
-
-
     @Override
     public void snapperTouched(int i, int j) {
         snapperViews[i][j].tap();
@@ -138,18 +140,21 @@ public class GameController implements ILogicListener{
 
     @Override
     public void blastCreated(Blast blast) {
-        blast.view = new BlastView(blast, this);
-        blast.view.addToLayer(layer);
+        //blast.view = new BlastView(blast, this);
+        //blast.view.addToLayer(layer);
     }
 
     @Override
     public void blastLaunched(Blast blast) {
+        blast.view = new BlastView(blast, this);
+        blast.view.addToLayer(layer);
         blast.view.show();
     }
 
     @Override
     public void blastRemoved(Blast blast) {
-        blast.view.hide();
+        //blast.view.hide();
+        blast.view.removeFromLayer(layer);
     }
 
 

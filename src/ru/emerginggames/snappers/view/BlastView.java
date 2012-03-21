@@ -14,7 +14,6 @@ import ru.emerginggames.snappers.model.Blast;
  */
 public class BlastView{
     private static final int BLAST_ANIMATION_DELAY = 50;
-    private static final int BLAST_CELL_FLIGHT_TIME = 300;
     private static int shift;
     public Blast blast;
     private AnimatedSprite sprite;
@@ -36,12 +35,16 @@ public class BlastView{
 
     public void hide(){
         sprite.hide();
-        //sprite.rotate(- getDirectionRotation());
+    }
+
+    public void removeFromLayer(Layer layer){
+        layer.remove(sprite);
     }
 
     public void show(){
         sprite.move(Math.round(blast.x - shift), Math.round(blast.y - shift));
         sprite.rotate(getDirectionRotation());
+        sprite.scale(1,1);
         sprite.show();
     }
 

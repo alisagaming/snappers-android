@@ -133,6 +133,14 @@ public class GameController implements ILogicListener{
         }
     }
 
+    public Level getLevel(){
+        return logic.level;
+    }
+    
+    public int getScore(){
+        return logic.level.complexity*100;
+    }
+
     @Override
     public void snapperTouched(int i, int j) {
         snapperViews[i][j].tap();

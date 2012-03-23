@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Time: 3:35
  */
 public class SnapperView {
-    private static final int EYE_ANIMATION_DELAY = 20;
+    private static final int EYE_ANIMATION_DELAY = 10;
     private static final int BLAST_DELAY = 60;
     private static final float SHADOW_MULT = 1.125f;
     private static final float SHADOW_OPACITY = 0.7f;

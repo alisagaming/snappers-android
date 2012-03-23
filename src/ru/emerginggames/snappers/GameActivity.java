@@ -196,7 +196,11 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
     @Override
     public void onNextBtn(){
-        //TODO: get next level
+        Level level = LevelTable.getNextLevel(this, gameController.getLevel());
+        if (level == null)
+            finish();
+
+        gameController.launchLevel(level);
         showBtnLayer(mainBtnLayer);
     }
 

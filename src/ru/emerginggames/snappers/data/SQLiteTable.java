@@ -83,6 +83,16 @@ public abstract class SQLiteTable<T> {
         update(object, id);
         return 0;
     }
+    
+    public int count(String where){
+        Cursor mCursor = db.query(true, getTableName(), new String[] { KEY_ID}, where, null, null, null, null, null);
+        if (mCursor == null)
+            return 0;
+        int result = mCursor.getCount();
+        mCursor.close();
+        return result;
+
+    }
 
     public boolean isExist(int id){
         Cursor mCursor = db.query(true, getTableName(), new String[] { KEY_ID}, KEY_ID + "=" + id, null, null, null, null, null);

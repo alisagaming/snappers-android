@@ -32,10 +32,24 @@ public class LevelTable  extends SQLiteTable<Level>{
         super(context, isWriteable);
     }
 
-    public static Level getLevel(Context context, int number, int levelPackNumber){
+    public static Level getNextLevel(Context context, Level level){
+        return getLevel(context, level.number+1, level.packNumber);
+    }
+
+    public static Level getLevel(Context context, int number, int levelPackId){
         LevelTable table = new LevelTable(context, false);
-        String where = String.format("%s = %d AND %s = %d", KEY_LEVEL_PACK_ID, levelPackNumber, KEY_NUMBER, number);
+        String where = String.format("%s = %d AND %s = %d", KEY_LEVEL_PACK_ID, levelPackId, KEY_NUMBER, number);
         return table.getByWhereStr(where);
+    }
+    
+    public static int countLevels(Context context, int levelPackId){
+        LevelTable table = new LevelTable(context, false);
+        return table.countLevels(levelPackId);
+
+    }
+    
+    public int countLevels(int packId){
+        return count(String.format("%s = %d", KEY_LEVEL_PACK_ID, packId));
     }
 
     @Override

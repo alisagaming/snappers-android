@@ -129,7 +129,7 @@ public class GameOverLayer extends HideableLayer{
     public void showGameWonMenu(){
         wonText.show();
         lostText.hide();
-        scoreText.setText(String.format("Score: %d", gameController.logic.level.complexity));
+        scoreText.setText(String.format("Score: %d", gameController.getScore()));
         scoreText.moveX((width - scoreText.getWidth()) / 2);
         shopButton.moveX(getSquareButtonPosX(1));
         nextButton.moveX(getSquareButtonPosX(2));

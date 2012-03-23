@@ -7,6 +7,7 @@ package ru.emerginggames.snappers.model;
  * Time: 20:06
  */
 public class Level {
+    public int id;
     public int number;
     public int complexity;
     public String zappers;

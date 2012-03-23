@@ -47,7 +47,11 @@ public abstract class SQLiteTable<T> {
     }
 
     public T load(int id){
-        Cursor mCursor = db.query(true, getTableName(), getColumnList(), KEY_ID + "=" + id, null, null, null, null, null);
+        return  getByWhereStr(KEY_ID + "=" + id);
+    }
+    
+    protected T getByWhereStr(String where){
+        Cursor mCursor = db.query(true, getTableName(), getColumnList(), where, null, null, null, null, null);
         if (mCursor == null)
             return null;
 

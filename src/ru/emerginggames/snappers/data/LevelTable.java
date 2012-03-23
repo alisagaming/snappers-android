@@ -25,17 +25,15 @@ public class LevelTable  extends SQLiteTable<Level>{
     protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_LEVEL_PACK_ID, KEY_NUMBER, KEY_COMPLEXITY, KEY_ZAPPERS, KEY_SOLUTIONS, KEY_TAPS_COUNT};
 
     public LevelTable(Context context) {
-        this.context = context;
-        open(false);
+        super(context);
     }
 
     public LevelTable(Context context, boolean isWriteable) {
-        this.context = context;
-        openForInsertion(isWriteable);
+        super(context, isWriteable);
     }
-    
+
     public static Level getLevel(Context context, int number, int levelPackNumber){
-        LevelTable table = new LevelTable(context);
+        LevelTable table = new LevelTable(context, false);
         String where = String.format("%s = %d AND %s = %d", KEY_LEVEL_PACK_ID, levelPackNumber, KEY_NUMBER, number);
         return table.getByWhereStr(where);
     }
@@ -53,26 +51,24 @@ public class LevelTable  extends SQLiteTable<Level>{
     @Override
     protected SQLiteStatement prepareInsertStatement(){
         String queryStr = "INSERT INTO " + TABLE_NAME + "(" +
-                KEY_ID + ", " +
                 KEY_LEVEL_PACK_ID + ", " +
                 KEY_NUMBER + ", " +
                 KEY_COMPLEXITY + ", " +
                 KEY_ZAPPERS + ", " +
                 KEY_SOLUTIONS + ", " +
-                KEY_TAPS_COUNT + ") values (?, ?, ?, ?, ?, ?, ?)";
+                KEY_TAPS_COUNT + ") values (?, ?, ?, ?, ?, ?)";
 
         return db.compileStatement(queryStr);
     }
 
     @Override
     protected SQLiteStatement bindToInsertStatement(Level level){
-        insertStmt.bindLong(1, level.id);
-        insertStmt.bindLong(2, level.packNumber);
-        insertStmt.bindLong(3, level.number);
-        insertStmt.bindLong(4, level.complexity);
-        bindNullable(insertStmt, 5, level.zappers);
-        bindNullable(insertStmt, 6, level.solutions);
-        insertStmt.bindLong(7, level.tapsCount);
+        insertStmt.bindLong(1, level.packNumber);
+        insertStmt.bindLong(2, level.number);
+        insertStmt.bindLong(3, level.complexity);
+        bindNullable(insertStmt, 4, level.zappers);
+        bindNullable(insertStmt, 5, level.solutions);
+        insertStmt.bindLong(6, level.tapsCount);
         return insertStmt;
     }
 

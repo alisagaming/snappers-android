@@ -12,8 +12,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Time: 1:00
  */
 public class DbOpenHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
-    private static final String DATABASE_NAME = "app_data";
+    public static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "snappers_data";
 
 
     public DbOpenHelper(Context context) {
@@ -28,12 +28,17 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("drop table " + LevelTable.TABLE_NAME);
+        db.execSQL("drop table " + LevelPackTable.TABLE_NAME);
 
+        createTableLevels(db);
+        createTableLevelPacks(db);
     }
 
     private void createTableLevels(SQLiteDatabase db){
         String TABLE_CREATE = "CREATE TABLE " + LevelTable.TABLE_NAME + " (" +
                 LevelTable.KEY_ID + " INTEGER PRIMARY KEY, " +
+                LevelTable.KEY_NUMBER + " INTEGER, " +
                 LevelTable.KEY_LEVEL_PACK_ID + " INTEGER, " +
                 LevelTable.KEY_COMPLEXITY + " INTEGER, " +
                 LevelTable.KEY_ZAPPERS + " TEXT, " +

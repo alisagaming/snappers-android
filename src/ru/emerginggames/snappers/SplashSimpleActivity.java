@@ -9,9 +9,11 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import ru.emerginggames.snappers.data.LevelDbLoader;
 
 public class SplashSimpleActivity extends Activity {
     private static final int SPLASH_TIME = 3000;
+    public static final String PREFERENCES = "preferences";
     private Thread splashTread;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public class SplashSimpleActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        LevelDbLoader.checkAndLoad(this, getSharedPreferences(PREFERENCES, MODE_PRIVATE));
 
         if (splashTread == null) {
             splashTread = new Thread() {

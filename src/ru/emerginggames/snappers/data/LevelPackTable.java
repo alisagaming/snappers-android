@@ -27,18 +27,15 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
 
     protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_BACKGROUND, KEY_SHADOWS, KEY_TITLE, KEY_IS_GOLD, KEY_IS_UNLOCKED, KEY_UNLOCKED_LEVELS};
 
-    private Context context;
-    private SQLiteDatabase db;
 
     public LevelPackTable(Context context) {
-        this.context = context;
+        super(context);
     }
 
     public LevelPackTable(Context context, boolean isWriteable) {
-        this.context = context;
+        super(context);
         open(isWriteable);
     }
-
 
     public LevelPack[] getAll(){
         return getAll(LevelPack.class);
@@ -53,6 +50,7 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     public boolean unlockLevelPack(int levelPackId){
         ContentValues values = new ContentValues();
         values.put(KEY_IS_UNLOCKED, 1);
+        values.put(KEY_UNLOCKED_LEVELS, 1);
         return db.update(TABLE_NAME, values, KEY_ID + "=" + levelPackId, null) > 0;
     }
 
@@ -66,13 +64,12 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     @Override
     protected SQLiteStatement prepareInsertStatement() {
         String queryStr = "INSERT INTO " + TABLE_NAME + "(" +
-                KEY_ID + ", " +
                 KEY_BACKGROUND + ", " +
                 KEY_SHADOWS + ", " +
                 KEY_TITLE + ", " +
                 KEY_IS_GOLD + ", " +
                 KEY_IS_UNLOCKED + ", " +
-                KEY_UNLOCKED_LEVELS + ") values (?, ?, ?, ?, ?, ?, ?)";
+                KEY_UNLOCKED_LEVELS + ") values (?, ?, ?, ?, ?, ?)";
 
         return db.compileStatement(queryStr);
     }
@@ -80,13 +77,12 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     @Override
     protected SQLiteStatement bindToInsertStatement(LevelPack pack) {
 
-        insertStmt.bindLong(1, pack.id);
-        bindNullable(insertStmt, 2, pack.background);
-        insertStmt.bindLong(3, pack.shadows? 1 : 0);
-        bindNullable(insertStmt, 4, pack.title);
-        insertStmt.bindLong(5, pack.isGold ? 1 : 0);
-        insertStmt.bindLong(6, pack.isUnlocked ? 1 : 0);
-        insertStmt.bindLong(7, pack.levelsUnlocked);
+        bindNullable(insertStmt, 1, pack.background);
+        insertStmt.bindLong(2, pack.shadows? 1 : 0);
+        bindNullable(insertStmt, 3, pack.title);
+        insertStmt.bindLong(4, pack.isGold ? 1 : 0);
+        insertStmt.bindLong(5, pack.isUnlocked ? 1 : 0);
+        insertStmt.bindLong(6, pack.levelsUnlocked);
         return insertStmt;
     }
 

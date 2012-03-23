@@ -14,6 +14,7 @@ import com.e3roid.event.SceneUpdateListener;
 import ru.emerginggames.snappers.controller.GameController;
 import ru.emerginggames.snappers.controller.IGameOverListener;
 import ru.emerginggames.snappers.controller.IGameControlsListener;
+import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.view.*;
 
@@ -107,6 +108,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         pausedLayer.hide();
         gameOverLayer.hide();
 
+        level = LevelTable.getLevel(this, 2, 2);
         gameController.launchLevel(level);
 
         scene.addTexture(Resources.eyesTexture);

@@ -25,8 +25,17 @@ public abstract class SQLiteTable<T> {
     protected SQLiteDatabase db;
     protected SQLiteStatement insertStmt;
 
+    protected SQLiteTable(Context context) {
+        this.context = context;
+    }
+
+    protected SQLiteTable(Context context, boolean isWriteable) {
+        this.context = context;
+        openForInsertion(isWriteable);
+    }
+
     public void open(boolean isWriteable){
-        DbOpenHelper openHelper = new DbOpenHelper(this.context);
+        DbOpenHelper openHelper = new DbOpenHelper(context);
 
         if (isWriteable)
         {
@@ -40,6 +49,12 @@ public abstract class SQLiteTable<T> {
         open(isWriteable);
         if (isWriteable)
             insertStmt = prepareInsertStatement();
+    }
+
+    public void close(){
+        if (db != null)
+            db.close();
+        db = null;
     }
 
     public long insert(T object){

@@ -2,13 +2,11 @@ package ru.emerginggames.snappers;
 
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.Display;
 import android.view.MotionEvent;
 import com.e3roid.E3Activity;
 import com.e3roid.E3Engine;
 import com.e3roid.E3Scene;
 import com.e3roid.drawable.Shape;
-import com.e3roid.drawable.Sprite;
 import com.e3roid.event.FrameListener;
 import com.e3roid.event.SceneUpdateListener;
 import ru.emerginggames.snappers.controller.GameController;
@@ -29,11 +27,6 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class GameActivity extends E3Activity implements SceneUpdateListener, FrameListener, IGameControlsListener {
     public static final String LEVEL_PARAM_TAG = "LEVEL";
-    
-    public static enum SizeMode {
-        modeS, modeM, modeL
-    }
-    public static SizeMode sizeMode;
 
     private long lastTimeUpdate;
     private GameController gameController;
@@ -84,7 +77,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
         scene.setBackgroundColor(0, 1f, 1f);
 
-        ResourceLoader.createFrames();
+        Resources.createFrames();
 
         mainBtnLayer = new HideableLayer(false);
         gameOverLayer = new GameOverLayer(Metrics.screenWidth, Metrics.screenHeight, this, this);
@@ -106,7 +99,6 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         scene.addLayer(gameOverLayer);
         pausedLayer.hide();
         gameOverLayer.hide();
-
 
         gameController.launchLevel(level);
 
@@ -132,7 +124,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
     @Override
     public void onLoadResources() {
-        ResourceLoader.onLoadResources(this, Metrics.screenWidth);
+        Resources.loadResources(this);
     }
     
     private void defineMainButtons(){
@@ -206,8 +198,8 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
     @Override
     public void onRestartBtn(){
-        gameController.restartLevel();
         showBtnLayer(mainBtnLayer);
+        gameController.restartLevel();
     }
 
     @Override

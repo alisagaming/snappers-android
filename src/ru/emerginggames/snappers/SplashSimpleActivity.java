@@ -47,6 +47,7 @@ public class SplashSimpleActivity extends Activity {
                     } catch (InterruptedException e) {
                     } finally {
                         setSize();
+                        Resources.createFrames();
                         finish();
                         startActivity(new Intent(SplashSimpleActivity.this, SelectLevelActivity.class));
                     }
@@ -58,12 +59,12 @@ public class SplashSimpleActivity extends Activity {
 
     private void setSize() {
         View d = getWindow().getDecorView();
-        Metrics.screenWidth = findViewById(R.id.mainCont).getWidth();
-        Metrics.screenHeight = findViewById(R.id.mainCont).getHeight();
+        int resultWidth = findViewById(R.id.mainCont).getWidth();
+        int resultHeight = findViewById(R.id.mainCont).getHeight();
 
 
 
-        if (Metrics.screenHeight < Metrics.screenWidth || Metrics.screenHeight ==0 || Metrics.screenWidth == 0) {
+        if (resultHeight < resultWidth || resultHeight ==0 || resultWidth == 0) {
             Rect rectangle = new Rect();
             getWindow().getDecorView().getWindowVisibleDisplayFrame(rectangle);
 
@@ -85,20 +86,19 @@ public class SplashSimpleActivity extends Activity {
             }
 
             if (viewHeight == 0 || viewWidth == 0){
-                Metrics.screenWidth = screenWidth;
-                Metrics.screenHeight = screenHeight;
+                Metrics.setSize(screenWidth, screenHeight);
                 return;
             }
 
             if (screenWidth == viewWidth){
-                Metrics.screenWidth = viewWidth;
-                Metrics.screenHeight = viewHeight;
+                Metrics.setSize(viewWidth, viewHeight);
                 return;
             }
 
             int widthDiff = screenWidth - viewWidth;
-            Metrics.screenHeight = screenHeight - widthDiff;
-            Metrics.screenWidth = screenWidth;
+            Metrics.setSize(screenWidth, screenHeight - widthDiff);
         }
+        else
+            Metrics.setSize(resultWidth, resultHeight);
     }
 }

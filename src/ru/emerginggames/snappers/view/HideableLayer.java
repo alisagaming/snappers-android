@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Time: 1:42
  */
 public class HideableLayer extends Layer{
-    private boolean visible = true;
+    protected boolean visible = true;
     protected boolean blockTouchEvents;
     protected ArrayList<SceneEventListener> eventListeners = new ArrayList<SceneEventListener>();
 

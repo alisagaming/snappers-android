@@ -114,13 +114,13 @@ public class GameController implements ILogicListener{
 
     public void update(long elapsedMsec){
         synchronized (this){
-            logic.advance(elapsedMsec/1000.0f);
+            logic.advance2(elapsedMsec/1000.0f);
             for (int i=0; i< logic.activeBlasts.size(); i++)
                 logic.activeBlasts.get(i).view.advance();
 
             for (int i=0; i<snappersTouched.size(); i++){
                 SnapperView snapperView = snappersTouched.get(i);
-                logic.touchSnapper(snapperView.i, snapperView.j);
+                logic.touchSnapper2(snapperView.i, snapperView.j);
             }
             snappersTouched.clear();
 

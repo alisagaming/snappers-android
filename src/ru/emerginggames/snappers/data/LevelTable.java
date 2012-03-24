@@ -39,17 +39,27 @@ public class LevelTable  extends SQLiteTable<Level>{
     public static Level getLevel(Context context, int number, int levelPackId){
         LevelTable table = new LevelTable(context, false);
         String where = String.format("%s = %d AND %s = %d", KEY_LEVEL_PACK_ID, levelPackId, KEY_NUMBER, number);
-        return table.getByWhereStr(where);
+        Level result = table.getByWhereStr(where);
+        table.close();
+        return result;
     }
     
     public static int countLevels(Context context, int levelPackId){
         LevelTable table = new LevelTable(context, false);
-        return table.countLevels(levelPackId);
-
+        int result =  table.countLevels(levelPackId);
+        table.close();
+        return result;
     }
     
     public int countLevels(int packId){
         return count(String.format("%s = %d", KEY_LEVEL_PACK_ID, packId));
+    }
+
+    public static Level[] getLevels(Context context, int packId){
+        LevelTable table = new LevelTable(context, false);
+        Level[] result =  table.getAll(Level.class, String.format("%s = %d", KEY_LEVEL_PACK_ID, packId));
+        table.close();
+        return result;
     }
 
     @Override

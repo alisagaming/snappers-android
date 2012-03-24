@@ -108,8 +108,8 @@ public abstract class SQLiteTable<T> {
         return db.update(getTableName(), values, KEY_ID + "=" + id, null) > 0;
     }
     
-    protected T[] getAll(Class<T> clazz){
-        Cursor mCursor = db.query(true, getTableName(), getColumnList(), null, null, null, null, KEY_ID + " asc" , null);
+    protected T[] getAll(Class<T> clazz, String where){
+        Cursor mCursor = db.query(true, getTableName(), getColumnList(), where, null, null, null, KEY_ID + " asc" , null);
         if (mCursor == null)
             return null;
 

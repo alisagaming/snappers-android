@@ -53,7 +53,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         try {
             return super.getReadableDatabase();
         } catch (SQLiteException e){
-            super.getWritableDatabase();
+            super.getWritableDatabase().close();
             return super.getReadableDatabase();
         }
     }

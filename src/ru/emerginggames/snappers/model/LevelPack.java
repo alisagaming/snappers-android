@@ -16,4 +16,5 @@ public class LevelPack implements Serializable{
     public boolean isGold;
     public boolean isUnlocked;
     public int levelsUnlocked;
+    public Level[] levels;
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ru.emerginggames.snappers.view.OutlinedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@drawable/level"
+              android:layout_margin="3px"
+              android:gravity="center"
+              android:text="123"
+/>

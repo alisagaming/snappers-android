@@ -30,21 +30,25 @@ public class SplashSimpleActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        LevelDbLoader.checkAndLoad(this, getSharedPreferences(PREFERENCES, MODE_PRIVATE));
-
         if (splashTread == null) {
             splashTread = new Thread() {
                 @Override
                 public void run() {
                     try {
+                        long time = System.currentTimeMillis();
+                        LevelDbLoader.checkAndLoad(SplashSimpleActivity.this, getSharedPreferences(PREFERENCES, MODE_PRIVATE));
+                        time = System.currentTimeMillis() - time - SPLASH_TIME;
+                        if (time < 1)
+                            time =1;
+
                         synchronized (this) {
-                            wait(SPLASH_TIME);
+                            wait(time);
                         }
                     } catch (InterruptedException e) {
                     } finally {
                         setSize();
                         finish();
-                        startActivity(new Intent(SplashSimpleActivity.this, GameActivity.class));
+                        startActivity(new Intent(SplashSimpleActivity.this, SelectLevelActivity.class));
                     }
                 }
             };

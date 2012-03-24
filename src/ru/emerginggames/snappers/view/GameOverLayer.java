@@ -121,7 +121,7 @@ public class GameOverLayer extends HideableLayer{
         nextButton.moveX(getSquareButtonPosX(0));
         restartButton.moveX(getSquareButtonPosX(1));
         menuButton.moveX(getSquareButtonPosX(2));
-        scoreText.setText(String.format("Possible in %d touches.", gameController.logic.level.tapsCount));
+        scoreText.setText(String.format("Possible in %d touches.", gameController.getLevel().tapsCount));
         scoreText.moveX((width - scoreText.getWidth())/2);
 
     }

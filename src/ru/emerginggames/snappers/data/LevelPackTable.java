@@ -29,7 +29,14 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
 
 
     public LevelPackTable(Context context) {
-        super(context);
+        super(context, false);
+    }
+    
+    public static LevelPack get(int num, Context context){
+        LevelPackTable table = new LevelPackTable(context, false);
+        LevelPack result = table.getByWhereStr(String.format("%s = %d", KEY_ID, num));
+        table.close();
+        return result;
     }
 
     public LevelPackTable(Context context, boolean isWriteable) {
@@ -38,13 +45,15 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     }
 
     public LevelPack[] getAll(){
-        return getAll(LevelPack.class);
+        return getAll(LevelPack.class, null);
     }
 
-    public boolean setLevelSolved(Level level){
+    public static void setLevelSolved(Level level, Context context){
+        LevelPackTable table = new LevelPackTable(context);
         ContentValues values = new ContentValues();
-        values.put(KEY_UNLOCKED_LEVELS, level.number);
-        return db.update(TABLE_NAME, values, KEY_ID + "=" + level.packNumber, null) > 0;
+        values.put(KEY_UNLOCKED_LEVELS, level.number + 1);
+        table.db.update(TABLE_NAME, values, KEY_ID + "=" + level.packNumber, null);
+        table.close();
     }
 
     public boolean unlockLevelPack(int levelPackId){

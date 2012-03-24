@@ -14,6 +14,7 @@ import com.e3roid.event.SceneUpdateListener;
 import ru.emerginggames.snappers.controller.GameController;
 import ru.emerginggames.snappers.controller.IGameOverListener;
 import ru.emerginggames.snappers.controller.IGameControlsListener;
+import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.view.*;
@@ -27,6 +28,8 @@ import javax.microedition.khronos.opengles.GL10;
  * Time: 3:07
  */
 public class GameActivity extends E3Activity implements SceneUpdateListener, FrameListener, IGameControlsListener {
+    public static final String LEVEL_PARAM_TAG = "LEVEL";
+    
     public static enum SizeMode {
         modeS, modeM, modeL
     }
@@ -72,6 +75,8 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
     @Override
     public E3Scene onLoadScene() {
+        Level level = (Level)getIntent().getSerializableExtra(LEVEL_PARAM_TAG);
+
         MyScene scene = new MyScene();
         //scene.registerUpdateListener(10, this);
         lastTimeUpdate = SystemClock.uptimeMillis();
@@ -90,12 +95,6 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
 
         gameController.setScene(scene, Metrics.screenWidth, Metrics.screenHeight);
         gameOverLayer.setGameController(gameController);
-        Level level = new Level();
-        level.number = 123;
-        level.complexity = 1;
-        level.tapsCount = 10;
-        level.packNumber = 12;
-        level.zappers = "123412341234123412341234123412";
 
         defineMainButtons();
 
@@ -108,7 +107,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
         pausedLayer.hide();
         gameOverLayer.hide();
 
-        level = LevelTable.getLevel(this, 2, 2);
+
         gameController.launchLevel(level);
 
         scene.addTexture(Resources.eyesTexture);
@@ -167,6 +166,7 @@ public class GameActivity extends E3Activity implements SceneUpdateListener, Fra
     }
 
     private void showGameWonMenu(){
+        LevelPackTable.setLevelSolved(gameController.getLevel(), this);
         showBtnLayer(gameOverLayer);
         gameOverLayer.showGameWonMenu();
     }

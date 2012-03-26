@@ -1,7 +1,5 @@
 package ru.emerginggames.snappers.model;
 
-import ru.emerginggames.snappers.view.BlastView;
-
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -16,7 +14,5 @@ public class Blast {
     public Direction direction;
     public int destI;
     public int destJ;
-    public int destX;
-    public int destY;
-    public BlastView view;
+    public float age;
 }

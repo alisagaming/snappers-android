@@ -1,5 +1,7 @@
 package ru.emerginggames.snappers.model;
 
+import ru.emerginggames.snappers.gdx.SnapperView;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -8,7 +10,4 @@ package ru.emerginggames.snappers.model;
  */
 public interface ILogicListener {
     public void snapperTouched(int i, int j);
-    public void blastCreated(Blast blast);
-    public void blastLaunched(Blast blast);
-    public void blastRemoved(Blast blast);
 }

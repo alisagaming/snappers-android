@@ -1,6 +1,7 @@
 package ru.emerginggames.snappers.view;
 
 import android.util.SparseArray;
+import com.e3roid.drawable.AnimatedSpriteCopyable;
 import com.e3roid.drawable.Sprite;
 import com.e3roid.drawable.sprite.AnimatedSprite;
 import com.e3roid.drawable.texture.Texture;
@@ -30,12 +31,14 @@ public class SpriteHolder extends HideableLayer{
         addAnimatedSprite(SNAPPER_EYES_SHADOW, Resources.eyeShadowTexture, -snapperSizeShift, -snapperSizeShift);
     }
 
-    public AnimatedSprite getAnimatedSprite(int id, int x, int y){
-        return null;
+    public AnimatedSpriteCopyable getAnimatedSprite(int id, int x, int y){
+        AnimatedSpriteCopyable copy = new AnimatedSpriteCopyable((AnimatedSpriteCopyable)sprites.get(id), x, y);
+        copy.setVisible(true);
+        return copy;
     }
 
     private void addAnimatedSprite(int id, TiledTexture texture, int x, int y){
-        Sprite sprite = new AnimatedSprite(texture, x, y);
+        Sprite sprite = new AnimatedSpriteCopyable(texture, x, y);
         sprite.hide();
         add(sprite);
         sprites.append(id, sprite);

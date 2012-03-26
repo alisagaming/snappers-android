@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.data.LevelTable;
-import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 
@@ -48,8 +47,8 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
 
     @Override
     public void onItemSelected(int number) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GameActivity.LEVEL_PARAM_TAG, pack.levels[number - 1]);
+        Intent intent = new Intent(this, GameActivityE3.class);
+        intent.putExtra(GameActivityE3.LEVEL_PARAM_TAG, pack.levels[number - 1]);
         startActivity(intent);
         //To change body of implemented methods use File | Settings | File Templates.
     }

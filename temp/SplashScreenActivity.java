@@ -3,11 +3,8 @@ package ru.emerginggames.snappers;
 import android.content.Intent;
 
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.view.Display;
-import android.view.View;
 import com.e3roid.E3Activity;
 import com.e3roid.E3Engine;
 import com.e3roid.E3Scene;
@@ -18,14 +15,11 @@ import com.e3roid.drawable.modifier.ProgressModifier;
 import com.e3roid.drawable.modifier.ScaleModifier;
 import com.e3roid.drawable.modifier.function.Linear;
 import com.e3roid.drawable.sprite.AnimatedSprite;
-import com.e3roid.drawable.sprite.TextSprite;
 import com.e3roid.drawable.texture.AssetTexture;
 import com.e3roid.drawable.texture.Texture;
 import com.e3roid.drawable.texture.TiledTexture;
 import com.e3roid.event.SceneUpdateListener;
 import ru.emerginggames.snappers.sprites.OutlinedTextSprite;
-
-import java.util.ArrayList;
 
 public class SplashScreenActivity extends E3Activity implements SceneUpdateListener {
 
@@ -91,7 +85,7 @@ public class SplashScreenActivity extends E3Activity implements SceneUpdateListe
 	@Override
 	public void onUpdateScene(E3Scene scene, long elapsedMsec) {
 		scene.unregisterUpdateListener(this);
-		startActivity(new Intent(this, GameActivity.class));
+		startActivity(new Intent(this, GameActivityE3.class));
 		finish();
 	}
 

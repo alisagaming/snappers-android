@@ -47,9 +47,9 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
 
     @Override
     public void onItemSelected(int number) {
-        Intent intent = new Intent(this, GameActivityE3.class);
+        /*Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GameActivityE3.LEVEL_PARAM_TAG, pack.levels[number - 1]);
-        startActivity(intent);
+        startActivity(intent);*/
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

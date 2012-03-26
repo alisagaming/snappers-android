@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.emerginggames.snappers.Metrics;
 
 import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
 /**
  * Created by IntelliJ IDEA.
@@ -65,16 +66,16 @@ public class Resources {
         eyesTexture = new Texture(Gdx.files.internal(dir + "eyes.png"), Pixmap.Format.RGBA4444, false);
         eyesTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         eyesTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-        eyesTexture.bind();
-        Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_REPLACE);
+        //eyesTexture.bind();
+        //Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL11.GL_COMBINE);
 
-        eyeFrames = makeAnimationFrames(eyesTexture, snapperSize, snapperSize, 1, true);
+        eyeFrames = makeAnimationFrames(eyesTexture, snapperSize, snapperSize, 0, true);
 
         eyeShadowTexture = new Texture(Gdx.files.internal(dir + "eyeShadow.png"));
         eyeShadowTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         eyeShadowTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-        eyeShadowTexture.bind();
-        Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_REPLACE);
+        //eyeShadowTexture.bind();
+        //Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_REPLACE);
 
 
         eyeShadowFrames = makeAnimationFrames(eyeShadowTexture, snapperSize, snapperSize, 0, true);

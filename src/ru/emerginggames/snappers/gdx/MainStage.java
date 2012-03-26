@@ -22,12 +22,11 @@ import javax.microedition.khronos.opengles.GL10;
  * Time: 2:18
  */
 public class MainStage extends Stage implements ILogicListener {
-    private static final float BLAST_ANIMATION_TIME = 0.3f;
+    private static final float BLAST_ANIMATION_TIME = 0.08f;
     private Animation blastAnimation;
     private final GameLogic logic;
 
     private Array<SnapperView> activeSnappers ;
-    private Array<SnapperView> snappersToRemove;
     private Pool<SnapperView> snapperViewPool;
 
     public MainStage(float width, float height) {
@@ -42,9 +41,6 @@ public class MainStage extends Stage implements ILogicListener {
         };
 
         activeSnappers = new Array<SnapperView>(false, 30);
-        snappersToRemove = new Array<SnapperView>(false, 10);
-
-
     }
     
     public void setLevel(Level level){
@@ -114,10 +110,10 @@ public class MainStage extends Stage implements ILogicListener {
             activeSnappers.get(i).shadow.draw(batch);
 
         for (int i=0; i< activeSnappers.size; i++)
-            activeSnappers.get(i).eyeShadow.draw(batch);
+            activeSnappers.get(i).snapper.draw(batch);
 
         for (int i=0; i< activeSnappers.size; i++)
-            activeSnappers.get(i).snapper.draw(batch);
+            activeSnappers.get(i).eyeShadow.draw(batch);
 
         for (int i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).eyes.draw(batch);
@@ -125,9 +121,24 @@ public class MainStage extends Stage implements ILogicListener {
 
     protected void drawBlasts(){
         Blast b;
+        int blSize = Metrics.blastSize;
+        int blShift = blSize/2;
         for (int i=0; i<logic.activeBlasts.size(); i++){
             b = logic.activeBlasts.get(i);
-            batch.draw(blastAnimation.getKeyFrame(b.age, false), b.x, b.y);
+            batch.draw(blastAnimation.getKeyFrame(b.age, false), b.x - blShift, b.y - blShift, blShift, blShift, blSize, blSize, 1, 1, getBlastRotation(b));
+        }
+    }
+    
+    protected int getBlastRotation(Blast blast){
+        switch (blast.direction){
+            case Down:
+                return 180;
+            case Left:
+                return 90;
+            case Right:
+                return -90;
+            default:
+                return 0;
         }
     }
     

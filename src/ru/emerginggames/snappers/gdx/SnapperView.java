@@ -14,7 +14,7 @@ import ru.emerginggames.snappers.controller.GameLogic;
  */
 public class SnapperView extends Actor {
     private static final float SHADOW_MULT = 1.125f;
-    private static final float SHADOW_OPACITY = 0.7f;
+    private static final float SHADOW_OPACITY = 0.6f;
     private static final float EYE_FRAME_TIME = 0.05f;
     public int state;
     public int i;

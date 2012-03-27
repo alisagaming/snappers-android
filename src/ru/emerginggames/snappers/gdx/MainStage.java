@@ -1,5 +1,7 @@
 package ru.emerginggames.snappers.gdx;
 
+import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Rect;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -8,6 +10,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.GameLogic;
+import ru.emerginggames.snappers.controller.IGameEventListener;
+import ru.emerginggames.snappers.data.LevelTable;
+import ru.emerginggames.snappers.gdx.Elements.IPositionable;
+import ru.emerginggames.snappers.gdx.Elements.SnapperView;
+import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
 import ru.emerginggames.snappers.model.Level;
@@ -28,10 +35,15 @@ public class MainStage extends Stage implements ILogicListener {
 
     private Array<SnapperView> activeSnappers ;
     private Pool<SnapperView> snapperViewPool;
+    OutlinedTextSprite levelText;
+    OutlinedTextSprite tapLeftText;
+    IGameEventListener listener;
+    protected MainButtons buttons;
 
-    public MainStage(float width, float height) {
+    public MainStage(float width, float height, IGameEventListener listener) {
         super(width, height, true);
         logic = new GameLogic(this);
+        this.listener = listener;
 
         snapperViewPool = new Pool<SnapperView>(30, 40) {
             @Override
@@ -41,6 +53,11 @@ public class MainStage extends Stage implements ILogicListener {
         };
 
         activeSnappers = new Array<SnapperView>(false, 30);
+        levelText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        tapLeftText = new OutlinedTextSprite("123", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+
+        buttons = new MainButtons(listener);
+        addActor(buttons);
     }
     
     public void setLevel(Level level){
@@ -48,14 +65,26 @@ public class MainStage extends Stage implements ILogicListener {
 
         if (width != 0)
             defineSnapperViews();
-
+        levelText.setText(String.format("Level: %d-%d", level.packNumber, level.number));
+        tap();
     }
 
     public void setViewport(int width, int height) {
         super.setViewport(width, height, true);
+        Resources.loadSnapperTextures(false);
         logic.setScreen(width, height, defineGameRect(width, height) );
         defineSnapperViews();
         blastAnimation = new Animation(BLAST_ANIMATION_TIME, Resources.blastFrames);
+
+        levelText.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
+        tapLeftText.positionRelative(levelText, IPositionable.Dir.DOWN, 0);
+        buttons.setViewport(width, height);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        Resources.disposeSnapperTextures();
     }
 
     protected Rect defineGameRect(int width, int height){
@@ -71,7 +100,7 @@ public class MainStage extends Stage implements ILogicListener {
             }
         }
 
-        return new Rect(0, height - marginBottom, width, marginTop);
+        return new Rect(0, height - marginTop, width, marginBottom);
     }
 
     protected void defineSnapperViews(){
@@ -92,14 +121,34 @@ public class MainStage extends Stage implements ILogicListener {
                 }
     }
 
+    protected void update(){
+
+
+    }
+
+    @Override
+    public void act(float delta) {
+        logic.advance2(delta);
+        super.act(delta);
+
+        if (logic.isGameOver())
+            if (logic.isGameLost())
+                listener.gameLost();
+            else
+                listener.gameWon();
+    }
+
     @Override
     public void draw() {
-        logic.advance2(Gdx.graphics.getDeltaTime());
+        super.draw();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         drawSnappers();
         drawBlasts();
+        levelText.draw(batch);
+        tapLeftText.draw(batch);
+        buttons.draw(batch, 1);
         batch.end();
     }
 
@@ -153,12 +202,33 @@ public class MainStage extends Stage implements ILogicListener {
     }
 
     @Override
-    public void snapperTouched(int i, int j) {
+    public void snapperHit(int i, int j) {
         SnapperView view = findView(i, j);
         view.touch();
         if (view.state <1){
             activeSnappers.removeValue(view, true);
             snapperViewPool.free(view);
         }
+    }
+
+    @Override
+    public void tap() {
+        tapLeftText.setText(String.format("Taps left: %d", logic.tapRemains));
+    }
+
+    public void restartLevel(){
+        setLevel(logic.level);
+    }
+
+    public void nextLevel(){
+        Level next = LevelTable.getNextLevel((Activity)Gdx.app, logic.level);
+        if (next == null)
+            listener.levelPackWon();
+        else
+            setLevel(next);
+    }
+
+    public GameLogic getLogic(){
+        return logic;
     }
 }

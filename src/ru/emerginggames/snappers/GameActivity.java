@@ -1,10 +1,12 @@
 package ru.emerginggames.snappers;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Game;
+import ru.emerginggames.snappers.gdx.Resources;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,6 +18,8 @@ public class GameActivity extends AndroidApplication {
     Game game;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Resources.context = this;
+        Resources.font = Typeface.createFromAsset(getAssets(), "shag_lounge.otf");
         game = new Game();
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.r = config.g = config.b = 8;
@@ -24,7 +28,6 @@ public class GameActivity extends AndroidApplication {
         config.useCompass = false;
         config.numSamples = 2;
         initialize(game, config);
-        game.setStartLevel(LevelTable.getLevel(this, 11, 1));
-        
+        game.setStartLevel(LevelTable.getLevel(this, 20, 1));
     }
 }

@@ -8,7 +8,7 @@ import com.e3roid.drawable.Shape;
 import com.e3roid.drawable.Sprite;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.Resources;
-import ru.emerginggames.snappers.controller.IGameControlsListener;
+import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.sprites.OutlinedTextSprite;
 
 /**
@@ -21,7 +21,7 @@ public class MainMenuLayer extends HideableLayer{
     private int width;
     private int height;
 
-    private final IGameControlsListener listener;
+    private final IGameEventListener listener;
     private Context context;
 
     private ButtonView menuResumeButton;
@@ -34,7 +34,7 @@ public class MainMenuLayer extends HideableLayer{
 
     private OutlinedTextSprite title;
 
-    public MainMenuLayer(int width, int height, IGameControlsListener listener, Context context) {
+    public MainMenuLayer(int width, int height, IGameEventListener listener, Context context) {
         super(true);
         this.width = width;
         this.height = height;

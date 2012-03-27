@@ -1,13 +1,22 @@
 package ru.emerginggames.snappers.gdx;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.emerginggames.snappers.Metrics;
+import ru.emerginggames.snappers.gdx.android.BitmapPixmap;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
+import java.io.InputStream;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,6 +25,10 @@ import javax.microedition.khronos.opengles.GL11;
  * Time: 19:08
  */
 public class Resources {
+    protected static String dir;
+    
+    public static Context context;
+    
     public static Texture eyesTexture;
     public static Texture eyeShadowTexture;
     public static Texture snapperTexture;
@@ -33,9 +46,13 @@ public class Resources {
     public static TextureRegion[] eyeFrames;
     public static TextureRegion[] eyeShadowFrames;
     public static TextureRegion[] blastFrames;
+    public static TextureRegion[] bangFrames;
+    public static TextureRegion[] squareButtonFrames;
+    public static TextureRegion[] menuButtonFrames;
 
-    public static void loadTextures(boolean isGold){
-        String dir = "";
+    public static Typeface font;
+
+    public static void init(){
         switch (Metrics.sizeMode){
             case modeS:
                 dir = "lo/";
@@ -47,7 +64,23 @@ public class Resources {
                 dir = "hi/";
                 break;
         }
+    }
 
+    public static void loadSquareButtonTextures(){
+        squareButtons = new Texture(Gdx.files.internal(dir + "btn-sq.png"));
+        squareButtonFrames = makeAnimationFrames(squareButtons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 7);
+
+    }
+
+    public static void loadPausedMenuTextures(){
+        longDialog = new Texture(Gdx.files.internal(dir + "dialoglong.png"), Pixmap.Format.RGBA8888, false);
+        
+        menuButtons= new Texture(Gdx.files.internal(dir + "btn-long.png"));
+        menuButtonFrames = makeAnimationFrames(menuButtons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 5);
+
+    }
+
+    public static void loadSnapperTextures(boolean isGold){
         int snapperSize = Metrics.snapperSize;
 
         snapperTexture = new Texture(Gdx.files.internal(dir + "back.png"), Pixmap.Format.RGBA8888, false);
@@ -60,28 +93,31 @@ public class Resources {
         snapperBack[2] = getTextureRegion(snapperTexture, snapperSize, snapperSize, isGoldN, 1);
         snapperBack[3] = getTextureRegion(snapperTexture, snapperSize, snapperSize, isGoldN, 2);
         snapperBack[4] = getTextureRegion(snapperTexture, snapperSize, snapperSize, isGoldN, 0);
-
         shadowSnapper = getTextureRegion(snapperTexture, snapperSize, snapperSize, 0, 4);
 
         eyesTexture = new Texture(Gdx.files.internal(dir + "eyes.png"), Pixmap.Format.RGBA4444, false);
         eyesTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         eyesTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-        //eyesTexture.bind();
-        //Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL11.GL_COMBINE);
-
-        eyeFrames = makeAnimationFrames(eyesTexture, snapperSize, snapperSize, 0, true);
+        eyeFrames = makeAnimationFrames(eyesTexture, snapperSize, snapperSize, true);
 
         eyeShadowTexture = new Texture(Gdx.files.internal(dir + "eyeShadow.png"));
         eyeShadowTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         eyeShadowTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-        //eyeShadowTexture.bind();
-        //Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_REPLACE);
-
-
-        eyeShadowFrames = makeAnimationFrames(eyeShadowTexture, snapperSize, snapperSize, 0, true);
+        eyeShadowFrames = makeAnimationFrames(eyeShadowTexture, snapperSize, snapperSize, true);
 
         blastTexture = new Texture(Gdx.files.internal(dir + "blast.png"));
-        blastFrames = makeAnimationFrames(blastTexture, Metrics.blastSize, Metrics.blastSize, 0, false);
+        blastFrames = makeAnimationFrames(blastTexture, Metrics.blastSize, Metrics.blastSize, false);
+
+        bangTexture = new Texture(Gdx.files.internal(dir + "bang.png"));
+        bangFrames = makeAnimationFrames(bangTexture, snapperSize, snapperSize, false);
+    }
+
+    public static void disposeSnapperTextures(){
+        eyesTexture.dispose();
+        eyeShadowTexture.dispose();
+        snapperTexture.dispose();
+        bangTexture.dispose();
+        blastTexture.dispose();
     }
 
 
@@ -112,16 +148,21 @@ public class Resources {
         return frames;
     }
 
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, int border, boolean goBack){
-        int cols = texture.getWidth() / (tileWidth + border);
-        int rows = texture.getHeight() / (tileHeight + border);
+    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int max){
+        int cols = texture.getWidth() / tileWidth;
+        int rows = texture.getHeight() / tileHeight;
 
         int size = cols * rows;
+        if (max != 0 && size > max)
+            size = max;
         TextureRegion[] frames = new TextureRegion[goBack? size * 2 - 2 : size];
 
-        for (int row = 0, y=0; row < rows; row++, y += (tileHeight + border))
-            for (int col = 0, x=0; col < cols; col++, x += (tileWidth + border))
-                frames[row * cols + col] = new TextureRegion(texture, x, y, tileWidth, tileHeight);
+        for (int row = 0, y=0, pos=0; row < rows & pos <size; row++, y += tileHeight)
+            for (int col = 0, x=0; col < cols & pos < size; col++, x += tileWidth, pos++)
+                if (max == 0 || pos < max)
+                    frames[pos] = new TextureRegion(texture, x, y, tileWidth, tileHeight);
+                else
+                    break;
 
         if (goBack)
             for (int i = 0; i< size-2; i++)

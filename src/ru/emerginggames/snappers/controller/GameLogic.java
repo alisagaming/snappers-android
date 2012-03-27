@@ -1,8 +1,6 @@
 package ru.emerginggames.snappers.controller;
 
 import android.graphics.Rect;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
 import ru.emerginggames.snappers.model.Level;
@@ -19,7 +17,7 @@ import java.util.List;
  */
 public class GameLogic {
     private static final int MAX_BLASTS = 90;
-    private static final float GRAIN_SPEED_MARGIN_PER_SECOND = 6;
+    private static final float GRAIN_SPEED_MARGIN_PER_SECOND = 5;
     public final List<Blast> blastsToKill;
     public final Pool<Blast> blastPool;
     public final List<Blast> activeBlasts;
@@ -37,14 +35,16 @@ public class GameLogic {
     private float grainSpeedY;
 
     private float timeToSyncCheck;
+    private float syncTime;
+    int snapperTouchedI = -1;
+    int snapperTouchedJ = -1;
 
     public GameLogic(ILogicListener listener) {
 
         PoolObjectFactory<Blast> grainFactory = new PoolObjectFactory<Blast>() {
             @Override
             public Blast createObject() {
-                Blast blast = new Blast();
-                return blast;
+                return new Blast();
             }
         };
         blastPool = new Pool<Blast>(grainFactory, MAX_BLASTS);
@@ -54,6 +54,7 @@ public class GameLogic {
         snappers = new Snappers();
 
         snapperListener = listener;
+        syncTime = 2/GRAIN_SPEED_MARGIN_PER_SECOND;
     }
 
     public void setScreen(int width, int height, Rect snappersRect){
@@ -65,8 +66,6 @@ public class GameLogic {
         ySnapperMargin = Math.abs(snappersRect.height() / 2.0f / Snappers.HEIGHT);
         grainSpeedX = xSnapperMargin * GRAIN_SPEED_MARGIN_PER_SECOND;
         grainSpeedY = ySnapperMargin * GRAIN_SPEED_MARGIN_PER_SECOND;
-
-
     }
 
     public void startLevel(Level level) {
@@ -79,11 +78,20 @@ public class GameLogic {
         timeToSyncCheck = 0;
     }
 
-    public boolean touchSnapper2(int i, int j) {//return true if consumed touch
+    public void tapSnapper(int i, int j){
+        if (snapperTouchedI>=0 || tapRemains<1)
+            return;
+        tapRemains--;
+        snapperListener.tap();
+        snapperTouchedI = i;
+        snapperTouchedJ = j;
+    }
+
+    public boolean hitSnapper(int i, int j) {//return true if consumed touch
         int touchResult = snappers.touchSnapper(i, j);
         if (touchResult <0)
             return false;
-        snapperListener.snapperTouched(i, j);
+        snapperListener.snapperHit(i, j);
         if (touchResult == 0) {
             int xPos = getSnapperXPosision(i);
             int yPos = getSnapperYPosision(j);
@@ -114,6 +122,9 @@ public class GameLogic {
         setNextBlastDestination(blast);
         newBlasts.add(blast);
         blast.age = 0;
+        if (blast.direction == Blast.Direction.Up || blast.direction ==Blast.Direction.Down)
+            blast.source = y;
+        else blast.source = x;
         return blast;
     }
 
@@ -122,18 +133,22 @@ public class GameLogic {
         switch (blast.direction) {
             case Up:
                 pos = ++blast.destJ;
+                blast.source = blast.y;
                 blast.dest = pos >= Snappers.HEIGHT ? height : getSnapperYPosision(pos);
                 break;
             case Right:
                 pos = ++blast.destI;
+                blast.source = blast.x;
                 blast.dest = pos >= Snappers.WIDTH ? width : getSnapperXPosision(pos);
                 break;
             case Down:
+                blast.source = blast.y;
                 pos = --blast.destJ;
                 blast.dest = pos < 0 ? 0 : getSnapperYPosision(pos);
                 break;
             case Left:
                 pos = --blast.destI;
+                blast.source = blast.x;
                 blast.dest = pos < 0 ? 0 : getSnapperXPosision(pos);
                 break;
         }
@@ -141,14 +156,14 @@ public class GameLogic {
 
 
     private int syncCollideSnappers(){
-        blastsToKill.clear();
-        newBlasts.clear();
+        //blastsToKill.clear();
+        //newBlasts.clear();
         Blast blast;
         int blasts;
         for (int i=0; i<activeBlasts.size(); i++){
             blast = activeBlasts.get(i);
             if (Snappers.isValidSnapper(blast.destI, blast.destJ))
-                if (touchSnapper2(blast.destI, blast.destJ))
+                if (hitSnapper(blast.destI, blast.destJ))
                     blastsToKill.add(blast);
                 else
                     setNextBlastDestination(blast);
@@ -162,7 +177,7 @@ public class GameLogic {
     }
     
     public int advance2(float deltaTime){
-        int i, size;
+        int i, size, res=0;
         Blast blast;
 
         for (i = 0, size = activeBlasts.size(); i < size; i++) {
@@ -173,16 +188,21 @@ public class GameLogic {
 
         killBlasts();
 
-        startNewBlasts();
+        if (snapperTouchedI >=0) {
+            hitSnapper(snapperTouchedI, snapperTouchedJ);
+            snapperTouchedI = snapperTouchedJ = -1;
+        }
 
         timeToSyncCheck -= deltaTime;
 
         if (timeToSyncCheck < 0){
-            timeToSyncCheck = 2/GRAIN_SPEED_MARGIN_PER_SECOND;
-            return syncCollideSnappers();
+            timeToSyncCheck = syncTime;
+            res = syncCollideSnappers();
         }
 
-        return 0;
+        startNewBlasts();
+
+        return res;
     }
 
     public void startNewBlasts(){
@@ -231,6 +251,10 @@ public class GameLogic {
 
     public boolean isGameLost(){
         return snappers.snappersCount>0;
+    }
+
+    public int getScore(){
+        return level.complexity*100;
     }
 
 }

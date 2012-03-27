@@ -1,10 +1,11 @@
-package ru.emerginggames.snappers.gdx;
+package ru.emerginggames.snappers.gdx.Elements;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.GameLogic;
+import ru.emerginggames.snappers.gdx.Resources;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,8 +45,8 @@ public class SnapperView extends Actor {
     public void set(int i, int j, int state){
         this.i = i;
         this.j = j;
-        setPosition();
         setState(state);
+        setPosition();
     }
 
     public void setPosition(){
@@ -104,7 +105,7 @@ public class SnapperView extends Actor {
 
     @Override
     public void touchUp(float x, float y, int pointer) {
-        logic.touchSnapper2(i,j);
+        logic.tapSnapper(i, j);
     }
 
     @Override

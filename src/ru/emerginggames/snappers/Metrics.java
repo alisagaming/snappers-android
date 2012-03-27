@@ -1,5 +1,7 @@
 package ru.emerginggames.snappers;
 
+import ru.emerginggames.snappers.gdx.Resources;
+
 public class Metrics {
     static void setSnapperMult(){
         switch (sizeMode){
@@ -51,6 +53,7 @@ public class Metrics {
         setScreenMode(screenWidth);
         setMetrics();
         setSnapperMult();
+        Resources.init();
     }
 
     static void setScreenMode(int width){

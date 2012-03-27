@@ -19,7 +19,7 @@ import ru.emerginggames.snappers.model.Level;
  * Date: 14.03.12
  * Time: 23:04
  */
-public class GameController implements ILogicListener {
+public class GameController /*implements ILogicListener */{
 //    public E3Scene scene;
 //    public Layer layer;
     public GameLogic logic;
@@ -35,7 +35,7 @@ public class GameController implements ILogicListener {
     public GameController(IGameOverListener gameOverListener, Context context) {
         this.gameOverListener = gameOverListener;
         this.context = context;
-        logic = new GameLogic(this);
+        //logic = new GameLogic(this);
     }
 
     public void setScene(/*E3Scene scene,*/ int width, int height){
@@ -115,7 +115,7 @@ public class GameController implements ILogicListener {
 
             /*for (int i=0; i<snappersTouched.size(); i++){
                 SnapperView snapperView = snappersTouched.get(i);
-                logic.touchSnapper2(snapperView.i, snapperView.j);
+                logic.hitSnapper(snapperView.i, snapperView.j);
             }
             snappersTouched.clear();*/
             logic.startNewBlasts();
@@ -137,10 +137,10 @@ public class GameController implements ILogicListener {
         return logic.level.complexity*100;
     }
 
-    @Override
-    public void snapperTouched(int i, int j) {
+   /* @Override
+    public void snapperHit(int i, int j) {
 //        snapperViews[i][j].tap();
-    }
+    }*/
 
 
 

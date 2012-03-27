@@ -8,7 +8,7 @@ import com.e3roid.drawable.Shape;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.Resources;
 import ru.emerginggames.snappers.controller.GameController;
-import ru.emerginggames.snappers.controller.IGameControlsListener;
+import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.sprites.OutlinedTextSprite;
 
 /**
@@ -28,7 +28,7 @@ public class GameOverLayer extends HideableLayer{
     private OutlinedTextSprite lostText;
     private OutlinedTextSprite scoreText;
 
-    private final IGameControlsListener listener;
+    private final IGameEventListener listener;
     private GameController gameController;
     private Context context;
     
@@ -37,7 +37,7 @@ public class GameOverLayer extends HideableLayer{
 
     private Shape blackout;
 
-    public GameOverLayer(int width, int height, IGameControlsListener listener, Context context) {
+    public GameOverLayer(int width, int height, IGameEventListener listener, Context context) {
         super(true);
         this.width = width;
         this.height = height;

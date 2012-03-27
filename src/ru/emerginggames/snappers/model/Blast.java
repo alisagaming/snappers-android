@@ -14,5 +14,6 @@ public class Blast {
     public Direction direction;
     public int destI;
     public int destJ;
+    public float source;
     public float age;
 }

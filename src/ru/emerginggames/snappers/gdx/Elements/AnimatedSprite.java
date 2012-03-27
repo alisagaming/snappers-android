@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.gdx;
+package ru.emerginggames.snappers.gdx.Elements;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;

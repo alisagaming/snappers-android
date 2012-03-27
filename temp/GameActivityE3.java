@@ -11,7 +11,7 @@ import com.e3roid.event.FrameListener;
 import com.e3roid.event.SceneUpdateListener;
 import ru.emerginggames.snappers.controller.GameController;
 import ru.emerginggames.snappers.controller.IGameOverListener;
-import ru.emerginggames.snappers.controller.IGameControlsListener;
+import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.model.Level;
@@ -25,7 +25,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Date: 14.03.12
  * Time: 3:07
  */
-public class GameActivityE3 extends E3Activity implements SceneUpdateListener, FrameListener, IGameControlsListener {
+public class GameActivityE3 extends E3Activity implements SceneUpdateListener, FrameListener, IGameEventListener {
     public static final String LEVEL_PARAM_TAG = "LEVEL";
 
     private long lastTimeUpdate;

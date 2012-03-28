@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -39,6 +40,7 @@ public class Resources {
     public static Texture menuButtons;
     public static Texture dialog;
     public static Texture longDialog;
+    public static Texture bg;
 
 
     public static TextureRegion[] snapperBack;
@@ -49,6 +51,11 @@ public class Resources {
     public static TextureRegion[] bangFrames;
     public static TextureRegion[] squareButtonFrames;
     public static TextureRegion[] menuButtonFrames;
+
+    public static Sound[] popSounds;
+    public static Sound  winSound;
+    public static Sound  buttonSound;
+
 
     public static Typeface font;
 
@@ -130,6 +137,8 @@ public class Resources {
             longDialog.dispose();
         if (menuButtons != null)
             menuButtons.dispose();
+        if (bg!=null)
+            bg.dispose();
     }
 
 
@@ -181,6 +190,28 @@ public class Resources {
                 frames[size + i] = frames[size - i - 2];
 
         return frames;
+
+    }
+    
+    public static boolean loadBg(String name){
+        try{
+            bg = new Texture(Gdx.files.internal(dir + name));
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    public static void loadSounds(){
+        popSounds = new Sound[5];
+        popSounds[0] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop1.mp3"));
+        popSounds[1] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop2.mp3"));
+        popSounds[2] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop3.mp3"));
+        popSounds[3] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop4.mp3"));
+        popSounds[4] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop5.mp3"));
+        //popSounds[5] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop6.mp3"));
+        winSound = Gdx.audio.newSound(Gdx.files.internal("sounds/win1.mp3"));
+        buttonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button2g.mp3"));
 
     }
 }

@@ -21,6 +21,7 @@ import java.security.PublicKey;
  */
 public class GameOverStage extends Stage{
     public static final float FADEIN_TIME = 0.4f;
+    protected static final String[] winMessages = {"Completed!", "Good job!", "Bravo!", "Cheers!", "Huzzah!", "Yippee!", "Hooray!"};
     protected GameLogic logic;
     protected boolean isWon = false;
     protected SimpleButton nextButton;
@@ -39,28 +40,28 @@ public class GameOverStage extends Stage{
         super(width, height, true);
         this.logic = logic;
 
-        nextButton = new SimpleButton(Resources.squareButtonFrames[3], Resources.squareButtonFrames[0], new IOnEventListener() {
+        nextButton = new SimpleButton(Resources.squareButtonFrames[3], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onNextBtn();
             }
         });
 
-        restartButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[0], new IOnEventListener() {
+        restartButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onRestartBtn();
             }
         });
 
-        shopButton = new SimpleButton(Resources.squareButtonFrames[5], Resources.squareButtonFrames[0], new IOnEventListener() {
+        shopButton = new SimpleButton(Resources.squareButtonFrames[5], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onShopBtn();
             }
         });
 
-        menuButton = new SimpleButton(Resources.squareButtonFrames[6], Resources.squareButtonFrames[0], new IOnEventListener() {
+        menuButton = new SimpleButton(Resources.squareButtonFrames[6], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onMenuBtn();
@@ -71,7 +72,7 @@ public class GameOverStage extends Stage{
         addActor(shopButton);
         addActor(menuButton);
 
-        wonText = new OutlinedTextSprite("Huzzah!", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        wonText = new OutlinedTextSprite("", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         lostText = new OutlinedTextSprite("Level failed", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         scoreText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
 
@@ -97,6 +98,8 @@ public class GameOverStage extends Stage{
         if (isWon){
             restartButton.positionRelative(nextButton, IPositionable.Dir.LEFT, Metrics.screenMargin);
             scoreText.setText(String.format("Score: %d", logic.getScore()));
+            wonText.setText(winMessages[(int)(Math.random()*winMessages.length)]);
+            wonText.setPosition((width - wonText.getWidth())/2, wonText.getY());
         }
         else{
             restartButton.positionRelative(width, height, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);

@@ -1,5 +1,6 @@
 package ru.emerginggames.snappers.gdx.Elements;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,13 +19,15 @@ public class SimpleButton extends Actor implements IPositionable {
     protected Sprite button;
     protected Sprite buttonDown;
     protected boolean isDown;
+    protected Sound sound;
 
-    public SimpleButton(TextureRegion normal, TextureRegion down, IOnEventListener listener){
+    public SimpleButton(TextureRegion normal, TextureRegion down, Sound sound, IOnEventListener listener){
         button = new Sprite(normal);
         buttonDown = new Sprite(down);
         width = button.getWidth();
         height = button.getHeight();
         this.listener = listener;
+        this.sound = sound;
     }
 
     @Override
@@ -43,6 +46,8 @@ public class SimpleButton extends Actor implements IPositionable {
     @Override
     public void touchUp(float x, float y, int pointer) {
         isDown = false;
+        if (sound != null)
+            sound.play();
         listener.onEvent();
     }
 

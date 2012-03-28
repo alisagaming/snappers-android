@@ -3,6 +3,7 @@ package ru.emerginggames.snappers.gdx;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.util.Log;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,6 +31,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class MainStage extends Stage implements ILogicListener {
     private static final float BLAST_ANIMATION_TIME = 0.08f;
+    protected static final float POP_SOUND_DISTANCE = 0.08f;
     private Animation blastAnimation;
     private final GameLogic logic;
 
@@ -40,6 +42,8 @@ public class MainStage extends Stage implements ILogicListener {
     IGameEventListener listener;
     protected MainButtons buttons;
     protected boolean gameOverFired;
+    protected float sincePopped;
+    protected int toPop;
 
     public MainStage(float width, float height, IGameEventListener listener) {
         super(width, height, true);
@@ -135,6 +139,8 @@ public class MainStage extends Stage implements ILogicListener {
             else
                 listener.gameWon();
         }
+        sincePopped+=delta;
+        playPopSound();
     }
 
     @Override
@@ -207,6 +213,7 @@ public class MainStage extends Stage implements ILogicListener {
         if (view.state <1){
             activeSnappers.removeValue(view, true);
             snapperViewPool.free(view);
+            addPopSound();
         }
     }
 
@@ -220,7 +227,7 @@ public class MainStage extends Stage implements ILogicListener {
     }
 
     public void nextLevel(){
-        Level next = LevelTable.getNextLevel((Activity)Gdx.app, logic.level);
+        Level next = LevelTable.getNextLevel((Activity) Gdx.app, logic.level);
         if (next == null)
             listener.levelPackWon();
         else
@@ -236,5 +243,30 @@ public class MainStage extends Stage implements ILogicListener {
         tapLeftText.resume();
     }
 
+    protected void playPopSound(){
+        if (sincePopped < POP_SOUND_DISTANCE)
+            return;
+        sincePopped = 0;
+        if (toPop<1 )
+            return;
 
+        toPop--;
+        getRandomValue(Resources.popSounds).play();
+        sincePopped = 0;
+    }
+
+    protected void addPopSound(){
+        if (toPop<0)
+            toPop = 0;
+        if (toPop < 3)
+            toPop++;
+    }
+    
+    public static <T> T getRandomValue(T[] arr){
+        return arr[(int)(Math.random()*arr.length)];
+    }
+    
+    public void log(){
+        Log.v("Snappers", String.format("toPop: %d, sincepopped: %f", toPop, sincePopped));
+    }
 }

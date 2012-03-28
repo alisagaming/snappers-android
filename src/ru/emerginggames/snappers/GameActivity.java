@@ -30,7 +30,6 @@ public class GameActivity extends AndroidApplication {
         Intent intent = getIntent();
         Level level = (Level)intent.getSerializableExtra(LEVEL_PARAM_TAG);
         LevelPack pack = (LevelPack) intent.getSerializableExtra(LEVEL_PACK_PARAM_TAG);
-       
         game = new Game();
         game.setStartLevel(level, pack);
 

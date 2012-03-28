@@ -4,6 +4,7 @@ import android.content.Context;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.Metrics;
@@ -29,17 +30,20 @@ public class Game implements ApplicationListener, IGameEventListener {
     protected GameOverStage gameOverStage;
     protected PausedStage pausedStage;
     protected LevelPack levelPack;
+    protected Sprite bg;
     
     protected boolean objectsCreated = false;
 
     @Override
     public void create() {
+        Resources.loadSounds();
     }
 
     protected void createObjects(){
         if (objectsCreated)
             return;
         Resources.loadTextures(levelPack.isGold);
+
         batch = new SpriteBatch();
         snappersStage = new MainStage(0, 0, this);
         gameOverStage = new GameOverStage(0,0,this, snappersStage.getLogic());
@@ -51,6 +55,8 @@ public class Game implements ApplicationListener, IGameEventListener {
             snappersStage.setLevel(level);
 
         objectsCreated = true;
+        if (Resources.loadBg(levelPack.background))
+            bg = new Sprite(Resources.bg);
     }
 
     @Override
@@ -64,12 +70,20 @@ public class Game implements ApplicationListener, IGameEventListener {
         snappersStage.setViewport(width, height);
         gameOverStage.setViewport(width, height);
         pausedStage.setViewport(width, height);
+        bg.setSize(width, height);
     }
 
     @Override
     public void render() {
         Gdx.gl.glClearColor(0,1,1,1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        if (bg != null){
+            batch.begin();
+            batch.disableBlending();
+            bg.draw(batch);
+            batch.end();
+        }
+
         float delta = Gdx.graphics.getDeltaTime();
         if (currentStage != pausedStage)
             snappersStage.act(delta);
@@ -135,12 +149,14 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHintBtn() {
+        snappersStage.log();
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void gameWon() {
         gameOverStage.setWon(true);
+        Resources.winSound.play();
         Gdx.input.setInputProcessor(currentStage = gameOverStage);
         level = snappersStage.getLogic().level;
         if (levelPack.levelsUnlocked <= level.number){
@@ -165,4 +181,6 @@ public class Game implements ApplicationListener, IGameEventListener {
     public void levelPackWon() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
 }

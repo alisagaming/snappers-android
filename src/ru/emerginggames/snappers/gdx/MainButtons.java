@@ -20,13 +20,13 @@ public class MainButtons extends Group {
 
 
     public MainButtons(final IGameEventListener listener) {
-        pauseButton = new SimpleButton(Resources.squareButtonFrames[2], Resources.squareButtonFrames[0], new IOnEventListener() {
+        pauseButton = new SimpleButton(Resources.squareButtonFrames[2], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onPauseBtn();
             }
         });
-        hintButton = new SimpleButton(Resources.squareButtonFrames[1], Resources.squareButtonFrames[0], new IOnEventListener() {
+        hintButton = new SimpleButton(Resources.squareButtonFrames[1], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onHintBtn();

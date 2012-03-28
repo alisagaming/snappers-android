@@ -110,4 +110,11 @@ public class OutlinedTextSprite extends Sprite implements IPositionable{
         PositionHelper.Position(x, y, this, dir, margin);
     }
 
+    public void resume(){
+        setTextTexture();
+    }
+
+    public void dispose(){
+        getTexture().dispose();
+    }
 }

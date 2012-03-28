@@ -5,10 +5,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.GameLogic;
 import ru.emerginggames.snappers.controller.IGameEventListener;
+import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
+
+import java.security.PublicKey;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +20,7 @@ import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
  * Time: 3:58
  */
 public class GameOverStage extends Stage{
+    public static final float FADEIN_TIME = 0.4f;
     protected GameLogic logic;
     protected boolean isWon = false;
     protected SimpleButton nextButton;
@@ -27,6 +31,9 @@ public class GameOverStage extends Stage{
     private OutlinedTextSprite wonText;
     private OutlinedTextSprite lostText;
     private OutlinedTextSprite scoreText;
+    protected ColorRect dimRect;
+
+    private float sinceShow;
 
     public GameOverStage(int width, int height, final IGameEventListener listener, GameLogic logic) {
         super(width, height, true);
@@ -67,6 +74,9 @@ public class GameOverStage extends Stage{
         wonText = new OutlinedTextSprite("Huzzah!", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         lostText = new OutlinedTextSprite("Level failed", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         scoreText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+
+        dimRect = new ColorRect(0,0,0,0);
+        dimRect.setColor(0, 0, 0, 0.5f);
     }
 
     public void setViewport(int width, int height) {
@@ -78,6 +88,7 @@ public class GameOverStage extends Stage{
         wonText.setPosition((width - wonText.getWidth())/2, textPos);
         lostText.setPosition((width - lostText.getWidth())/2, textPos);
         scoreText.positionRelative(wonText, IPositionable.Dir.DOWN, 5);
+        dimRect.setPosition(0,0,width, height);
     }
 
     public void setWon(boolean isWon){
@@ -96,21 +107,47 @@ public class GameOverStage extends Stage{
 
         nextButton.visible = nextButton.touchable = shopButton.visible = shopButton.touchable = isWon;
         menuButton.positionRelative(restartButton, IPositionable.Dir.LEFT, Metrics.screenMargin);
+        sinceShow = 0;
+    }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        sinceShow+=delta;
     }
 
     @Override
     public void draw() {
-        super.draw();
+        float opacity = sinceShow/FADEIN_TIME;
+        opacity = opacity>1? 1: opacity;
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        dimRect.draw(opacity);
         batch.begin();
+        root.draw(batch, opacity);
 
         if (isWon)
-            wonText.draw(batch);
+            wonText.draw(batch, opacity);
         else
-            lostText.draw(batch);
-        scoreText.draw(batch);
+            lostText.draw(batch, opacity);
+        scoreText.draw(batch, opacity);
 
 
         batch.end();
+    }
+
+    public void resume(){
+        wonText.resume();
+        lostText.resume();
+        scoreText.resume();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        wonText.dispose();
+        lostText.dispose();
+        scoreText.dispose();
+        dimRect.dispose();
     }
 }

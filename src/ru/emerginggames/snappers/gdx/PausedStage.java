@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
+import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
@@ -23,19 +24,26 @@ public class PausedStage extends Stage{
     protected SimpleButton menuBtn;
     protected SimpleButton storeBtn;
     protected OutlinedTextSprite titleText;
+    protected ColorRect dimRect;
     IGameEventListener listener;
 
     public PausedStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
         this.listener = listener;
+        dimRect = new ColorRect(0,0,0,0);
+        dimRect.setColor(0, 0, 0, 0.5f);
     }
 
     public void setViewport(int width, int height) {
         super.setViewport(width, height, true);
+        dimRect.setPosition(0,0,width, height);
     }
 
     @Override
     public void draw() {
+        batch.begin();
+        batch.end();
+        dimRect.draw();
         if (menuBack == null)
             createItems();
         batch.begin();
@@ -88,5 +96,17 @@ public class PausedStage extends Stage{
         });
         storeBtn.positionRelative(menuBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
         addActor(storeBtn);
+    }
+
+    public void resume(){
+        if (titleText!= null)
+            titleText.resume();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        titleText.dispose();
+        dimRect.dispose();
     }
 }

@@ -49,7 +49,7 @@ public class SplashSimpleActivity extends Activity {
                         setSize();
                         //Resources.createFrames();
                         finish();
-                        startActivity(new Intent(SplashSimpleActivity.this, GameActivity.class));
+                        startActivity(new Intent(SplashSimpleActivity.this, SelectLevelActivity.class));
                     }
                 }
             };

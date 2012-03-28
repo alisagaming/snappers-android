@@ -1,5 +1,6 @@
 package ru.emerginggames.snappers.gdx;
 
+import android.content.Context;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
+import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 
@@ -28,12 +30,17 @@ public class Game implements ApplicationListener, IGameEventListener {
     protected PausedStage pausedStage;
     protected LevelPack levelPack;
     
-    protected Mesh dimMesh;
+    protected boolean objectsCreated = false;
 
     @Override
     public void create() {
+    }
+
+    protected void createObjects(){
+        if (objectsCreated)
+            return;
+        Resources.loadTextures(levelPack.isGold);
         batch = new SpriteBatch();
-        Resources.loadSquareButtonTextures();
         snappersStage = new MainStage(0, 0, this);
         gameOverStage = new GameOverStage(0,0,this, snappersStage.getLogic());
         pausedStage = new PausedStage(0, 0, this);
@@ -42,6 +49,8 @@ public class Game implements ApplicationListener, IGameEventListener {
 
         if (level != null)
             snappersStage.setLevel(level);
+
+        objectsCreated = true;
     }
 
     @Override
@@ -49,34 +58,25 @@ public class Game implements ApplicationListener, IGameEventListener {
         width = i;
         height = i1;
         Metrics.setSize(width, height);
+
+        createObjects();
+
         snappersStage.setViewport(width, height);
         gameOverStage.setViewport(width, height);
         pausedStage.setViewport(width, height);
-
-        if (dimMesh != null)
-            dimMesh.dispose();
-        dimMesh = new Mesh(true, 4, 4,
-                new VertexAttribute(VertexAttributes.Usage.Position, 3, "a_position"),
-                new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, "a_color"));
-
-        dimMesh.setVertices(new float[] { 0, 0, 0, Color.toFloatBits(0, 0, 0, 64),
-                width, 0, 0, Color.toFloatBits(0, 0, 0, 64),
-                0, height, 0, Color.toFloatBits(0, 0, 0, 64),
-                width, height, 0, Color.toFloatBits(0, 0, 0, 64)});
-        dimMesh.setIndices(new short[]{0, 1, 2, 3});
-
     }
 
     @Override
     public void render() {
         Gdx.gl.glClearColor(0,1,1,1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        snappersStage.act(Gdx.graphics.getDeltaTime());
+        float delta = Gdx.graphics.getDeltaTime();
+        if (currentStage != pausedStage)
+            snappersStage.act(delta);
         snappersStage.draw();
 
         if (currentStage != snappersStage){
-            Gdx.gl.glEnable(GL10.GL_BLEND);
-            dimMesh.render(GL10.GL_TRIANGLE_STRIP, 0, 4);
+            currentStage.act(delta);
             currentStage.draw();
         }
     }
@@ -87,13 +87,18 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void resume() {
+        Texture.invalidateAllTextures(Gdx.app);
+        snappersStage.resume();
+        gameOverStage.resume();
+        pausedStage.resume();
     }
 
     @Override
     public void dispose() {
         snappersStage.dispose();
         gameOverStage.dispose();
-        dimMesh.dispose();
+        pausedStage.dispose();
+        Resources.disposeSnapperTextures();
     }
 
     public void setStartLevel(Level level, LevelPack pack){
@@ -137,6 +142,11 @@ public class Game implements ApplicationListener, IGameEventListener {
     public void gameWon() {
         gameOverStage.setWon(true);
         Gdx.input.setInputProcessor(currentStage = gameOverStage);
+        level = snappersStage.getLogic().level;
+        if (levelPack.levelsUnlocked <= level.number){
+            LevelPackTable.setLevelSolved(level, (Context)Gdx.app);
+            levelPack.levelsUnlocked = level.number+1;
+        }
     }
 
     @Override

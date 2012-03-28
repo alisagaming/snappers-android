@@ -29,9 +29,9 @@ public class SimpleButton extends Actor implements IPositionable {
 
     @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
-        button.draw(batch);
+        button.draw(batch, parentAlpha);
         if (isDown)
-            buttonDown.draw(batch);
+            buttonDown.draw(batch, parentAlpha);
     }
 
     @Override

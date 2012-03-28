@@ -39,6 +39,7 @@ public class MainStage extends Stage implements ILogicListener {
     OutlinedTextSprite tapLeftText;
     IGameEventListener listener;
     protected MainButtons buttons;
+    protected boolean gameOverFired;
 
     public MainStage(float width, float height, IGameEventListener listener) {
         super(width, height, true);
@@ -61,6 +62,7 @@ public class MainStage extends Stage implements ILogicListener {
     }
     
     public void setLevel(Level level){
+        gameOverFired = false;
         logic.startLevel(level);
 
         if (width != 0)
@@ -71,7 +73,6 @@ public class MainStage extends Stage implements ILogicListener {
 
     public void setViewport(int width, int height) {
         super.setViewport(width, height, true);
-        Resources.loadSnapperTextures(false);
         logic.setScreen(width, height, defineGameRect(width, height) );
         defineSnapperViews();
         blastAnimation = new Animation(BLAST_ANIMATION_TIME, Resources.blastFrames);
@@ -84,7 +85,8 @@ public class MainStage extends Stage implements ILogicListener {
     @Override
     public void dispose() {
         super.dispose();
-        Resources.disposeSnapperTextures();
+        levelText.dispose();
+        tapLeftText.dispose();
     }
 
     protected Rect defineGameRect(int width, int height){
@@ -121,21 +123,18 @@ public class MainStage extends Stage implements ILogicListener {
                 }
     }
 
-    protected void update(){
-
-
-    }
-
     @Override
     public void act(float delta) {
         logic.advance2(delta);
         super.act(delta);
 
-        if (logic.isGameOver())
+        if (logic.isGameOver() && !gameOverFired){
+            gameOverFired = true;
             if (logic.isGameLost())
                 listener.gameLost();
             else
                 listener.gameWon();
+        }
     }
 
     @Override
@@ -231,4 +230,11 @@ public class MainStage extends Stage implements ILogicListener {
     public GameLogic getLogic(){
         return logic;
     }
+
+    public void resume(){
+        levelText.resume();
+        tapLeftText.resume();
+    }
+
+
 }

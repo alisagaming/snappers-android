@@ -52,6 +52,8 @@ public class Resources {
 
     public static Typeface font;
 
+    public static boolean texturesLoaded = false;
+
     public static void init(){
         switch (Metrics.sizeMode){
             case modeS:
@@ -66,7 +68,12 @@ public class Resources {
         }
     }
 
-    public static void loadSquareButtonTextures(){
+    public static void loadTextures(boolean isGold){
+        loadSnapperTextures(isGold);
+        loadSquareButtonTextures();
+    }
+
+    private static void loadSquareButtonTextures(){
         squareButtons = new Texture(Gdx.files.internal(dir + "btn-sq.png"));
         squareButtonFrames = makeAnimationFrames(squareButtons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 7);
 
@@ -80,7 +87,7 @@ public class Resources {
 
     }
 
-    public static void loadSnapperTextures(boolean isGold){
+    private static void loadSnapperTextures(boolean isGold){
         int snapperSize = Metrics.snapperSize;
 
         snapperTexture = new Texture(Gdx.files.internal(dir + "back.png"), Pixmap.Format.RGBA8888, false);

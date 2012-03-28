@@ -119,12 +119,17 @@ public class Resources {
         bangFrames = makeAnimationFrames(bangTexture, snapperSize, snapperSize, false);
     }
 
-    public static void disposeSnapperTextures(){
+    public static void disposeTextures(){
         eyesTexture.dispose();
         eyeShadowTexture.dispose();
         snapperTexture.dispose();
         bangTexture.dispose();
         blastTexture.dispose();
+        squareButtons.dispose();
+        if (longDialog != null)
+            longDialog.dispose();
+        if (menuButtons != null)
+            menuButtons.dispose();
     }
 
 

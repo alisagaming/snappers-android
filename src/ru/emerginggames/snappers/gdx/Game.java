@@ -98,7 +98,7 @@ public class Game implements ApplicationListener, IGameEventListener {
         snappersStage.dispose();
         gameOverStage.dispose();
         pausedStage.dispose();
-        Resources.disposeSnapperTextures();
+        Resources.disposeTextures();
     }
 
     public void setStartLevel(Level level, LevelPack pack){

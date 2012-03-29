@@ -96,6 +96,13 @@ public class SnapperView extends Actor {
     }
 
     @Override
+    public void act(float delta) {
+        super.act(delta);
+        eyes.update();
+        eyeShadow.update();
+    }
+
+    @Override
     public void draw(SpriteBatch batch, float parentAlpha) {}
 
     @Override

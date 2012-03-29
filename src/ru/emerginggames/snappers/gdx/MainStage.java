@@ -22,6 +22,7 @@ import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.Snappers;
 
 import javax.microedition.khronos.opengles.GL10;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -158,18 +159,18 @@ public class MainStage extends Stage implements ILogicListener {
     }
 
     protected void drawSnappers(){
-
+        int i;
         Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
-        for (int i=0; i< activeSnappers.size; i++)
+        for (i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).shadow.draw(batch);
 
-        for (int i=0; i< activeSnappers.size; i++)
+        for (i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).snapper.draw(batch);
 
-        for (int i=0; i< activeSnappers.size; i++)
+        for (i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).eyeShadow.draw(batch);
 
-        for (int i=0; i< activeSnappers.size; i++)
+        for (i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).eyes.draw(batch);
     }
 
@@ -177,8 +178,9 @@ public class MainStage extends Stage implements ILogicListener {
         Blast b;
         int blSize = Metrics.blastSize;
         int blShift = blSize/2;
-        for (int i=0; i<logic.activeBlasts.size(); i++){
-            b = logic.activeBlasts.get(i);
+        List<Blast> blasts = logic.activeBlasts;
+        for (int i=0; i<blasts.size(); i++){
+            b = blasts.get(i);
             batch.draw(blastAnimation.getKeyFrame(b.age, false), b.x - blShift, b.y - blShift, blShift, blShift, blSize, blSize, 1, 1, getBlastRotation(b));
         }
     }
@@ -251,6 +253,7 @@ public class MainStage extends Stage implements ILogicListener {
             return;
 
         toPop--;
+
         getRandomValue(Resources.popSounds).play();
         sincePopped = 0;
     }

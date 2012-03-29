@@ -44,7 +44,10 @@ public class Metrics {
     public static float snapperMult4;
     public static int screenWidth;
     public static int screenHeight;
+    public static int menuWidth;
+    public static int menuHeight;
     public static SizeMode sizeMode;
+    
 
     public static void setSize(int width, int height){
         screenWidth = width;
@@ -78,9 +81,12 @@ public class Metrics {
                 snapperSize = 48;
                 blastSize = 18;
                 squareButtonSize = 80;
-                menuButtonWidth = 312;
-                menuButtonHeight = 100;
+                menuButtonWidth = 287;
+                menuButtonHeight = 92;
                 fontSize = 38;
+                menuWidth = 343;
+                menuHeight = 512;
+                //512*343 - long menu, size *.92
                 break;
             case modeL:
                 snapperSize = 96;
@@ -88,11 +94,13 @@ public class Metrics {
                 squareButtonSize = 128;
                 menuButtonWidth = 400;
                 menuButtonHeight = 128;
+                menuWidth = 472;
+                menuHeight = 705;
                 fontSize = 48;
                 break;
         }
         screenMargin = squareButtonSize /12;
-        largeFontSize = fontSize * 3/2;
+        largeFontSize = Math.round(fontSize * 1.38f);
     }
 
 

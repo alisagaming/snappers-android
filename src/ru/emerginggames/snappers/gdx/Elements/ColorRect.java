@@ -43,7 +43,7 @@ public class ColorRect {
         mesh.setVertices(new float[] { x, y, 0,
                 width, y, 0,
                 x, height, 0,
-                width, height});
+                width, height, 0});
     }
 
     public void setColor(float r, float g, float b, float a){

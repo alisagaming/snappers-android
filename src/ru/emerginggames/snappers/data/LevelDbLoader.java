@@ -51,6 +51,8 @@ public class LevelDbLoader {
             loader.loadLevelPack("PremiumLevelPack2");
             loader.loadLevelPack("PremiumLevelPack3");
             loader.loadLevelPack("PremiumLevelPack4");
+            loader.levelTable.close();
+            loader.levelPackTable.close();
             
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(LEVELS_LOADED_VERSION_TAG, DbOpenHelper.DATABASE_VERSION);

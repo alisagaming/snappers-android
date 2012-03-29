@@ -1,15 +1,19 @@
 package ru.emerginggames.snappers.gdx;
 
 import android.content.Context;
+import android.graphics.*;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelPackTable;
+import ru.emerginggames.snappers.gdx.Elements.ColorRect;
+import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 
@@ -31,6 +35,8 @@ public class Game implements ApplicationListener, IGameEventListener {
     protected PausedStage pausedStage;
     protected LevelPack levelPack;
     protected Sprite bg;
+    FPSLogger logger;
+    protected ColorRect tempRect;
     
     protected boolean objectsCreated = false;
 
@@ -57,6 +63,11 @@ public class Game implements ApplicationListener, IGameEventListener {
         objectsCreated = true;
         if (Resources.loadBg(levelPack.background))
             bg = new Sprite(Resources.bg);
+
+        logger = new FPSLogger();
+
+        tempRect = new ColorRect(50, 50, 100, 100);
+        tempRect.setColor(0,0,0,0.5f);
     }
 
     @Override
@@ -70,7 +81,8 @@ public class Game implements ApplicationListener, IGameEventListener {
         snappersStage.setViewport(width, height);
         gameOverStage.setViewport(width, height);
         pausedStage.setViewport(width, height);
-        bg.setSize(width, height);
+        if (bg != null)
+            bg.setSize(width, height);
     }
 
     @Override
@@ -81,6 +93,7 @@ public class Game implements ApplicationListener, IGameEventListener {
             batch.begin();
             batch.disableBlending();
             bg.draw(batch);
+            batch.enableBlending();
             batch.end();
         }
 
@@ -93,6 +106,12 @@ public class Game implements ApplicationListener, IGameEventListener {
             currentStage.act(delta);
             currentStage.draw();
         }
+        logger.log();
+
+        batch.begin();
+
+        Resources.fnt1.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, Resources.fnt1.getLineHeight());
+        batch.end();
     }
 
     @Override
@@ -102,6 +121,8 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void resume() {
         Texture.invalidateAllTextures(Gdx.app);
+        //Resources.loadBg(levelPack.background);
+        //bg.setRegion(Resources.bg);
         snappersStage.resume();
         gameOverStage.resume();
         pausedStage.resume();

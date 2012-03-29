@@ -21,7 +21,7 @@ import java.security.PublicKey;
  */
 public class GameOverStage extends Stage{
     public static final float FADEIN_TIME = 0.4f;
-    protected static final String[] winMessages = {"Completed!", "Good job!", "Bravo!", "Cheers!", "Huzzah!", "Yippee!", "Hooray!"};
+    protected static final String[] winMessages = {" Completed! ", "Good job!", "Bravo!", "Cheers!", "Huzzah!", "Yippee!", "Hooray!"};
     protected GameLogic logic;
     protected boolean isWon = false;
     protected SimpleButton nextButton;

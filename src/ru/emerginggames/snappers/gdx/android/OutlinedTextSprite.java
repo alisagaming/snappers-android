@@ -6,7 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 
@@ -34,7 +36,7 @@ public class OutlinedTextSprite extends Sprite implements IPositionable{
         this.backColor = backColor;
         this.typeface = typeface;
         this.strokeWidth = strokeWidth;
-        Texture.setEnforcePotImages(false);
+        //Texture.setEnforcePotImages(false);
         setTextTexture();
     }
     
@@ -51,17 +53,16 @@ public class OutlinedTextSprite extends Sprite implements IPositionable{
 
         canvas.drawRect(0, 0, getWidth(), getHeight(), backPaint);
         float paddingTop  = Math.abs(fontMetrics.ascent) + strokeWidth * 2;
-        canvas.drawText(text, 0, paddingTop , outlinePaint);
-        canvas.drawText(text, 0, paddingTop, textPaint);
-
-        Pixmap pixmap = BitmapPixmap.bitmapToPixmap(bitmap);
+        canvas.drawText(text, strokeWidth, paddingTop , outlinePaint);
+        canvas.drawText(text, strokeWidth, paddingTop, textPaint);
 
         Texture texture = getTexture();
+
         if (texture != null)
             texture.dispose();
 
-        texture = new Texture(pixmap);
-        setTexture(texture, 0, 0, texture.getWidth(), texture.getHeight());
+        TextureRegion reg = BitmapPixmap.bitmapToTexture(bitmap, Pixmap.Format.RGBA4444);
+        setTexture(reg.getTexture(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
         bitmap.recycle();
     }
 

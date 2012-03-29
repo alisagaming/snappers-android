@@ -1,6 +1,7 @@
 package ru.emerginggames.snappers.view;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +27,9 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
     private int maxAvailableLevel;
     LevelPack pack;
     SparseArray<OutlinedTextView> items = new SparseArray<OutlinedTextView>(25);
+
+    public LevelListFragment() {
+    }
 
     @Override
     public void onResume() {
@@ -78,9 +82,13 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
                 text.setLayoutParams(itemParams);
                 text.setPadding(4, 4, 4, 4);
                 text.setGravity(Gravity.CENTER);
+                text.setTextColor(Color.WHITE);
                 setItemState(text, num);
                 text.setOnClickListener(this);
+                text.setStroke(Color.BLACK, 2);
+                text.setTextSizeToFit(true);
                 layoutRow.addView(text);
+
                 items.put(num, text);
                 num++;
             }
@@ -109,4 +117,11 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         if (view.getTag() != null && (Integer)view.getTag()<= maxAvailableLevel)
             itemSelectedListener.onItemSelected((Integer)view.getTag());
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+
 }

@@ -1,12 +1,15 @@
 package ru.emerginggames.snappers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.data.LevelTable;
+import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 
@@ -19,6 +22,7 @@ import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 public class SelectLevelActivity extends FragmentActivity implements IOnItemSelectedListener {
     LevelPack pack;
     private LevelPageAdapter adapter;
+    protected Thread bgLoadThread;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +45,8 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
     protected void onResume() {
         LevelPack pack2 = LevelPackTable.get(pack.id, this);
         pack.levelsUnlocked = pack2.levelsUnlocked;
-
         super.onResume();
+        startBgPreload();
     }
 
     @Override
@@ -51,5 +55,22 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
         intent.putExtra(GameActivity.LEVEL_PARAM_TAG, pack.levels[number - 1]);
         intent.putExtra(GameActivity.LEVEL_PACK_PARAM_TAG, pack);
         startActivity(intent);
+    }
+
+    protected void startBgPreload(){
+        if (bgLoadThread != null)
+            return;
+        bgLoadThread = new Thread(){
+            @Override
+            public void run() {
+                Resources.preloadBg(SelectLevelActivity.this.pack.background);
+                Context context = getApplicationContext();
+
+                Toast.makeText(context, "bg preloaded", Toast.LENGTH_SHORT).show();
+                SelectLevelActivity.this.bgLoadThread = null;
+            }
+        };
+        bgLoadThread.run();
+
     }
 }

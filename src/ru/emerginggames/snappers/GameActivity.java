@@ -35,11 +35,10 @@ public class GameActivity extends AndroidApplication {
 
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        config.r = config.g = config.b = 8;
-        config.useGL20 = false;
+
         config.useAccelerometer = false;
         config.useCompass = false;
-        config.numSamples = 2;
+        config.useWakelock = true;
 
         initialize(game, config);
 

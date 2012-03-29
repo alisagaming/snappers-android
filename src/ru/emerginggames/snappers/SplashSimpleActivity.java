@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import ru.emerginggames.snappers.data.LevelDbLoader;
+import ru.emerginggames.snappers.gdx.Resources;
 
 public class SplashSimpleActivity extends Activity {
     private static final int SPLASH_TIME = 3000;
@@ -37,7 +38,12 @@ public class SplashSimpleActivity extends Activity {
                     try {
                         long time = System.currentTimeMillis();
                         LevelDbLoader.checkAndLoad(SplashSimpleActivity.this, getSharedPreferences(PREFERENCES, MODE_PRIVATE));
-                        time = System.currentTimeMillis() - time - SPLASH_TIME;
+                        synchronized (this) {
+                            wait(10);
+                        }
+                        setSize();
+                        //Resources.preload();
+                        time = SPLASH_TIME - (System.currentTimeMillis() - time);
                         if (time < 1)
                             time =1;
 
@@ -46,7 +52,7 @@ public class SplashSimpleActivity extends Activity {
                         }
                     } catch (InterruptedException e) {
                     } finally {
-                        setSize();
+                        //setSize();
                         //Resources.createFrames();
                         finish();
                         startActivity(new Intent(SplashSimpleActivity.this, SelectLevelActivity.class));

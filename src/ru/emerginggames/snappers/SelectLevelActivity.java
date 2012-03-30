@@ -64,9 +64,7 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
             @Override
             public void run() {
                 Resources.preloadBg(SelectLevelActivity.this.pack.background);
-                Context context = getApplicationContext();
-
-                Toast.makeText(context, "bg preloaded", Toast.LENGTH_SHORT).show();
+                Resources.preparePreload();
                 SelectLevelActivity.this.bgLoadThread = null;
             }
         };

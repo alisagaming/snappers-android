@@ -52,7 +52,7 @@ public class ResizedFileTextureData implements TextureData{
     public void prepare() {
         if (isPrepared())
             return;
-        Texture.setEnforcePotImages(false);
+        //Texture.setEnforcePotImages(false);
 
         pixmap = new Pixmap(file);
         if (width == 0){

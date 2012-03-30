@@ -2,6 +2,7 @@ package ru.emerginggames.snappers.gdx;
 
 import android.content.Context;
 import android.graphics.*;
+import android.widget.Toast;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.android.AndroidFiles;
@@ -24,7 +25,7 @@ import ru.emerginggames.snappers.gdx.android.ResizedFileTextureData;
  */
 public class Resources {
     protected static String dir;
-    protected static Integer syncLock =  0;
+    protected static final Integer syncLock =  0;
 
     protected static class Preload {
         public static TextureData eyes;
@@ -211,14 +212,11 @@ public class Resources {
     }
 
     public static boolean loadBg(String name){
-        try{
-
-            TextureData data = new ResizedFileTextureData(Gdx.files.internal("med/" + name),
-                    Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
-            bg = new TextureRegion(new Texture(data), 0, 0, Metrics.screenWidth, Metrics.screenHeight);
-        }catch (Exception e){
+        preloadBg(name);
+        if (Preload.bg == null)
             return false;
-        }
+        
+        bg = new TextureRegion(new Texture(Preload.bg),0 , 0, Metrics.screenWidth, Metrics.screenHeight);
         return true;
     }
 
@@ -255,11 +253,11 @@ public class Resources {
     }
 
     protected static void createPreload(){
-        Preload.eyes = new FileTextureData(Gdx.files.internal(dir + "eyes.png"), null, Pixmap.Format.RGBA4444, false);
-        Preload.eyeShadow = new FileTextureData(Gdx.files.internal(dir + "eyeShadow.png"), null, Pixmap.Format.RGBA4444, false);
-        Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "back.png"), null, Pixmap.Format.RGBA4444, false);
-        Preload.bang = new FileTextureData(Gdx.files.internal(dir + "bang.png"), null, Pixmap.Format.RGBA4444, false);
-        Preload.blast = new FileTextureData(Gdx.files.internal(dir + "blast.png"), null, Pixmap.Format.RGBA4444, false);
+        Preload.eyes = new ResizedFileTextureData(Gdx.files.internal(dir + "eyes.png"), Pixmap.Format.RGBA4444);
+        Preload.eyeShadow = new ResizedFileTextureData(Gdx.files.internal(dir + "eyeShadow.png"),  Pixmap.Format.RGBA4444);
+        Preload.snappers = new ResizedFileTextureData(Gdx.files.internal(dir + "back.png"), Pixmap.Format.RGBA4444);
+        Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
+        Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
         Preload.squareButtons = new FileTextureData(Gdx.files.internal(dir + "btn-sq.png"), null, Pixmap.Format.RGBA8888, false);
     }
 
@@ -292,7 +290,9 @@ public class Resources {
             Preload.isBgLoading = true;
             prepareData(Preload.bg);
         }
-        catch (Exception ignored){}
+        catch (Exception e){
+            utilizeBg();
+        }
         finally {
             Preload.isBgLoading = false;
         }
@@ -302,8 +302,17 @@ public class Resources {
     protected static void createBgPreload(String name){
         if (name.equals(Preload.bgName))
             return;
-            Preload.bg = new ResizedFileTextureData(Gdx.files.internal("med/" + name),
-                    Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
-            Preload.bgName = name;
+        utilizeBg();
+        Preload.bg = new ResizedFileTextureData(Gdx.files.internal("med/" + name),
+                Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
+        Preload.bgName = name;
+    }
+
+    protected static void utilizeBg(){
+        if (Preload.bg == null)
+            return;
+        if (Preload.bg.isPrepared())
+            Preload.bg.consumePixmap().dispose();
+        Preload.bg = null;
     }
 }

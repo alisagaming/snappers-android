@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
@@ -15,6 +16,7 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Time: 0:52
  */
 public class LevelPackTable extends SQLiteTable<LevelPack>{
+
     protected static final String TABLE_NAME = "level_pack";
 
     protected static final String KEY_ID = "_id";
@@ -27,6 +29,9 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
 
     protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_BACKGROUND, KEY_SHADOWS, KEY_TITLE, KEY_IS_GOLD, KEY_IS_UNLOCKED, KEY_UNLOCKED_LEVELS};
 
+    public LevelPackTable(SQLiteOpenHelper helper) {
+        super(helper);
+    }
 
     public LevelPackTable(Context context) {
         super(context, false);
@@ -60,6 +65,13 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         ContentValues values = new ContentValues();
         values.put(KEY_IS_UNLOCKED, 1);
         values.put(KEY_UNLOCKED_LEVELS, 1);
+        return db.update(TABLE_NAME, values, KEY_ID + "=" + levelPackId, null) > 0;
+    }
+
+    public boolean lockLevelPack(int levelPackId){
+        ContentValues values = new ContentValues();
+        values.put(KEY_IS_UNLOCKED, 0);
+        values.put(KEY_UNLOCKED_LEVELS, 0);
         return db.update(TABLE_NAME, values, KEY_ID + "=" + levelPackId, null) > 0;
     }
 

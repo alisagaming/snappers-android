@@ -32,8 +32,6 @@ public class LevelDbLoader {
         this.context = context;
         this.prefs = prefs;
         assets = context.getAssets();
-        levelPackTable = new LevelPackTable(context, true);
-        levelTable = new LevelTable(context, true);
     }
 
     public static void checkAndLoad(Context context, SharedPreferences prefs){

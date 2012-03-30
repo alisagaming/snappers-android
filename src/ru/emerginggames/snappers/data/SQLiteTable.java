@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import ru.emerginggames.snappers.model.Level;
 
@@ -21,9 +22,16 @@ public abstract class SQLiteTable<T> {
 
     protected static final String KEY_ID = "_id";
 
+    protected SQLiteOpenHelper helper;
+
     protected Context context;
     protected SQLiteDatabase db;
     protected SQLiteStatement insertStmt;
+
+
+    protected SQLiteTable(SQLiteOpenHelper helper) {
+        this.helper = helper;
+    }
 
     protected SQLiteTable(Context context) {
         this.context = context;
@@ -35,14 +43,15 @@ public abstract class SQLiteTable<T> {
     }
 
     public void open(boolean isWriteable){
-        DbOpenHelper openHelper = new DbOpenHelper(context);
+        if (helper == null)
+            helper = new DbOpenHelper(context);
 
         if (isWriteable)
         {
-            db = openHelper.getWritableDatabase();
+            db = helper.getWritableDatabase();
         }
         else
-            db = openHelper.getReadableDatabase();
+            db = helper.getReadableDatabase();
     }
 
     public void openForInsertion(boolean isWriteable){

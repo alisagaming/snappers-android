@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import ru.emerginggames.snappers.data.DbOpenHelper;
 import ru.emerginggames.snappers.data.LevelDbLoader;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.Splash;
@@ -44,7 +45,10 @@ public class SplashGdxActivity extends AndroidApplication {
                 public void run() {
                     try {
                         long time = System.currentTimeMillis();
-                        LevelDbLoader.checkAndLoad(SplashGdxActivity.this, getSharedPreferences(PREFERENCES, MODE_PRIVATE));
+                        //LevelDbLoader.checkAndLoad(SplashGdxActivity.this, getSharedPreferences(PREFERENCES, MODE_PRIVATE));
+                        DbOpenHelper openHelper = new DbOpenHelper(SplashGdxActivity.this);
+                        openHelper.initializeDataBase();
+
                         synchronized (this) {
                             wait(10);
                         }

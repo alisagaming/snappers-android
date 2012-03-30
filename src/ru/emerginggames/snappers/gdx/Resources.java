@@ -303,7 +303,7 @@ public class Resources {
         if (name.equals(Preload.bgName))
             return;
         utilizeBg();
-        Preload.bg = new ResizedFileTextureData(Gdx.files.internal("med/" + name),
+        Preload.bg = new ResizedFileTextureData(Gdx.files.internal("bg/" + name),
                 Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
         Preload.bgName = name;
     }

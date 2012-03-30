@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class GameLogic {
     private static final int MAX_BLASTS = 90;
-    private static final float GRAIN_SPEED_MARGIN_PER_SECOND = 5;
+    private static final float GRAIN_SPEED_MARGIN_PER_SECOND = 6;
     public final List<Blast> blastsToKill;
     public final Pool<Blast> blastPool;
     public final List<Blast> activeBlasts;

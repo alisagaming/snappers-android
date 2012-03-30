@@ -12,10 +12,10 @@ public class Metrics {
                 snapperMult4 = 0.73f;
                 break;
             case modeM:
-                snapperMult1 = 1.23f;
-                snapperMult2 = 1.11f;
-                snapperMult3 = 1;
-                snapperMult4 = 0.9f;
+                snapperMult1 = 1.37f;
+                snapperMult2 = 1.23f;
+                snapperMult3 = 1.11f;
+                snapperMult4 = 1;
                 break;
             case modeL:
                 snapperMult1 = 1;

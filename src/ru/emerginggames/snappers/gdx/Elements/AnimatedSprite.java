@@ -12,46 +12,49 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Date: 25.03.12
  * Time: 23:15
  */
-public class AnimatedSprite {
-    public int x;
-    public int y;
-    public Animation animation;
-    public Sprite sprite;
-    public boolean looping;
-    private float animationTime;
+public class AnimatedSprite extends Sprite{
+    protected Animation animation;
+    protected boolean looping;
+    protected float animationTime;
+    protected float loopTime;
+    protected IAnimationListener animationEndListener;
+    protected TextureRegion[] sprites;
+
 
     public AnimatedSprite(TextureRegion[] sprites, float frameTime, boolean looping) {
+        super(sprites[0]);
         animation = new Animation(frameTime, sprites);
-        sprite = new Sprite(sprites[0]);
         this.looping = looping;
         animationTime = 0;
+        this.sprites = sprites;
     }
 
-    public void move(int x, int y){
-        this.x = x;
-        this.y = y;
-        sprite.setPosition(x, y);
+    public AnimatedSprite(TextureRegion[] sprites, float frameTime, IAnimationListener animationEndListener) {
+        super(sprites[0]);
+        animation = new Animation(frameTime, sprites);
+        looping = false;
+        animationTime = 0;
+        loopTime = frameTime * sprites.length;
+        this.sprites = sprites;
+        this.animationEndListener = animationEndListener;
     }
 
-    public void setScale(float scale){
-        sprite.setScale(scale);
+    public void restartAnimation(){
+        animationTime = 0;
+        loopTime = animation.frameDuration * sprites.length;
+        setRegion(sprites[0]);
     }
 
     public void setOpacity(float opacity){
-        sprite.setColor(1,1,1, opacity);
+        setColor(1,1,1, opacity);
     }
 
-    public void rotate(float angle){
-        sprite.setRotation(angle);
-    }
-
-    public void update(){
-        animationTime += Gdx.graphics.getDeltaTime();
-        sprite.setRegion(animation.getKeyFrame(animationTime, looping));
-    }
-
-    public void draw(SpriteBatch batch){
-        //update();
-        sprite.draw(batch);
+    public void act(float delta){
+        animationTime += delta;
+        setRegion(animation.getKeyFrame(animationTime, looping));
+        if (loopTime>0 && animationTime>loopTime){
+            loopTime = 0;
+            animationEndListener.onAnimationEnd(this);
+        }
     }
 }

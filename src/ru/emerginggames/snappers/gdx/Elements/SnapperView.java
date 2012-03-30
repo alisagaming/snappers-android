@@ -56,8 +56,8 @@ public class SnapperView extends Actor {
         this.y = y;
         snapper.setPosition(x,y);
         shadow.setPosition(x,y);
-        eyes.move(x, y);
-        eyeShadow.move(x, y);
+        eyes.setPosition(x, y);
+        eyeShadow.setPosition(x, y);
     }
 
     public void touch(){
@@ -98,8 +98,8 @@ public class SnapperView extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        eyes.update();
-        eyeShadow.update();
+        eyes.act(delta);
+        eyeShadow.act(delta);
     }
 
     @Override
@@ -120,6 +120,6 @@ public class SnapperView extends Actor {
 
     @Override
     public Actor hit(float x, float y) {
-        return x > 0 && x < width && y > 0 && y < height ? this : null;
+        return state>0 && x > 0 && x < width && y > 0 && y < height ? this : null;
     }
 }

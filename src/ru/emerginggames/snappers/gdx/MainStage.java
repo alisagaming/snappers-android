@@ -13,6 +13,8 @@ import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.GameLogic;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelTable;
+import ru.emerginggames.snappers.gdx.Elements.AnimatedSprite;
+import ru.emerginggames.snappers.gdx.Elements.IAnimationListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SnapperView;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
@@ -31,13 +33,17 @@ import java.util.List;
  * Time: 2:18
  */
 public class MainStage extends Stage implements ILogicListener {
-    private static final float BLAST_ANIMATION_TIME = 0.08f;
-    protected static final float POP_SOUND_DISTANCE = 0.08f;
+    private static final float BLAST_ANIMATION_TIME = 0.1f;
+    protected static final float POP_SOUND_DISTANCE = 0.1f;
+    protected static final float BANG_FRAME_DURATION = 0.15f;
     private Animation blastAnimation;
     private final GameLogic logic;
 
     private Array<SnapperView> activeSnappers ;
     private Pool<SnapperView> snapperViewPool;
+    private Array<AnimatedSprite> activeBangs ;
+    private Pool<AnimatedSprite> bangPool;
+
     OutlinedTextSprite levelText;
     OutlinedTextSprite tapLeftText;
     IGameEventListener listener;
@@ -51,20 +57,17 @@ public class MainStage extends Stage implements ILogicListener {
         logic = new GameLogic(this);
         this.listener = listener;
 
-        snapperViewPool = new Pool<SnapperView>(30, 40) {
-            @Override
-            protected SnapperView newObject() {
-                return new SnapperView(logic);
-            }
-        };
+        setupSnappers();
+        setupBangs();
 
-        activeSnappers = new Array<SnapperView>(false, 30);
         levelText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         tapLeftText = new OutlinedTextSprite("123", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
 
         buttons = new MainButtons(listener);
         addActor(buttons);
     }
+
+
     
     public void setLevel(Level level){
         gameOverFired = false;
@@ -115,6 +118,8 @@ public class MainStage extends Stage implements ILogicListener {
         int i; int j;
         int state;
 
+        for (i=0; i<activeSnappers.size; i++)
+            removeActor(activeSnappers.get(i));
         snapperViewPool.free(activeSnappers);
         activeSnappers.clear();
 
@@ -130,7 +135,7 @@ public class MainStage extends Stage implements ILogicListener {
 
     @Override
     public void act(float delta) {
-        logic.advance2(delta);
+        int acts = logic.advance2(delta);
         super.act(delta);
 
         if (logic.isGameOver() && !gameOverFired){
@@ -141,7 +146,11 @@ public class MainStage extends Stage implements ILogicListener {
                 listener.gameWon();
         }
         sincePopped+=delta;
+        addPopSound(acts);
         playPopSound();
+
+        for (int i=0; i< activeBangs.size; i++)
+            activeBangs.get(i).act(delta);
     }
 
     @Override
@@ -152,6 +161,10 @@ public class MainStage extends Stage implements ILogicListener {
         batch.begin();
         drawSnappers();
         drawBlasts();
+
+        for (int i=0; i< activeBangs.size; i++)
+            activeBangs.get(i).draw(batch);
+
         levelText.draw(batch);
         tapLeftText.draw(batch);
         buttons.draw(batch, 1);
@@ -185,7 +198,7 @@ public class MainStage extends Stage implements ILogicListener {
         }
     }
     
-    protected int getBlastRotation(Blast blast){
+    protected static int getBlastRotation(Blast blast){
         switch (blast.direction){
             case Down:
                 return 180;
@@ -207,6 +220,13 @@ public class MainStage extends Stage implements ILogicListener {
         }
         return null;
     }
+    
+    protected void addBang(int i, int j){
+        AnimatedSprite bang = bangPool.obtain();
+        bang.restartAnimation();
+        bang.setPosition(logic.getSnapperXPosision(i) - bang.getWidth()/2, logic.getSnapperYPosision(j) - bang.getHeight()/2);
+        activeBangs.add(bang);
+    }
 
     @Override
     public void snapperHit(int i, int j) {
@@ -215,7 +235,8 @@ public class MainStage extends Stage implements ILogicListener {
         if (view.state <1){
             activeSnappers.removeValue(view, true);
             snapperViewPool.free(view);
-            addPopSound();
+            addBang(i, j);
+            //addPopSound();
         }
     }
 
@@ -258,15 +279,52 @@ public class MainStage extends Stage implements ILogicListener {
         sincePopped = 0;
     }
 
-    protected void addPopSound(){
+    protected void addPopSound(int acts){
         if (toPop<0)
             toPop = 0;
-        if (toPop < 3)
-            toPop++;
+        if (acts == 0)
+            return;
+        if (acts >2)
+            acts = 2;
+
+
+        if (toPop < 4)
+            toPop+= acts;
     }
     
     public static <T> T getRandomValue(T[] arr){
         return arr[(int)(Math.random()*arr.length)];
+    }
+
+    private void setupSnappers(){
+        snapperViewPool = new Pool<SnapperView>(30, 40) {
+            @Override
+            protected SnapperView newObject() {
+                SnapperView view = new SnapperView(logic);
+                return view;
+            }
+        };
+        activeSnappers = new Array<SnapperView>(false, 30);
+    }
+
+    private void setupBangs(){
+        final IAnimationListener bangListener = new IAnimationListener() {
+            @Override
+            public void onAnimationEnd(AnimatedSprite sprite) {
+                activeBangs.removeValue(sprite, true);
+                bangPool.free(sprite);
+            }
+        };
+
+
+        bangPool = new Pool<AnimatedSprite>(10, 30){
+            @Override
+            protected AnimatedSprite newObject() {
+                return new AnimatedSprite(Resources.bangFrames, BANG_FRAME_DURATION, bangListener);
+            }
+        };
+
+        activeBangs = new Array<AnimatedSprite>(30);
     }
     
     public void log(){

@@ -156,23 +156,20 @@ public class GameLogic {
 
 
     private int syncCollideSnappers(){
-        //blastsToKill.clear();
-        //newBlasts.clear();
         Blast blast;
-        int blasts;
+        int blasts=0;
         for (int i=0; i<activeBlasts.size(); i++){
             blast = activeBlasts.get(i);
             if (Snappers.isValidSnapper(blast.destI, blast.destJ))
-                if (hitSnapper(blast.destI, blast.destJ))
+                if (hitSnapper(blast.destI, blast.destJ)){
                     blastsToKill.add(blast);
+                    blasts++;
+                }
                 else
                     setNextBlastDestination(blast);
         }
 
         killBlasts();
-
-        blasts = newBlasts.size();
-
         return blasts;
     }
     
@@ -191,13 +188,14 @@ public class GameLogic {
         if (snapperTouchedI >=0) {
             hitSnapper(snapperTouchedI, snapperTouchedJ);
             snapperTouchedI = snapperTouchedJ = -1;
+            res=1;
         }
 
         timeToSyncCheck -= deltaTime;
 
         if (timeToSyncCheck < 0){
             timeToSyncCheck = syncTime;
-            res = syncCollideSnappers();
+            res += syncCollideSnappers();
         }
 
         startNewBlasts();

@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import ru.emerginggames.snappers.view.ICurrentItemSelector;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.RotatedImageView;
 
@@ -15,7 +16,8 @@ import ru.emerginggames.snappers.view.RotatedImageView;
  * Date: 31.03.12
  * Time: 9:04
  */
-public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnClickListener {
+public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnClickListener, ICurrentItemSelector {
+    View currentView;
     Context context;
     int[] imageIds;
     int[] shadowIds;
@@ -43,7 +45,7 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
         view.setImageBg(shadowIds[position]);
         view.setTag(position);
         view.setOnClickListener(this);
-        container.addView(view);
+        container.addView(view, position);
         return view;
     }
 
@@ -60,6 +62,16 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View)object);
+        container.removeView((View) object);
+    }
+
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        currentView = (View)object;
+    }
+
+    @Override
+    public View getCurrentItemView() {
+        return currentView;
     }
 }

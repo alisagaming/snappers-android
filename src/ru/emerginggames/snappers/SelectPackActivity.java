@@ -11,6 +11,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
+import ru.emerginggames.snappers.view.SquaredPager;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -36,10 +37,12 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
         int overlap = getWindowManager().getDefaultDisplay().getWidth()/3;
 
-        ViewPager pager = (ViewPager)findViewById(R.id.pager);
+        SquaredPager pager = (SquaredPager)findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setPageMargin(- overlap);
         pager.setOffscreenPageLimit(3);
+        pager.setCurrentChildOnTop(true);
+
 
         com.viewpagerindicator.CirclePageIndicator
                 mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);

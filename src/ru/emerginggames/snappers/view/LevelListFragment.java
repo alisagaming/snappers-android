@@ -62,7 +62,6 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         layout.setLayoutParams(params);
         layout.setMultiplier(0.1f);
 
-        //layout.setPadding(25, 25, 25, 25);
         layout.setGravity(Gravity.CENTER);
         layout.setOrientation(LinearLayout.VERTICAL);
         int num = startFromLevel;

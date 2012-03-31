@@ -174,14 +174,14 @@ public class MainStage extends Stage implements ILogicListener {
     protected void drawSnappers(){
         int i;
         Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
-//        for (i=0; i< activeSnappers.size; i++)
-//            activeSnappers.get(i).shadow.draw(batch);
+        for (i=0; i< activeSnappers.size; i++)
+            activeSnappers.get(i).shadow.draw(batch);
 
         for (i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).snapper.draw(batch);
 
-//        for (i=0; i< activeSnappers.size; i++)
-//l            activeSnappers.get(i).eyeShadow.draw(batch);
+        for (i=0; i< activeSnappers.size; i++)
+            activeSnappers.get(i).eyeShadow.draw(batch);
 
         for (i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).eyes.draw(batch);

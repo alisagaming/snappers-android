@@ -28,7 +28,6 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
         this.imageIds = imageIds;
         this.shadowIds = shadowIds;
         this.listener = listener;
-
     }
 
     @Override

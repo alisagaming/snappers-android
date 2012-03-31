@@ -26,17 +26,12 @@ public class SquaredPager extends ViewPager{
         setChildrenDrawingOrderEnabled(currentChildOnTop);
     }
 
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(wSize, hMode));
     }
-
-
-
-
 
     @Override
     protected int getChildDrawingOrder(int childCount, int i) {
@@ -45,16 +40,12 @@ public class SquaredPager extends ViewPager{
         if (adapter instanceof ICurrentItemSelector)
             current = ((ICurrentItemSelector)adapter).getCurrentItemView();
         int cur = indexOfChild(current);
-        if (cur == -1)
+
+        if (cur == -1 || i < cur)
             return i;
-        int res;
-        if (i< cur)
-            res = i;
-        else if (childCount-1 == i)
-            res = cur;
-        else res = i+1;
 
-        return res;
-
+         if (childCount-1 == i)
+            return cur;
+        return i+1;
     }
 }

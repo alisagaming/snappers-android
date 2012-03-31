@@ -1,10 +1,8 @@
 package ru.emerginggames.snappers.view;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import ru.emerginggames.snappers.R;
-import ru.emerginggames.snappers.SelectLevelActivity;
 import ru.emerginggames.snappers.model.LevelPack;
 
 /**
@@ -40,8 +37,6 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
                 for (int i=startFromLevel; i<startFromLevel + 25; i++)
                     setItemState(items.get(i), i);
         }
-
-
         super.onResume();
 
     }
@@ -64,17 +59,18 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         LinearLayout layout = new LinearLayout(getActivity());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
         layout.setLayoutParams(params);
+        layout.setPadding(10, 10, 10, 10);
         layout.setGravity(Gravity.CENTER);
         layout.setOrientation(LinearLayout.VERTICAL);
         int num = startFromLevel;
 
-        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT, 1f);
+        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT, 1f);
         itemParams.setMargins(3,3,3,3);
 
 
         for (int i=0; i<5; i++){
             LinearLayout layoutRow = new LinearLayout(getActivity());
-            layout.setLayoutParams(params);
+            layoutRow.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 0, 1f));
             layoutRow.setOrientation(LinearLayout.HORIZONTAL);
 
             for (int j=0;j<5; j++){
@@ -82,11 +78,11 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
                 text.setLayoutParams(itemParams);
                 text.setPadding(4, 4, 4, 4);
                 text.setGravity(Gravity.CENTER);
-                text.setTextColor(Color.WHITE);
                 setItemState(text, num);
                 text.setOnClickListener(this);
-                text.setStroke(Color.BLACK, 2);
                 text.setTextSizeToFit(true);
+                text.setSquare(true);
+                text.setHorizontallyScrolling(false);
                 layoutRow.addView(text);
 
                 items.put(num, text);
@@ -99,14 +95,17 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
     }
 
     private void setItemState(OutlinedTextView text, int num){
+        text.setText(Integer.toString(num));
         if (num <= maxAvailableLevel){
             text.setBackgroundResource(R.drawable.level);
-            text.setText(Integer.toString(num));
+            text.setTextColor(Color.WHITE);
+            text.setStroke(Color.BLACK, 2);
             text.setTag(num);
         }
         else {
             text.setBackgroundResource(R.drawable.level_lock);
-            text.setText("");
+            text.setTextColor(Color.TRANSPARENT);
+            text.setStroke(Color.TRANSPARENT, 2);
         }
 
     }

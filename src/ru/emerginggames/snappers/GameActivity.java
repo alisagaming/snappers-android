@@ -25,7 +25,7 @@ public class GameActivity extends AndroidApplication {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Resources.context = this;
-        Resources.font = Typeface.createFromAsset(getAssets(), "shag_lounge.otf");
+        Resources.loadFont(this);
 
         Intent intent = getIntent();
         Level level = (Level)intent.getSerializableExtra(LEVEL_PARAM_TAG);
@@ -41,6 +41,20 @@ public class GameActivity extends AndroidApplication {
         config.useWakelock = true;
 
         initialize(game, config);
+    }
 
+    public void launchStore(){
+        Intent intent = new Intent(this, StoreActivity.class);
+        startActivity(intent);
+    }
+
+    public void levelPackWon(){
+        //TODO: do
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //TODO: do
     }
 }

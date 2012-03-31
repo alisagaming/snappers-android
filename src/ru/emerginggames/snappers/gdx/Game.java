@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import ru.emerginggames.snappers.GameActivity;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelPackTable;
@@ -143,7 +144,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onShopBtn() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        ((GameActivity)Gdx.app).launchStore();
     }
 
     @Override
@@ -170,7 +171,6 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHintBtn() {
-        snappersStage.log();
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -200,7 +200,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void levelPackWon() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        ((GameActivity)Gdx.app).levelPackWon();
     }
 
 

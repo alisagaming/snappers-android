@@ -15,6 +15,7 @@ import android.widget.TextView;
  * Time: 17:24
  */
 public class OutlinedTextView extends TextView{
+    protected static final float SIZE_MULT_FIT = 0.5f;
     protected int strokeColor = Color.TRANSPARENT;
     protected int strokeWidth = 0;
     protected Bitmap textBitmap;
@@ -27,7 +28,8 @@ public class OutlinedTextView extends TextView{
     private boolean needResize = true;
     private boolean needRedraw = true;
     private boolean setTextSizeToFit = false;
-    private boolean isSquare = true;
+    private boolean isSquare;
+
 
     public OutlinedTextView(Context context) {
         super(context);
@@ -65,10 +67,15 @@ public class OutlinedTextView extends TextView{
         int gravity = getGravity();
         Rect rect = new Rect();
         textPaint.getTextBounds(text.toString(), 0, text.length(), rect);
-        if ((gravity & Gravity.CENTER_HORIZONTAL) != 0)
+        if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL)
             posx = (getWidth() - rect.width())/2 - rect.left;
-        if ((gravity & Gravity.CENTER_VERTICAL) != 0)
+        if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL)
             posy = (getHeight() -rect.top)/2;
+        if ((gravity & Gravity.RIGHT) == Gravity.RIGHT)
+            posx = getWidth() - rect.right - strokeWidth - getPaddingRight();
+        if ((gravity & Gravity.TOP) == Gravity.TOP)
+            posy = getPaddingTop() + strokeWidth - Math.round(fontMetrics.ascent);
+
 
         canvas.drawText(text, 0, text.length(), posx, posy, outlinePaint);
         canvas.drawText(text, 0, text.length(), posx, posy, textPaint);
@@ -80,7 +87,9 @@ public class OutlinedTextView extends TextView{
         setTextSizeToFit = toFit;
     }
 
-
+    public void setSquare(boolean square) {
+        isSquare = square;
+    }
 
     protected void setTextSizeToFit(){
         CharSequence text = getText();
@@ -96,7 +105,7 @@ public class OutlinedTextView extends TextView{
 
             float textHeight = getLineHeight();
             textWidth = Math.max(textWidth, textHeight);
-            size = (float)Math.ceil(size * width/ textWidth) * 0.7f;
+            size = (float)Math.ceil(size * width/ textWidth) * SIZE_MULT_FIT;
             setTextSize(size);
             return;
         }
@@ -112,7 +121,7 @@ public class OutlinedTextView extends TextView{
         if (newHeight > height){
             size = (float)Math.ceil(size * height/newHeight);
         }
-        setTextSize(size * 0.8f);
+        setTextSize(size * SIZE_MULT_FIT);
 
         //int height = super.
         needRedraw = true;
@@ -185,67 +194,4 @@ public class OutlinedTextView extends TextView{
         return (int)Math.ceil(outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2);
     }
 
-    @Override
-    public void setHeight(int pixels) {
-        super.setHeight(pixels);
-    }
-
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int wOld = getMeasuredWidth();
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (wOld == 0)
-            return;
-        int w = getMeasuredWidth();
-        /*if (getWidth() == 0 || getWidth() < w)
-            return;*/
-
-        //to make it squared
-        setMeasuredDimension(w, w);
-    }
-    /*    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        int width;
-        int height;
-
-        Rect rect = new Rect();
-        CharSequence text = getText();
-        textPaint.setTextSize(getTextSize());
-
-        textPaint.getTextBounds(text.toString(), 0, text.length(), rect);
-
-        if (widthMode == MeasureSpec.EXACTLY) {
-            // Parent has told us how big to be. So be it.
-            width = widthSize;
-        } else {
-            
-            width = Math.max(rect.width() + strokeWidth * 2, getSuggestedMinimumWidth());
-            width += getCompoundPaddingLeft() + getCompoundPaddingRight();
-
-            if (widthMode == MeasureSpec.AT_MOST) {
-                width = Math.min(width, widthSize);
-            }
-        }
-
-        if (heightMode == MeasureSpec.EXACTLY) {
-            // Parent has told us how big to be. So be it.
-            height = heightSize;
-        } else {
-
-            height = Math.max(rect.height() + strokeWidth * 2, getSuggestedMinimumHeight());
-            width += getCompoundPaddingTop() + getCompoundPaddingBottom();
-
-            if (heightMode == MeasureSpec.AT_MOST) {
-                height = Math.min(height, heightSize);
-            }
-        }
-
-        setMeasuredDimension(width, height);
-    }*/
 }

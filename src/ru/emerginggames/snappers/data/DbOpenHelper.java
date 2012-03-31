@@ -53,7 +53,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
          * before opening the database. In all cases opening the database copies
          * the database in internal storage to the cache.
          */
-        getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
+
 
         if (createDatabase) {
             /*
@@ -95,7 +96,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             } catch (IOException e) {
                 throw new Error("Error copying database");
             }
-        }
+        } else
+            db.close();
 
     }
 

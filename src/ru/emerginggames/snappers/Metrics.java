@@ -47,6 +47,8 @@ public class Metrics {
     public static int menuWidth;
     public static int menuHeight;
     public static SizeMode sizeMode;
+
+    public static boolean initDone = false;
     
 
     public static void setSize(int width, int height){
@@ -57,6 +59,7 @@ public class Metrics {
         setMetrics();
         setSnapperMult();
         Resources.init();
+        initDone = true;
     }
 
     static void setScreenMode(int width){

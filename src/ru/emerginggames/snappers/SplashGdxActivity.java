@@ -2,7 +2,9 @@ package ru.emerginggames.snappers;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import ru.emerginggames.snappers.data.DbOpenHelper;
@@ -17,9 +19,9 @@ import ru.emerginggames.snappers.gdx.Splash;
  * Time: 23:49
  */
 public class SplashGdxActivity extends AndroidApplication {
-    private static final int SPLASH_TIME = 3000;
-    public static final String PREFERENCES = "preferences";
-    private Thread splashTread;
+    private static final int SPLASH_TIME = 2000;
+    AsyncTask<Integer, Integer, Integer> loadThread;
+
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -37,40 +39,56 @@ public class SplashGdxActivity extends AndroidApplication {
     }
 
     public void gotSize(int width, int height) {
-        if (splashTread == null) {
-            Metrics.setSize(width, height);
+        Metrics.setSize(width, height);
+    }
 
-            splashTread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        long time = System.currentTimeMillis();
-                        //LevelDbLoader.checkAndLoad(SplashGdxActivity.this, getSharedPreferences(PREFERENCES, MODE_PRIVATE));
-                        DbOpenHelper openHelper = new DbOpenHelper(SplashGdxActivity.this);
-                        openHelper.initializeDataBase();
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-                        synchronized (this) {
-                            wait(10);
+        if (loadThread != null)
+            return;
+
+        loadThread = new AsyncTask<Integer, Integer, Integer>(){
+            @Override
+            protected Integer doInBackground(Integer... params) {
+                long startTime = System.currentTimeMillis();
+                DbOpenHelper openHelper = new DbOpenHelper(SplashGdxActivity.this);
+                openHelper.initializeDataBase();
+
+                long now = System.currentTimeMillis();
+                if (now - startTime < SPLASH_TIME)
+                    try{
+                        synchronized (this){
+                            wait(SPLASH_TIME - (now - startTime));
                         }
-
-                        Resources.preload();
-                        time = SPLASH_TIME - (System.currentTimeMillis() - time);
-                        if (time < 1)
-                            time = 1;
-
-                        synchronized (this) {
-                            wait(time);
-                        }
-                    } catch (InterruptedException e) {
-                    } finally {
-                        //setSize();
-                        //Resources.createFrames();
-                        finish();
-                        startActivity(new Intent(SplashGdxActivity.this, SelectLevelActivity.class));
                     }
-                }
-            };
-            splashTread.start();
-        }
+                    catch (InterruptedException ex){}
+
+                while (!Metrics.initDone)
+                    try{
+                        synchronized (this){
+                            wait(100);
+                        }
+                    }
+                    catch (InterruptedException ex){}
+
+                this.publishProgress(1);
+                Resources.preload();
+                return null;
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                finish();
+                startActivity(new Intent(SplashGdxActivity.this, SelectLevelActivity.class));
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                SplashGdxActivity.this.loadThread = null;
+            }
+        };
+        loadThread.execute();
     }
 }

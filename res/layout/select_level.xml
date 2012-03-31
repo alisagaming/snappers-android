@@ -3,27 +3,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-<ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/score"
-        android:layout_height="wrap_content" android:layout_width="wrap_content"
-                                                 android:layout_gravity="right|top"/>
-    <android.support.v4.view.ViewPager android:id="@+id/pager"
-           android:layout_height="fill_parent" android:layout_width="fill_parent"
-           android:padding="5dp"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+              android:background="@drawable/bgd"
+              android:id="@+id/root"
+        >
+<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+    <LinearLayout android:id="@+id/resLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="#80FF0000"
+            />
+
+    <LinearLayout android:id="@+id/bgLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
+                  android:background="#80FF0000"
+            />
+
+    <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/score"
+                                                     android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="top|right"
+                                                     android:textColor="#FFFFFFFF" android:textSize="30dp" android:padding="5dp"
+                                                     android:layout_weight="1"
+                                                     android:text="Score:"
+            />
+
+</LinearLayout>
+
+    <ru.emerginggames.snappers.view.SquaredPager android:id="@+id/pager"
+           android:layout_height="wrap_content" android:layout_width="fill_parent"
             />
 
     <com.viewpagerindicator.CirclePageIndicator
             android:id="@+id/indicator"
-            android:padding="10dip"
+            android:padding="20dip"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:background="#FFCCCCCC"
-            app:radius="10dp"
-            app:fillColor="#FF888888"
-            app:pageColor="#88FF0000"
-            app:strokeColor="#FF000000"
-            app:strokeWidth="2dp"
+            app:radius="7dp"
+            app:fillColor="#FFFFFF"
+            app:pageColor="#444444"
+            app:strokeWidth="0dp"
             />
+
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="100dp"
+                  android:orientation="horizontal"
+                  android:layout_gravity="bottom" android:layout_weight="1"
+                  android:weightSum="100"
+            >
+        <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="20"/>
+
+
+        <ImageView android:id="@+id/shopButton" android:layout_width="0dp" android:layout_height="wrap_content"
+                     android:src="@drawable/store_button" android:layout_weight="60"
+                     android:layout_gravity="bottom"
+                     android:scaleType="fitCenter"
+                     android:clickable="true"
+                     android:onClick="onStoreButtonClick"
+                />
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="20"/>
+    </LinearLayout>
 
 
 </LinearLayout>

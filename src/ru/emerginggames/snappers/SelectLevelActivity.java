@@ -1,17 +1,21 @@
 package ru.emerginggames.snappers;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
+import ru.emerginggames.snappers.view.OutlinedTextView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,10 +26,12 @@ import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 public class SelectLevelActivity extends FragmentActivity implements IOnItemSelectedListener {
     LevelPack pack;
     private LevelPageAdapter adapter;
-    protected Thread bgLoadThread;
+    AsyncTask<Integer, Integer, Integer> preloadTask;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.select_level);
         pack = LevelPackTable.get(1, this);
         pack.levels = LevelTable.getLevels(this, pack.id);
@@ -39,6 +45,15 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
         mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
 
+        Resources.loadFont(this);
+        OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
+        scoreView.setStroke(Color.BLACK, 2);
+        scoreView.setTypeface(Resources.font);
+        int textSize = getWindowManager().getDefaultDisplay().getWidth()/10;
+        scoreView.setTextSize(textSize);
+        scoreView.setPadding(0, textSize/4, textSize/4, 0);
+        int rootPadding = getWindowManager().getDefaultDisplay().getHeight()/40;
+        findViewById(R.id.root).setPadding(0, 0 , 0, rootPadding);
     }
 
     @Override
@@ -46,7 +61,8 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
         LevelPack pack2 = LevelPackTable.get(pack.id, this);
         pack.levelsUnlocked = pack2.levelsUnlocked;
         super.onResume();
-        startBgPreload();
+        startPreload();
+
     }
 
     @Override
@@ -57,18 +73,42 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
         startActivity(intent);
     }
 
-    protected void startBgPreload(){
-        if (bgLoadThread != null)
+    public void onStoreButtonClick(View v){
+        startActivity(new Intent(this, StoreActivity.class));
+    }
+
+    protected void startPreload(){
+        if (preloadTask != null)
             return;
-        bgLoadThread = new Thread(){
+
+        findViewById(R.id.resLoadIndicator).setBackgroundColor(0x80800000);
+        findViewById(R.id.bgLoadIndicator).setBackgroundColor(0x80800000);
+
+        preloadTask = new AsyncTask<Integer, Integer, Integer>(){
             @Override
-            public void run() {
-                Resources.preloadBg(SelectLevelActivity.this.pack.background);
+            protected Integer doInBackground(Integer... params) {
                 Resources.preparePreload();
-                SelectLevelActivity.this.bgLoadThread = null;
+                this.publishProgress(1);
+                Resources.preloadBg(SelectLevelActivity.this.pack.background);
+                this.publishProgress(2);
+                return null;
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                if (values[0] == 1)
+                    findViewById(R.id.resLoadIndicator).setBackgroundColor(0x80008000);
+                else if (values[0] == 2)
+                    findViewById(R.id.bgLoadIndicator).setBackgroundColor(0x80008000);
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                SelectLevelActivity.this.preloadTask = null;
             }
         };
-        bgLoadThread.run();
+
+        preloadTask.execute();
 
     }
 }

@@ -113,6 +113,7 @@ public class Resources {
     }
 
     private static void loadSnapperTextures(boolean isGold){
+        preload();
         int snapperSize = Metrics.snapperSize;
 
         snapperTexture = new Texture(Preload.snappers);
@@ -253,12 +254,18 @@ public class Resources {
     }
 
     protected static void createPreload(){
-        Preload.eyes = new ResizedFileTextureData(Gdx.files.internal(dir + "eyes.png"), Pixmap.Format.RGBA4444);
-        Preload.eyeShadow = new ResizedFileTextureData(Gdx.files.internal(dir + "eyeShadow.png"),  Pixmap.Format.RGBA4444);
-        Preload.snappers = new ResizedFileTextureData(Gdx.files.internal(dir + "back.png"), Pixmap.Format.RGBA4444);
-        Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
-        Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
-        Preload.squareButtons = new FileTextureData(Gdx.files.internal(dir + "btn-sq.png"), null, Pixmap.Format.RGBA8888, false);
+        if (Preload.eyes == null)
+            Preload.eyes = new ResizedFileTextureData(Gdx.files.internal(dir + "eyes.png"), Pixmap.Format.RGBA4444);
+        if (Preload.eyeShadow == null)
+            Preload.eyeShadow = new ResizedFileTextureData(Gdx.files.internal(dir + "eyeShadow.png"),  Pixmap.Format.RGBA4444);
+        if (Preload.snappers == null)
+            Preload.snappers = new ResizedFileTextureData(Gdx.files.internal(dir + "back.png"), Pixmap.Format.RGBA4444);
+        if (Preload.bang == null)
+            Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
+        if (Preload.blast == null)
+            Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
+        if (Preload.squareButtons == null)
+            Preload.squareButtons = new FileTextureData(Gdx.files.internal(dir + "btn-sq.png"), null, Pixmap.Format.RGBA8888, false);
     }
 
     public static void preparePreload(){
@@ -314,5 +321,10 @@ public class Resources {
         if (Preload.bg.isPrepared())
             Preload.bg.consumePixmap().dispose();
         Preload.bg = null;
+    }
+
+    public static void loadFont(Context context){
+        if (font == null)
+            font = Typeface.createFromAsset(context.getAssets(), "shag_lounge.otf");
     }
 }

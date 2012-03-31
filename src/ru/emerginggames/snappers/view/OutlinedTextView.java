@@ -15,7 +15,7 @@ import android.widget.TextView;
  * Time: 17:24
  */
 public class OutlinedTextView extends TextView{
-    protected static final float SIZE_MULT_FIT = 0.5f;
+    protected static final float SIZE_MULT_FIT = 0.6f;
     protected int strokeColor = Color.TRANSPARENT;
     protected int strokeWidth = 0;
     protected Bitmap textBitmap;

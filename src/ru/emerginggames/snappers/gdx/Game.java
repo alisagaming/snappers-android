@@ -107,7 +107,6 @@ public class Game implements ApplicationListener, IGameEventListener {
             currentStage.act(delta);
             currentStage.draw();
         }
-        logger.log();
 
         batch.begin();
 

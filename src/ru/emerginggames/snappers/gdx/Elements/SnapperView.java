@@ -16,7 +16,8 @@ import ru.emerginggames.snappers.gdx.Resources;
 public class SnapperView extends Actor {
     private static final float SHADOW_MULT = 1.125f;
     private static final float SHADOW_OPACITY = 0.6f;
-    private static final float EYE_FRAME_TIME = 0.05f;
+    private static final float EYE_FRAME_TIME = 0.04f;
+    private static final float EYE_FRAME_TIME_DEVIATION = 0.3f;
     public int state;
     public int i;
     public int j;
@@ -35,8 +36,9 @@ public class SnapperView extends Actor {
         snapper = new Sprite(Resources.snapperBack[1]);
         shadow = new Sprite(Resources.shadowSnapper);
         shadow.setColor(1, 1, 1, SHADOW_OPACITY);
-        eyes = new AnimatedSprite(Resources.eyeFrames, EYE_FRAME_TIME, true);
-        eyeShadow = new AnimatedSprite(Resources.eyeShadowFrames, EYE_FRAME_TIME, true);
+        float frameTime = EYE_FRAME_TIME * ( 1 + (float)Math.random() * EYE_FRAME_TIME_DEVIATION * 2 - EYE_FRAME_TIME_DEVIATION);
+        eyes = new AnimatedSprite(Resources.eyeFrames, frameTime, true);
+        eyeShadow = new AnimatedSprite(Resources.eyeShadowFrames, frameTime, true);
         eyeShadow.setOpacity(SHADOW_OPACITY);
         width = Metrics.snapperSize;
         height = Metrics.snapperSize;

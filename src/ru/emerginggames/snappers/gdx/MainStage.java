@@ -35,7 +35,7 @@ import java.util.List;
 public class MainStage extends Stage implements ILogicListener {
     private static final float BLAST_ANIMATION_TIME = 0.1f;
     protected static final float POP_SOUND_DISTANCE = 0.1f;
-    protected static final float BANG_FRAME_DURATION = 0.15f;
+    protected static final float BANG_FRAME_DURATION = 0.12f;
     private Animation blastAnimation;
     private final GameLogic logic;
 

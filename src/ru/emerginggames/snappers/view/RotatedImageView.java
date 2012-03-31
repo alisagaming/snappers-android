@@ -88,7 +88,7 @@ public class RotatedImageView extends View {
         drawBitmap(sourceId, scale, canvas, p, Bitmap.Config.RGB_565);
         //canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), p);
         if (sourceBgId != 0)
-            drawBitmap(sourceBgId, scale*1f, canvas, p, Bitmap.Config.ARGB_8888);
+            drawBitmap(sourceBgId, scale, canvas, p, Bitmap.Config.ARGB_8888);
     }
 
     private void drawBitmap(int id, float scale, Canvas canvas, Paint p, Bitmap.Config config){
@@ -163,8 +163,8 @@ public class RotatedImageView extends View {
                 rotatedScaledWidth = w = Math.round(imgWidth * h/imgHeight);
         }
         scale = rotatedScaledWidth / rotatedWidth;
-        if (scale > 0.95 && scale < 1.2)
-            scale = 1;
+        //if (scale > 1 && scale < 1.2)
+        //    scale = 1;
 
         setMeasuredDimension(w, h);
     }

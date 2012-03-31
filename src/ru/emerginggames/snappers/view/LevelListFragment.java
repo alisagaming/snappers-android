@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import ru.emerginggames.snappers.R;
+import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.LevelPack;
 
 /**
@@ -56,15 +57,18 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LinearLayout layout = new LinearLayout(getActivity());
+        RelPaddedLinearLayout layout = new RelPaddedLinearLayout(getActivity());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
         layout.setLayoutParams(params);
+        layout.setMultiplier(0.1f);
+
+        //layout.setPadding(25, 25, 25, 25);
         layout.setGravity(Gravity.CENTER);
         layout.setOrientation(LinearLayout.VERTICAL);
         int num = startFromLevel;
 
         LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT, 1f);
-        itemParams.setMargins(3,3,3,3);
+        itemParams.setMargins(6,6,6,6);
 
 
         for (int i=0; i<5; i++){
@@ -82,6 +86,8 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
                 text.setTextSizeToFit(true);
                 text.setSquare(true);
                 text.setHorizontallyScrolling(false);
+                if (Resources.font != null)
+                    text.setTypeface(Resources.font);
                 layoutRow.addView(text);
 
                 items.put(num, text);

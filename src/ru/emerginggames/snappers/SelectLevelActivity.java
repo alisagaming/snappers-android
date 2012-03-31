@@ -47,7 +47,6 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         com.viewpagerindicator.CirclePageIndicator
         mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
-
     }
 
     @Override

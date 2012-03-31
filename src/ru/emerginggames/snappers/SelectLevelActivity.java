@@ -23,37 +23,31 @@ import ru.emerginggames.snappers.view.OutlinedTextView;
  * Date: 23.03.12
  * Time: 16:27
  */
-public class SelectLevelActivity extends FragmentActivity implements IOnItemSelectedListener {
+public class SelectLevelActivity extends PaginatedSelectorActivity implements IOnItemSelectedListener {
+    public static final String LEVEL_PACK_TAG = "Level pack";
     LevelPack pack;
     private LevelPageAdapter adapter;
     AsyncTask<Integer, Integer, Integer> preloadTask;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.select_level);
-        pack = LevelPackTable.get(1, this);
+
+        Intent intent = getIntent();
+        if (!intent.hasExtra(LEVEL_PACK_TAG))
+            finish();
+        pack = (LevelPack)intent.getSerializableExtra(LEVEL_PACK_TAG);
         pack.levels = LevelTable.getLevels(this, pack.id);
 
         adapter = new LevelPageAdapter(getSupportFragmentManager(), pack, this);
 
         ViewPager pager = (ViewPager)findViewById(R.id.pager);
         pager.setAdapter(adapter);
+        pager.setPageMargin(20);
 
         com.viewpagerindicator.CirclePageIndicator
         mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
 
-        Resources.loadFont(this);
-        OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
-        scoreView.setStroke(Color.BLACK, 2);
-        scoreView.setTypeface(Resources.font);
-        int textSize = getWindowManager().getDefaultDisplay().getWidth()/10;
-        scoreView.setTextSize(textSize);
-        scoreView.setPadding(0, textSize/4, textSize/4, 0);
-        int rootPadding = getWindowManager().getDefaultDisplay().getHeight()/40;
-        findViewById(R.id.root).setPadding(0, 0 , 0, rootPadding);
     }
 
     @Override
@@ -72,10 +66,8 @@ public class SelectLevelActivity extends FragmentActivity implements IOnItemSele
         intent.putExtra(GameActivity.LEVEL_PACK_PARAM_TAG, pack);
         startActivity(intent);
     }
+    
 
-    public void onStoreButtonClick(View v){
-        startActivity(new Intent(this, StoreActivity.class));
-    }
 
     protected void startPreload(){
         if (preloadTask != null)

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import ru.emerginggames.snappers.GameActivity;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 
@@ -118,6 +119,10 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         pack.isGold = cursor.getInt(4)>0;
         pack.isUnlocked = cursor.getInt(5)>0;
         pack.levelsUnlocked = cursor.getInt(6);
+        if (GameActivity.DEBUG){
+            pack.isUnlocked = true;
+            pack.levelsUnlocked = 1000;
+        }
 
         return pack;
     }

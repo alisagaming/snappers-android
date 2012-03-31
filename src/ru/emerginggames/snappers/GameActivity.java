@@ -18,6 +18,7 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Time: 16:23
  */
 public class GameActivity extends AndroidApplication {
+    public static final boolean DEBUG = true;
     public static final String LEVEL_PARAM_TAG = "Level";
     public static final String LEVEL_PACK_PARAM_TAG = "Level pack";
 

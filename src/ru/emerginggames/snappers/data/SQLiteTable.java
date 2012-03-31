@@ -79,6 +79,8 @@ public abstract class SQLiteTable<T> {
         if (mCursor == null)
             return null;
 
+        if (mCursor.getCount() < 1)
+            return null;
         mCursor.moveToFirst();
         T result = parseFromCursor(mCursor);
         mCursor.close();

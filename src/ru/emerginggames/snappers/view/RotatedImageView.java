@@ -1,12 +1,17 @@
 package ru.emerginggames.snappers.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,6 +31,8 @@ public class RotatedImageView extends View {
     protected float rotatedHeight = 0;
     float angle;
     float scale;
+    int shiftX;
+    int shiftY;
     int rotatedScaledWidth;
     int rotatedScaledHeight;
     boolean calculated = false;
@@ -84,17 +91,14 @@ public class RotatedImageView extends View {
         Canvas canvas = new Canvas(preparedBitmap);
         Paint p = new Paint();
         p.setFilterBitmap(true);
-        //p.setColor(0x80000000);
         drawBitmap(sourceId, scale, canvas, p, Bitmap.Config.RGB_565);
-        //canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), p);
         if (sourceBgId != 0)
             drawBitmap(sourceBgId, scale, canvas, p, Bitmap.Config.ARGB_8888);
     }
 
     private void drawBitmap(int id, float scale, Canvas canvas, Paint p, Bitmap.Config config){
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inPreferredConfig = config;
-        Bitmap img = BitmapFactory.decodeResource(mContext.getResources(), id, opts);
+        Bitmap img = getBitmapUnscaled(id, config);
+
         Matrix matr = new Matrix();
 
         int resW = getMeasuredWidth();
@@ -105,26 +109,29 @@ public class RotatedImageView extends View {
         RectF sourceRect = new RectF(0, 0, img.getWidth(), img.getHeight());
         RectF destRect = new RectF( (resW - newW)/2, (resH - newH)/2, (resW + newW)/2, (resH + newH)/2 );
         matr.setRectToRect(sourceRect, destRect, Matrix.ScaleToFit.CENTER);
-
-
-
-        matr.postRotate(angle);
+        matr.postRotate(angle, resW/2, resH/2);
+        matr.postTranslate(shiftX, shiftY);
 
         canvas.drawBitmap(img, matr, p);
-
     }
 
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
         int hSize = MeasureSpec.getSize(heightMeasureSpec);
 
         int wMode = MeasureSpec.getMode(widthMeasureSpec);
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        if (!calculated)
+
+        int maxShift = Math.min(wSize, hSize) /50;
+        if (!calculated){
             calculateRotatedSize();
+            shiftX = (int)Math.round(Math.random()*maxShift*2 - maxShift);
+            shiftY = (int)Math.round(Math.random()*maxShift*2 - maxShift);
+        }
         float imgWidth = rotatedWidth;
         float imgHeight = rotatedHeight;
         
@@ -135,9 +142,9 @@ public class RotatedImageView extends View {
             setMeasuredDimension(wSize, hSize);
             return;
         }
-        
-        int h = rotatedScaledHeight = hSize = Math.max(hSize - getPaddingTop() - getPaddingBottom(), getSuggestedMinimumHeight());
-        int w = rotatedScaledWidth = wSize = Math.max(wSize - getPaddingLeft() - getPaddingRight(), getSuggestedMinimumWidth());
+
+        int h = rotatedScaledHeight = hSize = Math.max(hSize - getPaddingTop() - getPaddingBottom() - maxShift, getSuggestedMinimumHeight());
+        int w = rotatedScaledWidth = wSize = Math.max(wSize - getPaddingLeft() - getPaddingRight() - maxShift, getSuggestedMinimumWidth());
 
         if ((hMode == MeasureSpec.EXACTLY && wMode == MeasureSpec.EXACTLY) ){
             if (imgWidth/w > imgHeight/h)
@@ -163,10 +170,10 @@ public class RotatedImageView extends View {
                 rotatedScaledWidth = w = Math.round(imgWidth * h/imgHeight);
         }
         scale = rotatedScaledWidth / rotatedWidth;
-        //if (scale > 1 && scale < 1.2)
-        //    scale = 1;
+        if (scale > 0.98 && scale < 1.1)
+            scale = 1;
 
-        setMeasuredDimension(w, h);
+        setMeasuredDimension(wSize, hSize);
     }
 
     protected void calculateRotatedSize(){
@@ -186,4 +193,37 @@ public class RotatedImageView extends View {
         calculated = true;
     }
 
+    protected float calcHeight(float w, float h, float scale){
+        float rAngle = (float)(angle / 180 * Math.PI);
+        return  (float)(Math.abs(h * Math.cos(rAngle)) + Math.abs(w * Math.sin(rAngle))) * scale;
+    }
+
+
+    private Bitmap getBitmapUnscaled(int id, Bitmap.Config config){
+        Resources res = mContext.getResources();
+        Bitmap bm = null;
+        InputStream is = null;
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inPreferredConfig = config;
+
+        try {
+            final TypedValue value = new TypedValue();
+            is = res.openRawResource(id, value);
+            value.density = TypedValue.DENSITY_NONE;
+            bm = BitmapFactory.decodeResourceStream(res, value, is, null, opts);
+        } catch (Exception e) {
+            /*  do nothing.
+                If the exception happened on open, bm will be null.
+                If it happened on close, bm is still valid.
+            */
+        } finally {
+            try {
+                if (is != null) is.close();
+            } catch (IOException e) {
+                // Ignore
+            }
+        }
+
+        return bm;
+    }
 }

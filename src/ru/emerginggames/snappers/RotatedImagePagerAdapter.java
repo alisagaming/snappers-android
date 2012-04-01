@@ -44,7 +44,7 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
         view.setImageBg(shadowIds[position]);
         view.setTag(position);
         view.setOnClickListener(this);
-        container.addView(view, position);
+        container.addView(view);
         return view;
     }
 

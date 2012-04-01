@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,12 +14,13 @@ import android.view.ViewGroup;
  * Date: 31.03.12
  * Time: 2:31
  */
-public class SquaredPager extends ViewPager{
-    public SquaredPager(Context context) {
+public class FixedRatioPager extends ViewPager{
+    float mRatio = 0;
+    public FixedRatioPager(Context context) {
         super(context);
     }
 
-    public SquaredPager(Context context, AttributeSet attrs) {
+    public FixedRatioPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -26,11 +28,29 @@ public class SquaredPager extends ViewPager{
         setChildrenDrawingOrderEnabled(currentChildOnTop);
     }
 
+    public void setRatio(float mRatio) {
+        this.mRatio = mRatio;
+        if (mRatio == 0)
+            return;
+        ViewGroup.LayoutParams _lp = getLayoutParams();
+        if (_lp instanceof LinearLayout.LayoutParams){
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)_lp;
+            lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            lp.weight = 0;
+            setLayoutParams(lp);
+        }
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mRatio == 0){
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
+
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
-        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(wSize, hMode));
+        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(Math.round(wSize * mRatio), hMode));
     }
 
     @Override

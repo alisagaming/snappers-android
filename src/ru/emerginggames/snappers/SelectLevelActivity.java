@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.LevelPack;
+import ru.emerginggames.snappers.view.FixedRatioPager;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.OutlinedTextView;
 
@@ -40,13 +43,20 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
 
         adapter = new LevelPageAdapter(getSupportFragmentManager(), pack, this);
 
-        ViewPager pager = (ViewPager)findViewById(R.id.pager);
+        FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setPageMargin(20);
+        pager.setRatio(1);
+
 
         com.viewpagerindicator.CirclePageIndicator
         mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
+        
+        View footer = findViewById(R.id.footer);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)footer.getLayoutParams();
+        lp.weight = 1;
+        footer.setLayoutParams(lp);
     }
 
     @Override

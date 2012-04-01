@@ -1,19 +1,12 @@
 package ru.emerginggames.snappers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
-import ru.emerginggames.snappers.view.SquaredPager;
-
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import ru.emerginggames.snappers.view.FixedRatioPager;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,12 +30,11 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
         int overlap = getWindowManager().getDefaultDisplay().getWidth()/3;
 
-        SquaredPager pager = (SquaredPager)findViewById(R.id.pager);
+        FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setPageMargin(- overlap);
         pager.setOffscreenPageLimit(3);
         pager.setCurrentChildOnTop(true);
-
 
         com.viewpagerindicator.CirclePageIndicator
                 mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);

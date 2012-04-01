@@ -1,4 +1,4 @@
-<LevelPack background="board-green.jpg" title="Tough" shadows="YES">
+<LevelPack background="board-green.jpg" title="Tough" shadows="YES" isPremium="YES">
 
 
 <level number="1" complexity="12" zappers="110211031130011012411010141000" solutions="13;" tapsCount="1" />

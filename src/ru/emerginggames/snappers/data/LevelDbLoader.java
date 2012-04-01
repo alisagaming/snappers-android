@@ -3,6 +3,8 @@ package ru.emerginggames.snappers.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -11,7 +13,6 @@ import ru.emerginggames.snappers.model.LevelPack;
 
 
 import java.io.InputStream;
-import java.util.logging.ConsoleHandler;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,38 +24,67 @@ public class LevelDbLoader {
     private static final String LEVELS_LOADED_VERSION_TAG = "LEVELS DATABASE VERSION";
 
     private Context context;
-    private SharedPreferences prefs;
     private AssetManager assets;
     LevelPackTable levelPackTable;
     LevelTable levelTable;
+    SQLiteOpenHelper helper;
+    SQLiteDatabase db;
     
-    public LevelDbLoader(Context context, SharedPreferences prefs) {
+    public LevelDbLoader(Context context) {
         this.context = context;
-        this.prefs = prefs;
+        assets = context.getAssets();
+        helper = new DbCreatorOpenHelper(context);
+    }
+
+    public LevelDbLoader(Context context, SQLiteDatabase db) {
+        this.context = context;
+        assets = context.getAssets();
+        this.db = db;
+    }
+
+    public LevelDbLoader(Context context, SQLiteOpenHelper helper) {
+        this.context = context;
+        this.helper = helper;
         assets = context.getAssets();
     }
 
     public static void checkAndLoad(Context context, SharedPreferences prefs){
-        if (prefs.getInt(LEVELS_LOADED_VERSION_TAG, 0) != DbOpenHelper.DATABASE_VERSION){
-            LevelDbLoader loader = new LevelDbLoader(context, prefs);
-            LevelPack pack1 = loader.loadLevelPack("LevelPack1");
-            loader.levelPackTable.unlockLevelPack(pack1.id);
-            loader.loadLevelPack("LevelPack2");
-            loader.loadLevelPack("LevelPack3");
-            loader.loadLevelPack("LevelPack4");
-            loader.loadLevelPack("LevelPack5");
-            loader.loadLevelPack("LevelPack6");
-            loader.loadLevelPack("LevelPack7");
-            loader.loadLevelPack("PremiumLevelPack1");
-            loader.loadLevelPack("PremiumLevelPack2");
-            loader.loadLevelPack("PremiumLevelPack3");
-            loader.loadLevelPack("PremiumLevelPack4");
-            loader.levelTable.close();
-            loader.levelPackTable.close();
-            
+        if (prefs.getInt(LEVELS_LOADED_VERSION_TAG, 0) != DbCopyOpenHelper.DATABASE_VERSION){
+            LevelDbLoader loader = new LevelDbLoader(context);
+            loader.load();
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(LEVELS_LOADED_VERSION_TAG, DbOpenHelper.DATABASE_VERSION);
+            editor.putInt(LEVELS_LOADED_VERSION_TAG, DbCopyOpenHelper.DATABASE_VERSION);
             editor.commit();
+        }
+    }
+
+    public void load(){
+        if (db != null){
+            levelTable = new LevelTable(db);
+            levelPackTable = new LevelPackTable(db);
+        } else {
+            levelTable  = new LevelTable(helper);
+            levelTable.open(true);
+            levelPackTable = new LevelPackTable(helper);
+            levelPackTable.open(true);
+        }
+        LevelPack pack1 = loadLevelPack("LevelPack1");
+        levelPackTable.unlockLevelPack(pack1.id);
+        loadLevelPack("LevelPack2");
+        loadLevelPack("LevelPack3");
+        loadLevelPack("LevelPack4");
+        loadLevelPack("LevelPack5");
+        loadLevelPack("LevelPack6");
+        loadLevelPack("LevelPack7");
+        loadLevelPack("PremiumLevelPack1");
+        loadLevelPack("PremiumLevelPack2");
+        loadLevelPack("PremiumLevelPack3");
+        loadLevelPack("PremiumLevelPack4");
+        if (db != null)
+            db.close();
+        else {
+            levelTable.close();
+            levelPackTable.close();
         }
     }
 
@@ -103,6 +133,8 @@ public class LevelDbLoader {
                 pack.title = xpp.getAttributeValue(i);
             else if (xpp.getAttributeName(i).equalsIgnoreCase("isGold"))
                 pack.shadows = xpp.getAttributeValue(i).equalsIgnoreCase("yes");
+            else if (xpp.getAttributeName(i).equalsIgnoreCase("isPremium"))
+                pack.isPremium = xpp.getAttributeValue(i).equalsIgnoreCase("yes");
         }
 
         pack.isUnlocked = false;

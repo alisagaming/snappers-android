@@ -2,5 +2,5 @@
 <resources>
     <string name="app_name">Snappers</string>
     <string name="your_ad_here">Your Ad Here</string>
-    <item type="string" name="databaseVersion" format="integer">1</item>
+    <item type="string" name="databaseVersion" format="integer">2</item>
 </resources>

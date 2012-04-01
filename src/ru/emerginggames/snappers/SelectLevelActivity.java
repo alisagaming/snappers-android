@@ -15,6 +15,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Resources;
+import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.FixedRatioPager;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
@@ -39,7 +40,7 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         if (!intent.hasExtra(LEVEL_PACK_TAG))
             finish();
         pack = (LevelPack)intent.getSerializableExtra(LEVEL_PACK_TAG);
-        pack.levels = LevelTable.getLevels(this, pack.id);
+        pack.levelCount = LevelTable.countLevels(this, pack.id);
 
         adapter = new LevelPageAdapter(getSupportFragmentManager(), pack, this);
 
@@ -71,7 +72,8 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
     @Override
     public void onItemSelected(int number) {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GameActivity.LEVEL_PARAM_TAG, pack.levels[number - 1]);
+        Level level = LevelTable.getLevel(this, number, pack.id);
+        intent.putExtra(GameActivity.LEVEL_PARAM_TAG, level);
         intent.putExtra(GameActivity.LEVEL_PACK_PARAM_TAG, pack);
         startActivity(intent);
     }

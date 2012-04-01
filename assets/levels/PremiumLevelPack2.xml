@@ -1,4 +1,4 @@
-<LevelPack background="elite-blue.jpg" shadows="YES" title="Premium" isGold="YES">
+<LevelPack background="elite-blue.jpg" shadows="YES" title="Premium" isGold="YES" isPremium="YES">
 
 
 <level number="1" complexity="100" zappers="214120030001010230320232011211" solutions="7,18,11;" tapsCount="3" />

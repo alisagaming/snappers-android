@@ -41,6 +41,7 @@ public class LevelPageAdapter extends FragmentPagerAdapter{
 
     @Override
     public int getCount() {
-        return (pack.levels.length - 1)/ LEVELS_PER_PAGE + 1;
+        //return (pack.levels.length - 1)/ LEVELS_PER_PAGE + 1;
+        return (pack.levelCount - 1)/ LEVELS_PER_PAGE + 1;
     }
 }

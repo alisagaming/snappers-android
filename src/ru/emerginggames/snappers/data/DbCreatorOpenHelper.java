@@ -6,19 +6,23 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-public class OldDbOpenHelper  extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+public class DbCreatorOpenHelper extends SQLiteOpenHelper {
+    Context mContext;
+    public static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "snappers_data";
+    boolean creareDb = false;
 
 
-    public OldDbOpenHelper(Context context) {
+    public DbCreatorOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         createTableLevels(db);
         createTableLevelPacks(db);
+        creareDb = true;
     }
 
     @Override
@@ -28,6 +32,7 @@ public class OldDbOpenHelper  extends SQLiteOpenHelper {
 
         createTableLevels(db);
         createTableLevelPacks(db);
+        creareDb = true;
     }
 
     private void createTableLevels(SQLiteDatabase db){
@@ -61,10 +66,21 @@ public class OldDbOpenHelper  extends SQLiteOpenHelper {
                 LevelPackTable.KEY_TITLE + " TEXT, " +
                 LevelPackTable.KEY_IS_GOLD + " INTEGER, " +
                 LevelPackTable.KEY_IS_UNLOCKED + " INTEGER, " +
+                LevelPackTable.KEY_IS_PREMIUM + " INTEGER, " +
                 LevelPackTable.KEY_UNLOCKED_LEVELS + " INTEGER " +
                 " );";
 
         db.execSQL(TABLE_CREATE);
+    }
+
+    public void initializeDataBase() {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (creareDb){
+            new LevelDbLoader(mContext, db).load();
+        }
+        db.close();
     }
 
 

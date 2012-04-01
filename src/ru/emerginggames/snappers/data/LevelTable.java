@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import ru.emerginggames.snappers.model.Level;
 
@@ -23,6 +24,14 @@ public class LevelTable  extends SQLiteTable<Level>{
     protected static final String KEY_TAPS_COUNT = "taps_count";
 
     protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_LEVEL_PACK_ID, KEY_NUMBER, KEY_COMPLEXITY, KEY_ZAPPERS, KEY_SOLUTIONS, KEY_TAPS_COUNT};
+
+    public LevelTable(SQLiteDatabase db) {
+        super(db);
+    }
+
+    public LevelTable(SQLiteOpenHelper helper) {
+        super(helper);
+    }
 
     public LevelTable(Context context) {
         super(context);

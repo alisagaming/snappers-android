@@ -6,11 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
-import ru.emerginggames.snappers.model.Level;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,6 +25,11 @@ public abstract class SQLiteTable<T> {
     protected SQLiteDatabase db;
     protected SQLiteStatement insertStmt;
 
+    protected SQLiteTable(SQLiteDatabase db) {
+        this.db = db;
+        if (!db.isReadOnly())
+            insertStmt = prepareInsertStatement();
+    }
 
     protected SQLiteTable(SQLiteOpenHelper helper) {
         this.helper = helper;
@@ -39,26 +41,23 @@ public abstract class SQLiteTable<T> {
 
     protected SQLiteTable(Context context, boolean isWriteable) {
         this.context = context;
-        openForInsertion(isWriteable);
+        open(isWriteable);
     }
 
     public void open(boolean isWriteable){
         if (helper == null)
-            helper = new DbOpenHelper(context);
+            helper = new DbCopyOpenHelper(context);
 
         if (isWriteable)
         {
             db = helper.getWritableDatabase();
+            insertStmt = prepareInsertStatement();
         }
         else
             db = helper.getReadableDatabase();
     }
 
-    public void openForInsertion(boolean isWriteable){
-        open(isWriteable);
-        if (isWriteable)
-            insertStmt = prepareInsertStatement();
-    }
+
 
     public void close(){
         if (db != null)
@@ -96,6 +95,7 @@ public abstract class SQLiteTable<T> {
     }
     
     public int count(String where){
+        //TODO: do counting
         Cursor mCursor = db.query(true, getTableName(), new String[] { KEY_ID}, where, null, null, null, null, null);
         if (mCursor == null)
             return 0;

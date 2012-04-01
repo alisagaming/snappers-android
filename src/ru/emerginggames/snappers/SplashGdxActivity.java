@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import ru.emerginggames.snappers.data.DbOpenHelper;
+import ru.emerginggames.snappers.data.DbCopyOpenHelper;
+import ru.emerginggames.snappers.data.DbCreatorOpenHelper;
 import ru.emerginggames.snappers.data.LevelDbLoader;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.Splash;
@@ -53,8 +53,12 @@ public class SplashGdxActivity extends AndroidApplication {
             @Override
             protected Integer doInBackground(Integer... params) {
                 long startTime = System.currentTimeMillis();
-                DbOpenHelper openHelper = new DbOpenHelper(SplashGdxActivity.this);
-                openHelper.initializeDataBase();
+                if (Settings.COPY_DB)
+                    new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
+                else
+                    new DbCreatorOpenHelper(SplashGdxActivity.this).initializeDataBase();
+
+
 
                 long now = System.currentTimeMillis();
                 if (now - startTime < SPLASH_TIME)

@@ -26,9 +26,14 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     protected static final String KEY_TITLE = "title";
     protected static final String KEY_IS_GOLD = "is_gold";
     protected static final String KEY_IS_UNLOCKED = "is_unlocked";
+    protected static final String KEY_IS_PREMIUM = "is_premium";
     protected static final String KEY_UNLOCKED_LEVELS = "unlocked_levels";
 
-    protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_BACKGROUND, KEY_SHADOWS, KEY_TITLE, KEY_IS_GOLD, KEY_IS_UNLOCKED, KEY_UNLOCKED_LEVELS};
+    protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_BACKGROUND, KEY_SHADOWS, KEY_TITLE, KEY_IS_GOLD, KEY_IS_UNLOCKED, KEY_IS_PREMIUM, KEY_UNLOCKED_LEVELS};
+
+    public LevelPackTable(SQLiteDatabase db) {
+        super(db);
+    }
 
     public LevelPackTable(SQLiteOpenHelper helper) {
         super(helper);
@@ -76,6 +81,11 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         return db.update(TABLE_NAME, values, KEY_ID + "=" + levelPackId, null) > 0;
     }
 
+    public void countLevels(LevelPack pack){
+        LevelTable levelTable = new LevelTable(db);
+        pack.levelCount = levelTable.countLevels(pack.id);
+    }
+
     @Override
     public long insert(LevelPack object) {
         if (insertStmt == null)
@@ -91,7 +101,8 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
                 KEY_TITLE + ", " +
                 KEY_IS_GOLD + ", " +
                 KEY_IS_UNLOCKED + ", " +
-                KEY_UNLOCKED_LEVELS + ") values (?, ?, ?, ?, ?, ?)";
+                KEY_IS_PREMIUM + ", " +
+                KEY_UNLOCKED_LEVELS + ") values (?, ?, ?, ?, ?, ?, ?)";
 
         return db.compileStatement(queryStr);
     }
@@ -104,7 +115,8 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         bindNullable(insertStmt, 3, pack.title);
         insertStmt.bindLong(4, pack.isGold ? 1 : 0);
         insertStmt.bindLong(5, pack.isUnlocked ? 1 : 0);
-        insertStmt.bindLong(6, pack.levelsUnlocked);
+        insertStmt.bindLong(6, pack.isPremium ? 1 : 0);
+        insertStmt.bindLong(7, pack.levelsUnlocked);
         return insertStmt;
     }
 
@@ -118,7 +130,8 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         pack.title = cursor.getString(3);
         pack.isGold = cursor.getInt(4)>0;
         pack.isUnlocked = cursor.getInt(5)>0;
-        pack.levelsUnlocked = cursor.getInt(6);
+        pack.isPremium = cursor.getInt(6)>0;
+        pack.levelsUnlocked = cursor.getInt(7);
         if (GameActivity.DEBUG){
             pack.isUnlocked = true;
             pack.levelsUnlocked = 1000;

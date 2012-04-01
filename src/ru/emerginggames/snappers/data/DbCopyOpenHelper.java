@@ -17,7 +17,7 @@ import java.io.OutputStream;
  * Date: 23.03.12
  * Time: 1:00
  */
-public class DbOpenHelper extends SQLiteOpenHelper {
+public class DbCopyOpenHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     private static String DB_DIR = "/data/data/ru.emerginggames.snappers/databases/";
     private static final String DB_NAME = "snappers_data";
@@ -35,7 +35,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
      *
      * @param context
      */
-    public DbOpenHelper(Context context) {
+    public DbCopyOpenHelper(Context context) {
         super(context, DB_NAME, null, context.getResources().getInteger(
                 R.string.databaseVersion));
         myContext = context;

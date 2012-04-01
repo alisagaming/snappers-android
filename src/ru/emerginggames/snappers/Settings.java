@@ -9,4 +9,5 @@ package ru.emerginggames.snappers;
 public class Settings {
     public static final boolean COPY_DB = true;
 
+    public static final boolean DEBUG = true;
 }

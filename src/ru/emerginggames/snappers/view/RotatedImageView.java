@@ -3,12 +3,11 @@ package ru.emerginggames.snappers.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.FloatMath;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
+import ru.emerginggames.snappers.model.ImageDrawInfo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,22 +20,16 @@ import java.io.InputStream;
  */
 public class RotatedImageView extends View {
     private static final float MAX_ANGLE = 5;
+    protected boolean useMaxAngle = true;
     protected Context mContext;
-    int sourceId;
-    int sourceBgId;
-    int[] imageList;
-    //BitmapDrawable source;
-    //BitmapDrawable sourceBg;
+    ImageDrawInfo[] imageList;
+    int [][] rotatedDimensions;
+    int maxShift;
     Bitmap preparedBitmap;
-    protected float rotatedWidth = 0;
-    protected float rotatedHeight = 0;
     float angle;
     float scale;
     int shiftX;
     int shiftY;
-    int rotatedScaledWidth;
-    int rotatedScaledHeight;
-    boolean calculated = false;
 
     public RotatedImageView(Context context) {
         super(context);
@@ -58,24 +51,33 @@ public class RotatedImageView extends View {
 
     public void setAngle(float angle) {
         this.angle = angle;
+        rotatedDimensions = null;
+        useMaxAngle = false;
     }
 
     public float getAngle() {
         return angle;
     }
 
-    public void setImageList(int[] imageList) {
+    public void setImageList(ImageDrawInfo[] imageList) {
         this.imageList = imageList;
+        rotatedDimensions = null;
     }
 
     public void setImage(int id){
-        sourceId = id;
-        calculated = false;
+        if (imageList == null)
+            imageList = new ImageDrawInfo[2];
+        imageList[0] = new ImageDrawInfo(id, false, false);
+        rotatedDimensions = null;
+        invalidate();
     }
     
     public void setImageBg(int id){
-        sourceBgId = id;
-        calculated = false;
+        if (imageList == null)
+            imageList = new ImageDrawInfo[2];
+        imageList[1] = new ImageDrawInfo(id, true, true);
+        rotatedDimensions = null;
+        invalidate();
     }
 
     @Override
@@ -85,8 +87,6 @@ public class RotatedImageView extends View {
         if (preparedBitmap == null)
             return;
         canvas.drawBitmap(preparedBitmap, 0, 0, null);
-
-
     }
 
     protected void prepareDrawable(){
@@ -95,13 +95,18 @@ public class RotatedImageView extends View {
         Canvas canvas = new Canvas(preparedBitmap);
         Paint p = new Paint();
         p.setFilterBitmap(true);
-        drawBitmap(sourceId, scale, canvas, p, Bitmap.Config.RGB_565);
-        if (sourceBgId != 0)
-            drawBitmap(sourceBgId, scale, canvas, p, Bitmap.Config.ARGB_8888);
+        if (imageList.length == 1)
+            p.setAntiAlias(true);
+        for (ImageDrawInfo imgInfo: imageList)
+            drawBitmap(imgInfo, scale, canvas, p);
     }
 
-    private void drawBitmap(int id, float scale, Canvas canvas, Paint p, Bitmap.Config config){
-        Bitmap img = getBitmapUnscaled(id, config);
+    private void drawBitmap(ImageDrawInfo imgInfo, float scale, Canvas canvas, Paint p){
+        if (imgInfo == null)
+            return;
+        Bitmap img = getBitmapUnscaled(imgInfo.id, imgInfo.getConfig());
+        if (img == null)
+            return;
 
         Matrix matr = new Matrix();
 
@@ -119,126 +124,145 @@ public class RotatedImageView extends View {
         canvas.drawBitmap(img, matr, p);
     }
 
-
-    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
         int hSize = MeasureSpec.getSize(heightMeasureSpec);
 
         int wMode = MeasureSpec.getMode(widthMeasureSpec);
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
 
+        if (rotatedDimensions == null){
+            calculateRotatedDimensions(); //385*456; 429*497
 
-        int maxShift = Math.min(wSize, hSize) /50;
-        if (!calculated){
-            calculateRotatedSize();
+            if (rotatedDimensions == null){ // if we don't know how to measure - we'll use what we have
+                int w = wMode == MeasureSpec.EXACTLY ? wSize: getSuggestedMinimumWidth();
+                int h = hMode == MeasureSpec.EXACTLY ? hSize : getSuggestedMinimumHeight();
+                setMeasuredDimension(w, h);
+                return;
+            }
+
+            if (wMode != MeasureSpec.UNSPECIFIED || hMode != MeasureSpec.UNSPECIFIED)
+                maxShift = Math.min(wSize, hSize) /50;
+            else{
+                scale = 1;
+                maxShift = Math.min(getMaxWidth(), getMaxHeight()) /50;
+            }
             shiftX = (int)Math.round(Math.random()*maxShift*2 - maxShift);
             shiftY = (int)Math.round(Math.random()*maxShift*2 - maxShift);
         }
-        float imgWidth = rotatedWidth;
-        float imgHeight = rotatedHeight;
+
+        scale = getScale(widthMeasureSpec, heightMeasureSpec);
+
+        int wResult, hResult;
+
+        if (wMode == MeasureSpec.EXACTLY)
+            wResult = wSize;
+        else if (wMode == MeasureSpec.AT_MOST)
+            wResult = Math.min(getMaxWidth(), wSize);
+        else
+            wResult = getMaxWidth();
         
-        if (hMode == MeasureSpec.UNSPECIFIED && wMode == MeasureSpec.UNSPECIFIED){
-            wSize = Math.max(Math.round(imgWidth), getSuggestedMinimumWidth());
-            hSize = Math.max(Math.round(imgHeight), getSuggestedMinimumHeight());
+        if (hMode == MeasureSpec.EXACTLY)
+            hResult = hSize;
+        else if (hMode == MeasureSpec.AT_MOST)
+            hResult = Math.min(getMaxHeight(), hSize);
+        else
+            hResult = getMaxHeight();
 
-            setMeasuredDimension(wSize, hSize);
-            return;
-        }
-
-        int h = rotatedScaledHeight = hSize = Math.max(hSize - getPaddingTop() - getPaddingBottom() - maxShift, getSuggestedMinimumHeight());
-        int w = rotatedScaledWidth = wSize = Math.max(wSize - getPaddingLeft() - getPaddingRight() - maxShift, getSuggestedMinimumWidth());
-
-        if ((hMode == MeasureSpec.EXACTLY && wMode == MeasureSpec.EXACTLY) ){
-            if (imgWidth/w > imgHeight/h)
-                rotatedScaledHeight = Math.round(imgHeight * w/imgWidth);
-             else
-                rotatedScaledWidth = Math.round(imgWidth * h/imgHeight);
-        } else if (hMode == MeasureSpec.EXACTLY){
-            rotatedScaledWidth = w = Math.round(imgWidth * h/imgHeight);
-            if (wMode == MeasureSpec.AT_MOST && w >wSize){
-                rotatedScaledWidth = w = wSize;
-                rotatedScaledHeight = Math.round(imgHeight * w/imgWidth);
-            }
-        } else if (wMode == MeasureSpec.EXACTLY){
-            h = Math.round(imgHeight * w/imgHeight);
-            if (hMode == MeasureSpec.AT_MOST && h >hSize){
-                rotatedScaledHeight = h = hSize;
-                rotatedScaledWidth = w = Math.round(imgWidth * h/imgHeight);
-            }
-        } else if (wMode == MeasureSpec.AT_MOST && hMode == MeasureSpec.AT_MOST){
-            if (imgWidth/w > imgHeight/h)
-                rotatedScaledHeight = h = Math.round(imgHeight * w/imgWidth);
-            else
-                rotatedScaledWidth = w = Math.round(imgWidth * h/imgHeight);
-        }
-        scale = rotatedScaledWidth / rotatedWidth;
-        if (scale > 0.98 && scale < 1.1)
-            scale = 1;
-
-        setMeasuredDimension(wSize, hSize);
+        setMeasuredDimension(wResult, hResult);
     }
 
-/*    protected float getScale(int widthMeasureSpec, int heightMeasureSpec, int imgWidth, int imgHeight){
-        boolean isWidthCounts = true;
-
+    protected float getScale(int widthMeasureSpec, int heightMeasureSpec){
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
         int hSize = MeasureSpec.getSize(heightMeasureSpec);
 
         int wMode = MeasureSpec.getMode(widthMeasureSpec);
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
 
-
-        int maxShift = Math.min(wSize, hSize) /50;
-        if (!calculated){
-            calculateRotatedSize();
-            shiftX = (int)Math.round(Math.random()*maxShift*2 - maxShift);
-            shiftY = (int)Math.round(Math.random()*maxShift*2 - maxShift);
-        }
-
-        if (hMode == MeasureSpec.UNSPECIFIED && wMode == MeasureSpec.UNSPECIFIED)
+        if (wMode == MeasureSpec.UNSPECIFIED && hMode == MeasureSpec.UNSPECIFIED)
             return 1;
 
-        int rotatedScaledHeight, rotatedScaledWidth, w, h;
+        int proposedWidth =  (wMode == MeasureSpec.UNSPECIFIED) ?
+                Integer.MAX_VALUE :
+                Math.max(wSize - getPaddingLeft() - getPaddingRight() - maxShift, getSuggestedMinimumWidth());
 
-        rotatedScaledHeight =  Math.max(hSize - getPaddingTop() - getPaddingBottom() - maxShift, getSuggestedMinimumHeight());
-        rotatedScaledWidth = Math.max(wSize - getPaddingLeft() - getPaddingRight() - maxShift, getSuggestedMinimumWidth());
+        int proposedHeight =  (hMode == MeasureSpec.UNSPECIFIED) ?
+                Integer.MAX_VALUE :
+                Math.max(hSize - getPaddingTop() - getPaddingBottom() - maxShift, getSuggestedMinimumHeight());
 
+        float scale = Float.MAX_VALUE;
+        for (int[] dim : rotatedDimensions){
+            if (dim == null)
+                continue;
 
-        if ((hMode == MeasureSpec.EXACTLY && wMode == MeasureSpec.EXACTLY) ||
-            (wMode == MeasureSpec.AT_MOST && hMode == MeasureSpec.AT_MOST)){
-             isWidthCounts = imgWidth/rotatedScaledWidth > imgHeight/rotatedScaledHeight;
-        } else if (hMode == MeasureSpec.EXACTLY){
-            w =  Math.round(imgWidth * rotatedScaledHeight/imgHeight);
-            isWidthCounts = wMode == MeasureSpec.AT_MOST && w >rotatedScaledHeight;
-        } else if (wMode == MeasureSpec.EXACTLY){
-            h = Math.round(imgHeight * rotatedScaledWidth/imgHeight);
-            isWidthCounts = !(hMode == MeasureSpec.AT_MOST && h >rotatedScaledHeight);
+            float wScale = proposedWidth/(float)dim[0];
+            float hScale = proposedHeight/(float)dim[1];
+            float localScale = Math.min(wScale, hScale);
+
+            if (localScale < scale)
+                scale = localScale;
         }
-        
-        float scale = isWidthCounts ? rotatedScaledWidth / imgWidth : rotatedScaledHeight / imgHeight;
-        if (scale > 0.98 && scale < 1.1)
-            scale = 1;
 
         return scale;
-    }*/
+    }
 
-    protected void calculateRotatedSize(){
-        int id = sourceBgId == 0? sourceId: sourceBgId;
-        if (id == 0)
+
+    protected int getMaxWidth(){
+        int result = 0;
+        for (int[] dim : rotatedDimensions){
+            if (dim == null)
+                continue;
+
+            int w = Math.round(dim[0] * scale);
+            if (result < w)
+                result = w;
+        }
+        return result;
+    }
+
+    protected int getMaxHeight(){
+        int result = 0;
+        for (int[] dim : rotatedDimensions){
+            if (dim == null)
+                continue;
+
+            int h = Math.round(dim[1] * scale);
+            if (result < h)
+                result = h;
+        }
+        return result;
+    }
+
+
+    protected void calculateRotatedDimensions(){
+        if (imageList == null)
             return;
+
+        rotatedDimensions = new int[imageList.length][];
+
+        for (int i=0; i< imageList.length; i++)
+            rotatedDimensions[i] = calcRotatedSize(imageList[i].id);
+    }
+
+    protected int[] calcRotatedSize(int id){
+        if (id == 0)
+            return null;
+
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(mContext.getResources(), id, opts);
 
-        int width = opts.outWidth;
-        int height = opts.outHeight;
-        float rAngle = (float)(angle / 180 * Math.PI);
+        int w = opts.outWidth;
+        int h = opts.outHeight;
+        float rAngle = (float)((useMaxAngle ? MAX_ANGLE : angle) / 180 * Math.PI);
 
-        rotatedWidth = (float)(Math.abs(width * Math.cos(rAngle)) + Math.abs(height * Math.sin(rAngle)));
-        rotatedHeight = (float)(Math.abs(height * Math.cos(rAngle)) + Math.abs(width * Math.sin(rAngle)));
-        calculated = true;
+        float sin = FloatMath.sin(rAngle);
+        float  cos = FloatMath.cos(rAngle);
+
+        float rWidth = (Math.abs(w * cos) + Math.abs(h * sin));
+        float rHeight = (Math.abs(h * cos) + Math.abs(w * sin));
+
+        return new int[]{ Math.round(rWidth), Math.round(rHeight)};
     }
 
     protected float calcHeight(float w, float h, float scale){

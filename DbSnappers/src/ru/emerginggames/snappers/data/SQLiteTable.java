@@ -57,8 +57,6 @@ public abstract class SQLiteTable<T> {
             db = helper.getReadableDatabase();
     }
 
-
-
     public void close(){
         if (db != null)
             db.close();

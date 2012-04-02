@@ -1,12 +1,19 @@
 package ru.emerginggames.snappers;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
+import ru.emerginggames.snappers.model.ImageDrawInfo;
+import ru.emerginggames.snappers.model.ImagePaginatorParam;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.FixedRatioPager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,21 +22,17 @@ import ru.emerginggames.snappers.view.FixedRatioPager;
  * Time: 8:40
  */
 public class SelectPackActivity extends PaginatedSelectorActivity  implements IOnItemSelectedListener{
-    int imageIds[];
-    int shadowIds[];
-    
+    private static final int LOCKED = -1;
+    private static final int COMING_SOON = -2;
+
     LevelPack[] levelPacks;
-    
-    //int[][] imageIds2;
+
     RotatedImagePagerAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        prepareImageArrays();
-        //prepareImageArray();
-
-        adapter = new RotatedImagePagerAdapter(this, imageIds, shadowIds, this);
+        adapter = new RotatedImagePagerAdapter(this, getPaginatorParamList(), this);
 
         int overlap = getWindowManager().getDefaultDisplay().getWidth()/4;
 
@@ -46,131 +49,118 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
     @Override
     public void onItemSelected(int number) {
-        if (levelPacks[number] == null)
+        if (number == COMING_SOON)
             return;
+
+        LevelPack pack = levelPacks[number];
+        if (pack == null)
+            return;
+        
+        if (!pack.isUnlocked){
+            showPackLockedMessage(pack);
+            return;
+        }
 
         Intent intent = new Intent(this, SelectLevelActivity.class);
         intent.putExtra(SelectLevelActivity.LEVEL_PACK_TAG, levelPacks[number]);
         startActivity(intent);
     }
 
-/*    void prepareImageArray(){
-        levelPacks = LevelPackTable.getAll(this);
-        int[][] ids = new int[levelPacks.length][];
-        LevelPack[] selectedPacks = new LevelPack[levelPacks.length];
-        
-        int i=0;
-        for (LevelPack pack: levelPacks){
-            if (pack.isUnlocked){
-                ids[i] = getLevelPackImageIds(pack);
-                selectedPacks[i] = pack;
-                i++;
-            }
-            else if (!pack.isPremium){
-                ids[i] = new int[]{R.drawable.locked, R.drawable.shadow_pack};
-                selectedPacks[i] = null;
-                i++;
-            }
-        }
-
-        int size = i+1;
-        imageIds2 = new int[size][];
-        levelPacks = new LevelPack[size];
-        for (i=0; i<size-1;i++){
-            imageIds2[i] = ids[i];
-            levelPacks[i] = selectedPacks[i];
-        }
-        imageIds2[i] = new int[]{R.drawable.coming, R.drawable.shadow_pack};
-        levelPacks[i] = null;
-    }*/
-
-    void prepareImageArrays(){
-        levelPacks = LevelPackTable.getAll(this);
-        int[] ids = new int[levelPacks.length];
-        LevelPack[] selectedPacks = new LevelPack[levelPacks.length];
-
-        int i=0;
-        for (LevelPack pack: levelPacks){
-            if (pack.isUnlocked){
-                ids[i] = getLevelPackCoverId(pack);
-                selectedPacks[i] = pack;
-                i++;
-            }
-            else if (!pack.isPremium){
-                ids[i] = R.drawable.locked;
-                selectedPacks[i] = null;
-                i++;
-            }
-        }
-        
-        int size = i+1;
-        imageIds = new int[size];
-        shadowIds = new int[size];
-        levelPacks = new LevelPack[size];
-        for (i=0; i<size-1;i++){
-            imageIds[i] = ids[i];
-            shadowIds[i] = R.drawable.shadow_pack;
-            levelPacks[i] = selectedPacks[i];
-        }
-        imageIds[i] = R.drawable.coming;
-        shadowIds[i] = R.drawable.shadow_pack;
-        levelPacks[i] = null;
+    protected void showPackLockedMessage(LevelPack pack){
+        //showMessageDialog();
     }
 
-/*    int[] getLevelPackImageIds(LevelPack pack){
-        switch (pack.id){
+    List<ImagePaginatorParam> getPaginatorParamList(){
+        levelPacks = LevelPackTable.getAll(this);
+        List<ImagePaginatorParam> params = new ArrayList<ImagePaginatorParam>(8);
+
+        for (LevelPack pack: levelPacks)
+            if (pack.isUnlocked)
+                params.add(new ImagePaginatorParam(getLevelPackImageIds(pack.id), pack.id));
+            else if (!pack.isPremium)
+                params.add(new ImagePaginatorParam(getLevelPackImageIds(LOCKED), pack.id));
+
+
+        params.add(new ImagePaginatorParam(getLevelPackImageIds(COMING_SOON), COMING_SOON));
+
+        return params;
+    }
+
+    ImageDrawInfo[] getLevelPackImageIds(int id){
+        switch (id){
+            case LOCKED:
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.locked, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
+            case COMING_SOON:
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.coming, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 1:
-                return new int[]{R.drawable.pack1, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.pack1, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 2:
-                return new int[]{R.drawable.pack2, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.pack2, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 3:
-                return new int[]{R.drawable.pack3, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.pack3, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 4:
-                return new int[]{R.drawable.pack4, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.pack4, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 5:
-                return new int[]{R.drawable.pack5, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.pack5, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 6:
-                return new int[]{R.drawable.pack6, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.pack6, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 7:
-                return new int[]{R.drawable.pack7, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.pack7, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 8:
-                return new int[]{R.drawable.premium_pack1, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.premium_pack1, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 9:
-                return new int[]{R.drawable.shadow_pack, R.drawable.premium_pack2};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.premium_pack2, false, true)
+                        };
             case 10:
-                return new int[]{R.drawable.premium_pack3, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.premium_pack3, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 11:
-                return new int[]{R.drawable.premium_pack4, R.drawable.shadow_pack};
+                return new ImageDrawInfo[]{
+                        new ImageDrawInfo(R.drawable.premium_pack4, false, false),
+                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
         }
 
         return null;
-    }*/
-    
-    int getLevelPackCoverId(LevelPack pack){
-        switch (pack.id){
-            case 1:
-                return R.drawable.pack1;
-            case 2:
-                return R.drawable.pack2;
-            case 3:
-                return R.drawable.pack3;
-            case 4:
-                return R.drawable.pack4;
-            case 5:
-                return R.drawable.pack5;
-            case 6:
-                return R.drawable.pack6;
-            case 7:
-                return R.drawable.pack7;
-            case 8:
-                return R.drawable.premium_pack1;
-            case 9:
-                return R.drawable.premium_pack2;
-            case 10:
-                return R.drawable.premium_pack3;
-            case 11:
-                return R.drawable.premium_pack4;
-        }
-        return 0;
+    }
+
+    protected void showMessageDialog(int titleId, int messageId, Runnable onOk){
+        showMessageDialog(titleId, getString(messageId),onOk);
+    }
+
+    protected void showMessageDialog(int titleId, String message, final Runnable onOk){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setTitle(titleId);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (onOk != null)
+                    onOk.run();
+            }
+        });
+
+        builder.create().show();
     }
 }

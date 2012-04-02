@@ -7,7 +7,5 @@ package ru.emerginggames.snappers;
  * Time: 6:01
  */
 public class Settings {
-    public static final boolean COPY_DB = false;
-
-    public static final boolean ENABLE_ALL_LEVELS = true;
+    public static final boolean ENABLE_ALL_LEVELS = false;
 }

@@ -4,9 +4,13 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import ru.emerginggames.snappers.model.ImageDrawInfo;
+import ru.emerginggames.snappers.model.ImagePaginatorParam;
 import ru.emerginggames.snappers.view.ICurrentItemSelector;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.RotatedImageView;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,27 +21,19 @@ import ru.emerginggames.snappers.view.RotatedImageView;
 public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnClickListener, ICurrentItemSelector {
     View currentView;
     Context context;
-    int[] imageIds;
-    int[] shadowIds;
-    int[][] imageIdLists;
+    List<ImagePaginatorParam> paramList;
+    //ImageDrawInfo[][] imageLists;
     IOnItemSelectedListener listener;
 
-    public RotatedImagePagerAdapter(Context context, int[] imageIds, int[] shadowIds, IOnItemSelectedListener listener) {
+    public RotatedImagePagerAdapter(Context context, List<ImagePaginatorParam> paramList, IOnItemSelectedListener listener) {
         this.context = context;
-        this.imageIds = imageIds;
-        this.shadowIds = shadowIds;
+        this.paramList = paramList;
         this.listener = listener;
     }
 
-    /*public RotatedImagePagerAdapter(Context context, int[][] imageIdLists, IOnItemSelectedListener listener) {
-        this.context = context;
-        this.imageIdLists = imageIdLists;
-        this.listener = listener;
-    }*/
-
     @Override
     public int getCount() {
-        return imageIds.length;
+        return paramList.size();
     }
 
     @Override
@@ -45,12 +41,7 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
         RotatedImageView view = new RotatedImageView(context);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
         view.setLayoutParams(lp);
-        //if (imageIdLists != null)
-        //    view.setImageList(imageIdLists[position]);
-        //else {
-            view.setImage(imageIds[position]);
-            view.setImageBg(shadowIds[position]);
-        //}
+        view.setImageList(paramList.get(position).images);
         view.setTag(position);
         view.setOnClickListener(this);
         container.addView(view);
@@ -65,7 +56,7 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
     @Override
     public void onClick(View v) {
         if (v.getTag() instanceof Integer)
-            listener.onItemSelected((Integer)v.getTag());
+            listener.onItemSelected(paramList.get((Integer)v.getTag()).retParam);
     }
 
     @Override

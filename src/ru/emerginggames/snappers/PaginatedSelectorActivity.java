@@ -34,6 +34,8 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         int rootPadding = getWindowManager().getDefaultDisplay().getHeight()/40;
         findViewById(R.id.root).setPadding(0, 0 , 0, rootPadding);
 
+        findViewById(R.id.footer).setPadding(0, rootPadding, 0, 0);
+
     }
 
     public void onBackButtonClick(View v){

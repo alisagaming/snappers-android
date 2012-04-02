@@ -7,8 +7,6 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import ru.emerginggames.snappers.data.DbCopyOpenHelper;
-import ru.emerginggames.snappers.data.DbCreatorOpenHelper;
-import ru.emerginggames.snappers.data.LevelDbLoader;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.Splash;
 
@@ -22,9 +20,8 @@ public class SplashGdxActivity extends AndroidApplication {
     private static final int SPLASH_TIME = 2000;
     AsyncTask<Integer, Integer, Integer> loadThread;
 
-
-
     public void onCreate(Bundle savedInstanceState) {
+        DbSettings.ENABLE_ALL_LEVELS = Settings.ENABLE_ALL_LEVELS;
         super.onCreate(savedInstanceState);
         Resources.context = this;
         Resources.font = Typeface.createFromAsset(getAssets(), "shag_lounge.otf");
@@ -53,12 +50,7 @@ public class SplashGdxActivity extends AndroidApplication {
             @Override
             protected Integer doInBackground(Integer... params) {
                 long startTime = System.currentTimeMillis();
-                if (Settings.COPY_DB)
-                    new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
-                else
-                    new DbCreatorOpenHelper(SplashGdxActivity.this).initializeDataBase();
-
-
+                new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
 
                 long now = System.currentTimeMillis();
                 if (now - startTime < SPLASH_TIME)

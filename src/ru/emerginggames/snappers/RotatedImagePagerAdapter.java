@@ -1,11 +1,9 @@
 package ru.emerginggames.snappers;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import ru.emerginggames.snappers.view.ICurrentItemSelector;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.RotatedImageView;
@@ -21,6 +19,7 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
     Context context;
     int[] imageIds;
     int[] shadowIds;
+    int[][] imageIdLists;
     IOnItemSelectedListener listener;
 
     public RotatedImagePagerAdapter(Context context, int[] imageIds, int[] shadowIds, IOnItemSelectedListener listener) {
@@ -29,6 +28,12 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
         this.shadowIds = shadowIds;
         this.listener = listener;
     }
+
+    /*public RotatedImagePagerAdapter(Context context, int[][] imageIdLists, IOnItemSelectedListener listener) {
+        this.context = context;
+        this.imageIdLists = imageIdLists;
+        this.listener = listener;
+    }*/
 
     @Override
     public int getCount() {
@@ -40,8 +45,12 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
         RotatedImageView view = new RotatedImageView(context);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT);
         view.setLayoutParams(lp);
-        view.setImage(imageIds[position]);
-        view.setImageBg(shadowIds[position]);
+        //if (imageIdLists != null)
+        //    view.setImageList(imageIdLists[position]);
+        //else {
+            view.setImage(imageIds[position]);
+            view.setImageBg(shadowIds[position]);
+        //}
         view.setTag(position);
         view.setOnClickListener(this);
         container.addView(view);

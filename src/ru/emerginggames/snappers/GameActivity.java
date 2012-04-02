@@ -1,11 +1,9 @@
 package ru.emerginggames.snappers;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.Level;

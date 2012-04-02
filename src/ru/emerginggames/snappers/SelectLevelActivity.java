@@ -1,15 +1,9 @@
 package ru.emerginggames.snappers;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
@@ -19,7 +13,6 @@ import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.FixedRatioPager;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
-import ru.emerginggames.snappers.view.OutlinedTextView;
 
 /**
  * Created by IntelliJ IDEA.

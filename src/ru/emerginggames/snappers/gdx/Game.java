@@ -1,11 +1,9 @@
 package ru.emerginggames.snappers.gdx;
 
 import android.content.Context;
-import android.graphics.*;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,7 +12,6 @@ import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.gdx.Elements.ColorRect;
-import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 

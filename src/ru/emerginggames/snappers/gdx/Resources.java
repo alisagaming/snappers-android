@@ -73,6 +73,8 @@ public class Resources {
 
     public static boolean texturesLoaded = false;
 
+
+
     public static void init(){
         switch (Metrics.sizeMode){
             case modeS:
@@ -323,8 +325,9 @@ public class Resources {
         Preload.bg = null;
     }
 
-    public static void loadFont(Context context){
+    public static Typeface getFont(Context context){
         if (font == null)
             font = Typeface.createFromAsset(context.getAssets(), "shag_lounge.otf");
+        return font;
     }
 }

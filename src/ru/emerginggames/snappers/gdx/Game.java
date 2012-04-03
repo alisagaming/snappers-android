@@ -173,7 +173,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void gameWon() {
         gameOverStage.setWon(true);
-        Resources.winSound.play();
+        Resources.winSound.play(0.6f);
         Gdx.input.setInputProcessor(currentStage = gameOverStage);
         level = snappersStage.getLogic().level;
         if (levelPack.levelsUnlocked <= level.number){

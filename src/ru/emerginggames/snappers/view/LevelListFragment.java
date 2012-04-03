@@ -84,6 +84,7 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
                 text.setOnClickListener(this);
                 text.setTextSizeToFit(true);
                 text.setSquare(true);
+                text.setMaxLines2(1);
                 text.setHorizontallyScrolling(false);
                 if (Resources.font != null)
                     text.setTypeface(Resources.font);

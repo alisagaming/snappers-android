@@ -23,7 +23,7 @@ public class GameActivity extends AndroidApplication {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Resources.context = this;
-        Resources.loadFont(this);
+        Resources.getFont(this);
 
         Intent intent = getIntent();
         Level level = (Level)intent.getSerializableExtra(LEVEL_PARAM_TAG);

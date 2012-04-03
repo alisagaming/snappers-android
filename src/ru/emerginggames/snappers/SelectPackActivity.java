@@ -1,9 +1,9 @@
 package ru.emerginggames.snappers;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.model.ImageDrawInfo;
@@ -28,6 +28,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
     LevelPack[] levelPacks;
 
     RotatedImagePagerAdapter adapter;
+    AlertDialog dialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,20 +67,17 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         startActivity(intent);
     }
 
-    protected void showPackLockedMessage(LevelPack pack){
-        //showMessageDialog();
-    }
-
     List<ImagePaginatorParam> getPaginatorParamList(){
         levelPacks = LevelPackTable.getAll(this);
         List<ImagePaginatorParam> params = new ArrayList<ImagePaginatorParam>(8);
 
-        for (LevelPack pack: levelPacks)
+        for (int i=0; i< levelPacks.length; i++){
+            LevelPack pack = levelPacks[i];
             if (pack.isUnlocked)
-                params.add(new ImagePaginatorParam(getLevelPackImageIds(pack.id), pack.id));
+                params.add(new ImagePaginatorParam(getLevelPackImageIds(pack.id), i));
             else if (!pack.isPremium)
-                params.add(new ImagePaginatorParam(getLevelPackImageIds(LOCKED), pack.id));
-
+                params.add(new ImagePaginatorParam(getLevelPackImageIds(LOCKED), i));
+        }
 
         params.add(new ImagePaginatorParam(getLevelPackImageIds(COMING_SOON), COMING_SOON));
 
@@ -130,7 +128,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
                         new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
             case 9:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack2, false, true)
+                        new ImageDrawInfo(R.drawable.premium_pack2, true, true)
                         };
             case 10:
                 return new ImageDrawInfo[]{
@@ -145,22 +143,50 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         return null;
     }
 
-    protected void showMessageDialog(int titleId, int messageId, Runnable onOk){
-        showMessageDialog(titleId, getString(messageId),onOk);
-    }
+    protected void showPackLockedMessage(LevelPack pack){
+        String message = getResources().getString(R.string.level_locked, pack.id-1, pack.id);
 
-    protected void showMessageDialog(int titleId, String message, final Runnable onOk){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message);
-        builder.setTitle(titleId);
-
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (onOk != null)
-                    onOk.run();
+        showMessageDialog(message, new int[]{18, 41, 0, 0}, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideMessageDialog();
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideMessageDialog();
             }
         });
 
-        builder.create().show();
-    }
+/*        LayoutInflater inflater = getLayoutInflater();
+        LinearLayout layout =  (LinearLayout)inflater.inflate(R.layout.unlock_dialog, null);
+        String message = getResources().getString(R.string.level_locked, pack.id, pack.id+1);
+        OutlinedTextView msgText = (OutlinedTextView)layout.findViewById(R.id.message);
+        msgText.setText(message);
+        msgText.setTypeface(Resources.getFont(this));
+        int textSize = getWindowManager().getDefaultDisplay().getWidth()/10;
+        msgText.setStroke(Color.BLACK, 2);
+        msgText.setTextSize(textSize);
+        
+        layout.findViewById(R.id.leftButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+
+        layout.findViewById(R.id.rightButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(layout);
+        dialog = builder.create();
+        dialog.show();
+*/
+    }    
 }

@@ -2,5 +2,6 @@
 <resources>
     <string name="app_name">Snappers</string>
     <string name="your_ad_here">Your Ad Here</string>
+    <string name="level_locked" formatted="false">You have to solve all puzzles in Pack %d. Or, you can unlock Pack %d right away.</string>
 
 </resources>

@@ -1,77 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical"
-              android:background="@drawable/bgd"
-              android:id="@+id/root"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/bgd"
+                android:id="@+id/root"
         >
-<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
-    <LinearLayout android:id="@+id/resLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
-                  android:background="#80FF0000"
-            />
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                      android:layout_height="wrap_content">
+            <LinearLayout android:id="@+id/resLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
+                          android:background="#80FF0000"
+                    />
 
-    <LinearLayout android:id="@+id/bgLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
-                  android:background="#80FF0000"
-            />
+            <LinearLayout android:id="@+id/bgLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
+                          android:background="#80FF0000"
+                    />
 
-    <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/score"
-                                                     android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="top|right"
-                                                     android:textColor="#FFFFFFFF" android:textSize="30dp" android:paddingRight="5dp" android:paddingTop="5dp"
-                                                     android:layout_weight="1"
-                                                     android:text="Score:"
-            />
+            <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/score"
+                                                             android:layout_height="wrap_content"
+                                                             android:layout_width="fill_parent"
+                                                             android:gravity="top|right"
+                                                             android:textColor="#FFFFFFFF" android:textSize="30dp"
+                                                             android:paddingRight="5dp" android:paddingTop="5dp"
+                                                             android:layout_weight="1"
+                                                             android:text="Score:"
+                    />
 
-</LinearLayout>
+        </LinearLayout>
 
-    <ru.emerginggames.snappers.view.FixedRatioPager android:id="@+id/pager"
-           android:layout_height="0dp" android:layout_width="fill_parent"
-           android:layout_weight="1"
-            />
-
-    <com.viewpagerindicator.CirclePageIndicator
-            android:id="@+id/indicator"
-            android:padding="10dip"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            app:radius="7dp"
-            app:fillColor="#FFFFFF"
-            app:pageColor="#444444"
-            app:strokeWidth="0dp"
-            />
-
-    <LinearLayout android:id="@+id/footer"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
-
-                  android:orientation="horizontal"
-                  android:layout_gravity="bottom"
-                  android:weightSum="100"
-            >
-        <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
-
-        <ImageView android:id="@+id/backButton" android:layout_width="0dp" android:layout_height="wrap_content"
-                   android:src="@drawable/arrow_back_btn" android:layout_weight="19"
-                   android:layout_gravity="bottom"
-                   android:scaleType="fitCenter"
-                   android:clickable="true"
-                   android:onClick="onBackButtonClick"
+        <ru.emerginggames.snappers.view.FixedRatioPager android:id="@+id/pager"
+                                                        android:layout_height="0dp" android:layout_width="fill_parent"
+                                                        android:layout_weight="1"
                 />
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
-
-
-        <ImageView android:id="@+id/shopButton" android:layout_width="0dp" android:layout_height="wrap_content"
-                     android:src="@drawable/store_button" android:layout_weight="60"
-                     android:layout_gravity="bottom"
-                     android:scaleType="fitCenter"
-                     android:clickable="true"
-                     android:onClick="onStoreButtonClick"
+        <com.viewpagerindicator.CirclePageIndicator
+                android:id="@+id/indicator"
+                android:padding="10dip"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                app:radius="7dp"
+                app:fillColor="#FFFFFF"
+                app:pageColor="#444444"
+                app:strokeWidth="0dp"
                 />
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
+        <LinearLayout android:id="@+id/footer"
+                      android:layout_width="fill_parent" android:layout_height="wrap_content"
+
+                      android:orientation="horizontal"
+                      android:layout_gravity="bottom"
+                      android:weightSum="100"
+                >
+            <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
+
+            <ImageView android:id="@+id/backButton" android:layout_width="0dp" android:layout_height="wrap_content"
+                       android:src="@drawable/arrow_back_btn" android:layout_weight="19"
+                       android:layout_gravity="bottom"
+                       android:scaleType="fitCenter"
+                       android:clickable="true"
+                       android:onClick="onBackButtonClick"
+                    />
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
+
+
+            <ImageView android:id="@+id/shopButton" android:layout_width="0dp" android:layout_height="wrap_content"
+                       android:src="@drawable/store_button" android:layout_weight="60"
+                       android:layout_gravity="bottom"
+                       android:scaleType="fitCenter"
+                       android:clickable="true"
+                       android:onClick="onStoreButtonClick"
+                    />
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
+        </LinearLayout>
+
     </LinearLayout>
+    <RelativeLayout android:id="@+id/dialogCont" android:layout_width="fill_parent" android:layout_height="fill_parent"
+                  android:visibility="gone" android:layout_centerInParent="true">
+
+        <LinearLayout android:id="@+id/dialog" android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical" android:background="@drawable/dialog"
+                      android:layout_centerInParent="true">
+
+            <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/message"
+                                                             android:layout_width="fill_parent"
+                                                             android:layout_height="wrap_content"
+                                                             android:textColor="@android:color/white"
+                                                             android:gravity="center"
+                    />
+
+            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                          android:layout_height="wrap_content">
+
+                <ru.emerginggames.snappers.view.ImageView android:id="@+id/leftButton" android:layout_width="0dp"
+                                                          android:layout_weight="45"
+                                                          android:layout_height="wrap_content"
+                                                          android:src="@drawable/unlock_button"
+                                                          android:scaleType="fitCenter" android:adjustViewBounds="true"
+                                                          android:clickable="true"
+                                                          android:layout_gravity="bottom"/>
+
+                <LinearLayout android:layout_weight="10" android:layout_width="0dp" android:layout_height="0dp"/>
+
+                <ru.emerginggames.snappers.view.ImageView android:id="@+id/rightButton" android:layout_width="0dp"
+                                                          android:layout_weight="45"
+                                                          android:layout_height="wrap_content"
+                                                          android:src="@drawable/ok_button"
+                                                          android:scaleType="fitCenter" android:adjustViewBounds="true"
+                                                          android:layout_gravity="bottom"
+                        />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

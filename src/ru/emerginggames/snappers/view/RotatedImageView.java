@@ -132,7 +132,7 @@ public class RotatedImageView extends View {
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
 
         if (rotatedDimensions == null){
-            calculateRotatedDimensions(); //385*456; 429*497
+            calculateRotatedDimensions();
 
             if (rotatedDimensions == null){ // if we don't know how to measure - we'll use what we have
                 int w = wMode == MeasureSpec.EXACTLY ? wSize: getSuggestedMinimumWidth();

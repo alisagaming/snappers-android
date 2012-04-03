@@ -11,7 +11,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 
-
 import java.io.InputStream;
 
 /**

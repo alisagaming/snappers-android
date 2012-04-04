@@ -16,6 +16,8 @@ import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.gdx.android.BitmapPixmap;
 import ru.emerginggames.snappers.gdx.android.ResizedFileTextureData;
 
+import java.lang.reflect.Array;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,6 +33,7 @@ public class Resources {
         public static TextureData eyes;
         public static TextureData eyeShadow;
         public static TextureData snappers;
+        public static TextureData snapperBig;
         public static TextureData bang;
         public static TextureData blast;
         public static TextureData squareButtons;
@@ -101,7 +104,7 @@ public class Resources {
 
     private static void loadSquareButtonTextures(){
         squareButtons = new Texture(Preload.squareButtons);
-        squareButtonFrames = makeAnimationFrames(squareButtons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 7);
+        squareButtonFrames = makeAnimationFrames(squareButtons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 0, 7);
 
     }
 
@@ -110,7 +113,7 @@ public class Resources {
         longDialog = new TextureRegion(temp, 0, 0, Metrics.menuWidth, Metrics.menuHeight);
 
         menuButtons= new Texture(Gdx.files.internal(dir + "btn-long.png"), Pixmap.Format.RGBA8888, false);
-        menuButtonFrames = makeAnimationFrames(menuButtons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 5);
+        menuButtonFrames = makeAnimationFrames(menuButtons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 0, 5);
 
     }
 
@@ -118,38 +121,22 @@ public class Resources {
         preload();
         int snapperSize = Metrics.snapperSize;
 
-        snapperTexture = new Texture(Preload.snappers);
+        int snappersStart = isGold ? 25+4: 25;
+        snapperTexture = new Texture(Preload.snapperBig);
         snapperTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         snapperTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
 
-        int isGoldN = isGold? 1:0;
-        snapperBack = new TextureRegion[5];
-        snapperBack[1] = getTextureRegion(snapperTexture, snapperSize, snapperSize, isGoldN, 3);
-        snapperBack[2] = getTextureRegion(snapperTexture, snapperSize, snapperSize, isGoldN, 1);
-        snapperBack[3] = getTextureRegion(snapperTexture, snapperSize, snapperSize, isGoldN, 2);
-        snapperBack[4] = getTextureRegion(snapperTexture, snapperSize, snapperSize, isGoldN, 0);
-        shadowSnapper = getTextureRegion(snapperTexture, snapperSize, snapperSize, 0, 4);
-
-        eyesTexture = new Texture(Preload.eyes);
-        eyesTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        eyesTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-        eyeFrames = makeAnimationFrames(eyesTexture, snapperSize, snapperSize, true);
-
-        eyeShadowTexture = new Texture(Preload.eyeShadow);
-        eyeShadowTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        eyeShadowTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-        eyeShadowFrames = makeAnimationFrames(eyeShadowTexture, snapperSize, snapperSize, true);
+        eyeFrames = makeAnimationFrames(snapperTexture, snapperSize, snapperSize, true, 0, 25);
+        snapperBack = makeAnimationFrames(snapperTexture, snapperSize, snapperSize, false, snappersStart, snappersStart + 4);
 
         blastTexture = new Texture(Preload.blast);
         blastFrames = makeAnimationFrames(blastTexture, Metrics.blastSize, Metrics.blastSize, false);
 
         bangTexture = new Texture(Preload.bang);
-        bangFrames = makeAnimationFrames(bangTexture, snapperSize, snapperSize, false);
+        bangFrames = makeAnimationFrames(bangTexture, Metrics.bangSize, Metrics.bangSize, false);
     }
 
     public static void disposeTextures(){
-        eyesTexture.dispose();
-        eyeShadowTexture.dispose();
         snapperTexture.dispose();
         bangTexture.dispose();
         blastTexture.dispose();
@@ -190,28 +177,22 @@ public class Resources {
         return frames;
     }
 
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int max){
+    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int start,  int max){
         int cols = texture.getWidth() / tileWidth;
         int rows = texture.getHeight() / tileHeight;
 
-        int size = cols * rows;
-        if (max != 0 && size > max)
-            size = max;
+        int size = max - start;
         TextureRegion[] frames = new TextureRegion[goBack? size * 2 - 2 : size];
 
-        for (int row = 0, y=0, pos=0; row < rows & pos <size; row++, y += tileHeight)
-            for (int col = 0, x=0; col < cols & pos < size; col++, x += tileWidth, pos++)
-                if (max == 0 || pos < max)
-                    frames[pos] = new TextureRegion(texture, x, y, tileWidth, tileHeight);
-                else
-                    break;
+        for (int i=start; i<max; i++)
+            frames[i - start] = new TextureRegion(texture, tileWidth * (i%cols), tileHeight * (i/cols), tileWidth, tileHeight);
+
 
         if (goBack)
             for (int i = 0; i< size-2; i++)
                 frames[size + i] = frames[size - i - 2];
 
         return frames;
-
     }
 
     public static boolean loadBg(String name){
@@ -256,28 +237,22 @@ public class Resources {
     }
 
     protected static void createPreload(){
-        if (Preload.eyes == null)
-            Preload.eyes = new ResizedFileTextureData(Gdx.files.internal(dir + "eyes.png"), Pixmap.Format.RGBA4444);
-        if (Preload.eyeShadow == null)
-            Preload.eyeShadow = new ResizedFileTextureData(Gdx.files.internal(dir + "eyeShadow.png"),  Pixmap.Format.RGBA4444);
-        if (Preload.snappers == null)
-            Preload.snappers = new ResizedFileTextureData(Gdx.files.internal(dir + "back.png"), Pixmap.Format.RGBA4444);
         if (Preload.bang == null)
             Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
         if (Preload.blast == null)
             Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
         if (Preload.squareButtons == null)
             Preload.squareButtons = new FileTextureData(Gdx.files.internal(dir + "btn-sq.png"), null, Pixmap.Format.RGBA8888, false);
+        if (Preload.snapperBig == null)
+            Preload.snapperBig = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
     }
 
     public static void preparePreload(){
         synchronized (syncLock){
-            prepareData(Preload.eyes);
-            prepareData(Preload.eyeShadow);
-            prepareData(Preload.snappers);
             prepareData(Preload.bang);
             prepareData(Preload.blast);
             prepareData(Preload.squareButtons);
+            prepareData(Preload.snapperBig);
         }
     }
 

@@ -25,21 +25,21 @@ public class SnapperView extends Actor {
     public float shadowScale;
     
     public Sprite snapper;
-    public Sprite shadow;
+//    public Sprite shadow;
     public AnimatedSprite eyes;
-    public AnimatedSprite eyeShadow;
+//    public AnimatedSprite eyeShadow;
 
     GameLogic logic;
 
     public SnapperView(GameLogic logic) {
         this.logic = logic;
         snapper = new Sprite(Resources.snapperBack[1]);
-        shadow = new Sprite(Resources.shadowSnapper);
-        shadow.setColor(1, 1, 1, SHADOW_OPACITY);
+//        shadow = new Sprite(Resources.shadowSnapper);
+//        shadow.setColor(1, 1, 1, SHADOW_OPACITY);
         float frameTime = EYE_FRAME_TIME * ( 1 + (float)Math.random() * EYE_FRAME_TIME_DEVIATION * 2 - EYE_FRAME_TIME_DEVIATION);
         eyes = new AnimatedSprite(Resources.eyeFrames, frameTime, true);
-        eyeShadow = new AnimatedSprite(Resources.eyeShadowFrames, frameTime, true);
-        eyeShadow.setOpacity(SHADOW_OPACITY);
+//        eyeShadow = new AnimatedSprite(Resources.eyeShadowFrames, frameTime, true);
+//        eyeShadow.setOpacity(SHADOW_OPACITY);
         width = Metrics.snapperSize;
         height = Metrics.snapperSize;
     }
@@ -57,9 +57,9 @@ public class SnapperView extends Actor {
         this.x = x;
         this.y = y;
         snapper.setPosition(x,y);
-        shadow.setPosition(x,y);
+//        shadow.setPosition(x,y);
         eyes.setPosition(x, y);
-        eyeShadow.setPosition(x, y);
+//        eyeShadow.setPosition(x, y);
     }
 
     public void touch(){
@@ -75,11 +75,11 @@ public class SnapperView extends Actor {
         this.state = state;
         scale = getScale();
         shadowScale = scale * SHADOW_MULT;
-        snapper.setRegion(Resources.snapperBack[state]);
+        snapper.setRegion(Resources.snapperBack[state-1]);
         snapper.setScale(scale);
-        shadow.setScale(shadowScale);
+//        shadow.setScale(shadowScale);
         eyes.setScale(scale);
-        eyeShadow.setScale(shadowScale);
+//        eyeShadow.setScale(shadowScale);
     }
 
     private float getScale(){
@@ -101,7 +101,7 @@ public class SnapperView extends Actor {
     public void act(float delta) {
         super.act(delta);
         eyes.act(delta);
-        eyeShadow.act(delta);
+//        eyeShadow.act(delta);
     }
 
     @Override

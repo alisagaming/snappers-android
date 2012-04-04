@@ -40,10 +40,11 @@
                 android:padding="10dip"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                app:radius="7dp"
+                app:radius="6dp"
                 app:fillColor="#FFFFFF"
                 app:pageColor="#444444"
                 app:strokeWidth="0dp"
+                app:snap="true"
                 />
 
         <LinearLayout android:id="@+id/footer"

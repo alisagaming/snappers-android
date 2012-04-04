@@ -2,10 +2,8 @@ package ru.emerginggames.snappers.gdx;
 
 import android.content.Context;
 import android.graphics.*;
-import android.widget.Toast;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.backends.android.AndroidFiles;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
@@ -15,8 +13,6 @@ import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.gdx.android.BitmapPixmap;
 import ru.emerginggames.snappers.gdx.android.ResizedFileTextureData;
-
-import java.lang.reflect.Array;
 
 
 /**
@@ -30,13 +26,13 @@ public class Resources {
     protected static final Integer syncLock =  0;
 
     protected static class Preload {
-        public static TextureData eyes;
-        public static TextureData eyeShadow;
         public static TextureData snappers;
-        public static TextureData snapperBig;
         public static TextureData bang;
         public static TextureData blast;
         public static TextureData squareButtons;
+        public static TextureData menuButtons;
+        public static TextureData buttons;
+        public static TextureData dialog;
         public static TextureData bg;
         public static boolean isBgLoading;
         public static String bgName;
@@ -44,23 +40,20 @@ public class Resources {
 
     public static Context context;
 
-    public static Texture eyesTexture;
-    public static Texture eyeShadowTexture;
     public static Texture snapperTexture;
 
     public static Texture bangTexture;
     public static Texture blastTexture;
     public static Texture squareButtons;
     public static Texture menuButtons;
+    public static Texture buttons;
     public static Texture dialog;
     public static TextureRegion longDialog;
     public static TextureRegion bg;
 
 
     public static TextureRegion[] snapperBack;
-    public static TextureRegion shadowSnapper;
     public static TextureRegion[] eyeFrames;
-    public static TextureRegion[] eyeShadowFrames;
     public static TextureRegion[] blastFrames;
     public static TextureRegion[] bangFrames;
     public static TextureRegion[] squareButtonFrames;
@@ -94,7 +87,7 @@ public class Resources {
 
     public static void loadTextures(boolean isGold){
         loadSnapperTextures(isGold);
-        loadSquareButtonTextures();
+        loadButtonTextures();
         loadBmpFonts();
     }
 
@@ -102,27 +95,35 @@ public class Resources {
         fnt1 = new BitmapFont(Gdx.files.internal("FontShag.fnt"), Gdx.files.internal("FontShag.png"), false);
     }
 
-    private static void loadSquareButtonTextures(){
-        squareButtons = new Texture(Preload.squareButtons);
-        squareButtonFrames = makeAnimationFrames(squareButtons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 0, 7);
+    private static void loadButtonTextures(){
+        if (Metrics.sizeMode == Metrics.SizeMode.modeM)
+        {
+            buttons = new Texture(Preload.buttons);
+            squareButtonFrames = makeAnimationFrames(buttons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 0, 12);
 
+            menuButtonFrames = makeAnimationFrames(buttons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 4, 20);
+            menuButtonFrames[0] = new TextureRegion(buttons, 2*Metrics.squareButtonSize, Metrics.squareButtonSize, Metrics.menuButtonWidth, Metrics.menuButtonHeight);
+            menuButtonFrames[1] = new TextureRegion(buttons, 2*Metrics.squareButtonSize + Metrics.menuButtonWidth, Metrics.squareButtonSize, Metrics.menuButtonWidth, Metrics.menuButtonHeight);
+        }
+        else {
+            squareButtons = new Texture(Preload.squareButtons);
+            squareButtonFrames = makeAnimationFrames(squareButtons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 0, 12);
+
+            menuButtons= new Texture(Preload.menuButtons);
+            menuButtonFrames = makeAnimationFrames(menuButtons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 0, 8);
+        }
+
+        dialog = new Texture(Preload.dialog);
+        longDialog = new TextureRegion(dialog, 0, 0, Metrics.menuWidth, Metrics.menuHeight);
     }
 
-    public static void loadPausedMenuTextures(){
-        Texture temp = new Texture(Gdx.files.internal(dir + "dialoglong.png"), Pixmap.Format.RGBA8888, false);
-        longDialog = new TextureRegion(temp, 0, 0, Metrics.menuWidth, Metrics.menuHeight);
-
-        menuButtons= new Texture(Gdx.files.internal(dir + "btn-long.png"), Pixmap.Format.RGBA8888, false);
-        menuButtonFrames = makeAnimationFrames(menuButtons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 0, 5);
-
-    }
 
     private static void loadSnapperTextures(boolean isGold){
         preload();
         int snapperSize = Metrics.snapperSize;
 
         int snappersStart = isGold ? 25+4: 25;
-        snapperTexture = new Texture(Preload.snapperBig);
+        snapperTexture = new Texture(Preload.snappers);
         snapperTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         snapperTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
 
@@ -130,17 +131,23 @@ public class Resources {
         snapperBack = makeAnimationFrames(snapperTexture, snapperSize, snapperSize, false, snappersStart, snappersStart + 4);
 
         blastTexture = new Texture(Preload.blast);
-        blastFrames = makeAnimationFrames(blastTexture, Metrics.blastSize, Metrics.blastSize, false);
+        blastFrames = makeAnimationFrames(blastTexture, Metrics.blastSize, Metrics.blastSize, false, 0, 3);
 
         bangTexture = new Texture(Preload.bang);
         bangFrames = makeAnimationFrames(bangTexture, Metrics.bangSize, Metrics.bangSize, false);
+
+
+
     }
 
     public static void disposeTextures(){
         snapperTexture.dispose();
         bangTexture.dispose();
         blastTexture.dispose();
-        squareButtons.dispose();
+        if (squareButtons != null)
+            squareButtons.dispose();
+        if (buttons != null)
+            buttons.dispose();
         if (longDialog != null)
             longDialog.getTexture().dispose();
         if (menuButtons != null)
@@ -241,10 +248,22 @@ public class Resources {
             Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
         if (Preload.blast == null)
             Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
-        if (Preload.squareButtons == null)
-            Preload.squareButtons = new FileTextureData(Gdx.files.internal(dir + "btn-sq.png"), null, Pixmap.Format.RGBA8888, false);
-        if (Preload.snapperBig == null)
-            Preload.snapperBig = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
+        if (Preload.snappers == null)
+            Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
+        if (Preload.dialog == null)
+            Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialoglong.png"), null, Pixmap.Format.RGBA8888, false);
+        if (Metrics.sizeMode == Metrics.SizeMode.modeM){
+            if (Preload.buttons == null)
+                Preload.buttons = new FileTextureData(Gdx.files.internal(dir + "btn.png"), null, Pixmap.Format.RGBA8888, false);
+        }
+        else {
+            if (Preload.squareButtons == null)
+                Preload.squareButtons = new FileTextureData(Gdx.files.internal(dir + "btn-sq.png"), null, Pixmap.Format.RGBA8888, false);
+            if (Preload.menuButtons == null)
+                Preload.menuButtons = new FileTextureData(Gdx.files.internal(dir + "btn-long.png"), null, Pixmap.Format.RGBA8888, false);
+        }
+
+
     }
 
     public static void preparePreload(){
@@ -252,7 +271,10 @@ public class Resources {
             prepareData(Preload.bang);
             prepareData(Preload.blast);
             prepareData(Preload.squareButtons);
-            prepareData(Preload.snapperBig);
+            prepareData(Preload.snappers);
+            prepareData(Preload.menuButtons);
+            prepareData(Preload.dialog);
+            prepareData(Preload.buttons);
         }
     }
 

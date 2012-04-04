@@ -40,28 +40,28 @@ public class GameOverStage extends Stage{
         super(width, height, true);
         this.logic = logic;
 
-        nextButton = new SimpleButton(Resources.squareButtonFrames[3], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
+        nextButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[5], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onNextBtn();
             }
         });
 
-        restartButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
+        restartButton = new SimpleButton(Resources.squareButtonFrames[6], Resources.squareButtonFrames[7], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onRestartBtn();
             }
         });
 
-        shopButton = new SimpleButton(Resources.squareButtonFrames[5], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
+        shopButton = new SimpleButton(Resources.squareButtonFrames[8], Resources.squareButtonFrames[9], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onShopBtn();
             }
         });
 
-        menuButton = new SimpleButton(Resources.squareButtonFrames[6], Resources.squareButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
+        menuButton = new SimpleButton(Resources.squareButtonFrames[10], Resources.squareButtonFrames[11], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onMenuBtn();

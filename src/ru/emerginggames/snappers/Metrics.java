@@ -12,7 +12,7 @@ public class Metrics {
                 snapperMult4 = 0.73f;
                 break;
             case modeM:
-                /*snapperMult1 = 1.37f;
+/*                snapperMult1 = 1.37f;
                 snapperMult2 = 1.23f;
                 snapperMult3 = 1.11f;
                 snapperMult4 = 1;*/
@@ -20,6 +20,11 @@ public class Metrics {
                 snapperMult2 = 0.9f;
                 snapperMult3 = 0.81f;
                 snapperMult4 = 0.73f;
+
+/*                snapperMult1 = 1.11f;
+                snapperMult2 = 1;
+                snapperMult3 = 0.9f;
+                snapperMult4 = 0.81f;*/
                 break;
             case modeL:
                 snapperMult1 = 1;
@@ -79,19 +84,23 @@ public class Metrics {
     static void setMetrics(){
         switch (sizeMode){
             case modeS:
-                bangSize = snapperSize = 32;
-                blastSize = 14;
+                bangSize = 48;
+                snapperSize = 48;
+                blastSize = 18;
                 squareButtonSize = 64;
                 menuButtonWidth = 200;
-                fontSize = 32;
+                menuButtonHeight = 64;
+                fontSize = 24;
+                menuWidth = 236;
+                menuHeight = 352;
                 break;
             case modeM:
                 snapperSize = 81;
-                bangSize = 48;
-                blastSize = 18;
-                squareButtonSize = 80;
-                menuButtonWidth = 287;
-                menuButtonHeight = 92;
+                bangSize = 72;
+                blastSize = 27;
+                squareButtonSize = 96;
+                menuButtonWidth = 300;
+                menuButtonHeight = 96;
                 fontSize = 38;
                 menuWidth = 343;
                 menuHeight = 512;

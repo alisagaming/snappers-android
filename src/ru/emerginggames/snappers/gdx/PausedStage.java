@@ -54,14 +54,13 @@ public class PausedStage extends Stage{
     }
 
     protected void createItems(){
-        Resources.loadPausedMenuTextures();
         menuBack = new Sprite(Resources.longDialog);
         menuBack.setPosition((width - menuBack.getWidth())/2, (height - menuBack.getHeight())/2);
 
         titleText = new OutlinedTextSprite("Game paused", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         titleText.setPosition((width - titleText.getWidth())/2, menuBack.getY() + menuBack.getHeight() * 0.95f - titleText.getHeight());
 
-        resumeBtn = new SimpleButton(Resources.menuButtonFrames[1], Resources.menuButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
+        resumeBtn = new SimpleButton(Resources.menuButtonFrames[10], Resources.menuButtonFrames[11], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onResumeBtn();
@@ -70,7 +69,7 @@ public class PausedStage extends Stage{
         resumeBtn.setPosition((width - resumeBtn.getWidth())/2, titleText.getY() - resumeBtn.getHeight() - Metrics.screenMargin);
         addActor(resumeBtn);
 
-        restartBtn = new SimpleButton(Resources.menuButtonFrames[2], Resources.menuButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
+        restartBtn = new SimpleButton(Resources.menuButtonFrames[8], Resources.menuButtonFrames[9], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onRestartBtn();
@@ -79,7 +78,7 @@ public class PausedStage extends Stage{
         restartBtn.positionRelative(resumeBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
         addActor(restartBtn);
 
-        menuBtn = new SimpleButton(Resources.menuButtonFrames[3], Resources.menuButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
+        menuBtn = new SimpleButton(Resources.menuButtonFrames[6], Resources.menuButtonFrames[7], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onMenuBtn();
@@ -88,7 +87,7 @@ public class PausedStage extends Stage{
         menuBtn.positionRelative(restartBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
         addActor(menuBtn);
 
-        storeBtn = new SimpleButton(Resources.menuButtonFrames[4], Resources.menuButtonFrames[0], Resources.buttonSound, new IOnEventListener() {
+        storeBtn = new SimpleButton(Resources.menuButtonFrames[12], Resources.menuButtonFrames[13], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onShopBtn();

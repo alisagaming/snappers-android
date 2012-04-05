@@ -4,35 +4,29 @@ import ru.emerginggames.snappers.gdx.Resources;
 
 public class Metrics {
     static void setSnapperMult(){
+        /*                1.37f; 1.23f; 1.11f; 1; 0.9f; 0.81f; 0.73f */
         switch (sizeMode){
             case modeS:
-                snapperMult1 = 1;
-                snapperMult2 = 0.9f;
-                snapperMult3 = 0.81f;
-                snapperMult4 = 0.73f;
+                if (screenWidth < 300)
+                    snapperMult1 = 0.9f;
+                else
+                    snapperMult1 = 1.11f;
                 break;
             case modeM:
-/*                snapperMult1 = 1.37f;
-                snapperMult2 = 1.23f;
-                snapperMult3 = 1.11f;
-                snapperMult4 = 1;*/
-                snapperMult1 = 1;
-                snapperMult2 = 0.9f;
-                snapperMult3 = 0.81f;
-                snapperMult4 = 0.73f;
 
-/*                snapperMult1 = 1.11f;
-                snapperMult2 = 1;
-                snapperMult3 = 0.9f;
-                snapperMult4 = 0.81f;*/
+                if (screenWidth > 400)
+                    snapperMult1 = 1;
+                else
+                    snapperMult1 = 0.9f;
                 break;
             case modeL:
+
                 snapperMult1 = 1;
-                snapperMult2 = 0.9f;
-                snapperMult3 = 0.81f;
-                snapperMult4 = 0.73f;
                 break;
         }
+        snapperMult2 = snapperMult1 * 0.9f;
+        snapperMult3 = snapperMult2 * 0.9f;
+        snapperMult4 = snapperMult3 * 0.9f;
     }
 
     public static enum SizeMode {
@@ -73,7 +67,7 @@ public class Metrics {
     }
 
     static void setScreenMode(int width){
-        if (width <320)
+        if (width <400)
             sizeMode = SizeMode.modeS;
         else if (width < 600)
             sizeMode = SizeMode.modeM;
@@ -87,12 +81,12 @@ public class Metrics {
                 bangSize = 48;
                 snapperSize = 48;
                 blastSize = 18;
-                squareButtonSize = 64;
+                squareButtonSize = 48;
                 menuButtonWidth = 200;
                 menuButtonHeight = 64;
                 fontSize = 24;
                 menuWidth = 236;
-                menuHeight = 352;
+                menuHeight = 353;
                 break;
             case modeM:
                 snapperSize = 81;

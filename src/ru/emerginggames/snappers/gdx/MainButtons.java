@@ -38,7 +38,7 @@ public class MainButtons extends Group {
 
     public void setViewport(int width, int height) {
         pauseButton.positionRelative(width, height, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
-        hintButton.positionRelative(pauseButton, IPositionable.Dir.LEFT, Metrics.screenMargin);
+        hintButton.positionRelative(pauseButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
     }
 
     @Override

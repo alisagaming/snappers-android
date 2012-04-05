@@ -99,11 +99,11 @@ public class MainStage extends Stage implements ILogicListener {
 
     protected Rect defineGameRect(int width, int height){
         int marginTop = Math.round(Metrics.squareButtonSize * 1.1f);
-        int snapperAreaHeight = height - 2 * marginTop;
         int marginBottom = Math.round(Metrics.squareButtonSize * 0.7f);
+        int snapperAreaHeight = height - marginTop - marginBottom;
         if (snapperAreaHeight < width){
             snapperAreaHeight = width;
-            marginBottom = height - marginTop - marginBottom;
+            marginBottom = height - marginTop - snapperAreaHeight;
             if (marginBottom<0){
                 snapperAreaHeight+= marginBottom;
                 marginBottom = 0;

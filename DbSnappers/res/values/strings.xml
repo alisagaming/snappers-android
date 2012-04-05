@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="string" name="databaseVersion" format="integer">4</item>
+    <item type="string" name="databaseVersion" format="integer">5</item>
 </resources>

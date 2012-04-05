@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import ru.emerginggames.snappers.Metrics;
@@ -101,7 +102,7 @@ public class Resources {
             buttons = new Texture(Preload.buttons);
             squareButtonFrames = makeAnimationFrames(buttons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 0, 12);
 
-            menuButtonFrames = makeAnimationFrames(buttons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 4, 20);
+            menuButtonFrames = makeAnimationFrames(buttons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 4, 16);
             menuButtonFrames[0] = new TextureRegion(buttons, 2*Metrics.squareButtonSize, Metrics.squareButtonSize, Metrics.menuButtonWidth, Metrics.menuButtonHeight);
             menuButtonFrames[1] = new TextureRegion(buttons, 2*Metrics.squareButtonSize + Metrics.menuButtonWidth, Metrics.squareButtonSize, Metrics.menuButtonWidth, Metrics.menuButtonHeight);
         }
@@ -110,7 +111,7 @@ public class Resources {
             squareButtonFrames = makeAnimationFrames(squareButtons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 0, 12);
 
             menuButtons= new Texture(Preload.menuButtons);
-            menuButtonFrames = makeAnimationFrames(menuButtons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 0, 8);
+            menuButtonFrames = makeAnimationFrames(menuButtons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 0, 16);
         }
 
         dialog = new Texture(Preload.dialog);
@@ -128,13 +129,18 @@ public class Resources {
         snapperTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
 
         eyeFrames = makeAnimationFrames(snapperTexture, snapperSize, snapperSize, true, 0, 25);
-        snapperBack = makeAnimationFrames(snapperTexture, snapperSize, snapperSize, false, snappersStart, snappersStart + 4);
+        snapperBack = makeAnimationFrames(snapperTexture, snapperSize, snapperSize, false, snappersStart, 4);
 
         blastTexture = new Texture(Preload.blast);
         blastFrames = makeAnimationFrames(blastTexture, Metrics.blastSize, Metrics.blastSize, false, 0, 3);
 
-        bangTexture = new Texture(Preload.bang);
-        bangFrames = makeAnimationFrames(bangTexture, Metrics.bangSize, Metrics.bangSize, false);
+        if (Metrics.sizeMode == Metrics.SizeMode.modeS){
+            bangFrames = makeAnimationFrames(snapperTexture, Metrics.bangSize, Metrics.bangSize, false, 33, 5);
+        }
+        else {
+            bangTexture = new Texture(Preload.bang);
+            bangFrames = makeAnimationFrames(bangTexture, Metrics.bangSize, Metrics.bangSize, false);
+        }
 
 
 
@@ -142,8 +148,9 @@ public class Resources {
 
     public static void disposeTextures(){
         snapperTexture.dispose();
-        bangTexture.dispose();
         blastTexture.dispose();
+        if (bangTexture != null)
+            bangTexture.dispose();
         if (squareButtons != null)
             squareButtons.dispose();
         if (buttons != null)
@@ -184,16 +191,42 @@ public class Resources {
         return frames;
     }
 
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int start,  int max){
+    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int start,  int size){
         int cols = texture.getWidth() / tileWidth;
-        int rows = texture.getHeight() / tileHeight;
 
-        int size = max - start;
         TextureRegion[] frames = new TextureRegion[goBack? size * 2 - 2 : size];
 
-        for (int i=start; i<max; i++)
-            frames[i - start] = new TextureRegion(texture, tileWidth * (i%cols), tileHeight * (i/cols), tileWidth, tileHeight);
+        for (int i=0; i<size; i++)
+            frames[i] = new TextureRegion(texture, tileWidth * ((i + start)%cols), tileHeight * ((i + start)/cols), tileWidth, tileHeight);
 
+
+        if (goBack)
+            for (int i = 0; i< size-2; i++)
+                frames[size + i] = frames[size - i - 2];
+
+        return frames;
+    }
+
+    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int startX, int startY,  int max){
+        int width = texture.getWidth();
+
+        int size = max;
+        TextureRegion[] frames = new TextureRegion[goBack? size * 2 - 2 : size];
+        int posx = startX;
+        int posy = startY;
+        if (posx > width){
+            posy += (tileHeight * (posx / width));
+            posx = posx % width;
+        }
+
+        for (int i=0; i<max; i++){
+            frames[i] = new TextureRegion(texture, posx, posy, tileWidth, tileHeight);
+            posx += tileWidth;
+            if (posx + tileWidth > width){
+                posx = 0;
+                posy+=tileHeight;
+            }
+        }
 
         if (goBack)
             for (int i = 0; i< size-2; i++)
@@ -244,7 +277,7 @@ public class Resources {
     }
 
     protected static void createPreload(){
-        if (Preload.bang == null)
+        if (Preload.bang == null && Metrics.sizeMode != Metrics.SizeMode.modeS)
             Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
         if (Preload.blast == null)
             Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);

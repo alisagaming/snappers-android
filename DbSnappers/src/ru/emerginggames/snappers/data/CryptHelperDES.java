@@ -1,24 +1,81 @@
 package ru.emerginggames.snappers.data;
 
-import java.security.SecureRandom;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.SecureRandom;
 
-public class CryptHelper {
+/**
+ * Created by IntelliJ IDEA.
+ * User: babay
+ * Date: 05.04.12
+ * Time: 9:31
+ */
+public class CryptHelperDES {
+
+    private static final byte[] salt = {
+            (byte)0xc7, (byte)0x73, (byte)0x21, (byte)0x8c,
+            (byte)0x7e, (byte)0xc8, (byte)0xee, (byte)0x99
+    };
+
+    // Iteration count
+    private static final int count = 20;
+
+    private static SecretKey pbeKey;
+    private static PBEParameterSpec pbeParamSpec;
+    private static String storedPassword;
+
+    private static PBEParameterSpec getSpec(){
+        if (pbeParamSpec == null)
+            pbeParamSpec = new PBEParameterSpec(salt, count);
+        return pbeParamSpec;
+    }
+    
+    private static SecretKey getKey(String password) throws Exception{
+        if (pbeKey == null || !storedPassword.equals(password)){
+            storedPassword = password;
+            PBEKeySpec pbeKeySpec;
+            SecretKeyFactory keyFac;
+
+            pbeKeySpec = new PBEKeySpec(password.toCharArray());
+            keyFac = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
+            pbeKey = keyFac.generateSecret(pbeKeySpec);
+        }
+        return pbeKey;
+    }
+
     public static String encrypt(String seed, String cleartext) throws Exception {
-        byte[] rawKey = getRawKey(seed.getBytes());
-        byte[] result = encrypt(rawKey, cleartext.getBytes());
-        return toHex(result);
+        return toHex(encryptToBytes(seed, cleartext));
+    }
+
+    public static byte[] encryptToBytes(String seed, String cleartext) throws Exception {
+        Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
+
+        // Initialize PBE Cipher with key and parameters
+        pbeCipher.init(Cipher.ENCRYPT_MODE, getKey(seed), getSpec());
+
+        // Encrypt the cleartext
+        return  pbeCipher.doFinal(cleartext.getBytes());
     }
 
     public static String decrypt(String seed, String encrypted) throws Exception {
-        byte[] rawKey = getRawKey(seed.getBytes());
-        byte[] enc = toByte(encrypted);
-        byte[] result = decrypt(rawKey, enc);
-        return new String(result);
+        return decrypt(seed, toByte(encrypted));
+    }
+
+    public static String decrypt(String seed, byte[] encrypted) throws Exception {
+        // Create PBE Cipher
+        Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
+
+        // Initialize PBE Cipher with key and parameters
+        pbeCipher.init(Cipher.DECRYPT_MODE, getKey(seed), getSpec());
+
+        // Encrypt the cleartext
+        byte[] decrypted = pbeCipher.doFinal(encrypted);
+        return new String(decrypted);
     }
 
     private static byte[] getRawKey(byte[] seed) throws Exception {
@@ -76,4 +133,5 @@ public class CryptHelper {
     private static void appendHex(StringBuffer sb, byte b) {
         sb.append(HEX.charAt((b>>4)&0x0f)).append(HEX.charAt(b&0x0f));
     }
+
 }

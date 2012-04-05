@@ -83,7 +83,7 @@ public class GameOverStage extends Stage{
     public void setViewport(int width, int height) {
         super.setViewport(width, height, true);
         shopButton.positionRelative(width, height, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
-        nextButton.positionRelative(shopButton, IPositionable.Dir.LEFT, Metrics.screenMargin);
+        nextButton.positionRelative(shopButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
 
         int textPos = Math.round(height * 0.6f);
         wonText.setPosition((width - wonText.getWidth())/2, textPos);
@@ -96,7 +96,7 @@ public class GameOverStage extends Stage{
         this.isWon = isWon;
 
         if (isWon){
-            restartButton.positionRelative(nextButton, IPositionable.Dir.LEFT, Metrics.screenMargin);
+            restartButton.positionRelative(nextButton, IPositionable.Dir.LEFT, Metrics.screenMargin /2);
             scoreText.setText(String.format("Score: %d", logic.getScore()));
             wonText.setText(winMessages[(int)(Math.random()*winMessages.length)]);
             wonText.setPosition((width - wonText.getWidth())/2, wonText.getY());
@@ -109,7 +109,7 @@ public class GameOverStage extends Stage{
         scoreText.setPosition((width - scoreText.getWidth())/2, scoreText.getY());
 
         nextButton.visible = nextButton.touchable = shopButton.visible = shopButton.touchable = isWon;
-        menuButton.positionRelative(restartButton, IPositionable.Dir.LEFT, Metrics.screenMargin);
+        menuButton.positionRelative(restartButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
         sinceShow = 0;
     }
 

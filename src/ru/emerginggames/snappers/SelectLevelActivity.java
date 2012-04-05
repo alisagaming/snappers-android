@@ -41,12 +41,14 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         pager.setAdapter(adapter);
         pager.setPageMargin(20);
         pager.setRatio(1);
-
+        int padV = getWindowManager().getDefaultDisplay().getWidth()/10;
+        pager.setInnerPaddings(padV, padV/3, padV, padV/3);
+        adapter.setInnerPaddings(padV, padV/3, padV, padV/3);
 
         com.viewpagerindicator.CirclePageIndicator
         mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
-        
+
         View footer = findViewById(R.id.footer);
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)footer.getLayoutParams();
         lp.weight = 1;

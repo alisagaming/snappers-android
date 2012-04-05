@@ -1,14 +1,16 @@
 package ru.emerginggames.snappers.gdx;
 
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import ru.emerginggames.snappers.Metrics;
@@ -49,7 +51,6 @@ public class Resources {
     public static Texture menuButtons;
     public static Texture buttons;
     public static Texture dialog;
-    public static TextureRegion longDialog;
     public static TextureRegion bg;
 
 
@@ -59,6 +60,7 @@ public class Resources {
     public static TextureRegion[] bangFrames;
     public static TextureRegion[] squareButtonFrames;
     public static TextureRegion[] menuButtonFrames;
+    public static NinePatch dialog9;
 
     public static Sound[] popSounds;
     public static Sound  winSound;
@@ -115,7 +117,7 @@ public class Resources {
         }
 
         dialog = new Texture(Preload.dialog);
-        longDialog = new TextureRegion(dialog, 0, 0, Metrics.menuWidth, Metrics.menuHeight);
+        dialog9 = new NinePatch(dialog, 32, 32, 32, 32);
     }
 
 
@@ -155,8 +157,8 @@ public class Resources {
             squareButtons.dispose();
         if (buttons != null)
             buttons.dispose();
-        if (longDialog != null)
-            longDialog.getTexture().dispose();
+        if (dialog != null)
+            dialog.dispose();
         if (menuButtons != null)
             menuButtons.dispose();
         if (bg!=null)
@@ -284,7 +286,7 @@ public class Resources {
         if (Preload.snappers == null)
             Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
         if (Preload.dialog == null)
-            Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialoglong.png"), null, Pixmap.Format.RGBA8888, false);
+            Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialog.png"), null, Pixmap.Format.RGBA8888, false);
         if (Metrics.sizeMode == Metrics.SizeMode.modeM){
             if (Preload.buttons == null)
                 Preload.buttons = new FileTextureData(Gdx.files.internal(dir + "btn.png"), null, Pixmap.Format.RGBA8888, false);

@@ -18,7 +18,7 @@ import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
  * Time: 3:58
  */
 public class PausedStage extends Stage{
-    protected Sprite menuBack;
+    //protected Sprite menuBack;
     protected SimpleButton resumeBtn;
     protected SimpleButton restartBtn;
     protected SimpleButton menuBtn;
@@ -26,6 +26,8 @@ public class PausedStage extends Stage{
     protected OutlinedTextSprite titleText;
     protected ColorRect dimRect;
     IGameEventListener listener;
+    float menuX;
+    float menuY;
 
     public PausedStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
@@ -44,21 +46,25 @@ public class PausedStage extends Stage{
         batch.begin();
         batch.end();
         dimRect.draw();
-        if (menuBack == null)
+        if (resumeBtn == null)
             createItems();
         batch.begin();
-        menuBack.draw(batch);
+        Resources.dialog9.draw(batch, menuX, menuY, Metrics.menuWidth, Metrics.menuHeight);
+
+        //menuBack.draw(batch);
         titleText.draw(batch);
         batch.end();
         super.draw();
     }
 
     protected void createItems(){
-        menuBack = new Sprite(Resources.longDialog);
-        menuBack.setPosition((width - menuBack.getWidth())/2, (height - menuBack.getHeight())/2);
+        //menuBack = new Sprite(Resources.longDialog);
+        //menuBack.setPosition((width - menuBack.getWidth())/2, (height - menuBack.getHeight())/2);
+        menuX = (width - Metrics.menuWidth)/2;
+        menuY = (height - Metrics.menuHeight)/2;
 
         titleText = new OutlinedTextSprite("Game paused", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        titleText.setPosition((width - titleText.getWidth())/2, menuBack.getY() + menuBack.getHeight() * 0.95f - titleText.getHeight());
+        titleText.setPosition((width - titleText.getWidth())/2, menuY + Metrics.menuHeight * 0.95f - titleText.getHeight());
 
         resumeBtn = new SimpleButton(Resources.menuButtonFrames[10], Resources.menuButtonFrames[11], Resources.buttonSound, new IOnEventListener() {
             @Override

@@ -16,6 +16,11 @@ import android.widget.LinearLayout;
  */
 public class FixedRatioPager extends ViewPager{
     float mRatio = 0;
+    int innerPaddingLeft = 0;
+    int innerPaddingTop = 0;
+    int innerPaddingRight = 0;
+    int innerPaddingBottom = 0;
+
     public FixedRatioPager(Context context) {
         super(context);
     }
@@ -41,6 +46,13 @@ public class FixedRatioPager extends ViewPager{
         }
     }
 
+    public void setInnerPaddings(int innerPaddingLeft, int innerPaddingTop, int innerPaddingRight, int innerPaddingBottom) {
+        this.innerPaddingLeft = innerPaddingLeft;
+        this.innerPaddingTop = innerPaddingTop;
+        this.innerPaddingRight = innerPaddingRight;
+        this.innerPaddingBottom = innerPaddingBottom;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mRatio == 0){
@@ -50,7 +62,10 @@ public class FixedRatioPager extends ViewPager{
 
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
-        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(Math.round(wSize * mRatio), hMode));
+        int innerWidth = wSize - innerPaddingLeft - innerPaddingRight;
+        int innerHeight = Math.round(innerWidth * mRatio);
+        int newHeight = innerHeight + innerPaddingTop + innerPaddingBottom;
+        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(newHeight, hMode));
     }
 
     @Override

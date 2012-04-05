@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.R;
+import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.LevelPack;
 
@@ -26,11 +28,17 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
     LevelPack pack;
     SparseArray<OutlinedTextView> items = new SparseArray<OutlinedTextView>(25);
 
+    int innerPaddingLeft = 0;
+    int innerPaddingTop = 0;
+    int innerPaddingRight = 0;
+    int innerPaddingBottom = 0;
+
     public LevelListFragment() {
     }
 
     @Override
     public void onResume() {
+        pack = LevelPackTable.get(pack.id, getActivity());
         if (maxAvailableLevel != pack.levelsUnlocked){
             maxAvailableLevel = pack.levelsUnlocked;
             if (maxAvailableLevel < startFromLevel + 25
@@ -40,6 +48,13 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         }
         super.onResume();
 
+    }
+
+    public void setInnerPaddings(int innerPaddingLeft, int innerPaddingTop, int innerPaddingRight, int innerPaddingBottom) {
+        this.innerPaddingLeft = innerPaddingLeft;
+        this.innerPaddingTop = innerPaddingTop;
+        this.innerPaddingRight = innerPaddingRight;
+        this.innerPaddingBottom = innerPaddingBottom;
     }
 
     public LevelListFragment(int startFromLevel, LevelPack pack1, IOnItemSelectedListener itemSelectedListener) {
@@ -57,17 +72,21 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelPaddedLinearLayout layout = new RelPaddedLinearLayout(getActivity());
+
+        LinearLayout layout = new LinearLayout(getActivity());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
         layout.setLayoutParams(params);
-        layout.setMultiplier(0.1f);
+        layout.setPadding(innerPaddingLeft, innerPaddingTop, innerPaddingRight, innerPaddingBottom);
 
         layout.setGravity(Gravity.CENTER);
         layout.setOrientation(LinearLayout.VERTICAL);
         int num = startFromLevel;
 
         LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT, 1f);
-        itemParams.setMargins(6,6,6,6);
+        if (Metrics.sizeMode == Metrics.SizeMode.modeS)
+            itemParams.setMargins(2,2,2,2);
+        else
+            itemParams.setMargins(6,6,6,6);
 
 
         for (int i=0; i<5; i++){
@@ -78,7 +97,7 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
             for (int j=0;j<5; j++){
                 OutlinedTextView text = new OutlinedTextView(getActivity());
                 text.setLayoutParams(itemParams);
-                text.setPadding(4, 4, 4, 4);
+                //text.setPadding(4, 4, 4, 4);
                 text.setGravity(Gravity.CENTER);
                 setItemState(text, num);
                 text.setOnClickListener(this);

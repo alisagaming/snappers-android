@@ -3,11 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/tiled_main_bg"
+    android:background="@drawable/background"
     >
-    <ImageView android:src="@drawable/corners_dim"
-               android:layout_width="fill_parent"
-               android:layout_height="fill_parent"
-               android:scaleType="fitXY"
-            />
+
 </LinearLayout>

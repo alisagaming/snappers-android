@@ -4,7 +4,7 @@
                 xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@drawable/bgd"
+                android:background="@drawable/background"
                 android:id="@+id/root"
         >
     <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
@@ -37,7 +37,6 @@
 
         <com.viewpagerindicator.CirclePageIndicator
                 android:id="@+id/indicator"
-                android:padding="10dip"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 app:radius="6dp"

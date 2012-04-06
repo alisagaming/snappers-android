@@ -161,13 +161,13 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
                 Math.abs(fontMetrics.descent) + Math.abs(fontMetrics.leading)) + (int)(strokeWidth * 2);
     }
 
-    protected int measureTextWidth() {
+    public int measureTextWidth() {
         if (text == null)
             return 0;
         return (int)Math.ceil(outlinePaint.measureText(text) + strokeWidth * 2);
     }
 
-    protected int measureTextWidth(String text) {
+    public int measureTextWidth(String text) {
         return (int)Math.ceil(outlinePaint.measureText(text) + strokeWidth * 2);
     }    
 
@@ -187,6 +187,16 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
     @Override
     public void positionRelative(float x, float y, Dir dir, float margin) {
         PositionHelper.Position(x, y, this, dir, margin);
+    }
+
+    @Override
+    public float getRight() {
+        return getX() + getWidth();
+    }
+
+    @Override
+    public float getTop() {
+        return getY() + getHeight();
     }
 
     public void dispose(){

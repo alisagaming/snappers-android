@@ -69,6 +69,8 @@ public class OutlinedTextView extends TextView{
             getBackground().draw(canvas);
 
         CharSequence text = getText();
+        if (text.length() == 0)
+            return;
 
         int posx = getPaddingLeft() + strokeWidth;
         int posy = getPaddingTop() + strokeWidth;

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import ru.emerginggames.snappers.GameSettings;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.R;
 import ru.emerginggames.snappers.data.LevelPackTable;
@@ -38,18 +39,19 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onResume() {
-        if (pack == null)
+        super.onResume();
+        if (pack == null){
+            getActivity().finish();
             return;
-        pack = LevelPackTable.get(pack.id, getActivity());
-        if (maxAvailableLevel != pack.levelsUnlocked){
-            maxAvailableLevel = pack.levelsUnlocked;
-            if (maxAvailableLevel < startFromLevel + 25
-                    && pack.levelsUnlocked >= startFromLevel)
+        }
+        int oldMaxAvailLevel = maxAvailableLevel;
+        maxAvailableLevel = GameSettings.getInstance(getActivity()).getLevelUnlocked(pack);
+        if (maxAvailableLevel != oldMaxAvailLevel){
+            if (oldMaxAvailLevel < startFromLevel + 25
+                    && maxAvailableLevel >= startFromLevel)
                 for (int i=startFromLevel; i<startFromLevel + 25; i++)
                     setItemState(items.get(i), i);
         }
-        super.onResume();
-
     }
 
     public void setInnerPaddings(int innerPaddingLeft, int innerPaddingTop, int innerPaddingRight, int innerPaddingBottom) {
@@ -63,13 +65,18 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         this.startFromLevel = startFromLevel;
         this.itemSelectedListener = itemSelectedListener;
         pack = pack1;
-        maxAvailableLevel = pack.levelsUnlocked;
+        maxAvailableLevel = GameSettings.getInstance(getActivity()).getLevelUnlocked(pack);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         setUserVisibleHint(true);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

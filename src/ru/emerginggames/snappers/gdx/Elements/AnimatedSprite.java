@@ -68,4 +68,14 @@ public class AnimatedSprite extends Sprite implements IPositionable{
     public void positionRelative(float x, float y, Dir dir, float margin) {
         PositionHelper.Position(x, y, this, dir, margin);
     }
+
+    @Override
+    public float getRight() {
+        return getX() + getWidth();
+    }
+
+    @Override
+    public float getTop() {
+        return getY() + getHeight();
+    }
 }

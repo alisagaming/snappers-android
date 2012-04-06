@@ -1,6 +1,9 @@
 package ru.emerginggames.snappers;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -29,6 +32,15 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         Intent intent = getIntent();
         Level level = (Level)intent.getSerializableExtra(LEVEL_PARAM_TAG);
         LevelPack pack = (LevelPack) intent.getSerializableExtra(LEVEL_PACK_PARAM_TAG);
+        if (level == null)
+            level = (Level)savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
+        if (pack == null)
+            pack = (LevelPack)savedInstanceState.getSerializable(LEVEL_PACK_PARAM_TAG);
+        if (level == null || pack == null){
+            finish();
+            return;
+        }
+
         game = new Game();
         game.setStartLevel(level, pack);
 
@@ -40,6 +52,14 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         config.useWakelock = false;
 
         initialize(game, config);
+        GameSettings.setContext(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(LEVEL_PARAM_TAG, game.getLevel());
+        outState.putSerializable(LEVEL_PACK_PARAM_TAG, game.getLevelPack());
     }
 
     @Override
@@ -49,8 +69,14 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     }
 
     @Override
-    public void levelPackWon(){
-        //TODO: do
+    public void levelPackWon(LevelPack pack) {
+        GameSettings.getInstance(this).unlockNextLevelPack(pack);
+    }
+
+    @Override
+    public void levelSolved(Level level) {
+        GameSettings.getInstance(this).unlockNextLevel(level);
+
     }
 
     @Override
@@ -61,13 +87,12 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public int getHintsLeft(){
-        return 10;
-        //TODO: load hints
+        return  GameSettings.getInstance(this).getHintsRemaining();
     }
 
     @Override
     public void useHint(){
-        //TODO: reduce remaining hints by 1
+        GameSettings.getInstance(this).useHint();
     }
 
     @Override
@@ -77,6 +102,20 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public boolean isOnline() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return checkNetworkStatus();  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    protected boolean checkNetworkStatus()
+    {
+        ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (netInfo != null && netInfo.isAvailable())
+            return true;
+
+        netInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (netInfo != null && netInfo.isAvailable())
+            return true;
+
+        return false;
     }
 }

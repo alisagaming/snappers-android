@@ -110,4 +110,14 @@ public class SimpleButton extends Actor implements IPositionable {
         button.setPosition(x, y);
         buttonDown.setPosition(x, y);
     }
+
+    @Override
+    public float getRight() {
+        return getX() + getWidth();
+    }
+
+    @Override
+    public float getTop() {
+        return getY() + getHeight();
+    }
 }

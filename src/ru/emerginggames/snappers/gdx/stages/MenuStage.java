@@ -61,4 +61,12 @@ public class MenuStage extends DimBackStage{
     public void setInnerMenuHeight(int innerHeight){
         setMenuSize(menuWidth, innerHeight + 2 * Metrics.menuMargin);
     }
+    
+    public int getInnerWidth(){
+        return menuWidth - Metrics.menuMargin * 2;
+    }
+    
+    public int getInnerHeight(){
+        return menuHeight - Metrics.menuMargin * 2;
+    }
 }

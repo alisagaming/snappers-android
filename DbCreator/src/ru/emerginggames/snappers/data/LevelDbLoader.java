@@ -67,8 +67,7 @@ public class LevelDbLoader {
             levelPackTable = new LevelPackTable(helper);
             levelPackTable.open(true);
         }
-        LevelPack pack1 = loadLevelPack("LevelPack1");
-        levelPackTable.unlockLevelPack(pack1.id);
+        loadLevelPack("LevelPack1");
         loadLevelPack("LevelPack2");
         loadLevelPack("LevelPack3");
         loadLevelPack("LevelPack4");
@@ -137,9 +136,6 @@ public class LevelDbLoader {
             else if (xpp.getAttributeName(i).equalsIgnoreCase("name"))
                 pack.name = xpp.getAttributeValue(i);
         }
-
-        pack.isUnlocked = false;
-        pack.levelsUnlocked = 0;
 
         pack.id = (int) levelPackTable.insert(pack);
     }

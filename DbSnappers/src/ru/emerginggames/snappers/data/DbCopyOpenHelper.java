@@ -65,7 +65,6 @@ public class DbCopyOpenHelper extends SQLiteOpenHelper {
                  * storage with the one in assets and then cache it.
                  */
                 copyDataBase();
-                lockLevelPacks();
             } catch (IOException e) {
                 throw new Error("Error copying database");
             }
@@ -137,16 +136,6 @@ public class DbCopyOpenHelper extends SQLiteOpenHelper {
         getWritableDatabase().close();
 
 
-    }
-
-    protected void lockLevelPacks(){
-        LevelPackTable table = new LevelPackTable(this);
-        table.open(true);
-        LevelPack[] packs = table.getAll();
-        for (LevelPack pack:packs)
-            table.lockLevelPack(pack.id);
-        table.unlockLevelPack(1);
-        table.close();
     }
 
     /*

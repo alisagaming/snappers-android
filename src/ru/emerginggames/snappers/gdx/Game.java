@@ -166,7 +166,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHintBtn() {
-        if (level.number < 4 ){
+        if (snappersStage.getLogic().level.number < 4 ){
             snappersStage.showHints(true);
             return;
         }
@@ -188,11 +188,7 @@ public class Game implements ApplicationListener, IGameEventListener {
         gameOverStage.setWon(true);
         Resources.winSound.play(0.6f);
         Gdx.input.setInputProcessor(currentStage = gameOverStage);
-        level = snappersStage.getLogic().level;
-        if (levelPack.levelsUnlocked <= level.number){
-            LevelPackTable.setLevelSolved(level, (Context)Gdx.app);
-            levelPack.levelsUnlocked = level.number+1;
-        }
+        ((IAppGameListener)Gdx.app).levelSolved(snappersStage.getLogic().level);
     }
 
     @Override
@@ -209,7 +205,15 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void levelPackWon() {
-        ((IAppGameListener)Gdx.app).levelPackWon();
+        ((IAppGameListener)Gdx.app).levelPackWon(levelPack);
+    }
+
+    public Level getLevel(){
+        return snappersStage.getLogic().level;
+    }
+
+    public LevelPack getLevelPack(){
+        return levelPack;
     }
 
 

@@ -280,6 +280,9 @@ public class Resources {
     }
 
     protected static void createPreload(){
+        if (Gdx.files == null)
+            return;
+        
         if (Preload.bang == null && Metrics.sizeMode != Metrics.SizeMode.modeS)
             Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
         if (Preload.blast == null)
@@ -345,9 +348,11 @@ public class Resources {
     }
     
     protected static void createBgPreload(String name){
-        if (name.equals(Preload.bgName))
+        if (name.equals(Preload.bgName) && Preload.bg != null)
             return;
         utilizeBg();
+        if (Gdx.files == null)
+            return;
         Preload.bg = new ResizedFileTextureData(Gdx.files.internal("bg/" + name),
                 Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
         Preload.bgName = name;

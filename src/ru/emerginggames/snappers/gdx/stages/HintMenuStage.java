@@ -27,6 +27,8 @@ public class HintMenuStage extends MenuStage {
     SimpleButton buy10Button;
     OutlinedTextSprite line1;
     OutlinedTextSprite line2;
+    OutlinedTextSprite line3;
+    boolean showLine3 = false;
     IGameEventListener listener;
 
 
@@ -51,26 +53,34 @@ public class HintMenuStage extends MenuStage {
         batch.begin();
         line1.draw(batch, getOpacity());
         line2.draw(batch, getOpacity());
+        if (showLine3)
+            line3.draw(batch, getOpacity());
         batch.end();
     }
 
     private void  positionItems(){
+        int marg = Metrics.screenMargin;
         cancelButton.positionRelative(width/2, getMenuBottom(), IPositionable.Dir.UP, 0);
-        buy10Button.positionRelative(cancelButton, IPositionable.Dir.UP, Metrics.screenMargin/2);
-        buy1Button.positionRelative(buy10Button, IPositionable.Dir.UP, Metrics.screenMargin/2);
-        useButton.positionRelative(cancelButton, IPositionable.Dir.UP, Metrics.screenMargin/2);
+        buy10Button.positionRelative(cancelButton, IPositionable.Dir.UP, marg/2);
+        buy1Button.positionRelative(buy10Button, IPositionable.Dir.UP, marg/2);
+        useButton.positionRelative(cancelButton, IPositionable.Dir.UP, marg/2);
 
-        if (buy10Button.visible)
-            line2.positionRelative(buy10Button, IPositionable.Dir.UP, Metrics.screenMargin*4);
+        IPositionable topButton = buy1Button.visible ? buy1Button : useButton;
+        if (showLine3){
+            line3.positionRelative(topButton.getX(), topButton.getTop() + marg*4, IPositionable.Dir.UPRIGHT, 0);
+            line2.positionRelative(line3.getX(), line3.getTop() + marg, IPositionable.Dir.UPRIGHT, 0);
+        }
         else
-            line2.positionRelative(useButton, IPositionable.Dir.UP, Metrics.screenMargin*4);
-        line1.positionRelative(line2, IPositionable.Dir.UP, Metrics.screenMargin);
+            line2.positionRelative(topButton.getX(), topButton.getTop() + marg * 4, IPositionable.Dir.UPRIGHT, 0);
+        line1.positionRelative(line2.getX(), line2.getTop() + marg, IPositionable.Dir.UPRIGHT, 0);
     }
 
     public int calcContentHeight(){
         int height = Metrics.menuButtonHeight * 2 + Metrics.screenMargin/2 + Metrics.screenMargin*5 + line1.getTextHeight() * 2;
         if (buy10Button.visible)
-            height+= (Metrics.menuButtonHeight * 2 + Metrics.screenMargin);
+            height+= (Metrics.menuButtonHeight  + Metrics.screenMargin/2);
+        if (showLine3)
+            height += (line3.getHeight() + Metrics.screenMargin);
         return height;
     }
 
@@ -106,11 +116,13 @@ public class HintMenuStage extends MenuStage {
 
         line1 = new OutlinedTextSprite(Metrics.menuButtonWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
         line2 = new OutlinedTextSprite(Metrics.menuButtonWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
+        line3 = new OutlinedTextSprite(Metrics.menuButtonWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
     }
 
     @Override
     public void show() {
         super.show();
+        showLine3 = false;
         int hintsLeft = ((IAppGameListener)Gdx.app).getHintsLeft();
         if (hintsLeft > 0)
             showUseHintMenu(hintsLeft);
@@ -124,7 +136,7 @@ public class HintMenuStage extends MenuStage {
 
     private void showUseHintMenu(int hintsLeft){
         if (hintsLeft == 1)
-            line1.setText("You have %d hint.");
+            line1.setText("You have 1 hint.");
         else
             line1.setText(String.format("You have %d hints", hintsLeft));
         line2.setText("Use it?");
@@ -134,7 +146,13 @@ public class HintMenuStage extends MenuStage {
 
     private void showGetOnline(){
         line1.setText("You have no hints.");
-        line2.setText("Get online to get some.");
+        if (line2.measureTextWidth("Get online to get some.") < getInnerWidth())
+            line2.setText("Get online to get some.");
+        else{
+            line2.setText("Get online to get");
+            line3.setText("some.");
+            showLine3 = true;
+        }
         useButton.visible = useButton.touchable = buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = false;
     }
 

@@ -15,8 +15,6 @@ public class LevelPack implements Serializable{
     public String title;
     public String name;
     public boolean isGold;
-    public boolean isUnlocked;
     public boolean isPremium;
-    public int levelsUnlocked;
     public int levelCount;
 }

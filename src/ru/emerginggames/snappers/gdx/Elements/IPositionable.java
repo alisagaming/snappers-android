@@ -16,4 +16,6 @@ public interface IPositionable {
     public float getWidth();
     public float getHeight();
     public void setPosition(float x, float y);
+    public float getTop();
+    public float getRight();
 }

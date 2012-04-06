@@ -57,8 +57,9 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
 
     @Override
     protected void onResume() {
-        LevelPack pack2 = LevelPackTable.get(pack.id, this);
-        pack.levelsUnlocked = pack2.levelsUnlocked;
+        //LevelPack pack2 = LevelPackTable.get(pack.id, this);
+        //pack.levelsUnlocked = pack2.levelsUnlocked;
+
         super.onResume();
         startPreload();
 

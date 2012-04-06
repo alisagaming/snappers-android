@@ -60,9 +60,10 @@ public class MainStage extends Stage implements ILogicListener {
         setupSnappers();
         setupBangs();
 
-        levelText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        tapLeftText = new OutlinedTextSprite("123", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-
+        String str = String.format("Level: %d-%d", 99, 999); 
+        levelText = new OutlinedTextSprite(str, Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        str = String.format("Taps left: %d", 99);
+        tapLeftText = new OutlinedTextSprite(str, Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         buttons = new MainButtons(listener);
         addActor(buttons);
     }
@@ -103,7 +104,7 @@ public class MainStage extends Stage implements ILogicListener {
         int snapperAreaHeight = height - marginTop - marginBottom;
         if (snapperAreaHeight < width){
             snapperAreaHeight = width;
-            marginBottom = height - marginTop - snapperAreaHeight;
+            marginBottom = height - marginTop - marginBottom;
             if (marginBottom<0){
                 snapperAreaHeight+= marginBottom;
                 marginBottom = 0;
@@ -259,11 +260,6 @@ public class MainStage extends Stage implements ILogicListener {
 
     public GameLogic getLogic(){
         return logic;
-    }
-
-    public void resume(){
-        levelText.resume();
-        tapLeftText.resume();
     }
 
     protected void playPopSound(){

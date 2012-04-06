@@ -25,7 +25,6 @@ public class ResizedFileTextureData implements TextureData{
     int normWidth;
     int normHeight;
     
-
     public ResizedFileTextureData(FileHandle file, Pixmap.Format format) {
         this.file = file;
         this.format = format;

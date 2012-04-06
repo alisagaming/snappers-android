@@ -1,9 +1,8 @@
 package ru.emerginggames.snappers.gdx.android;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Typeface;
+import android.graphics.*;
+import android.opengl.GLUtils;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
@@ -12,12 +11,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 
-public class OutlinedTextSprite extends Sprite implements IPositionable{
+public class OutlinedTextSprite extends Sprite implements IPositionable, IOnTextureDataNeededHandler{
 
     private Paint textPaint = new Paint();
     private Paint outlinePaint = new Paint();
     private Paint backPaint = new Paint();
     private Paint.FontMetrics fontMetrics;
+
 
     String text;
     int textSize;
@@ -26,6 +26,7 @@ public class OutlinedTextSprite extends Sprite implements IPositionable{
     int backColor;
     int strokeWidth;
     Typeface typeface;
+    int desiredWidth = 0;
 
     public OutlinedTextSprite(String text, int textSize, int color, int outlineColor, int backColor, int strokeWidth, Typeface typeface) {
         super();
@@ -36,7 +37,7 @@ public class OutlinedTextSprite extends Sprite implements IPositionable{
         this.backColor = backColor;
         this.typeface = typeface;
         this.strokeWidth = strokeWidth;
-        //Texture.setEnforcePotImages(false);
+        preparePaint();
         setTextTexture();
     }
     
@@ -44,26 +45,47 @@ public class OutlinedTextSprite extends Sprite implements IPositionable{
         this.text = text;
         setTextTexture();
     }
+    
+    public void setWidthForText(String text){
+        desiredWidth = measureTextWidth(text);
+    }
 
     protected void setTextTexture(){
-        preparePaint();
+        Texture texture = getTexture();
+        if (texture == null)
+            texture = new Texture(new BitmapManagedTextureData(this, Pixmap.Format.RGBA4444));
+        else {
+            Bitmap  bitmap = makeTextBitmap(texture.getWidth(), texture.getHeight());
+            texture.bind();
+            GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, 0, 0, bitmap );
+            bitmap.recycle();
+        }
+        setTexture(texture, 0, 0, measureTextWidth(), getTextHeight());
+    }
 
-        Bitmap bitmap = Bitmap.createBitmap(measureTextWidth(), getTextHeight(), Bitmap.Config.ARGB_4444);
+    @Override
+    public boolean recycleBitmap() {
+        return true;
+    }
+
+    @Override
+    public Bitmap textureInfoNeeded() {
+        int width = BitmapPixmap.nextPowerOfTwo(Math.max(measureTextWidth(), desiredWidth));
+        int height = BitmapPixmap.nextPowerOfTwo(getTextHeight());
+        return makeTextBitmap(width, height);
+    }
+    
+    protected Bitmap makeTextBitmap(int width, int height){
+        Bitmap bitmap;
+        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+
         Canvas canvas = new Canvas(bitmap);
 
         canvas.drawRect(0, 0, getWidth(), getHeight(), backPaint);
         float paddingTop  = Math.abs(fontMetrics.ascent) + strokeWidth * 2;
         canvas.drawText(text, strokeWidth, paddingTop , outlinePaint);
         canvas.drawText(text, strokeWidth, paddingTop, textPaint);
-
-        Texture texture = getTexture();
-
-        if (texture != null)
-            texture.dispose();
-
-        TextureRegion reg = BitmapPixmap.bitmapToTexture(bitmap, Pixmap.Format.RGBA4444);
-        setTexture(reg.getTexture(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-        bitmap.recycle();
+        return bitmap;
     }
 
     protected void preparePaint() {
@@ -93,6 +115,10 @@ public class OutlinedTextSprite extends Sprite implements IPositionable{
         return (int)Math.ceil(outlinePaint.measureText(text) + strokeWidth * 2);
     }
 
+    protected int measureTextWidth(String text) {
+        return (int)Math.ceil(outlinePaint.measureText(text) + strokeWidth * 2);
+    }    
+
     protected void setTexture(Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
         setTexture(texture);
         setRegion(srcX, srcY, srcWidth, srcHeight);
@@ -109,10 +135,6 @@ public class OutlinedTextSprite extends Sprite implements IPositionable{
     @Override
     public void positionRelative(float x, float y, Dir dir, float margin) {
         PositionHelper.Position(x, y, this, dir, margin);
-    }
-
-    public void resume(){
-        setTextTexture();
     }
 
     public void dispose(){

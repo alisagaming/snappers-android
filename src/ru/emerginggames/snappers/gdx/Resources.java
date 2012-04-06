@@ -72,8 +72,6 @@ public class Resources {
 
     public static boolean texturesLoaded = false;
 
-
-
     public static void init(){
         switch (Metrics.sizeMode){
             case modeS:

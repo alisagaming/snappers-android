@@ -1,7 +1,6 @@
 package ru.emerginggames.snappers.gdx;
 
 import android.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
@@ -101,11 +100,6 @@ public class PausedStage extends Stage{
         });
         storeBtn.positionRelative(menuBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
         addActor(storeBtn);
-    }
-
-    public void resume(){
-        if (titleText!= null)
-            titleText.resume();
     }
 
     @Override

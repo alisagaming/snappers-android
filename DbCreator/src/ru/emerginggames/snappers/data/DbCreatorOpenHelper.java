@@ -42,7 +42,7 @@ public class DbCreatorOpenHelper extends SQLiteOpenHelper {
                 LevelTable.KEY_LEVEL_PACK_ID + " INTEGER, " +
                 LevelTable.KEY_COMPLEXITY + " INTEGER, " +
                 LevelTable.KEY_ZAPPERS + " TEXT, " +
-                LevelTable.KEY_SOLUTIONS + " BLOB, " +
+                LevelTable.KEY_SOLUTIONS + " TEXT, " +
                 LevelTable.KEY_TAPS_COUNT + " INTEGER " +
                 " );";
         db.execSQL(TABLE_CREATE);

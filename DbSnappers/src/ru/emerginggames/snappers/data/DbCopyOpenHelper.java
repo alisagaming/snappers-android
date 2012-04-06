@@ -90,6 +90,8 @@ public class DbCopyOpenHelper extends SQLiteOpenHelper {
                  * database and then delete the old database from internal
                  * storage after all data has been transferred.
                  */
+                old_db.close();
+                new_db.close();
                 File file = new File(OLD_DB_PATH);
                 file.delete();
             } catch (IOException e) {

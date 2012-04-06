@@ -105,9 +105,9 @@ public class LevelTable  extends SQLiteTable<Level>{
 
     @Override
     protected SQLiteStatement bindToInsertStatement(Level level){
-        byte[] encSolution;
+        String encSolution;
         try{
-            encSolution = CryptHelperDES.encryptToBytes(SEED, level.solutions);
+            encSolution = CryptHelperDES.encrypt(SEED, level.solutions);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -115,7 +115,7 @@ public class LevelTable  extends SQLiteTable<Level>{
         insertStmt.bindLong(2, level.number);
         insertStmt.bindLong(3, level.complexity);
         bindNullable(insertStmt, 4, level.zappers);
-        insertStmt.bindBlob(5, encSolution);
+        insertStmt.bindString(5, encSolution);
         insertStmt.bindLong(6, level.tapsCount);
         return insertStmt;
     }
@@ -126,7 +126,7 @@ public class LevelTable  extends SQLiteTable<Level>{
         
         String solutions;
         try {
-            solutions = CryptHelperDES.decrypt(SEED, cursor.getBlob(5));
+            solutions = CryptHelperDES.decrypt(SEED, cursor.getString(5));
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }

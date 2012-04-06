@@ -11,8 +11,6 @@ import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 
-import java.security.PublicKey;
-
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -21,7 +19,7 @@ import java.security.PublicKey;
  */
 public class GameOverStage extends Stage{
     public static final float FADEIN_TIME = 0.4f;
-    protected static final String[] winMessages = {" Completed! ", "Good job!", "Bravo!", "Cheers!", "Huzzah!", "Yippee!", "Hooray!"};
+    protected static final String[] winMessages = {"Completed!", "Good job!", "Bravo!", "Cheers!", "Huzzah!", "Yippee!", "Hooray!"};
     protected GameLogic logic;
     protected boolean isWon = false;
     protected SimpleButton nextButton;
@@ -72,9 +70,9 @@ public class GameOverStage extends Stage{
         addActor(shopButton);
         addActor(menuButton);
 
-        wonText = new OutlinedTextSprite("", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        wonText = new OutlinedTextSprite("Completed!", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         lostText = new OutlinedTextSprite("Level failed", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        scoreText = new OutlinedTextSprite("", Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        scoreText = new OutlinedTextSprite(String.format("Possible in %d touches.", 99), Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
 
         dimRect = new ColorRect(0,0,0,0);
         dimRect.setColor(0, 0, 0, 0.5f);
@@ -137,12 +135,6 @@ public class GameOverStage extends Stage{
 
 
         batch.end();
-    }
-
-    public void resume(){
-        wonText.resume();
-        lostText.resume();
-        scoreText.resume();
     }
 
     @Override

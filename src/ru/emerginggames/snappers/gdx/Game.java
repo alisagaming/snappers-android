@@ -118,11 +118,6 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void resume() {
         Texture.invalidateAllTextures(Gdx.app);
-        //Resources.loadBg(levelPack.background);
-        //bg.setRegion(Resources.bg);
-        snappersStage.resume();
-        gameOverStage.resume();
-        pausedStage.resume();
     }
 
     @Override

@@ -59,7 +59,7 @@ public class BitmapPixmap {
     }
 
 
-    protected static int nextPowerOfTwo(int val){
+    public static int nextPowerOfTwo(int val){
         if (val<=4)
             return 4;
         if (val<=8)

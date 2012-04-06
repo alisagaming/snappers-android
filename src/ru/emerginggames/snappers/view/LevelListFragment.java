@@ -38,6 +38,8 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onResume() {
+        if (pack == null)
+            return;
         pack = LevelPackTable.get(pack.id, getActivity());
         if (maxAvailableLevel != pack.levelsUnlocked){
             maxAvailableLevel = pack.levelsUnlocked;

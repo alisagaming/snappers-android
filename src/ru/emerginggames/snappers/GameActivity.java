@@ -36,7 +36,7 @@ public class GameActivity extends AndroidApplication {
 
         config.useAccelerometer = false;
         config.useCompass = false;
-        config.useWakelock = true;
+        config.useWakelock = false;
 
         initialize(game, config);
     }

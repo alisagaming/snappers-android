@@ -18,11 +18,15 @@ public class PositionHelper {
             y+= (other.getHeight() + margin);
         else if (dir == Dir.DOWN || dir == Dir.DOWNRIGHT|| dir == Dir.DOWNLEFT)
             y -= (item.getHeight() + margin);
+        else if (dir == Dir.CENTER || dir == Dir.LEFT || dir == Dir.RIGHT)
+            y += (other.getHeight() - item.getHeight())/2;
 
         if (dir == Dir.RIGHT || dir == Dir.UPRIGHT || dir == Dir.DOWNRIGHT)
             x += (other.getWidth() + margin);
         else if (dir == Dir.LEFT || dir == Dir.UPLEFT|| dir == Dir.DOWNLEFT)
             x -= (item.getWidth() + margin );
+        else if (dir == Dir.CENTER || dir == Dir.UP || dir == Dir.DOWN)
+            x += (other.getWidth() - item.getWidth())/2;
 
         item.setPosition(x, y);
     }
@@ -32,11 +36,16 @@ public class PositionHelper {
             y+= margin;
         else if (dir == Dir.DOWN || dir == Dir.DOWNRIGHT|| dir == Dir.DOWNLEFT)
             y -= (item.getHeight() + margin);
+        else if (dir == Dir.CENTER || dir == Dir.LEFT || dir == Dir.RIGHT)
+            y -= item.getHeight()/2;
+
 
         if (dir == Dir.RIGHT || dir == Dir.UPRIGHT || dir == Dir.DOWNRIGHT)
             x += margin;
         else if (dir == Dir.LEFT || dir == Dir.UPLEFT|| dir == Dir.DOWNLEFT)
             x -= (item.getWidth() + margin );
+        else if (dir == Dir.CENTER || dir == Dir.UP || dir == Dir.DOWN)
+            x -= (item.getWidth()/2 + margin );
 
         item.setPosition(x, y);
     }

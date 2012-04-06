@@ -37,6 +37,7 @@ public class Resources {
         public static TextureData buttons;
         public static TextureData dialog;
         public static TextureData bg;
+        public static TextureData hint;
         public static boolean isBgLoading;
         public static String bgName;
     }
@@ -51,6 +52,7 @@ public class Resources {
     public static Texture menuButtons;
     public static Texture buttons;
     public static Texture dialog;
+    public static Texture hintTexture;
     public static TextureRegion bg;
 
 
@@ -60,6 +62,7 @@ public class Resources {
     public static TextureRegion[] bangFrames;
     public static TextureRegion[] squareButtonFrames;
     public static TextureRegion[] menuButtonFrames;
+    public static TextureRegion[] hintFrames;
     public static NinePatch dialog9;
 
     public static Sound[] popSounds;
@@ -142,8 +145,8 @@ public class Resources {
             bangFrames = makeAnimationFrames(bangTexture, Metrics.bangSize, Metrics.bangSize, false);
         }
 
-
-
+        hintTexture = new Texture(Preload.hint);
+        hintFrames = makeAnimationFrames(hintTexture, Metrics.hintSize, Metrics.hintSize,false, 0, 11);
     }
 
     public static void disposeTextures(){
@@ -283,6 +286,8 @@ public class Resources {
             Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
         if (Preload.snappers == null)
             Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
+        if (Preload.hint == null)
+            Preload.hint = new FileTextureData(Gdx.files.internal(dir + "hint_circle.png"), null, Pixmap.Format.RGBA4444, false);
         if (Preload.dialog == null)
             Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialog.png"), null, Pixmap.Format.RGBA8888, false);
         if (Metrics.sizeMode == Metrics.SizeMode.modeM){
@@ -308,6 +313,7 @@ public class Resources {
             prepareData(Preload.menuButtons);
             prepareData(Preload.dialog);
             prepareData(Preload.buttons);
+            prepareData(Preload.hint);
         }
     }
 

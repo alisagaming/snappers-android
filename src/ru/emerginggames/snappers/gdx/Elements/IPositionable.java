@@ -7,7 +7,7 @@ package ru.emerginggames.snappers.gdx.Elements;
  * Time: 0:30
  */
 public interface IPositionable {
-    public enum Dir { UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT, LEFT, UPLEFT};
+    public enum Dir { UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT, LEFT, UPLEFT, CENTER};
 
     public void positionRelative(IPositionable other, Dir dir, float margin);
     public void positionRelative(float x, float y, Dir dir, float margin);

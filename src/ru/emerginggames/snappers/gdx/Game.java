@@ -162,6 +162,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHintBtn() {
+        snappersStage.showHints(level.number < 4 );
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

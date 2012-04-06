@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Date: 25.03.12
  * Time: 23:15
  */
-public class AnimatedSprite extends Sprite{
+public class AnimatedSprite extends Sprite implements IPositionable{
     protected Animation animation;
     protected boolean looping;
     protected float animationTime;
@@ -56,5 +57,15 @@ public class AnimatedSprite extends Sprite{
             loopTime = 0;
             animationEndListener.onAnimationEnd(this);
         }
+    }
+
+    @Override
+    public void positionRelative(IPositionable other, Dir dir, float margin) {
+        PositionHelper.Position(this, other, dir, margin);
+    }
+
+    @Override
+    public void positionRelative(float x, float y, Dir dir, float margin) {
+        PositionHelper.Position(x, y, this, dir, margin);
     }
 }

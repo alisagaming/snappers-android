@@ -93,6 +93,7 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
         textPaint.setTypeface(this.typeface);
         textPaint.setTextSize(this.textSize);
         textPaint.setAntiAlias(true);
+        textPaint.setFilterBitmap(true);
 
         outlinePaint.setColor(this.outlineColor);
         outlinePaint.setTypeface(this.typeface);
@@ -100,6 +101,7 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
         outlinePaint.setAntiAlias(true);
         outlinePaint.setStyle(Paint.Style.STROKE);
         outlinePaint.setStrokeWidth(strokeWidth);
+        outlinePaint.setFilterBitmap(true);
 
         backPaint.setColor(this.backColor);
         backPaint.setStyle(Paint.Style.FILL);

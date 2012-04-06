@@ -13,10 +13,7 @@ import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.GameLogic;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelTable;
-import ru.emerginggames.snappers.gdx.Elements.AnimatedSprite;
-import ru.emerginggames.snappers.gdx.Elements.IAnimationListener;
-import ru.emerginggames.snappers.gdx.Elements.IPositionable;
-import ru.emerginggames.snappers.gdx.Elements.SnapperView;
+import ru.emerginggames.snappers.gdx.Elements.*;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
@@ -51,6 +48,9 @@ public class MainStage extends Stage implements ILogicListener {
     protected boolean gameOverFired;
     protected float sincePopped;
     protected int toPop;
+
+    protected Hints hint;
+    public boolean isHinting = false;
 
     public MainStage(float width, float height, IGameEventListener listener) {
         super(width, height, true);
@@ -152,6 +152,9 @@ public class MainStage extends Stage implements ILogicListener {
 
         for (int i=0; i< activeBangs.size; i++)
             activeBangs.get(i).act(delta);
+
+        if (isHinting)
+            hint.act(delta);
     }
 
     @Override
@@ -169,20 +172,17 @@ public class MainStage extends Stage implements ILogicListener {
         levelText.draw(batch);
         tapLeftText.draw(batch);
         buttons.draw(batch, 1);
+        if (isHinting)
+            hint.draw(batch);
         batch.end();
     }
 
     protected void drawSnappers(){
         int i;
         Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
-//        for (i=0; i< activeSnappers.size; i++)
-//            activeSnappers.get(i).shadow.draw(batch);
 
         for (i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).snapper.draw(batch);
-
-//        for (i=0; i< activeSnappers.size; i++)
-//            activeSnappers.get(i).eyeShadow.draw(batch);
 
         for (i=0; i< activeSnappers.size; i++)
             activeSnappers.get(i).eyes.draw(batch);
@@ -237,13 +237,29 @@ public class MainStage extends Stage implements ILogicListener {
             activeSnappers.removeValue(view, true);
             snapperViewPool.free(view);
             addBang(i, j);
-            //addPopSound();
         }
     }
 
     @Override
     public void tap() {
         tapLeftText.setText(String.format("Taps left: %d", logic.tapRemains));
+        if (isHinting){
+            if (logic.tapRemains > 0)
+                hint.updateHint();
+            else
+                isHinting = false;
+        }
+    }
+
+    public void showHints(boolean showText){
+        if (isHinting)
+            return;
+
+        if (hint == null)
+            hint = new Hints(logic, showText);
+        else
+            hint.updateLevel(showText);
+        isHinting = true;
     }
 
     public void restartLevel(){

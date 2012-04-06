@@ -12,6 +12,10 @@ import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.gdx.Elements.ColorRect;
+import ru.emerginggames.snappers.gdx.stages.GameOverStage;
+import ru.emerginggames.snappers.gdx.stages.HintMenuStage;
+import ru.emerginggames.snappers.gdx.stages.MainStage;
+import ru.emerginggames.snappers.gdx.stages.PausedStage;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 
@@ -31,6 +35,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     protected Stage currentStage;
     protected GameOverStage gameOverStage;
     protected PausedStage pausedStage;
+    protected HintMenuStage hintMenu;
     protected LevelPack levelPack;
     protected Sprite bg;
     FPSLogger logger;
@@ -49,9 +54,10 @@ public class Game implements ApplicationListener, IGameEventListener {
         Resources.loadTextures(levelPack.isGold);
 
         batch = new SpriteBatch();
-        snappersStage = new MainStage(0, 0, this);
-        gameOverStage = new GameOverStage(0,0,this, snappersStage.getLogic());
-        pausedStage = new PausedStage(0, 0, this);
+        snappersStage = new MainStage(width, height, this);
+        gameOverStage = new GameOverStage(width,height,this, snappersStage.getLogic(), batch);
+        pausedStage = new PausedStage(width, height, this, batch);
+        hintMenu = new HintMenuStage(width, height, this, batch);
         currentStage = snappersStage;
         Gdx.input.setInputProcessor(snappersStage);
 
@@ -76,9 +82,6 @@ public class Game implements ApplicationListener, IGameEventListener {
 
         createObjects();
 
-        snappersStage.setViewport(width, height);
-        gameOverStage.setViewport(width, height);
-        pausedStage.setViewport(width, height);
         if (bg != null)
             bg.setSize(width, height);
     }
@@ -125,6 +128,7 @@ public class Game implements ApplicationListener, IGameEventListener {
         snappersStage.dispose();
         gameOverStage.dispose();
         pausedStage.dispose();
+        hintMenu.dispose();
         Resources.disposeTextures();
     }
 
@@ -135,7 +139,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onShopBtn() {
-        ((GameActivity)Gdx.app).launchStore();
+        ((IAppGameListener)Gdx.app).launchStore();
     }
 
     @Override
@@ -162,8 +166,21 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHintBtn() {
-        snappersStage.showHints(level.number < 4 );
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (level.number < 4 ){
+            snappersStage.showHints(true);
+            return;
+        }
+        hintMenu.show();
+        Gdx.input.setInputProcessor(currentStage = hintMenu);
+    }
+
+    @Override
+    public void useHint() {
+        Gdx.input.setInputProcessor(currentStage = snappersStage);
+        ((IAppGameListener)Gdx.app).useHint();
+        snappersStage.showHints(false);
+        if (snappersStage.areSnappersTouched())
+            snappersStage.restartLevel();
     }
 
     @Override
@@ -186,13 +203,13 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onPauseBtn() {
-        currentStage = pausedStage;
-        Gdx.input.setInputProcessor(currentStage);
+        pausedStage.show();
+        Gdx.input.setInputProcessor(currentStage = pausedStage);
     }
 
     @Override
     public void levelPackWon() {
-        ((GameActivity)Gdx.app).levelPackWon();
+        ((IAppGameListener)Gdx.app).levelPackWon();
     }
 
 

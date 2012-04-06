@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.gdx;
+package ru.emerginggames.snappers.gdx.stages;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -7,6 +7,7 @@ import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
+import ru.emerginggames.snappers.gdx.Resources;
 
 /**
  * Created by IntelliJ IDEA.

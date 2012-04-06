@@ -52,6 +52,7 @@ public class Metrics {
     public static SizeMode sizeMode;
     public static int bangSize;
     public static int hintSize;
+    public static int menuMargin;
 
     public static boolean initDone = false;
     
@@ -89,6 +90,7 @@ public class Metrics {
                 menuWidth = 236;
                 menuHeight = 353;
                 hintSize=64;
+                menuMargin = 32;
                 break;
             case modeM:
                 snapperSize = 81;
@@ -101,6 +103,7 @@ public class Metrics {
                 menuWidth = 343;
                 menuHeight = 512;
                 hintSize=128;
+                menuMargin = 32;
                 break;
             case modeL:
                 snapperSize = 108;
@@ -113,6 +116,7 @@ public class Metrics {
                 menuHeight = 705;
                 fontSize = 48;
                 hintSize=128;
+                menuMargin = 64;
                 break;
         }
         screenMargin = squareButtonSize /12;

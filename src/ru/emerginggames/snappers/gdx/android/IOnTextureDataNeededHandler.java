@@ -9,6 +9,6 @@ import android.graphics.Bitmap;
  * Time: 7:43
  */
 public interface IOnTextureDataNeededHandler {
-    public Bitmap textureInfoNeeded();
+    public Bitmap textureInfoNeeded(int width, int height);
     public boolean recycleBitmap();
 }

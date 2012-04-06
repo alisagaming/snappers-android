@@ -28,7 +28,7 @@ public class PositionHelper {
         else if (dir == Dir.CENTER || dir == Dir.UP || dir == Dir.DOWN)
             x += (other.getWidth() - item.getWidth())/2;
 
-        item.setPosition(x, y);
+        item.setPosition(Math.round(x), Math.round(y));
     }
 
     public static void Position(float x, float y, IPositionable item, IPositionable.Dir dir, float margin){
@@ -47,7 +47,7 @@ public class PositionHelper {
         else if (dir == Dir.CENTER || dir == Dir.UP || dir == Dir.DOWN)
             x -= (item.getWidth()/2 + margin );
 
-        item.setPosition(x, y);
+        item.setPosition(Math.round(x), Math.round(y));
     }
 
 

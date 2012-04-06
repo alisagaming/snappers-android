@@ -18,4 +18,6 @@ public interface IGameEventListener {
     public void gameWon();
     public void gameLost();
     public void levelPackWon();
+    public void useHint();
+
 }

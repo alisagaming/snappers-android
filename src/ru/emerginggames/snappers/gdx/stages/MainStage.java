@@ -1,6 +1,7 @@
-package ru.emerginggames.snappers.gdx;
+package ru.emerginggames.snappers.gdx.stages;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.Log;
@@ -14,6 +15,7 @@ import ru.emerginggames.snappers.controller.GameLogic;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Elements.*;
+import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
@@ -52,7 +54,7 @@ public class MainStage extends Stage implements ILogicListener {
     protected Hints hint;
     public boolean isHinting = false;
 
-    public MainStage(float width, float height, IGameEventListener listener) {
+    public MainStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
         logic = new GameLogic(this);
         this.listener = listener;
@@ -66,10 +68,10 @@ public class MainStage extends Stage implements ILogicListener {
         tapLeftText = new OutlinedTextSprite(str, Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         buttons = new MainButtons(listener);
         addActor(buttons);
+        if (width != 0)
+            setViewport(width, height);
     }
 
-
-    
     public void setLevel(Level level){
         gameOverFired = false;
         logic.startLevel(level);
@@ -87,15 +89,8 @@ public class MainStage extends Stage implements ILogicListener {
         blastAnimation = new Animation(BLAST_ANIMATION_TIME, Resources.blastFrames);
 
         levelText.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
-        tapLeftText.positionRelative(levelText, IPositionable.Dir.DOWN, 0);
+        tapLeftText.positionRelative(0, levelText.getY(), IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
         buttons.setViewport(width, height);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        levelText.dispose();
-        tapLeftText.dispose();
     }
 
     protected Rect defineGameRect(int width, int height){
@@ -267,7 +262,7 @@ public class MainStage extends Stage implements ILogicListener {
     }
 
     public void nextLevel(){
-        Level next = LevelTable.getNextLevel((Activity) Gdx.app, logic.level);
+        Level next = LevelTable.getNextLevel((Context) Gdx.app, logic.level);
         if (next == null)
             listener.levelPackWon();
         else
@@ -337,6 +332,10 @@ public class MainStage extends Stage implements ILogicListener {
         };
 
         activeBangs = new Array<AnimatedSprite>(30);
+    }
+
+    public boolean areSnappersTouched(){
+        return logic.tapRemains != logic.level.tapsCount;
     }
     
     public void log(){

@@ -1,13 +1,13 @@
-package ru.emerginggames.snappers.gdx;
+package ru.emerginggames.snappers.gdx.stages;
 
 import android.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
-import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
+import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 
 /**
@@ -16,54 +16,48 @@ import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
  * Date: 27.03.12
  * Time: 3:58
  */
-public class PausedStage extends Stage{
+public class PausedStage extends MenuStage{
     //protected Sprite menuBack;
     protected SimpleButton resumeBtn;
     protected SimpleButton restartBtn;
     protected SimpleButton menuBtn;
     protected SimpleButton storeBtn;
     protected OutlinedTextSprite titleText;
-    protected ColorRect dimRect;
     IGameEventListener listener;
-    float menuX;
-    float menuY;
+    //int menuX;
+    //int menuY;
+    com.badlogic.gdx.graphics.Color color;
+    
+    
 
-    public PausedStage(int width, int height, IGameEventListener listener) {
-        super(width, height, true);
+    public PausedStage(int width, int height, IGameEventListener listener, SpriteBatch batch) {
+        super(width, height, true, batch);
         this.listener = listener;
-        dimRect = new ColorRect(0,0,0,0);
-        dimRect.setColor(0, 0, 0, 0.5f);
+        color = new com.badlogic.gdx.graphics.Color(1, 1, 1, 1);
+        setMenuSize(Metrics.menuWidth, Metrics.menuHeight);
+        if (width>0)
+            setViewport(width, height);
     }
 
-    public void setViewport(int width, int height) {
-        super.setViewport(width, height, true);
-        dimRect.setPosition(0,0,width, height);
+    @Override
+    public void setViewport(float width, float height) {
+        super.setViewport(width, height);
     }
 
     @Override
     public void draw() {
-        batch.begin();
-        batch.end();
-        dimRect.draw();
         if (resumeBtn == null)
             createItems();
-        batch.begin();
-        Resources.dialog9.draw(batch, menuX, menuY, Metrics.menuWidth, Metrics.menuHeight);
-
-        //menuBack.draw(batch);
-        titleText.draw(batch);
-        batch.end();
         super.draw();
+        batch.begin();
+        titleText.draw(batch, getOpacity());
+        batch.end();
+
     }
 
     protected void createItems(){
-        //menuBack = new Sprite(Resources.longDialog);
-        //menuBack.setPosition((width - menuBack.getWidth())/2, (height - menuBack.getHeight())/2);
-        menuX = (width - Metrics.menuWidth)/2;
-        menuY = (height - Metrics.menuHeight)/2;
-
-        titleText = new OutlinedTextSprite("Game paused", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        titleText.setPosition((width - titleText.getWidth())/2, menuY + Metrics.menuHeight * 0.95f - titleText.getHeight());
+        titleText = new OutlinedTextSprite("Game paused", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 3, Resources.font);
+        titleText.positionRelative(width/2, menuY + menuHeight * 0.97f, IPositionable.Dir.DOWN, 0);
 
         resumeBtn = new SimpleButton(Resources.menuButtonFrames[10], Resources.menuButtonFrames[11], Resources.buttonSound, new IOnEventListener() {
             @Override
@@ -100,13 +94,5 @@ public class PausedStage extends Stage{
         });
         storeBtn.positionRelative(menuBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
         addActor(storeBtn);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        if (titleText != null)
-            titleText.dispose();
-        dimRect.dispose();
     }
 }

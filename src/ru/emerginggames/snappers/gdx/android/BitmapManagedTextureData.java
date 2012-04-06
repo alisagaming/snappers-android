@@ -21,8 +21,8 @@ public class BitmapManagedTextureData implements TextureData{
     Pixmap.Format format;
     boolean isPrepared;
     IOnTextureDataNeededHandler updateHandler;
-    int width;
-    int height;
+    int width = 0;
+    int height = 0;
 
 
     public BitmapManagedTextureData(IOnTextureDataNeededHandler updateHandler, Pixmap.Format format) {
@@ -54,7 +54,7 @@ public class BitmapManagedTextureData implements TextureData{
 
     @Override
     public void prepare() {
-        bitmap = updateHandler.textureInfoNeeded();
+        bitmap = updateHandler.textureInfoNeeded(width, height);
         width = bitmap.getWidth();
         height = bitmap.getHeight();
         isPrepared = true;

@@ -118,7 +118,7 @@ public class Resources {
         }
 
         dialog = new Texture(Preload.dialog);
-        dialog9 = new NinePatch(dialog, 32, 32, 32, 32);
+        dialog9 = new NinePatch(dialog, Metrics.menuMargin, Metrics.menuMargin, Metrics.menuMargin, Metrics.menuMargin);
     }
 
 

@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
-import ru.emerginggames.snappers.DbSettings;
-import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 
 /**
@@ -58,7 +56,7 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
 
     public static LevelPack[] getAllNotPremium(Context context){
         LevelPackTable table = new LevelPackTable(context, false);
-        LevelPack[] result = table.getAll(LevelPack.class, String.format("NOT %s = TRUE", KEY_IS_PREMIUM));
+        LevelPack[] result = table.getAll(LevelPack.class, String.format("NOT %s = 1", KEY_IS_PREMIUM));
         table.close();
         return result;
     }

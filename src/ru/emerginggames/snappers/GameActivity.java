@@ -71,6 +71,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     @Override
     public void levelPackWon(LevelPack pack) {
         UserPreferences.getInstance(this).unlockNextLevelPack(pack);
+        setResult(1);
+        finish();
     }
 
     @Override

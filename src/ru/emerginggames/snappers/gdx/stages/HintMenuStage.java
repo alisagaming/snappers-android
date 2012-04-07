@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.GoodsToShop;
 import ru.emerginggames.snappers.Metrics;
-import ru.emerginggames.snappers.controller.GameLogic;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;

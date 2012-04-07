@@ -3,7 +3,6 @@ package ru.emerginggames.snappers.gdx.stages;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.util.Log;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.scenes.scene2d.Stage;

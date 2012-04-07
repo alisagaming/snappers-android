@@ -127,7 +127,7 @@ public class UserPreferences {
         Editor editor = prefs.edit();
         editor.putInt(HINTS, INITIAL_HINTS);
         LevelPack pack1 = LevelPackTable.get(1, context);
-        editor.putInt(String.format(LEVEL_UNLOCK, pack1.name), 1);
+        editor.putInt(String.format(LEVEL_UNLOCK, pack1.name), 99);
         editor.putBoolean(INITIIALISED, true);
         editor.commit();
     }

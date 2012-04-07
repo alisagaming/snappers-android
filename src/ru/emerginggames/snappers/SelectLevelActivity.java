@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.viewpagerindicator.CirclePageIndicator;
-import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.Level;
@@ -57,12 +56,8 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
 
     @Override
     protected void onResume() {
-        //LevelPack pack2 = LevelPackTable.get(pack.id, this);
-        //pack.levelsUnlocked = pack2.levelsUnlocked;
-
         super.onResume();
         startPreload();
-
     }
 
     @Override
@@ -71,10 +66,15 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         Level level = LevelTable.getLevel(this, number, pack.id);
         intent.putExtra(GameActivity.LEVEL_PARAM_TAG, level);
         intent.putExtra(GameActivity.LEVEL_PACK_PARAM_TAG, pack);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
     }
-    
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 1)
+            finish();
+    }
 
     protected void startPreload(){
         if (preloadTask != null)
@@ -108,6 +108,5 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         };
 
         preloadTask.execute();
-
     }
 }

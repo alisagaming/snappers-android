@@ -1,7 +1,5 @@
 package ru.emerginggames.snappers.gdx.stages;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.gdx.Resources;

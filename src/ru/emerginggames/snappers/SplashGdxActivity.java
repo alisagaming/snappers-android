@@ -78,7 +78,7 @@ public class SplashGdxActivity extends AndroidApplication {
             @Override
             protected void onProgressUpdate(Integer... values) {
                 finish();
-                startActivity(new Intent(SplashGdxActivity.this, SelectPackActivity.class));
+                startActivity(new Intent(SplashGdxActivity.this, MainScreenActivity.class));
             }
 
             @Override

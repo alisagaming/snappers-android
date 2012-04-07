@@ -1,9 +1,7 @@
 package ru.emerginggames.snappers.gdx.Elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 

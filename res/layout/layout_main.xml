@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/background"
+                android:padding="10dp"
+        >
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/logoCont"
+                  android:orientation="horizontal">
+        <LinearLayout android:layout_height="0dp" android:layout_width="0dp" android:layout_weight="10"/>
+        <ru.emerginggames.snappers.view.ImageView android:id="@+id/logo" android:layout_width="0dp"
+                                                  android:layout_weight="80"
+                                                  android:layout_height="wrap_content"
+                                                  android:src="@drawable/logo"
+                                                  android:scaleType="fitCenter" android:adjustViewBounds="true"
+                                                  android:layout_gravity="center"
+                />
+        <LinearLayout android:layout_height="0dp" android:layout_width="dp" android:layout_weight="10"/>
+    </LinearLayout>
+
+    <ru.emerginggames.snappers.view.ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                              android:layout_centerInParent="true" android:id="@+id/playButton"
+                                              android:src="@drawable/play_button" android:onClick="onPlayButtonClick"/>
+
+    <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true">
+        <LinearLayout android:id="@+id/options" android:layout_width="85dp" android:layout_height="wrap_content"
+                      android:background="@drawable/settings_back"
+                      android:layout_marginBottom="-56dp" android:layout_above="@+id/settingsBtn"
+                      android:gravity="center_horizontal"
+                      android:paddingBottom="60dp"
+                      android:paddingTop="8dp"
+                      android:orientation="vertical">
+            <CheckBox android:layout_width="64dp" android:layout_height="64dp"
+                      android:id="@+id/musicCheck" android:layout_marginBottom="4dp"
+                      android:gravity="center"
+                      android:button="@drawable/music_check"
+                      android:onClick="onMusicButtonClick"
+                    />
+            <CheckBox android:layout_width="64dp" android:layout_height="64dp"
+                      android:id="@+id/soundCheck"
+                      android:button="@drawable/sound_check"
+                      android:onClick="onSoundButtonClick"
+                    />
+
+        </LinearLayout>
+
+
+        <ru.emerginggames.snappers.view.ImageView android:id="@+id/settingsBtn" android:layout_width="wrap_content"
+                                                  android:layout_height="wrap_content"
+                                                  android:src="@drawable/settings"
+                                                  android:layout_alignParentBottom="true"
+                                                  android:scaleType="fitCenter" android:adjustViewBounds="true"
+                                                  android:onClick="settingsButtonClick"
+                />
+    </RelativeLayout>
+
+    <ImageView android:id="@+id/shopButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
+               android:src="@drawable/store_button"
+               android:layout_alignParentBottom="true"
+               android:layout_alignParentRight="true"
+               android:scaleType="fitCenter"
+               android:onClick="onStoreButtonClick"
+            />
+
+</RelativeLayout>

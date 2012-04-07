@@ -20,6 +20,8 @@ public class UserPreferences {
     private static final String HINTS = "Hints";
     private static final String LEVEL_UNLOCK = "Pack %s levels unlocked";
     private static final String ADFREE = "adfree";
+    private static final String MUSIC = "music";
+    private static final String SOUND = "sound";
     private static final int INITIAL_HINTS = 10;
     Context context;
     private static UserPreferences instance;
@@ -51,7 +53,7 @@ public class UserPreferences {
 
     
     public int getHintsRemaining(){
-        return prefs.getInt(HINTS, 0);
+        return deI(prefs.getString(_S(HINTS), null), 0);
     }
 
     public void useHint(){
@@ -61,7 +63,7 @@ public class UserPreferences {
     public void addHints(int amount){
         int hints = getHintsRemaining();
         Editor editor = prefs.edit();
-        editor.putInt(HINTS, hints + amount);
+        editor.putString(_S(HINTS), _I(hints + amount));
         editor.commit();
     }
     
@@ -78,7 +80,7 @@ public class UserPreferences {
             return 0;
         if (Settings.ENABLE_ALL_LEVELS)
             return 1000;
-        return prefs.getInt(String.format(LEVEL_UNLOCK, pack.name), 0);
+        return deI(prefs.getString(_S(String.format(LEVEL_UNLOCK, pack.name)), null), 0);
     }
     
     public int getLevelUnlocked(int packId){
@@ -99,13 +101,13 @@ public class UserPreferences {
 
     public void unlockLevelPack(LevelPack pack){
         Editor editor = prefs.edit();
-        editor.putInt(String.format(LEVEL_UNLOCK, pack.name), 100);
+        editor.putString(_S(String.format(LEVEL_UNLOCK, pack.name)), _I(1));
         editor.commit();
     }
 
     public void lockLevelPack(LevelPack pack){
         Editor editor = prefs.edit();
-        editor.remove(String.format(LEVEL_UNLOCK, pack.name));
+        editor.remove(_S(String.format(LEVEL_UNLOCK, pack.name)));
         editor.commit();
     }
     
@@ -127,7 +129,7 @@ public class UserPreferences {
             return;
 
         Editor editor = prefs.edit();
-        editor.putInt(String.format(LEVEL_UNLOCK, pack.name), currentLevel.number + 1);
+        editor.putString(_S(String.format(LEVEL_UNLOCK, pack.name)), _I(currentLevel.number + 1));
         editor.commit();
     }
 
@@ -137,12 +139,12 @@ public class UserPreferences {
     }
 
     public boolean isAdFree(){
-        return prefs.getBoolean(ADFREE, false);
+        return deB(prefs.getString(_S(ADFREE), null), false);
     }
 
     public void setAdFree(boolean isAdFree){
         Editor editor = prefs.edit();
-        editor.putBoolean(ADFREE, isAdFree);
+        editor.putString(_S(ADFREE), _B(isAdFree));
         editor.commit();
     }
 
@@ -150,15 +152,63 @@ public class UserPreferences {
         if (prefs.getBoolean(INITIIALISED, false))
             return;
 
+        unlockLevelPack(LevelPackTable.get(1, context));
         Editor editor = prefs.edit();
-        editor.putInt(HINTS, INITIAL_HINTS);
-        LevelPack pack1 = LevelPackTable.get(1, context);
-        editor.putInt(String.format(LEVEL_UNLOCK, pack1.name), 100);
+        editor.putString(_S(HINTS), _I(INITIAL_HINTS));
         editor.putBoolean(INITIIALISED, true);
         editor.commit();
     }
 
+    public void setMusic(boolean enabled){
+        Editor editor = prefs.edit();
+        editor.putBoolean(MUSIC, enabled);
+        editor.commit();
+    }
 
+    public boolean getMusic(){
+        return prefs.getBoolean(MUSIC, true);
+    }
 
+    public void setSound(boolean enabled){
+        Editor editor = prefs.edit();
+        editor.putBoolean(SOUND, enabled);
+        editor.commit();
+    }
 
+    public boolean getSound(){
+        return prefs.getBoolean(MUSIC, true);
+    }
+
+    private String _S(String s){
+        //TODO: sypher s
+        return s;
+    }
+    
+    private String deS(String s){
+        return s;
+    }
+    
+    private String _I(int i){
+        return _S(Integer.toString(i));
+    }
+    
+    private String _B(boolean b){
+        return _S(Boolean.toString(b));
+    }
+    
+    private int deI(String s, int def){
+        try {
+            return Integer.parseInt(deS(s));
+        }catch (Exception e){
+            return def;
+        }
+    }
+    
+    private boolean deB(String s, boolean def){
+        try {
+            return Boolean.parseBoolean(deS(s));
+        }catch (Exception e){
+            return def;
+        }
+    }
 }

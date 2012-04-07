@@ -20,7 +20,9 @@
         <activity android:name=".StoreActivity" android:screenOrientation="portrait"/>
         <activity android:name=".SelectPackActivity" android:screenOrientation="portrait"/>
         <activity android:name=".PaginatedSelectorActivity"/>
-        <activity android:name=".MainScreenActivity"/>
+        <activity android:name=".MainScreenActivity">
+
+        </activity>
     </application>
     <uses-sdk android:minSdkVersion="7" />
 </manifest>

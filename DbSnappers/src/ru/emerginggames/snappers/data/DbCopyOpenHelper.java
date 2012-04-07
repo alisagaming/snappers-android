@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import ru.emerginggames.snappers.db.R;
-import ru.emerginggames.snappers.model.LevelPack;
 
 import java.io.*;
 

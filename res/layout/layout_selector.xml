@@ -111,7 +111,7 @@
                                                           android:layout_height="wrap_content"
                                                           android:src="@drawable/ok_button"
                                                           android:scaleType="fitCenter" android:adjustViewBounds="true"
-                                                          android:layout_gravity="bottom"
+                                                          android:layout_gravity="center"
                         />
 
             </LinearLayout>

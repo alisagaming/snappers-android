@@ -1,15 +1,11 @@
 package ru.emerginggames.snappers.gdx.android;
 
 import android.graphics.Bitmap;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.

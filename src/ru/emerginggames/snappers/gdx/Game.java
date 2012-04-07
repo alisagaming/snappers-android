@@ -1,16 +1,13 @@
 package ru.emerginggames.snappers.gdx;
 
-import android.content.Context;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import ru.emerginggames.snappers.GameActivity;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
-import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 import ru.emerginggames.snappers.gdx.stages.GameOverStage;
 import ru.emerginggames.snappers.gdx.stages.HintMenuStage;
@@ -166,7 +163,8 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHintBtn() {
-        if (snappersStage.getLogic().level.number < 4 ){
+        Level level = snappersStage.getLogic().level;
+        if (level.number < 4 && level.packNumber == 1){
             snappersStage.showHints(true);
             return;
         }

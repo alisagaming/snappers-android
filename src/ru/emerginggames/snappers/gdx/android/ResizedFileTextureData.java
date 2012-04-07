@@ -1,12 +1,8 @@
 package ru.emerginggames.snappers.gdx.android;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ETC1;
-import com.badlogic.gdx.graphics.glutils.MipMapGenerator;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**

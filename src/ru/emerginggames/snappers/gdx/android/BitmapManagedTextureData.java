@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
-import java.io.ByteArrayOutputStream;
-
 /**
  * Created by IntelliJ IDEA.
  * User: babay

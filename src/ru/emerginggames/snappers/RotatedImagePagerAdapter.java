@@ -2,6 +2,7 @@ package ru.emerginggames.snappers;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import ru.emerginggames.snappers.model.ImageDrawInfo;
@@ -22,13 +23,14 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
     View currentView;
     Context context;
     List<ImagePaginatorParam> paramList;
-    //ImageDrawInfo[][] imageLists;
     IOnItemSelectedListener listener;
+    SparseArray<RotatedImageView> views;
 
     public RotatedImagePagerAdapter(Context context, List<ImagePaginatorParam> paramList, IOnItemSelectedListener listener) {
         this.context = context;
         this.paramList = paramList;
         this.listener = listener;
+        views = new SparseArray<RotatedImageView>(paramList.size());
     }
 
     @Override
@@ -45,6 +47,7 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
         view.setTag(position);
         view.setOnClickListener(this);
         container.addView(view);
+        views.put(position, view);
         return view;
     }
 
@@ -62,6 +65,7 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+        views.remove(position);
     }
 
     @Override
@@ -72,5 +76,18 @@ public class RotatedImagePagerAdapter extends PagerAdapter implements View.OnCli
     @Override
     public View getCurrentItemView() {
         return currentView;
+    }
+
+    public void changeImages(int retParam, ImageDrawInfo[] images){
+        int pos = 0;
+        for (int i=0; i<paramList.size(); i++){
+            if (paramList.get(i).retParam == retParam){
+                pos = i;
+                break;
+            }
+        }
+        paramList.get(pos).images = images;
+        if (views.get(pos) != null)
+            views.get(pos).setImageList(images);
     }
 }

@@ -1,6 +1,5 @@
 package ru.emerginggames.snappers;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,24 +23,25 @@ import java.util.List;
 public class SelectPackActivity extends PaginatedSelectorActivity  implements IOnItemSelectedListener{
     private static final int LOCKED = -1;
     private static final int COMING_SOON = -2;
+    private static final int NOTHING_CHANGED = 0;
+    private static final int INVISIBLE_PACK_UNLOCKED = -1;
+    private static final int VISIBLE_PACK_UNLOCKED = -2;
 
     LevelPack[] levelPacks;
-
     RotatedImagePagerAdapter adapter;
-    AlertDialog dialog;
+    boolean[] levelPackStatus;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new RotatedImagePagerAdapter(this, getPaginatorParamList(), this);
-
         int overlap = getWindowManager().getDefaultDisplay().getWidth()/4;
 
+        setPagerAdapter();
         FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
-        pager.setAdapter(adapter);
         pager.setPageMargin(- overlap);
         pager.setOffscreenPageLimit(3);
         pager.setCurrentChildOnTop(true);
+
 
         com.viewpagerindicator.CirclePageIndicator
                 mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
@@ -71,11 +71,14 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         levelPacks = LevelPackTable.getAll(this);
         List<ImagePaginatorParam> params = new ArrayList<ImagePaginatorParam>(8);
         UserPreferences settings = UserPreferences.getInstance(this);
+        levelPackStatus = new boolean[levelPacks.length];
 
         for (int i=0; i< levelPacks.length; i++){
             LevelPack pack = levelPacks[i];
-            if (settings.isPackUnlocked(pack))
+            if (settings.isPackUnlocked(pack)){
                 params.add(new ImagePaginatorParam(getLevelPackImageIds(pack.id), i));
+                levelPackStatus[i] = true;
+            }
             else if (!pack.isPremium)
                 params.add(new ImagePaginatorParam(getLevelPackImageIds(LOCKED), i));
         }
@@ -83,6 +86,49 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         params.add(new ImagePaginatorParam(getLevelPackImageIds(COMING_SOON), COMING_SOON));
 
         return params;
+    }
+    
+    int checkPackUnlocked(){
+        UserPreferences settings = UserPreferences.getInstance(this);
+        for (int i=0; i< levelPacks.length; i++){
+            LevelPack pack = levelPacks[i];
+            if (settings.isPackUnlocked(pack) && !levelPackStatus[i]){
+                if (pack.isPremium)
+                    return INVISIBLE_PACK_UNLOCKED;
+                else return VISIBLE_PACK_UNLOCKED;
+            }
+        }
+        return NOTHING_CHANGED;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int checkResult = checkPackUnlocked();
+        if (checkResult ==INVISIBLE_PACK_UNLOCKED){
+            setPagerAdapter();
+            return;
+        }
+        if (checkResult == VISIBLE_PACK_UNLOCKED){
+            UserPreferences settings = UserPreferences.getInstance(this);
+            for (int i=0; i<levelPacks.length; i++)
+                if (!levelPackStatus[i] && settings.isPackUnlocked(levelPacks[i].id))
+                    updatePackCover(i);
+
+        }
+    }
+
+    void updatePackCover(int i){
+        int id = levelPacks[i].id;
+        adapter.changeImages(i, getLevelPackImageIds(id));
+        levelPackStatus[i] = true;
+    }
+
+    void setPagerAdapter(){
+        FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
+        adapter = new RotatedImagePagerAdapter(this, getPaginatorParamList(), this);
+        pager.setAdapter(adapter);
     }
 
     ImageDrawInfo[] getLevelPackImageIds(int id){
@@ -158,36 +204,5 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
                 hideMessageDialog();
             }
         });
-
-/*        LayoutInflater inflater = getLayoutInflater();
-        LinearLayout layout =  (LinearLayout)inflater.inflate(R.layout.unlock_dialog, null);
-        String message = getResources().getString(R.string.level_locked, pack.id, pack.id+1);
-        OutlinedTextView msgText = (OutlinedTextView)layout.findViewById(R.id.message);
-        msgText.setText(message);
-        msgText.setTypeface(Resources.getFont(this));
-        int textSize = getWindowManager().getDefaultDisplay().getWidth()/10;
-        msgText.setStroke(Color.BLACK, 2);
-        msgText.setTextSize(textSize);
-        
-        layout.findViewById(R.id.leftButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-        });
-
-        layout.findViewById(R.id.rightButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setView(layout);
-        dialog = builder.create();
-        dialog.show();
-*/
-    }    
+    }
 }

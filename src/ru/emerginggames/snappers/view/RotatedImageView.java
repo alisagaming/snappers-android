@@ -62,6 +62,11 @@ public class RotatedImageView extends View {
     public void setImageList(ImageDrawInfo[] imageList) {
         this.imageList = imageList;
         rotatedDimensions = null;
+        if (preparedBitmap != null){
+            preparedBitmap.recycle();
+            preparedBitmap = null;
+            invalidate();
+        }
     }
 
     public void setImage(int id){

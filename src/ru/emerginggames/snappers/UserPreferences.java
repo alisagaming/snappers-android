@@ -89,7 +89,7 @@ public class UserPreferences {
         for (int i=0; i< packs.length-1; i++){
             if (packs[i].id == cur.id){
                 Editor editor = prefs.edit();
-                editor.putInt(String.format(LEVEL_UNLOCK, packs[i+1].name), 1);
+                editor.putInt(String.format(LEVEL_UNLOCK, packs[i+1].name), 100);
                 editor.commit();
                 return;
             }
@@ -109,6 +109,10 @@ public class UserPreferences {
 
     public void unlockNextLevel(Level currentLevel){
         LevelPack pack = LevelPackTable.get(currentLevel.packNumber, context);
+        int unlocked = getLevelUnlocked(pack);
+        if (unlocked> currentLevel.number)
+            return;
+
         Editor editor = prefs.edit();
         editor.putInt(String.format(LEVEL_UNLOCK, pack.name), currentLevel.number + 1);
         editor.commit();
@@ -127,7 +131,7 @@ public class UserPreferences {
         Editor editor = prefs.edit();
         editor.putInt(HINTS, INITIAL_HINTS);
         LevelPack pack1 = LevelPackTable.get(1, context);
-        editor.putInt(String.format(LEVEL_UNLOCK, pack1.name), 99);
+        editor.putInt(String.format(LEVEL_UNLOCK, pack1.name), 100);
         editor.putBoolean(INITIIALISED, true);
         editor.commit();
     }

@@ -88,12 +88,16 @@ public class UserPreferences {
         LevelPack[] packs = LevelPackTable.getAllNotPremium(context);
         for (int i=0; i< packs.length-1; i++){
             if (packs[i].id == cur.id){
-                Editor editor = prefs.edit();
-                editor.putInt(String.format(LEVEL_UNLOCK, packs[i+1].name), 100);
-                editor.commit();
+                unlockLevelPack(packs[i+1]);
                 return;
             }
         }
+    }
+
+    public void unlockLevelPack(LevelPack pack){
+        Editor editor = prefs.edit();
+        editor.putInt(String.format(LEVEL_UNLOCK, pack.name), 100);
+        editor.commit();
     }
     
     public int getScore(){

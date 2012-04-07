@@ -125,6 +125,16 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         levelPackStatus[i] = true;
     }
 
+    void updatePackCoverById(int id){
+        int i;
+        for (i=0; i<levelPacks.length; i++)
+            if (levelPacks[i].id == id){
+                adapter.changeImages(i, getLevelPackImageIds(id));
+                levelPackStatus[i] = true;
+                return;
+            }
+    }
+
     void setPagerAdapter(){
         FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
         adapter = new RotatedImagePagerAdapter(this, getPaginatorParamList(), this);
@@ -190,13 +200,14 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         return null;
     }
 
-    protected void showPackLockedMessage(LevelPack pack){
+    protected void showPackLockedMessage(final LevelPack pack){
         String message = getResources().getString(R.string.level_locked, pack.id-1, pack.id);
 
         showMessageDialog(message, new int[]{18, 41, 0, 0}, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideMessageDialog();
+                buyLevelPack(pack);
             }
         }, new View.OnClickListener() {
             @Override
@@ -204,5 +215,10 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
                 hideMessageDialog();
             }
         });
+    }
+
+    void buyLevelPack(LevelPack pack){
+        UserPreferences.getInstance(this).unlockLevelPack(pack);
+        updatePackCoverById(pack.id);
     }
 }

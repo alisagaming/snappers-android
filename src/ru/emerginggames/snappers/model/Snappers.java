@@ -38,4 +38,16 @@ public class Snappers {
     public static boolean isValidSnapper(int i, int j){
         return i>=0 && i<WIDTH && j>=0 && j<HEIGHT;
     }
+    
+    public static int countSnappers(String snappersStr){
+        int snappersCount = 0;
+        int s;
+        for (int i=0; i<WIDTH; i++)
+            for (int j=0; j< HEIGHT; j++){
+                s = Integer.parseInt(Character.toString(snappersStr.charAt(j * WIDTH + i)));
+                if (s>0)
+                    snappersCount++;
+            }
+        return snappersCount;
+    }
 }

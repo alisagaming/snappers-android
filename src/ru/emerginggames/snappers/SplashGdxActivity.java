@@ -51,7 +51,7 @@ public class SplashGdxActivity extends AndroidApplication {
             protected Integer doInBackground(Integer... params) {
                 long startTime = System.currentTimeMillis();
                 new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
-                GameSettings.getInstance(SplashGdxActivity.this);
+                UserPreferences.getInstance(SplashGdxActivity.this);
 
                 long now = System.currentTimeMillis();
                 if (now - startTime < SPLASH_TIME)

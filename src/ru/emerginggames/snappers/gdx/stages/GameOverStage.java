@@ -1,15 +1,15 @@
 package ru.emerginggames.snappers.gdx.stages;
 
 import android.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.GameLogic;
 import ru.emerginggames.snappers.controller.IGameEventListener;
-import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
+import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 
@@ -20,7 +20,10 @@ import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
  * Time: 3:58
  */
 public class GameOverStage extends DimBackStage{
-    protected static final String[] winMessages = {"Completed!", "Good job!", "Bravo!", "Cheers!", "Huzzah!", "Yippee!", "Hooray!"};
+    private static final String[] winMessages = {"Completed!", "Good job!", "Bravo!", "Cheers!", "Huzzah!", "Yippee!", "Hooray!"};
+    private static final String LEVEL_FAILED = "Level failed";
+    private static final String POSSIBLE_IN_TOUCHES = "Possible in %d touches.";
+    private static final String SCORE = "Score: %d";
     protected GameLogic logic;
     protected boolean isWon = false;
     protected SimpleButton nextButton;
@@ -69,8 +72,8 @@ public class GameOverStage extends DimBackStage{
         addActor(menuButton);
 
         wonText = new OutlinedTextSprite(winMessages[0], Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        lostText = new OutlinedTextSprite("Level failed", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        scoreText = new OutlinedTextSprite(String.format("Possible in %d touches.", 99), Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        lostText = new OutlinedTextSprite(LEVEL_FAILED, Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        scoreText = new OutlinedTextSprite(String.format(POSSIBLE_IN_TOUCHES, 99), Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
 
         if (width > 0)
             setViewport(width, height);
@@ -92,15 +95,17 @@ public class GameOverStage extends DimBackStage{
         this.isWon = isWon;
 
         if (isWon){
+            int score = logic.getScore(((IAppGameListener) Gdx.app).isLevelSolved(logic.level));
             restartButton.positionRelative(nextButton, IPositionable.Dir.LEFT, Metrics.screenMargin /2);
-            scoreText.setText(String.format("Score: %d", logic.getScore()));
+            scoreText.setText(String.format(SCORE, score));
             wonText.setText(winMessages[(int)(Math.random()*winMessages.length)]);
             wonText.positionRelative(width/2, wonText.getY(), IPositionable.Dir.UP, 0);
             //wonText.setPosition((width - wonText.getWidth())/2, wonText.getY());
+            ((IAppGameListener)Gdx.app).addScore(score);
         }
         else{
             restartButton.positionRelative(width, height, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
-            scoreText.setText(String.format("Possible in %d touches.", logic.level.tapsCount));
+            scoreText.setText(String.format(POSSIBLE_IN_TOUCHES, logic.level.tapsCount));
         }
 
         scoreText.positionRelative(width/2, scoreText.getY(), IPositionable.Dir.UP, 0);

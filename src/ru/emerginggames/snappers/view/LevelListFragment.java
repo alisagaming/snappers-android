@@ -9,10 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import ru.emerginggames.snappers.GameSettings;
+import ru.emerginggames.snappers.UserPreferences;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.R;
-import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.LevelPack;
 
@@ -45,7 +44,7 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
             return;
         }
         int oldMaxAvailLevel = maxAvailableLevel;
-        maxAvailableLevel = GameSettings.getInstance(getActivity()).getLevelUnlocked(pack);
+        maxAvailableLevel = UserPreferences.getInstance(getActivity()).getLevelUnlocked(pack);
         if (maxAvailableLevel != oldMaxAvailLevel){
             if (oldMaxAvailLevel < startFromLevel + 25
                     && maxAvailableLevel >= startFromLevel)
@@ -65,7 +64,7 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         this.startFromLevel = startFromLevel;
         this.itemSelectedListener = itemSelectedListener;
         pack = pack1;
-        maxAvailableLevel = GameSettings.getInstance(getActivity()).getLevelUnlocked(pack);
+        maxAvailableLevel = UserPreferences.getInstance(getActivity()).getLevelUnlocked(pack);
     }
 
     @Override

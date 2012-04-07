@@ -1,9 +1,12 @@
-package ru.emerginggames.snappers.gdx.Elements;
+package ru.emerginggames.snappers.gdx.stages;
 
 import android.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.GameLogic;
+import ru.emerginggames.snappers.gdx.Elements.AnimatedSprite;
+import ru.emerginggames.snappers.gdx.Elements.IAnimationListener;
+import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Level;
@@ -15,8 +18,9 @@ import ru.emerginggames.snappers.model.Snappers;
  * Date: 06.04.12
  * Time: 9:38
  */
-public class Hints implements IAnimationListener{
+public class Hints implements IAnimationListener {
     private static final float HINT_ANIMATION_TIME = 0.1f;
+    public static final String TAP_HERE = "Tap here";
     boolean showText;
     boolean isTextVisible;
     GameLogic logic;
@@ -64,7 +68,7 @@ public class Hints implements IAnimationListener{
         if (!showText)
             return;
 
-        hintText = new OutlinedTextSprite("Tap here", Metrics.fontSize/2, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        hintText = new OutlinedTextSprite(TAP_HERE, Metrics.fontSize/2, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         hintText.positionRelative(hintSprite, IPositionable.Dir.UP, 2);
         isTextVisible = true;
     }

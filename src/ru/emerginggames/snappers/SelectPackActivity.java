@@ -57,7 +57,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         if (pack == null)
             return;
         
-        if (!GameSettings.getInstance(this).isPackUnlocked(pack)){
+        if (!UserPreferences.getInstance(this).isPackUnlocked(pack)){
             showPackLockedMessage(pack);
             return;
         }
@@ -70,7 +70,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
     List<ImagePaginatorParam> getPaginatorParamList(){
         levelPacks = LevelPackTable.getAll(this);
         List<ImagePaginatorParam> params = new ArrayList<ImagePaginatorParam>(8);
-        GameSettings settings = GameSettings.getInstance(this);
+        UserPreferences settings = UserPreferences.getInstance(this);
 
         for (int i=0; i< levelPacks.length; i++){
             LevelPack pack = levelPacks[i];

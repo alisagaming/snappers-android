@@ -52,7 +52,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         config.useWakelock = false;
 
         initialize(game, config);
-        GameSettings.setContext(this);
+        UserPreferences.setContext(this);
     }
 
     @Override
@@ -70,12 +70,12 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public void levelPackWon(LevelPack pack) {
-        GameSettings.getInstance(this).unlockNextLevelPack(pack);
+        UserPreferences.getInstance(this).unlockNextLevelPack(pack);
     }
 
     @Override
     public void levelSolved(Level level) {
-        GameSettings.getInstance(this).unlockNextLevel(level);
+        UserPreferences.getInstance(this).unlockNextLevel(level);
 
     }
 
@@ -87,22 +87,33 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public int getHintsLeft(){
-        return  GameSettings.getInstance(this).getHintsRemaining();
+        return  UserPreferences.getInstance(this).getHintsRemaining();
     }
 
     @Override
     public void useHint(){
-        GameSettings.getInstance(this).useHint();
+        UserPreferences.getInstance(this).useHint();
     }
 
     @Override
     public void buy(GoodsToShop.Goods goods){
-        //To change body of implemented methods use File | Settings | File Templates.
+        //TODO:
+    }
+
+    @Override
+    public boolean isLevelSolved(Level level) {
+        return UserPreferences.getInstance(this).isLevelSolved(level);
+    }
+
+    @Override
+    public void addScore(int score) {
+        UserPreferences.getInstance(this).addScore(score);
     }
 
     @Override
     public boolean isOnline() {
-        return checkNetworkStatus();  //To change body of implemented methods use File | Settings | File Templates.
+        //TODO:
+        return checkNetworkStatus();
     }
 
     protected boolean checkNetworkStatus()

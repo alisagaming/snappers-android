@@ -21,6 +21,14 @@ import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
  * Time: 11:27
  */
 public class HintMenuStage extends MenuStage {
+    public static final String YOU_HAVE_1_HINT = "You have 1 hint.";
+    public static final String YOU_HAVE_D_HINTS = "You have %d hints";
+    public static final String USE_IT = "Use it?";
+    public static final String YOU_HAVE_NO_HINTS = "You have no hints.";
+    public static final String BUY_SOME = "Buy some!";
+    public static final String GET_ONLINE_TO_GET = "Get online to get";
+    public static final String SOME = "some.";
+    public static final String GET_ONLINE_TO_GET_SOME = "Get online to get some.";
     SimpleButton cancelButton;
     SimpleButton useButton;
     SimpleButton buy1Button;
@@ -136,29 +144,29 @@ public class HintMenuStage extends MenuStage {
 
     private void showUseHintMenu(int hintsLeft){
         if (hintsLeft == 1)
-            line1.setText("You have 1 hint.");
+            line1.setText(YOU_HAVE_1_HINT);
         else
-            line1.setText(String.format("You have %d hints", hintsLeft));
-        line2.setText("Use it?");
+            line1.setText(String.format(YOU_HAVE_D_HINTS, hintsLeft));
+        line2.setText(USE_IT);
         useButton.visible = useButton.touchable = true;
         buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = false;
     }
 
     private void showGetOnline(){
-        line1.setText("You have no hints.");
-        if (line2.measureTextWidth("Get online to get some.") < getInnerWidth())
-            line2.setText("Get online to get some.");
+        line1.setText(YOU_HAVE_NO_HINTS);
+        if (line2.measureTextWidth(GET_ONLINE_TO_GET_SOME) < getInnerWidth())
+            line2.setText(GET_ONLINE_TO_GET_SOME);
         else{
-            line2.setText("Get online to get");
-            line3.setText("some.");
+            line2.setText(GET_ONLINE_TO_GET);
+            line3.setText(SOME);
             showLine3 = true;
         }
         useButton.visible = useButton.touchable = buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = false;
     }
 
     private void showBuyMenu(){
-        line1.setText("You have no hints.");
-        line2.setText("Buy some!");
+        line1.setText(YOU_HAVE_NO_HINTS);
+        line2.setText(BUY_SOME);
         useButton.visible = useButton.touchable = false;
         buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = true;
     }

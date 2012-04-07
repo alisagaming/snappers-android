@@ -1,23 +1,14 @@
 package ru.emerginggames.snappers;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.gdx.Resources;
-import ru.emerginggames.snappers.view.FixedRatioPager;
 import ru.emerginggames.snappers.view.OutlinedTextView;
 
 /**
@@ -33,18 +24,18 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_selector);
 
-        int height = getWindowManager().getDefaultDisplay().getHeight();
         int width = getWindowManager().getDefaultDisplay().getWidth();
         int defPadding = width/40;
 
         OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
         scoreView.setStroke(Color.BLACK, 2);
         scoreView.setTypeface(Resources.getFont(this));
-        scoreView.setTextSize(width/10);
+        scoreView.setTextSize(width/15);
         scoreView.setPadding(0, defPadding, defPadding, -defPadding);
+        String scoreStr = getResources().getString(R.string.score, UserPreferences.getInstance(this).getScore());
+        scoreView.setText(scoreStr);
 
         findViewById(R.id.root).setPadding(0, 0 , 0, defPadding);
-
         findViewById(R.id.footer).setPadding(0, 0, 0, 0);
         
         OutlinedTextView messageText = (OutlinedTextView)findViewById(R.id.message);
@@ -58,11 +49,15 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         lp.width = width * 8/10;
         dialog.setLayoutParams(lp);
 
-        com.viewpagerindicator.CirclePageIndicator
-                mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        findViewById(R.id.indicator).setPadding(defPadding, defPadding, defPadding, defPadding);
+    }
 
-
-        mIndicator.setPadding(defPadding, defPadding, defPadding, defPadding);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
+        String scoreStr = getResources().getString(R.string.score, UserPreferences.getInstance(this).getScore());
+        scoreView.setText(scoreStr);
     }
 
     public void onBackButtonClick(View v){
@@ -86,8 +81,6 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         findViewById(R.id.leftButton).setOnClickListener(leftListener);
 
         findViewById(R.id.rightButton).setOnClickListener(rightListener);
-
-
     }
 
     public void hideMessageDialog(){

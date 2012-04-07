@@ -1,6 +1,5 @@
 package ru.emerginggames.snappers.gdx.stages;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -35,6 +34,8 @@ public class MainStage extends Stage implements ILogicListener {
     private static final float BLAST_ANIMATION_TIME = 0.1f;
     protected static final float POP_SOUND_DISTANCE = 0.1f;
     protected static final float BANG_FRAME_DURATION = 0.12f;
+    public static final String LEVEL_D_D = "Level: %d-%d";
+    public static final String TAPS_LEFT_D = "Taps left: %d";
     private Animation blastAnimation;
     private final GameLogic logic;
 
@@ -62,9 +63,9 @@ public class MainStage extends Stage implements ILogicListener {
         setupSnappers();
         setupBangs();
 
-        String str = String.format("Level: %d-%d", 99, 999); 
+        String str = String.format(LEVEL_D_D, 99, 999);
         levelText = new OutlinedTextSprite(str, Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        str = String.format("Taps left: %d", 99);
+        str = String.format(TAPS_LEFT_D, 99);
         tapLeftText = new OutlinedTextSprite(str, Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         buttons = new MainButtons(listener);
         addActor(buttons);
@@ -78,7 +79,7 @@ public class MainStage extends Stage implements ILogicListener {
 
         if (width != 0)
             defineSnapperViews();
-        levelText.setText(String.format("Level: %d-%d", level.packNumber, level.number));
+        levelText.setText(String.format(LEVEL_D_D, level.packNumber, level.number));
         tap();
     }
 
@@ -237,7 +238,7 @@ public class MainStage extends Stage implements ILogicListener {
 
     @Override
     public void tap() {
-        tapLeftText.setText(String.format("Taps left: %d", logic.tapRemains));
+        tapLeftText.setText(String.format(TAPS_LEFT_D, logic.tapRemains));
         if (isHinting){
             if (logic.tapRemains > 0)
                 hint.updateHint();
@@ -254,11 +255,13 @@ public class MainStage extends Stage implements ILogicListener {
             hint = new Hints(logic, showText);
         else
             hint.updateLevel(showText);
+        logic.hintUsed = true;
         isHinting = true;
     }
 
     public void restartLevel(){
         setLevel(logic.level);
+        isHinting = false;
     }
 
     public void nextLevel(){
@@ -267,6 +270,7 @@ public class MainStage extends Stage implements ILogicListener {
             listener.levelPackWon();
         else
             setLevel(next);
+        isHinting = false;
     }
 
     public GameLogic getLogic(){
@@ -336,9 +340,5 @@ public class MainStage extends Stage implements ILogicListener {
 
     public boolean areSnappersTouched(){
         return logic.tapRemains != logic.level.tapsCount;
-    }
-    
-    public void log(){
-        Log.v("Snappers", String.format("toPop: %d, sincepopped: %f", toPop, sincePopped));
     }
 }

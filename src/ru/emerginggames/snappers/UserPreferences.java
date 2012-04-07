@@ -13,26 +13,27 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Date: 06.04.12
  * Time: 17:01
  */
-public class GameSettings {
+public class UserPreferences {
     private static final String PREFERENCES = "Preferences";
     private static final String INITIIALISED = "Initialised";
+    private static final String SCORE = "Score";
     private static final String HINTS = "Hints";
     private static final String LEVEL_UNLOCK = "Pack %s levels unlocked";
     private static final int INITIAL_HINTS = 10;
     Context context;
-    private static GameSettings instance;
+    private static UserPreferences instance;
     SharedPreferences prefs;
 
 
-    public static GameSettings getInstance(Context context){
+    public static UserPreferences getInstance(Context context){
         if (instance == null)
-            return instance = new GameSettings(context);
+            return instance = new UserPreferences(context);
         else if (context != null)
             instance.context = context;
         return instance;
     }
 
-    public GameSettings(Context context) {
+    public UserPreferences(Context context) {
         this.context = context;
         prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         initialise();
@@ -40,7 +41,7 @@ public class GameSettings {
 
     public static void setContext(Context context) {
         if (instance == null)
-            instance = new GameSettings(context);
+            instance = new UserPreferences(context);
         else if (context!= null)
             instance.context = context;
     }
@@ -94,12 +95,28 @@ public class GameSettings {
             }
         }
     }
+    
+    public int getScore(){
+        return prefs.getInt(SCORE, 0);
+    }
+
+    public void addScore(int addScore){
+        addScore += getScore();
+        Editor editor = prefs.edit();
+        editor.putInt(SCORE, addScore);
+        editor.commit();
+    }
 
     public void unlockNextLevel(Level currentLevel){
         LevelPack pack = LevelPackTable.get(currentLevel.packNumber, context);
         Editor editor = prefs.edit();
         editor.putInt(String.format(LEVEL_UNLOCK, pack.name), currentLevel.number + 1);
         editor.commit();
+    }
+
+    public boolean isLevelSolved(Level level){
+        int unlocked = getLevelUnlocked(level.packNumber);
+        return level.number < unlocked;
     }
 
 

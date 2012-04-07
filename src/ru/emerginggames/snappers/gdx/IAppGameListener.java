@@ -21,4 +21,6 @@ public interface IAppGameListener {
     public void buy(GoodsToShop.Goods goods);
     public boolean isOnline();
     public void levelSolved(Level level);
+    public boolean isLevelSolved(Level level);
+    public void addScore(int score);
 }

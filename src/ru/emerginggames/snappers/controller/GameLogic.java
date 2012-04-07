@@ -1,6 +1,7 @@
 package ru.emerginggames.snappers.controller;
 
 import android.graphics.Rect;
+import ru.emerginggames.snappers.Settings;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
 import ru.emerginggames.snappers.model.Level;
@@ -33,6 +34,7 @@ public class GameLogic {
     ILogicListener snapperListener;
     private float grainSpeedX;
     private float grainSpeedY;
+    public boolean hintUsed = false;
 
     private float timeToSyncCheck;
     private float syncTime;
@@ -76,6 +78,7 @@ public class GameLogic {
         tapRemains = level.tapsCount;
         this.level = level;
         timeToSyncCheck = 0;
+        hintUsed = false;
     }
 
     public void tapSnapper(int i, int j){
@@ -251,8 +254,26 @@ public class GameLogic {
         return snappers.snappersCount>0;
     }
 
-    public int getScore(){
-        return level.complexity*100;
+    public int getScore(boolean isSolvedBefore){
+        int score = level.tapsCount * 100 + (Snappers.countSnappers(level.zappers) - level.tapsCount) * 90;
+        score *= getMult();
+        if (hintUsed)
+            score = Math.round(score * Settings.HINTED_MULT);
+        if (isSolvedBefore)
+            score = Math.round(score * Settings.REPEAT_MULT);
+
+        return score;
+    }
+    
+    private int getMult(){
+        if (level.complexity > 300)
+            return 5;
+        else if (level.complexity > 100)
+            return 3;
+        else if (level.complexity > 30)
+            return 2;
+        else
+            return 1;
     }
 
 }

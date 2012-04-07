@@ -17,6 +17,7 @@ import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
  * Time: 3:58
  */
 public class PausedStage extends MenuStage{
+    public static final String GAME_PAUSED = "Game paused";
     //protected Sprite menuBack;
     protected SimpleButton resumeBtn;
     protected SimpleButton restartBtn;
@@ -56,7 +57,7 @@ public class PausedStage extends MenuStage{
     }
 
     protected void createItems(){
-        titleText = new OutlinedTextSprite("Game paused", Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 3, Resources.font);
+        titleText = new OutlinedTextSprite(GAME_PAUSED, Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 3, Resources.font);
         titleText.positionRelative(width/2, menuY + menuHeight * 0.97f, IPositionable.Dir.DOWN, 0);
 
         resumeBtn = new SimpleButton(Resources.menuButtonFrames[10], Resources.menuButtonFrames[11], Resources.buttonSound, new IOnEventListener() {

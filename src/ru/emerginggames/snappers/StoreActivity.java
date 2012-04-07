@@ -36,6 +36,7 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
         CirclePageIndicator mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
         
+        findViewById(R.id.shopButton).setVisibility(View.GONE);
     }
 
     List<ImagePaginatorParam> getPaginatorParamList(){

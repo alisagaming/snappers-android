@@ -39,7 +39,7 @@
                 android:id="@+id/indicator"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                app:radius="6dp"
+                app:radius="5dp"
                 app:fillColor="#FFFFFF"
                 app:pageColor="#444444"
                 app:strokeWidth="0dp"
@@ -90,6 +90,7 @@
                                                              android:layout_height="wrap_content"
                                                              android:textColor="@android:color/white"
                                                              android:gravity="center"
+                                                             android:layout_weight="1"
                     />
 
             <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
@@ -103,7 +104,7 @@
                                                           android:clickable="true"
                                                           android:layout_gravity="bottom"/>
 
-                <LinearLayout android:layout_weight="10" android:layout_width="0dp" android:layout_height="0dp"/>
+                <LinearLayout android:id="@+id/spacer" android:layout_weight="10" android:layout_width="0dp" android:layout_height="0dp"/>
 
                 <ru.emerginggames.snappers.view.ImageView android:id="@+id/rightButton" android:layout_width="0dp"
                                                           android:layout_weight="45"

@@ -10,6 +10,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.gdx.Resources;
+import ru.emerginggames.snappers.model.GoodsToShop;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 

@@ -74,13 +74,32 @@ public class PaginatedSelectorActivity extends FragmentActivity {
 
         OutlinedTextView msgText = (OutlinedTextView)findViewById(R.id.message);
         msgText.setText(message);
-        msgText.setMaxLines2(lineEnds.length);
-        msgText.setLineEnds(lineEnds);
+        if (lineEnds != null){
+            msgText.setMaxLines2(lineEnds.length);
+            msgText.setLineEnds(lineEnds);
+        }
         msgText.setTextSizeToFit(true);
+        if(leftListener != null)
+            findViewById(R.id.leftButton).setOnClickListener(leftListener);
+        else
+            findViewById(R.id.leftButton).setVisibility(View.GONE);
 
-        findViewById(R.id.leftButton).setOnClickListener(leftListener);
-
-        findViewById(R.id.rightButton).setOnClickListener(rightListener);
+        if (rightListener != null)
+            findViewById(R.id.rightButton).setOnClickListener(rightListener);
+        else
+            findViewById(R.id.rightButton).setVisibility(View.GONE);
+        
+        if (leftListener == null || rightListener == null)
+            findViewById(R.id.spacer).setVisibility(View.GONE);
+    }
+    
+    public void showMessage(String msg){
+        showMessageDialog(msg, null, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideMessageDialog();
+            }
+        });
     }
 
     public void hideMessageDialog(){

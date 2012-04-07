@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
-import ru.emerginggames.snappers.model.ImageDrawInfo;
 import ru.emerginggames.snappers.model.ImagePaginatorParam;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.FixedRatioPager;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,6 @@ import java.util.List;
  * Time: 8:40
  */
 public class SelectPackActivity extends PaginatedSelectorActivity  implements IOnItemSelectedListener{
-    private static final int LOCKED = -1;
-    private static final int COMING_SOON = -2;
     private static final int NOTHING_CHANGED = 0;
     private static final int INVISIBLE_PACK_UNLOCKED = -1;
     private static final int VISIBLE_PACK_UNLOCKED = -2;
@@ -42,15 +40,13 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         pager.setOffscreenPageLimit(3);
         pager.setCurrentChildOnTop(true);
 
-
-        com.viewpagerindicator.CirclePageIndicator
-                mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        CirclePageIndicator mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
     }
 
     @Override
     public void onItemSelected(int number) {
-        if (number == COMING_SOON)
+        if (number == ImagePaginatorParam.COMING_SOON)
             return;
 
         LevelPack pack = levelPacks[number];
@@ -76,15 +72,13 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         for (int i=0; i< levelPacks.length; i++){
             LevelPack pack = levelPacks[i];
             if (settings.isPackUnlocked(pack)){
-                params.add(new ImagePaginatorParam(getLevelPackImageIds(pack.id), i));
+                params.add(new ImagePaginatorParam(pack.id, i));
                 levelPackStatus[i] = true;
-            }
-            else if (!pack.isPremium)
-                params.add(new ImagePaginatorParam(getLevelPackImageIds(LOCKED), i));
+            } else if (!pack.isPremium)
+                params.add(new ImagePaginatorParam(ImagePaginatorParam.LOCKED, i));
         }
 
-        params.add(new ImagePaginatorParam(getLevelPackImageIds(COMING_SOON), COMING_SOON));
-
+        params.add(new ImagePaginatorParam(ImagePaginatorParam.COMING_SOON, ImagePaginatorParam.COMING_SOON));
         return params;
     }
     
@@ -121,7 +115,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
     void updatePackCover(int i){
         int id = levelPacks[i].id;
-        adapter.changeImages(i, getLevelPackImageIds(id));
+        adapter.changeImages(i, ImagePaginatorParam.getLevelImageIds(id));
         levelPackStatus[i] = true;
     }
 
@@ -129,7 +123,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         int i;
         for (i=0; i<levelPacks.length; i++)
             if (levelPacks[i].id == id){
-                adapter.changeImages(i, getLevelPackImageIds(id));
+                adapter.changeImages(i, ImagePaginatorParam.getLevelImageIds(id));
                 levelPackStatus[i] = true;
                 return;
             }
@@ -139,65 +133,6 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
         adapter = new RotatedImagePagerAdapter(this, getPaginatorParamList(), this);
         pager.setAdapter(adapter);
-    }
-
-    ImageDrawInfo[] getLevelPackImageIds(int id){
-        switch (id){
-            case LOCKED:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.locked, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case COMING_SOON:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.coming, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 1:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack1, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 2:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack2, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 3:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack3, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 4:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack4, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 5:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack5, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 6:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack6, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 7:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack7, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 8:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack1, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 9:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack2, true, true)
-                        };
-            case 10:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack3, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 11:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack4, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-        }
-
-        return null;
     }
 
     protected void showPackLockedMessage(final LevelPack pack){

@@ -1,8 +1,6 @@
 package ru.emerginggames.snappers.gdx;
 
-import android.content.Intent;
-import ru.emerginggames.snappers.GoodsToShop;
-import ru.emerginggames.snappers.StoreActivity;
+import ru.emerginggames.snappers.model.GoodsToShop;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 

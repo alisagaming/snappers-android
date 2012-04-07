@@ -3,7 +3,7 @@ package ru.emerginggames.snappers.gdx.stages;
 import android.graphics.Color;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import ru.emerginggames.snappers.GoodsToShop;
+import ru.emerginggames.snappers.model.GoodsToShop;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
@@ -107,13 +107,13 @@ public class HintMenuStage extends MenuStage {
         buy1Button = new SimpleButton(Resources.menuButtonFrames[0], Resources.menuButtonFrames[1], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
-                buyHints(GoodsToShop.Goods.Pack1);
+                buyHints(GoodsToShop.Goods.HintPack1);
             }
         });
         buy10Button = new SimpleButton(Resources.menuButtonFrames[2], Resources.menuButtonFrames[3], Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
-                buyHints(GoodsToShop.Goods.Pack10);
+                buyHints(GoodsToShop.Goods.HintPack10);
             }
         });
         addActor(cancelButton);

@@ -19,10 +19,13 @@ public class UserPreferences {
     private static final String SCORE = "Score";
     private static final String HINTS = "Hints";
     private static final String LEVEL_UNLOCK = "Pack %s levels unlocked";
+    private static final String ADFREE = "adfree";
     private static final int INITIAL_HINTS = 10;
     Context context;
     private static UserPreferences instance;
     SharedPreferences prefs;
+
+    //TODO: encrypt all sellable data
 
 
     public static UserPreferences getInstance(Context context){
@@ -85,10 +88,10 @@ public class UserPreferences {
     public void unlockNextLevelPack(LevelPack cur){
         if (cur.isPremium)
             return;
-        LevelPack[] packs = LevelPackTable.getAllNotPremium(context);
+        LevelPack[] packs = LevelPackTable.getAllByPremium(context, false);
         for (int i=0; i< packs.length-1; i++){
             if (packs[i].id == cur.id){
-                unlockLevelPack(packs[i+1]);
+                unlockLevelPack(packs[i + 1]);
                 return;
             }
         }
@@ -97,6 +100,12 @@ public class UserPreferences {
     public void unlockLevelPack(LevelPack pack){
         Editor editor = prefs.edit();
         editor.putInt(String.format(LEVEL_UNLOCK, pack.name), 100);
+        editor.commit();
+    }
+
+    public void lockLevelPack(LevelPack pack){
+        Editor editor = prefs.edit();
+        editor.remove(String.format(LEVEL_UNLOCK, pack.name));
         editor.commit();
     }
     
@@ -127,6 +136,15 @@ public class UserPreferences {
         return level.number < unlocked;
     }
 
+    public boolean isAdFree(){
+        return prefs.getBoolean(ADFREE, false);
+    }
+
+    public void setAdFree(boolean isAdFree){
+        Editor editor = prefs.edit();
+        editor.putBoolean(ADFREE, isAdFree);
+        editor.commit();
+    }
 
     private void initialise(){
         if (prefs.getBoolean(INITIIALISED, false))
@@ -139,6 +157,8 @@ public class UserPreferences {
         editor.putBoolean(INITIIALISED, true);
         editor.commit();
     }
+
+
 
 
 }

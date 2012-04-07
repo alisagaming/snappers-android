@@ -1,4 +1,4 @@
-<LevelPack background="blueboard.jpg" title="Tricky" shadows="YES" isPremium="YES" name="premium-level-pack-2">
+<LevelPack background="blueboard.jpg" title="Tricky" shadows="YES" isPremium="YES" name="premium-level-pack-4">
    
     <level number="1" complexity="8384" zappers="003322220222203222032220200332" solutions="3,16,11,16,12;" tapsCount="5" />
     <level number="2" complexity="10495" zappers="102011000122222341432404201110" solutions="18,17,18,18;" tapsCount="4" />

@@ -54,9 +54,9 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         return result;
     }
 
-    public static LevelPack[] getAllNotPremium(Context context){
+    public static LevelPack[] getAllByPremium(Context context, boolean isPremium){
         LevelPackTable table = new LevelPackTable(context, false);
-        LevelPack[] result = table.getAll(LevelPack.class, String.format("NOT %s = 1", KEY_IS_PREMIUM));
+        LevelPack[] result = table.getAll(LevelPack.class, String.format("%s %s = 1", isPremium ? "" : "NOT", KEY_IS_PREMIUM ));
         table.close();
         return result;
     }

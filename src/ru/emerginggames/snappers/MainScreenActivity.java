@@ -2,15 +2,12 @@ package ru.emerginggames.snappers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,28 +46,53 @@ public class MainScreenActivity extends Activity {
         UserPreferences prefs = UserPreferences.getInstance(this);
         ((CheckBox)findViewById(R.id.soundCheck)).setChecked(prefs.getSound());
         ((CheckBox)findViewById(R.id.musicCheck)).setChecked(prefs.getMusic());
+
+        SoundManager.getInstance(this).setUp();
     }
 
     public void onMusicButtonClick(View v){
         UserPreferences.getInstance(this).setMusic(((CheckBox)v).isChecked());
+        if (((CheckBox)v).isChecked())
+            SoundManager.getInstance(this).startMusic();
+        else
+            SoundManager.getInstance(this).stopMusic();
+
+        SoundManager.getInstance(this).playButtonSound();
     }
 
     public void onSoundButtonClick(View v){
         UserPreferences.getInstance(this).setSound(((CheckBox) v).isChecked());
+        SoundManager.getInstance(this).playButtonSound();
     }
 
     public void settingsButtonClick(View v){
         View optCont = findViewById(R.id.options);
         optCont.setVisibility(optCont.getVisibility() == View.GONE? View.VISIBLE : View.GONE);
+        SoundManager.getInstance(this).playButtonSound();
     }
 
     public void onStoreButtonClick(View v){
+        SoundManager.getInstance(this).playButtonSound();
+        SoundManager.getInstance(this).riseContinuePlayingFlag();
         startActivity(new Intent(this, StoreActivity.class));
     }
 
     public void onPlayButtonClick(View v){
+        SoundManager.getInstance(this).playButtonSound();
+        SoundManager.getInstance(this).riseContinuePlayingFlag();
         startActivity(new Intent(this, SelectPackActivity.class));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SoundManager.getInstance(this).startMusic();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SoundManager.getInstance(this).stopMusic();
+
+    }
 }

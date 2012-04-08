@@ -132,4 +132,9 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
         return false;
     }
+
+    @Override
+    public boolean isSoundEnabled() {
+        return UserPreferences.getInstance(this).getSound();
+    }
 }

@@ -13,6 +13,7 @@ import ru.emerginggames.snappers.controller.GameLogic;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Elements.*;
+import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Blast;
@@ -285,7 +286,8 @@ public class MainStage extends Stage implements ILogicListener {
 
         toPop--;
 
-        getRandomValue(Resources.popSounds).play();
+        if (Game.isSoundEnabled)
+            getRandomValue(Resources.popSounds).play();
         sincePopped = 0;
     }
 

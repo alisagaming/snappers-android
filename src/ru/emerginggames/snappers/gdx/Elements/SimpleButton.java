@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 
 /**
@@ -59,7 +60,7 @@ public class SimpleButton extends Actor implements IPositionable {
     @Override
     public void touchUp(float x, float y, int pointer) {
         isDown = false;
-        if (sound != null)
+        if (sound != null && Game.isSoundEnabled)
             sound.play();
         listener.onEvent();
     }

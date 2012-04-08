@@ -50,6 +50,8 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         dialog.setLayoutParams(lp);
 
         findViewById(R.id.indicator).setPadding(defPadding, defPadding, defPadding, defPadding);
+
+        SoundManager.getInstance(this).setUp();
     }
 
     @Override
@@ -58,13 +60,24 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
         String scoreStr = getResources().getString(R.string.score, UserPreferences.getInstance(this).getScore());
         scoreView.setText(scoreStr);
+        SoundManager.getInstance(this).startMusic();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SoundManager.getInstance(this).stopMusic();
     }
 
     public void onBackButtonClick(View v){
+        SoundManager.getInstance(this).riseContinuePlayingFlag();
+        SoundManager.getInstance(this).playButtonSound();
         finish();
     }
 
     public void onStoreButtonClick(View v){
+        SoundManager.getInstance(this).riseContinuePlayingFlag();
+        SoundManager.getInstance(this).playButtonSound();
         startActivity(new Intent(this, StoreActivity.class));
     }
     

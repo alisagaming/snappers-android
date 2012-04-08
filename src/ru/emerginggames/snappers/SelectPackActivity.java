@@ -46,6 +46,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
     @Override
     public void onItemSelected(int number) {
+        SoundManager.getInstance(this).playButtonSound();
         if (number == ImagePaginatorParam.COMING_SOON)
             return;
 
@@ -58,6 +59,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
             return;
         }
 
+        SoundManager.getInstance(this).riseContinuePlayingFlag();
         Intent intent = new Intent(this, SelectLevelActivity.class);
         intent.putExtra(SelectLevelActivity.LEVEL_PACK_TAG, levelPacks[number]);
         startActivity(intent);
@@ -141,12 +143,14 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         showMessageDialog(message, new int[]{18, 41, 0, 0}, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SoundManager.getInstance(SelectPackActivity.this).playButtonSound();
                 hideMessageDialog();
                 buyLevelPack(pack);
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SoundManager.getInstance(SelectPackActivity.this).playButtonSound();
                 hideMessageDialog();
             }
         });

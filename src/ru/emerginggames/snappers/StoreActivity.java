@@ -65,6 +65,7 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
 
     @Override
     public void onItemSelected(int number) {
+        SoundManager.getInstance(this).playButtonSound();
         if (number >=0 && number < levelPacks.length){
             showPackLockedMessage(levelPacks[number]);
         }

@@ -39,10 +39,12 @@ public class Game implements ApplicationListener, IGameEventListener {
     protected ColorRect tempRect;
     
     protected boolean objectsCreated = false;
+    public static boolean isSoundEnabled;
 
     @Override
     public void create() {
         Resources.loadSounds();
+        isSoundEnabled = ((IAppGameListener)Gdx.app).isSoundEnabled();
     }
 
     protected void createObjects(){
@@ -184,7 +186,8 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void gameWon() {
         gameOverStage.setWon(true);
-        Resources.winSound.play(0.6f);
+        if (isSoundEnabled)
+            Resources.winSound.play(0.6f);
         Gdx.input.setInputProcessor(currentStage = gameOverStage);
         ((IAppGameListener)Gdx.app).levelSolved(snappersStage.getLogic().level);
     }

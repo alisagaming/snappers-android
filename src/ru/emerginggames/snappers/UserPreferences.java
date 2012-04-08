@@ -176,7 +176,7 @@ public class UserPreferences {
     }
 
     public boolean getSound(){
-        return prefs.getBoolean(MUSIC, true);
+        return prefs.getBoolean(SOUND, true);
     }
 
     private String _S(String s){

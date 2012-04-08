@@ -20,5 +20,6 @@ public interface IAppGameListener {
     public boolean isOnline();
     public void levelSolved(Level level);
     public boolean isLevelSolved(Level level);
+    public boolean isSoundEnabled();
     public void addScore(int score);
 }

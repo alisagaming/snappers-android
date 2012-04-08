@@ -40,6 +40,7 @@ public class GameLogic {
     private float syncTime;
     int snapperTouchedI = -1;
     int snapperTouchedJ = -1;
+    public long startTime;
 
     public GameLogic(ILogicListener listener) {
 
@@ -79,6 +80,7 @@ public class GameLogic {
         this.level = level;
         timeToSyncCheck = 0;
         hintUsed = false;
+        startTime = System.currentTimeMillis();
     }
 
     public void tapSnapper(int i, int j){

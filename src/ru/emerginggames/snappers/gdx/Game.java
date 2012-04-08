@@ -179,8 +179,6 @@ public class Game implements ApplicationListener, IGameEventListener {
         Gdx.input.setInputProcessor(currentStage = snappersStage);
         ((IAppGameListener)Gdx.app).useHint();
         snappersStage.showHints(false);
-        if (snappersStage.areSnappersTouched())
-            snappersStage.restartLevel();
     }
 
     @Override

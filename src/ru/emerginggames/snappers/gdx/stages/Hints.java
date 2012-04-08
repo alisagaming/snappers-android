@@ -67,8 +67,8 @@ public class Hints implements IAnimationListener {
     public void onAnimationEnd(AnimatedSprite sprite) {
         if (!showText)
             return;
-
-        hintText = new OutlinedTextSprite(TAP_HERE, Metrics.fontSize/2, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        if (hintText == null)
+            hintText = new OutlinedTextSprite(TAP_HERE, Metrics.fontSize*2/3, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         hintText.positionRelative(hintSprite, IPositionable.Dir.UP, 2);
         isTextVisible = true;
     }

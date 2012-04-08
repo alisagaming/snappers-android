@@ -34,6 +34,7 @@ public class MainStage extends Stage implements ILogicListener {
     private static final float BLAST_ANIMATION_TIME = 0.1f;
     protected static final float POP_SOUND_DISTANCE = 0.1f;
     protected static final float BANG_FRAME_DURATION = 0.12f;
+    protected static final int WAIT_FOR_TUTORIAL = 5000;
     public static final String LEVEL_D_D = "Level: %d-%d";
     public static final String TAPS_LEFT_D = "Taps left: %d";
     private Animation blastAnimation;
@@ -54,6 +55,7 @@ public class MainStage extends Stage implements ILogicListener {
 
     protected Hints hint;
     public boolean isHinting = false;
+    boolean isTutorialAvailable = false;
 
     public MainStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
@@ -80,7 +82,9 @@ public class MainStage extends Stage implements ILogicListener {
         if (width != 0)
             defineSnapperViews();
         levelText.setText(String.format(LEVEL_D_D, level.packNumber, level.number));
+        isHinting = false;
         tap();
+        isTutorialAvailable = (level.number < 4 && level.packNumber == 1);
     }
 
     public void setViewport(int width, int height) {
@@ -151,6 +155,9 @@ public class MainStage extends Stage implements ILogicListener {
 
         if (isHinting)
             hint.act(delta);
+
+        if (isTutorialAvailable && !isHinting && !areSnappersTouched() && (System.currentTimeMillis() - logic.startTime) > WAIT_FOR_TUTORIAL)
+            showHints(true);
     }
 
     @Override
@@ -251,6 +258,9 @@ public class MainStage extends Stage implements ILogicListener {
         if (isHinting)
             return;
 
+        if (areSnappersTouched())
+            restartLevel();
+
         if (hint == null)
             hint = new Hints(logic, showText);
         else
@@ -259,9 +269,9 @@ public class MainStage extends Stage implements ILogicListener {
         isHinting = true;
     }
 
+
     public void restartLevel(){
         setLevel(logic.level);
-        isHinting = false;
     }
 
     public void nextLevel(){
@@ -270,7 +280,6 @@ public class MainStage extends Stage implements ILogicListener {
             listener.levelPackWon();
         else
             setLevel(next);
-        isHinting = false;
     }
 
     public GameLogic getLogic(){

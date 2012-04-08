@@ -53,6 +53,9 @@ public class Metrics {
     public static int bangSize;
     public static int hintSize;
     public static int menuMargin;
+    public static final int instructionsWidth = 480;
+    public static final int instructionsHeight = 640;
+
 
     public static boolean initDone = false;
     

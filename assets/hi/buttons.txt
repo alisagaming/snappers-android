@@ -1,0 +1,213 @@
+
+buttons1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+useahintlong
+  rotate: false
+  xy: 0, 0
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+useahintlong-tap
+  rotate: false
+  xy: 400, 0
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+storelong
+  rotate: false
+  xy: 0, 128
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+storelong-tap
+  rotate: false
+  xy: 400, 128
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+resumelong
+  rotate: false
+  xy: 0, 256
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+resumelong-tap
+  rotate: false
+  xy: 400, 256
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+restartlong
+  rotate: false
+  xy: 0, 384
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+restartlong-tap
+  rotate: false
+  xy: 0, 512
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+menulong
+  rotate: false
+  xy: 0, 640
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+menulong-tap
+  rotate: false
+  xy: 0, 768
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+help
+  rotate: false
+  xy: 0, 896
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+cancellong
+  rotate: false
+  xy: 400, 384
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+cancellong-tap
+  rotate: false
+  xy: 400, 512
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+buyhintslong
+  rotate: false
+  xy: 400, 640
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+buyhintslong-tap
+  rotate: false
+  xy: 400, 768
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+buy1hint
+  rotate: false
+  xy: 400, 896
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+b11
+  rotate: false
+  xy: 800, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b10
+  rotate: false
+  xy: 800, 128
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b09
+  rotate: false
+  xy: 800, 256
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b08
+  rotate: false
+  xy: 800, 384
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b07
+  rotate: false
+  xy: 800, 512
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b06
+  rotate: false
+  xy: 800, 640
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b05
+  rotate: false
+  xy: 800, 768
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b04
+  rotate: false
+  xy: 800, 896
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+
+buttons2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buy1hint-tap
+  rotate: false
+  xy: 0, 0
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+b03
+  rotate: false
+  xy: 400, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b02
+  rotate: false
+  xy: 528, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b01
+  rotate: false
+  xy: 656, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+b00
+  rotate: false
+  xy: 784, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1

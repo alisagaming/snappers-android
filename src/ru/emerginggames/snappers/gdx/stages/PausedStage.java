@@ -8,7 +8,7 @@ import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
 import ru.emerginggames.snappers.gdx.Resources;
-import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
+import ru.emerginggames.snappers.gdx.core.OutlinedTextSprite;
 
 /**
  * Created by IntelliJ IDEA.

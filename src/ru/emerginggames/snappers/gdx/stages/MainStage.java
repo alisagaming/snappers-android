@@ -15,7 +15,7 @@ import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Elements.*;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.Resources;
-import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
+import ru.emerginggames.snappers.gdx.core.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Blast;
 import ru.emerginggames.snappers.model.ILogicListener;
 import ru.emerginggames.snappers.model.Level;

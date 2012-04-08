@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.gdx.android;
+package ru.emerginggames.snappers.gdx.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

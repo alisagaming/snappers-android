@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
@@ -14,8 +15,9 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import ru.emerginggames.snappers.Metrics;
-import ru.emerginggames.snappers.gdx.android.BitmapPixmap;
-import ru.emerginggames.snappers.gdx.android.ResizedFileTextureData;
+import ru.emerginggames.snappers.gdx.core.BitmapPixmap;
+import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas;
+import ru.emerginggames.snappers.gdx.core.ResizedFileTextureData;
 
 
 /**
@@ -32,14 +34,12 @@ public class Resources {
         public static TextureData snappers;
         public static TextureData bang;
         public static TextureData blast;
-        public static TextureData squareButtons;
-        public static TextureData menuButtons;
-        public static TextureData buttons;
         public static TextureData dialog;
         public static TextureData bg;
         public static TextureData hint;
         public static boolean isBgLoading;
         public static String bgName;
+        public static PrepareableTextureAtlas.TextureAtlasData buttonAtlas;
     }
 
     public static Context context;
@@ -48,13 +48,10 @@ public class Resources {
 
     public static Texture bangTexture;
     public static Texture blastTexture;
-    public static Texture squareButtons;
-    public static Texture menuButtons;
-    public static Texture buttons;
     public static Texture dialog;
     public static Texture hintTexture;
     public static TextureRegion bg;
-
+    public static TextureRegion help;
 
     public static TextureRegion[] snapperBack;
     public static TextureRegion[] eyeFrames;
@@ -64,6 +61,8 @@ public class Resources {
     public static TextureRegion[] menuButtonFrames;
     public static TextureRegion[] hintFrames;
     public static NinePatch dialog9;
+
+    public static PrepareableTextureAtlas buttonAtlas;
 
     public static Sound[] popSounds;
     public static Sound  winSound;
@@ -100,22 +99,7 @@ public class Resources {
     }
 
     private static void loadButtonTextures(){
-        if (Metrics.sizeMode == Metrics.SizeMode.modeM)
-        {
-            buttons = new Texture(Preload.buttons);
-            squareButtonFrames = makeAnimationFrames(buttons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 0, 12);
-
-            menuButtonFrames = makeAnimationFrames(buttons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 4, 16);
-            menuButtonFrames[0] = new TextureRegion(buttons, 2*Metrics.squareButtonSize, Metrics.squareButtonSize, Metrics.menuButtonWidth, Metrics.menuButtonHeight);
-            menuButtonFrames[1] = new TextureRegion(buttons, 2*Metrics.squareButtonSize + Metrics.menuButtonWidth, Metrics.squareButtonSize, Metrics.menuButtonWidth, Metrics.menuButtonHeight);
-        }
-        else {
-            squareButtons = new Texture(Preload.squareButtons);
-            squareButtonFrames = makeAnimationFrames(squareButtons, Metrics.squareButtonSize, Metrics.squareButtonSize, false, 0, 12);
-
-            menuButtons= new Texture(Preload.menuButtons);
-            menuButtonFrames = makeAnimationFrames(menuButtons, Metrics.menuButtonWidth, Metrics.menuButtonHeight, false, 0, 16);
-        }
+        fillButtonRegions();
 
         dialog = new Texture(Preload.dialog);
         dialog9 = new NinePatch(dialog, Metrics.menuMargin, Metrics.menuMargin, Metrics.menuMargin, Metrics.menuMargin);
@@ -154,16 +138,12 @@ public class Resources {
         blastTexture.dispose();
         if (bangTexture != null)
             bangTexture.dispose();
-        if (squareButtons != null)
-            squareButtons.dispose();
-        if (buttons != null)
-            buttons.dispose();
         if (dialog != null)
             dialog.dispose();
-        if (menuButtons != null)
-            menuButtons.dispose();
         if (bg!=null)
             bg.getTexture().dispose();
+        if (buttonAtlas != null)
+            buttonAtlas.dispose();
     }
 
 
@@ -292,35 +272,31 @@ public class Resources {
         if (Preload.hint == null)
             Preload.hint = new FileTextureData(Gdx.files.internal(dir + "hint_circle.png"), null, Pixmap.Format.RGBA4444, false);
         if (Preload.dialog == null)
-            Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialog.png"), null, Pixmap.Format.RGBA8888, false);
-        if (Metrics.sizeMode == Metrics.SizeMode.modeM){
-            if (Preload.buttons == null)
-                Preload.buttons = new FileTextureData(Gdx.files.internal(dir + "btn.png"), null, Pixmap.Format.RGBA8888, false);
-        }
-        else {
-            if (Preload.squareButtons == null)
-                Preload.squareButtons = new FileTextureData(Gdx.files.internal(dir + "btn-sq.png"), null, Pixmap.Format.RGBA8888, false);
-            if (Preload.menuButtons == null)
-                Preload.menuButtons = new FileTextureData(Gdx.files.internal(dir + "btn-long.png"), null, Pixmap.Format.RGBA8888, false);
-        }
+        Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialog.png"), null, Pixmap.Format.RGBA8888, false);
 
-
+        if (Preload.buttonAtlas == null){
+            FileHandle packFile = Gdx.files.internal(dir + "buttons.txt");
+            Preload.buttonAtlas = new PrepareableTextureAtlas.TextureAtlasData(packFile, packFile.parent(), false);
+        }
     }
 
     public static void preparePreload(){
         synchronized (syncLock){
             prepareData(Preload.bang);
             prepareData(Preload.blast);
-            prepareData(Preload.squareButtons);
             prepareData(Preload.snappers);
-            prepareData(Preload.menuButtons);
             prepareData(Preload.dialog);
-            prepareData(Preload.buttons);
             prepareData(Preload.hint);
+            prepareData(Preload.buttonAtlas);
         }
     }
 
     protected static void prepareData(TextureData data){
+        if (data != null &&!data.isPrepared())
+            data.prepare();
+    }
+
+    protected static void prepareData(PrepareableTextureAtlas.TextureAtlasData data){
         if (data != null &&!data.isPrepared())
             data.prepare();
     }
@@ -371,4 +347,43 @@ public class Resources {
             font = Typeface.createFromAsset(context.getAssets(), "shag_lounge.otf");
         return font;
     }
+
+    public static TextureRegion getHelpTexture(){
+        if (help == null){
+            Texture helpTexture = new Texture(Gdx.files.internal("instructions.png"), Pixmap.Format.RGBA4444, false);
+            helpTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+            helpTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
+            help = new TextureRegion(helpTexture, Metrics.instructionsWidth, Metrics.instructionsHeight);
+        }
+        return help;
+    }
+
+    private static void fillButtonRegions(){
+        buttonAtlas = new PrepareableTextureAtlas(Preload.buttonAtlas);
+        squareButtonFrames = new TextureRegion[12];
+        for (int i=0; i<squareButtonFrames.length; i++)
+            squareButtonFrames[i] = buttonAtlas.findRegion(String.format("b%02d", i));
+
+        menuButtonFrames = new TextureRegion[17];
+        menuButtonFrames[0] = buttonAtlas.findRegion("buy1hint");
+        menuButtonFrames[1] = buttonAtlas.findRegion("buy1hint-tap");
+        menuButtonFrames[2] = buttonAtlas.findRegion("buyhintslong");
+        menuButtonFrames[3] = buttonAtlas.findRegion("buyhintslong-tap");
+        menuButtonFrames[4] = buttonAtlas.findRegion("cancellong");
+        menuButtonFrames[5] = buttonAtlas.findRegion("cancellong-tap");
+        menuButtonFrames[6] = buttonAtlas.findRegion("menulong");
+        menuButtonFrames[7] = buttonAtlas.findRegion("menulong-tap");
+        menuButtonFrames[8] = buttonAtlas.findRegion("restartlong");
+        menuButtonFrames[9] = buttonAtlas.findRegion("restartlong-tap");
+        menuButtonFrames[10] = buttonAtlas.findRegion("resumelong");
+        menuButtonFrames[11] = buttonAtlas.findRegion("resumelong-tap");
+        menuButtonFrames[12] = buttonAtlas.findRegion("storelong");
+        menuButtonFrames[13] = buttonAtlas.findRegion("storelong-tap");
+        menuButtonFrames[14] = buttonAtlas.findRegion("useahintlong");
+        menuButtonFrames[15] = buttonAtlas.findRegion("useahintlong-tap");
+        menuButtonFrames[16] = buttonAtlas.findRegion("help");
+
+    }
+
+
 }

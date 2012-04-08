@@ -8,7 +8,7 @@ import ru.emerginggames.snappers.gdx.Elements.AnimatedSprite;
 import ru.emerginggames.snappers.gdx.Elements.IAnimationListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Resources;
-import ru.emerginggames.snappers.gdx.android.OutlinedTextSprite;
+import ru.emerginggames.snappers.gdx.core.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.Snappers;
 

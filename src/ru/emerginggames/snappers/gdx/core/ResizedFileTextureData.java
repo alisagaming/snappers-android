@@ -50,10 +50,14 @@ public class ResizedFileTextureData implements TextureData{
         //Texture.setEnforcePotImages(false);
 
         pixmap = new Pixmap(file);
-        if (width == 0){
+        if (width == 0 && height == 0){
             width = pixmap.getWidth();
             height = pixmap.getHeight();
-        }
+        } else  if (width == 0)
+            width = Math.round(pixmap.getWidth() * (float)height / pixmap.getHeight());
+        else if (height == 0)
+            height = Math.round(pixmap.getHeight() * (float)width/ pixmap.getWidth());
+
         normWidth = nextPowerOfTwo(width);
         normHeight = nextPowerOfTwo(height);
         if (format == null)
@@ -64,6 +68,7 @@ public class ResizedFileTextureData implements TextureData{
             Pixmap tmp = new Pixmap(normWidth, normHeight, format);
             Pixmap.Blending blend = Pixmap.getBlending();
             Pixmap.setBlending(Pixmap.Blending.None);
+            Pixmap.setFilter(Pixmap.Filter.BiLinear);
             tmp.drawPixmap(pixmap, 0, 0, pixmap.getWidth(), pixmap.getHeight(), 0, 0, width, height);
             pixmap.dispose();
             pixmap = tmp;

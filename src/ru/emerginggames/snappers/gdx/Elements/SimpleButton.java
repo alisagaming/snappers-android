@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import ru.emerginggames.snappers.gdx.Game;
+import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
+import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas.AtlasRegion;
+import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas.AtlasSprite;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,8 +27,9 @@ public class SimpleButton extends Actor implements IPositionable {
     protected float scale = 1;
 
     public SimpleButton(TextureRegion normal, TextureRegion down, Sound sound, IOnEventListener listener){
-        button = new Sprite(normal);
-        buttonDown = new Sprite(down);
+        button = doSprite(normal);
+        if (down != null)
+            buttonDown = doSprite(down);
         width = button.getWidth();
         height = button.getHeight();
         this.listener = listener;
@@ -34,9 +38,11 @@ public class SimpleButton extends Actor implements IPositionable {
 
     public SimpleButton(TextureRegion normal, TextureRegion down, float scale, Sound sound,  IOnEventListener listener){
         button = new Sprite(normal);
-        buttonDown = new Sprite(down);
         button.setScale(scale);
-        buttonDown.setScale(scale);
+        if (down != null){
+            buttonDown = new Sprite(down);
+            buttonDown.setScale(scale);
+        }
         width = normal.getRegionWidth() * scale;
         height = normal.getRegionHeight() * scale;
         this.listener = listener;
@@ -47,7 +53,7 @@ public class SimpleButton extends Actor implements IPositionable {
     @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
         button.draw(batch, parentAlpha);
-        if (isDown)
+        if (isDown && buttonDown != null)
             buttonDown.draw(batch, parentAlpha);
     }
 
@@ -109,7 +115,8 @@ public class SimpleButton extends Actor implements IPositionable {
         this.x = x;
         this.y = y;
         button.setPosition(x, y);
-        buttonDown.setPosition(x, y);
+        if (buttonDown != null)
+            buttonDown.setPosition(x, y);
     }
 
     @Override
@@ -120,5 +127,15 @@ public class SimpleButton extends Actor implements IPositionable {
     @Override
     public float getTop() {
         return getY() + getHeight();
+    }
+
+    private Sprite doSprite(TextureRegion region){
+        Sprite s = new Sprite(region);
+        if (region instanceof AtlasRegion && ((AtlasRegion)region).rotate){
+            s.setBounds(0, 0, region.getRegionHeight(), region.getRegionWidth());
+            s.rotate90(true);
+        }
+
+        return s;
     }
 }

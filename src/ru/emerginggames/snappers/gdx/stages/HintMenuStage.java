@@ -121,9 +121,10 @@ public class HintMenuStage extends MenuStage {
         addActor(buy1Button);
         addActor(buy10Button);
 
-        line1 = new OutlinedTextSprite(Metrics.menuButtonWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
-        line2 = new OutlinedTextSprite(Metrics.menuButtonWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
-        line3 = new OutlinedTextSprite(Metrics.menuButtonWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
+        int btnWidth = (Math.round(cancelButton.getWidth()));
+        line1 = new OutlinedTextSprite(btnWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
+        line2 = new OutlinedTextSprite(btnWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
+        line3 = new OutlinedTextSprite(btnWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
     }
 
     @Override

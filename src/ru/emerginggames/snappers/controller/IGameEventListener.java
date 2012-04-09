@@ -19,5 +19,7 @@ public interface IGameEventListener {
     public void gameLost();
     public void levelPackWon();
     public void useHint();
+    public void onHelp();
+    public void onHelpDone();
 
 }

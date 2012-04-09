@@ -101,7 +101,7 @@ public class UserPreferences {
 
     public void unlockLevelPack(LevelPack pack){
         Editor editor = prefs.edit();
-        editor.putString(_S(String.format(LEVEL_UNLOCK, pack.name)), _I(100));
+        editor.putString(_S(String.format(LEVEL_UNLOCK, pack.name)), _I(1));
         editor.commit();
     }
 

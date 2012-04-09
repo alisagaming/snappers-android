@@ -104,7 +104,7 @@ public class MainStage extends Stage implements ILogicListener {
         int snapperAreaHeight = height - marginTop - marginBottom;
         if (snapperAreaHeight < width){
             snapperAreaHeight = width;
-            marginBottom = height - marginTop - marginBottom;
+            marginBottom = height - marginTop - snapperAreaHeight;
             if (marginBottom<0){
                 snapperAreaHeight+= marginBottom;
                 marginBottom = 0;

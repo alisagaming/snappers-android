@@ -73,46 +73,53 @@ menulong-tap
   orig: 200, 64
   offset: 0, 0
   index: -1
-help
+cancellong
   rotate: false
   xy: 0, 448
   size: 200, 64
   orig: 200, 64
   offset: 0, 0
   index: -1
-cancellong
+cancellong-tap
   rotate: false
   xy: 200, 192
   size: 200, 64
   orig: 200, 64
   offset: 0, 0
   index: -1
-cancellong-tap
+buyhintslong
   rotate: false
   xy: 200, 256
   size: 200, 64
   orig: 200, 64
   offset: 0, 0
   index: -1
-buyhintslong
+buyhintslong-tap
   rotate: false
   xy: 200, 320
   size: 200, 64
   orig: 200, 64
   offset: 0, 0
   index: -1
-buyhintslong-tap
+buy1hint
   rotate: false
   xy: 200, 384
   size: 200, 64
   orig: 200, 64
   offset: 0, 0
   index: -1
-buy1hint
+buy1hint-tap
   rotate: false
   xy: 200, 448
   size: 200, 64
   orig: 200, 64
+  offset: 0, 0
+  index: -1
+help
+  rotate: true
+  xy: 400, 384
+  size: 48, 120
+  orig: 120, 48
   offset: 0, 0
   index: -1
 b11
@@ -197,17 +204,5 @@ b00
   xy: 448, 320
   size: 48, 48
   orig: 48, 48
-  offset: 0, 0
-  index: -1
-
-buttons2.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-buy1hint-tap
-  rotate: false
-  xy: 0, 0
-  size: 200, 64
-  orig: 200, 64
   offset: 0, 0
   index: -1

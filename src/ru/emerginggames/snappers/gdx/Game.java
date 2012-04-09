@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Elements.ColorRect;
-import ru.emerginggames.snappers.gdx.stages.GameOverStage;
-import ru.emerginggames.snappers.gdx.stages.HintMenuStage;
-import ru.emerginggames.snappers.gdx.stages.MainStage;
-import ru.emerginggames.snappers.gdx.stages.PausedStage;
+import ru.emerginggames.snappers.gdx.stages.*;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 
@@ -37,6 +34,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     protected Sprite bg;
     FPSLogger logger;
     protected ColorRect tempRect;
+    protected HelpStage helpStage;
     
     protected boolean objectsCreated = false;
     public static boolean isSoundEnabled;
@@ -57,8 +55,7 @@ public class Game implements ApplicationListener, IGameEventListener {
         gameOverStage = new GameOverStage(width,height,this, snappersStage.getLogic(), batch);
         pausedStage = new PausedStage(width, height, this, batch);
         hintMenu = new HintMenuStage(width, height, this, batch);
-        currentStage = snappersStage;
-        Gdx.input.setInputProcessor(snappersStage);
+        setStage(snappersStage);
 
         if (level != null)
             snappersStage.setLevel(level);
@@ -100,7 +97,8 @@ public class Game implements ApplicationListener, IGameEventListener {
         float delta = Gdx.graphics.getDeltaTime();
         if (currentStage != pausedStage)
             snappersStage.act(delta);
-        snappersStage.draw();
+        if (currentStage != helpStage)
+            snappersStage.draw();
 
         if (currentStage != snappersStage){
             currentStage.act(delta);
@@ -144,18 +142,18 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void onNextBtn() {
         snappersStage.nextLevel();
-        Gdx.input.setInputProcessor(currentStage = snappersStage);
+        setStage(snappersStage);
     }
 
     @Override
     public void onRestartBtn() {
         snappersStage.restartLevel();
-        Gdx.input.setInputProcessor(currentStage = snappersStage);
+        setStage(snappersStage);
     }
 
     @Override
     public void onResumeBtn() {
-        Gdx.input.setInputProcessor(currentStage = snappersStage);
+        setStage(snappersStage);
     }
 
     @Override
@@ -171,12 +169,12 @@ public class Game implements ApplicationListener, IGameEventListener {
             return;
         }
         hintMenu.show();
-        Gdx.input.setInputProcessor(currentStage = hintMenu);
+        setStage(hintMenu);
     }
 
     @Override
     public void useHint() {
-        Gdx.input.setInputProcessor(currentStage = snappersStage);
+        setStage(snappersStage);
         ((IAppGameListener)Gdx.app).useHint();
         snappersStage.showHints(false);
     }
@@ -186,14 +184,14 @@ public class Game implements ApplicationListener, IGameEventListener {
         gameOverStage.setWon(true);
         if (isSoundEnabled)
             Resources.winSound.play(0.6f);
-        Gdx.input.setInputProcessor(currentStage = gameOverStage);
+        setStage(gameOverStage);
         ((IAppGameListener)Gdx.app).levelSolved(snappersStage.getLogic().level);
     }
 
     @Override
     public void gameLost() {
         gameOverStage.setWon(false);
-        Gdx.input.setInputProcessor(currentStage = gameOverStage);
+        setStage(gameOverStage);
     }
 
     @Override
@@ -203,8 +201,20 @@ public class Game implements ApplicationListener, IGameEventListener {
     }
 
     @Override
+    public void onHelp() {
+        if (helpStage == null)
+            helpStage = new HelpStage(width, height, batch, this);
+        setStage(helpStage);
+    }
+
+    @Override
     public void levelPackWon() {
         ((IAppGameListener)Gdx.app).levelPackWon(levelPack);
+    }
+
+    @Override
+    public void onHelpDone() {
+        setStage(gameOverStage);
     }
 
     public Level getLevel(){
@@ -213,6 +223,10 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     public LevelPack getLevelPack(){
         return levelPack;
+    }
+
+    private void setStage(Stage stage){
+        Gdx.input.setInputProcessor(currentStage = stage);
     }
 
 

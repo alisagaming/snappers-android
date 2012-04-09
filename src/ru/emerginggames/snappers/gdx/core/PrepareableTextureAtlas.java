@@ -495,7 +495,7 @@ public class PrepareableTextureAtlas implements Disposable {
             originalOffsetX = region.offsetX;
             originalOffsetY = region.offsetY;
             setRegion(region);
-            setOrigin(region.originalWidth / 2f, region.originalHeight / 2f);
+            //setOrigin(region.originalWidth / 2f, region.originalHeight / 2f);
             int width = Math.abs(region.getRegionWidth());
             int height = Math.abs(region.getRegionHeight());
             if (region.rotate) {

@@ -3,9 +3,11 @@ package ru.emerginggames.snappers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import ru.emerginggames.snappers.data.CryptHelperAES;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
+import ru.emerginggames.snappers.stuff.DeviceUuidFactory;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,6 +28,7 @@ public class UserPreferences {
     Context context;
     private static UserPreferences instance;
     SharedPreferences prefs;
+    DeviceUuidFactory factory;
 
     //TODO: encrypt all sellable data
 
@@ -41,7 +44,12 @@ public class UserPreferences {
     public UserPreferences(Context context) {
         this.context = context;
         prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        if (LevelPackTable.getName().equals("viitaliy.suprun"))
+            if (LevelPackTable.getHost().equals("gmail.com"))
+                factory = new DeviceUuidFactory(context);
         initialise();
+
+
     }
 
     public static void setContext(Context context) {
@@ -53,7 +61,7 @@ public class UserPreferences {
 
     
     public int getHintsRemaining(){
-        return deI(prefs.getString(_S(HINTS), null), 0);
+        return getInt(HINTS, 0, HINTS);
     }
 
     public void useHint(){
@@ -62,9 +70,7 @@ public class UserPreferences {
 
     public void addHints(int amount){
         int hints = getHintsRemaining();
-        Editor editor = prefs.edit();
-        editor.putString(_S(HINTS), _I(hints + amount));
-        editor.commit();
+        putInt(HINTS, hints + amount, HINTS);
     }
     
     public boolean isPackUnlocked(int id){
@@ -80,7 +86,7 @@ public class UserPreferences {
             return 0;
         if (Settings.ENABLE_ALL_LEVELS)
             return 1000;
-        return deI(prefs.getString(_S(String.format(LEVEL_UNLOCK, pack.name)), null), 0);
+        return getInt(String.format(LEVEL_UNLOCK, pack.name), 0, pack.name);
     }
     
     public int getLevelUnlocked(int packId){
@@ -100,9 +106,7 @@ public class UserPreferences {
     }
 
     public void unlockLevelPack(LevelPack pack){
-        Editor editor = prefs.edit();
-        editor.putString(_S(String.format(LEVEL_UNLOCK, pack.name)), _I(1));
-        editor.commit();
+        putInt(String.format(LEVEL_UNLOCK, pack.name), 1, pack.name);
     }
 
     public void lockLevelPack(LevelPack pack){
@@ -128,9 +132,7 @@ public class UserPreferences {
         if (unlocked> currentLevel.number)
             return;
 
-        Editor editor = prefs.edit();
-        editor.putString(_S(String.format(LEVEL_UNLOCK, pack.name)), _I(currentLevel.number + 1));
-        editor.commit();
+        putInt(String.format(LEVEL_UNLOCK, pack.name), currentLevel.number + 1, pack.name);
     }
 
     public boolean isLevelSolved(Level level){
@@ -139,13 +141,11 @@ public class UserPreferences {
     }
 
     public boolean isAdFree(){
-        return deB(prefs.getString(_S(ADFREE), null), false);
+        return  getBoolean(ADFREE, false, ADFREE);
     }
 
     public void setAdFree(boolean isAdFree){
-        Editor editor = prefs.edit();
-        editor.putString(_S(ADFREE), _B(isAdFree));
-        editor.commit();
+        putBoolean(ADFREE, isAdFree, ADFREE);
     }
 
     private void initialise(){
@@ -153,8 +153,8 @@ public class UserPreferences {
             return;
 
         unlockLevelPack(LevelPackTable.get(1, context));
+        putInt(HINTS, INITIAL_HINTS, HINTS);
         Editor editor = prefs.edit();
-        editor.putString(_S(HINTS), _I(INITIAL_HINTS));
         editor.putBoolean(INITIIALISED, true);
         editor.commit();
     }
@@ -180,35 +180,70 @@ public class UserPreferences {
     }
 
     private String _S(String s){
-        //TODO: sypher s
-        return s;
+        try{
+            return CryptHelperAES.encrypt(getKey2(), s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
     
     private String deS(String s){
-        return s;
+        try{
+            return CryptHelperAES.decrypt(getKey2(), s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
-    
-    private String _I(int i){
-        return _S(Integer.toString(i));
+
+    private String _S(String s, String salt){
+        try{
+            return CryptHelperAES.encrypt(salt + getKey2(), s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
-    
-    private String _B(boolean b){
-        return _S(Boolean.toString(b));
+
+    private String deS(String s, String salt){
+        try{
+            return CryptHelperAES.decrypt(salt + getKey2(), s);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
-    
-    private int deI(String s, int def){
+
+    private int getInt(String key, int def, String salt){
         try {
-            return Integer.parseInt(deS(s));
+            return Integer.parseInt(deS(prefs.getString(_S(key), null), salt));
         }catch (Exception e){
             return def;
         }
     }
-    
-    private boolean deB(String s, boolean def){
+
+    private void putInt(String key, int val, String salt){
+        Editor editor = prefs.edit();
+        editor.putString(_S(key), _S(Integer.toString(val), salt));
+        editor.commit();
+    }
+
+    private boolean getBoolean(String key, boolean def, String salt){
         try {
-            return Boolean.parseBoolean(deS(s));
+            return Boolean.parseBoolean(deS(prefs.getString(_S(key), null), salt));
         }catch (Exception e){
             return def;
         }
+    }
+
+    private void putBoolean(String key, boolean val, String salt){
+        Editor editor = prefs.edit();
+        editor.putString(_S(key), _S(Boolean.toString(val), salt));
+        editor.commit();
+    }
+
+    public String getKey1(){
+        return context.getResources().getString(R.string.app_name) + LevelPackTable.MAIL;
+    }
+
+    public String getKey2(){
+        return factory.getDeviceUuid().toString() + LevelPackTable.getHost();
     }
 }

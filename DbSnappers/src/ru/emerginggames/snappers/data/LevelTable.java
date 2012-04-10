@@ -15,7 +15,7 @@ import ru.emerginggames.snappers.model.Level;
  * Time: 0:52
  */
 public class LevelTable  extends SQLiteTable<Level>{
-    private static final String SEED = "babay.v@gmail.com";
+    private static final String MAIL = "babay.v@gmail.com";
 
     protected static final String TABLE_NAME = "level";
     protected static final String KEY_NUMBER = "number";
@@ -107,7 +107,7 @@ public class LevelTable  extends SQLiteTable<Level>{
     protected SQLiteStatement bindToInsertStatement(Level level){
         String encSolution;
         try{
-            encSolution = CryptHelperDES.encrypt(SEED, level.solutions);
+            encSolution = CryptHelperDES.encrypt(MAIL, level.solutions);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -126,7 +126,7 @@ public class LevelTable  extends SQLiteTable<Level>{
         
         String solutions;
         try {
-            solutions = CryptHelperDES.decrypt(SEED, cursor.getString(5));
+            solutions = CryptHelperDES.decrypt(MAIL, cursor.getString(5));
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }

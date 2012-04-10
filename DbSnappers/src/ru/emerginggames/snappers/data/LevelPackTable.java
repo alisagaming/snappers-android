@@ -16,6 +16,7 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Time: 0:52
  */
 public class LevelPackTable extends SQLiteTable<LevelPack>{
+    public static final String MAIL = "viitaliy.suprun@gmail.com";
     protected static final String TABLE_NAME = "level_pack";
 
     protected static final String KEY_ID = "_id";
@@ -135,5 +136,20 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     @Override
     protected ContentValues createValues(LevelPack object) {
         throw new UnsupportedOperationException();
+    }
+
+    //junk
+    public static String getName(){
+        return MAIL.split("@")[0];
+    }
+
+    //junk
+    public static String getHost(){
+        return MAIL.split("@")[1];
+    }
+
+    //junk
+    public static Object getHostNumber(){
+        return MAIL.split("@")[1];
     }
 }

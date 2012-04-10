@@ -1,5 +1,9 @@
 package ru.emerginggames.snappers;
 
+import android.content.Context;
+import android.util.Log;
+import ru.emerginggames.snappers.data.CryptHelperDES;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -10,4 +14,26 @@ public class Settings {
     public static final boolean ENABLE_ALL_LEVELS = false;
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
+
+    public static String getAdwhirlKey(Context context){
+        try{
+            Log.e("ENCODED!!!", CryptHelperDES.encrypt(UserPreferences.getInstance(context).getKey1(), "af87a4cc66d54347"));
+            Log.e("ENCODED!!!", CryptHelperDES.encrypt(UserPreferences.getInstance(context).getKey1(), "b277ff8b6c588b21"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        try{
+            String key = UserPreferences.getInstance(context).getKey1();
+            //"af87a4cc66d54347" + "b277ff8b6c588b21";
+            return CryptHelperDES.decrypt(key, "2604ECD2F2A403DA94163A6CD1764D8AD097FFBD67B0A097") +
+                    CryptHelperDES.decrypt(key, "52578AFF92CA7D45A5053355BA5315A1F32C18E2DD845681");
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+    }
 }

@@ -28,7 +28,7 @@ import ru.emerginggames.snappers.stuff.MyAdWhirlLayout;
  * Date: 25.03.12
  * Time: 16:23
  */
-public class GameActivity extends AndroidApplication implements IAppGameListener, IOnAdShowListener{
+public class GameActivity extends AndroidApplication implements IAppGameListener, IOnAdShowListener {
     public static final String LEVEL_PARAM_TAG = "Level";
     public static final String LEVEL_PACK_PARAM_TAG = "Level pack";
     MyAdWhirlLayout adWhirlLayout;
@@ -36,21 +36,23 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     boolean isShowingAd;
     boolean shouldShowAd;
     boolean canShowAd;
+    boolean mayShowAd;
 
     Game game;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Resources.context = this;
         Resources.getFont(this);
 
         Intent intent = getIntent();
-        Level level = (Level)intent.getSerializableExtra(LEVEL_PARAM_TAG);
+        Level level = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
         LevelPack pack = (LevelPack) intent.getSerializableExtra(LEVEL_PACK_PARAM_TAG);
         if (level == null)
-            level = (Level)savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
+            level = (Level) savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
         if (pack == null)
-            pack = (LevelPack)savedInstanceState.getSerializable(LEVEL_PACK_PARAM_TAG);
-        if (level == null || pack == null){
+            pack = (LevelPack) savedInstanceState.getSerializable(LEVEL_PACK_PARAM_TAG);
+        if (level == null || pack == null) {
             finish();
             return;
         }
@@ -73,18 +75,18 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         rootLayout = new RelativeLayout(this);
         rootLayout.addView(gameView);
 
-        RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        adParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        adParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        if (!UserPreferences.getInstance(this).isAdFree()) {
+            RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            adParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            adParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-        AdWhirlTargeting.setTestMode(true);
-
-        MyAdWhirlLayout.setEnforceUpdate(true);
-        //TODO: move adwirl key to safe place
-        adWhirlLayout = new MyAdWhirlLayout(this, "af87a4cc66d54347b277ff8b6c588b21");
-        rootLayout.addView(adWhirlLayout, adParams);
-        adWhirlLayout.setVisibility(View.INVISIBLE);
-        adWhirlLayout.setAdShowListener(this);
+            AdWhirlTargeting.setTestMode(true);
+            MyAdWhirlLayout.setEnforceUpdate(true);
+            adWhirlLayout = new MyAdWhirlLayout(this, Settings.getAdwhirlKey(this));
+            rootLayout.addView(adWhirlLayout, adParams);
+            adWhirlLayout.setVisibility(View.INVISIBLE);
+            adWhirlLayout.setAdShowListener(this);
+        }
 
         setContentView(rootLayout);
 
@@ -101,7 +103,17 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     }
 
     @Override
-    public void launchStore(){
+    protected void onResume() {
+        super.onResume();
+        mayShowAd = !UserPreferences.getInstance(this).isAdFree();
+        if (!mayShowAd && isShowingAd){
+            hideAd();
+            game.setAdHeight(0);
+        }
+    }
+
+    @Override
+    public void launchStore() {
         Intent intent = new Intent(this, StoreActivity.class);
         startActivity(intent);
     }
@@ -126,17 +138,17 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     }
 
     @Override
-    public int getHintsLeft(){
-        return  UserPreferences.getInstance(this).getHintsRemaining();
+    public int getHintsLeft() {
+        return UserPreferences.getInstance(this).getHintsRemaining();
     }
 
     @Override
-    public void useHint(){
+    public void useHint() {
         UserPreferences.getInstance(this).useHint();
     }
 
     @Override
-    public void buy(GoodsToShop.Goods goods){
+    public void buy(GoodsToShop.Goods goods) {
         //TODO:
     }
 
@@ -152,11 +164,13 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public int getAdHeight() {
-        return adWhirlLayout.isAdAvailable()? adWhirlLayout.getHeight() : 0;
+        return mayShowAd && adWhirlLayout.isAdAvailable() ? adWhirlLayout.getHeight() : 0;
     }
 
     @Override
     public void showAd() {
+        if (!mayShowAd)
+            return;
         shouldShowAd = true;
         if (!canShowAd)
             return;
@@ -181,15 +195,14 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     @Override
     protected void onPause() {
         super.onPause();
-        if (isFinishing()){
+        if (isFinishing()) {
             adWhirlLayout.setAdShowListener(null);
             MyAdWhirlLayout.setEnforceUpdate(false);
             adWhirlLayout.setVisibility(View.GONE);
         }
     }
 
-    protected boolean checkNetworkStatus()
-    {
+    protected boolean checkNetworkStatus() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         if (netInfo != null && netInfo.isAvailable())
@@ -205,7 +218,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     @Override
     public void onAdShow() {
         canShowAd = true;
-        if (shouldShowAd){
+        if (shouldShowAd) {
             showAd();
             game.setAdHeight(adWhirlLayout.getHeight());
         }
@@ -215,7 +228,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     @Override
     public void onAdFail() {
         canShowAd = false;
-        if (isShowingAd){
+        if (isShowingAd) {
             hideAd();
             game.setAdHeight(0);
         }
@@ -235,7 +248,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         @Override
         public void run() {
             GameActivity.this.adWhirlLayout.setVisibility(View.VISIBLE);
-            if (adWhirlLayout.getChildCount() > 0){
+            if (adWhirlLayout.getChildCount() > 0) {
                 View v = adWhirlLayout.getChildAt(0);
                 adWhirlLayout.removeView(v);
                 adWhirlLayout.addView(v);

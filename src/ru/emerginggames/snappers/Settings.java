@@ -14,6 +14,7 @@ public class Settings {
     public static final boolean ENABLE_ALL_LEVELS = false;
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
+    public static boolean DEBUG = true;
 
     public static String getAdwhirlKey(Context context){
         try{

@@ -80,7 +80,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
             adParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             adParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-            AdWhirlTargeting.setTestMode(true);
+            if (Settings.DEBUG)
+                AdWhirlTargeting.setTestMode(true);
             MyAdWhirlLayout.setEnforceUpdate(true);
             adWhirlLayout = new MyAdWhirlLayout(this, Settings.getAdwhirlKey(this));
             rootLayout.addView(adWhirlLayout, adParams);

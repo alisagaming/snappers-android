@@ -25,26 +25,26 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int overlap = getWindowManager().getDefaultDisplay().getWidth()/4;
+        int overlap = getWindowManager().getDefaultDisplay().getWidth() / 4;
 
         setPagerAdapter();
-        FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
-        pager.setPageMargin(- overlap);
+        FixedRatioPager pager = (FixedRatioPager) findViewById(R.id.pager);
+        pager.setPageMargin(-overlap);
         pager.setOffscreenPageLimit(3);
         pager.setCurrentChildOnTop(true);
 
-        CirclePageIndicator mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        CirclePageIndicator mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
-        
+
         findViewById(R.id.shopButton).setVisibility(View.GONE);
     }
 
-    List<ImagePaginatorParam> getPaginatorParamList(){
+    List<ImagePaginatorParam> getPaginatorParamList() {
         levelPacks = LevelPackTable.getAllByPremium(this, true);
         List<ImagePaginatorParam> params = new ArrayList<ImagePaginatorParam>(7);
         UserPreferences settings = UserPreferences.getInstance(this);
 
-        for (int i=0; i< levelPacks.length; i++){
+        for (int i = 0; i < levelPacks.length; i++) {
             LevelPack pack = levelPacks[i];
             if (!settings.isPackUnlocked(pack))
                 params.add(new ImagePaginatorParam(pack.id, i));
@@ -56,8 +56,8 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
         return params;
     }
 
-    void setPagerAdapter(){
-        FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
+    void setPagerAdapter() {
+        FixedRatioPager pager = (FixedRatioPager) findViewById(R.id.pager);
         adapter = new RotatedImagePagerAdapter(this, getPaginatorParamList(), this);
         pager.setAdapter(adapter);
     }
@@ -66,7 +66,7 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
     @Override
     public void onItemSelected(int number) {
         SoundManager.getInstance(this).playButtonSound();
-        if (number >=0 && number < levelPacks.length){
+        if (number >= 0 && number < levelPacks.length) {
             showPackLockedMessage(levelPacks[number]);
         }
         if (number == ImagePaginatorParam.ADFREE)
@@ -75,8 +75,8 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
             buyHints();
     }
 
-    protected void showPackLockedMessage(final LevelPack pack){
-        String message = getResources().getString(R.string.level_locked, pack.id-1, pack.id);
+    protected void showPackLockedMessage(final LevelPack pack) {
+        String message = getResources().getString(R.string.level_locked, pack.id - 1, pack.id);
 
         showMessageDialog(message, new int[]{18, 41, 0, 0}, new View.OnClickListener() {
                     @Override
@@ -85,27 +85,34 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
                         buyLevelPack(pack);
                     }
                 }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideMessageDialog();
-            }
-        });
+                    @Override
+                    public void onClick(View v) {
+                        hideMessageDialog();
+                    }
+                }
+        );
     }
 
-    void buyLevelPack(LevelPack pack){
-        UserPreferences.getInstance(this).unlockLevelPack(pack);
-        setPagerAdapter();
+    void buyLevelPack(LevelPack pack) {
+        if (Settings.DEBUG) {
+            UserPreferences.getInstance(this).unlockLevelPack(pack);
+            setPagerAdapter();
+        }
     }
 
-    void buyHints(){
-        UserPreferences.getInstance(this).addHints(10);
-        showMessage("bought it!");
+    void buyHints() {
+        if (Settings.DEBUG) {
+            UserPreferences.getInstance(this).addHints(10);
+            showMessage("bought it!");
+        }
     }
 
-    void buyAdFree(){
-        UserPreferences.getInstance(this).setAdFree(true);
-        setPagerAdapter();
-        showMessage("bought it!");
+    void buyAdFree() {
+        if (Settings.DEBUG) {
+            UserPreferences.getInstance(this).setAdFree(true);
+            setPagerAdapter();
+            showMessage("bought it!");
+        }
     }
 
 }

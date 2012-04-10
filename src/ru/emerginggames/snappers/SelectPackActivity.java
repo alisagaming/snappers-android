@@ -157,7 +157,9 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
     }
 
     void buyLevelPack(LevelPack pack){
-        UserPreferences.getInstance(this).unlockLevelPack(pack);
-        updatePackCoverById(pack.id);
+        if (Settings.DEBUG){
+            UserPreferences.getInstance(this).unlockLevelPack(pack);
+            updatePackCoverById(pack.id);
+        }
     }
 }

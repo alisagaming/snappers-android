@@ -22,4 +22,8 @@ public interface IAppGameListener {
     public boolean isLevelSolved(Level level);
     public boolean isSoundEnabled();
     public void addScore(int score);
+    public void showAd();
+    public void hideAd();
+    public int getAdHeight();
+
 }

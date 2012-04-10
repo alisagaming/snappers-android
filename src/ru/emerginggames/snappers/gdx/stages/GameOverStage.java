@@ -100,29 +100,40 @@ public class GameOverStage extends DimBackStage{
         scoreText.positionRelative(wonText, IPositionable.Dir.DOWN, 5);
     }
 
-    public void setWon(boolean isWon){
+    public void showWon(boolean isWon, int adHeight){
         this.isWon = isWon;
 
         if (isWon){
             int score = logic.getScore(((IAppGameListener) Gdx.app).isLevelSolved(logic.level));
-            restartButton.positionRelative(nextButton, IPositionable.Dir.LEFT, Metrics.screenMargin /2);
             scoreText.setText(String.format(SCORE, score));
             wonText.setText(winMessages[(int)(Math.random()*winMessages.length)]);
             wonText.positionRelative(width/2, wonText.getY(), IPositionable.Dir.UP, 0);
             ((IAppGameListener)Gdx.app).addScore(score);
         }
-        else{
-            restartButton.positionRelative(width, height, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
+        else
             scoreText.setText(String.format(POSSIBLE_IN_TOUCHES, logic.level.tapsCount));
-        }
+
+        setAdHeight(adHeight);
 
         scoreText.positionRelative(width/2, scoreText.getY(), IPositionable.Dir.UP, 0);
-
-
         nextButton.visible = nextButton.touchable = shopButton.visible = shopButton.touchable = isWon;
         helpButton.visible = helpButton.touchable = !isWon;
-        menuButton.positionRelative(restartButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
+
         show();
+    }
+
+    public void setAdHeight(int adHeight){
+        if (isWon){
+            shopButton.positionRelative(width, height - adHeight, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
+            nextButton.positionRelative(shopButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
+            restartButton.positionRelative(nextButton, IPositionable.Dir.LEFT, Metrics.screenMargin /2);
+        }
+        else{
+            restartButton.positionRelative(width, height - adHeight, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
+            helpButton.positionRelative(0, height-adHeight, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
+        }
+
+        menuButton.positionRelative(restartButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
     }
 
     @Override

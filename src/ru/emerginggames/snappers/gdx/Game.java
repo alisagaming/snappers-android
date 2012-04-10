@@ -181,17 +181,18 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void gameWon() {
-        gameOverStage.setWon(true);
+        setStage(gameOverStage);
+        gameOverStage.showWon(true, ((IAppGameListener)Gdx.app).getAdHeight());
         if (isSoundEnabled)
             Resources.winSound.play(0.6f);
-        setStage(gameOverStage);
         ((IAppGameListener)Gdx.app).levelSolved(snappersStage.getLogic().level);
     }
 
     @Override
     public void gameLost() {
-        gameOverStage.setWon(false);
         setStage(gameOverStage);
+        gameOverStage.showWon(false, ((IAppGameListener)Gdx.app).getAdHeight());
+
     }
 
     @Override
@@ -202,6 +203,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHelp() {
+
         if (helpStage == null)
             helpStage = new HelpStage(width, height, batch, this);
         setStage(helpStage);
@@ -226,7 +228,20 @@ public class Game implements ApplicationListener, IGameEventListener {
     }
 
     private void setStage(Stage stage){
+        if (stage == currentStage)
+            return;
+
+        if (stage == gameOverStage)
+            ((IAppGameListener)Gdx.app).showAd();
+        else if (currentStage == gameOverStage)
+            ((IAppGameListener)Gdx.app).hideAd();
+
         Gdx.input.setInputProcessor(currentStage = stage);
+    }
+
+    public void setAdHeight(int height){
+        if (currentStage == gameOverStage)
+            gameOverStage.setAdHeight(height);
     }
 
 

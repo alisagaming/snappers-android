@@ -5,6 +5,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
+import com.adwhirl.AdWhirlTargeting;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import ru.emerginggames.snappers.gdx.Game;
@@ -13,6 +19,8 @@ import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.GoodsToShop;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
+import ru.emerginggames.snappers.stuff.IOnAdShowListener;
+import ru.emerginggames.snappers.stuff.MyAdWhirlLayout;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,9 +28,14 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Date: 25.03.12
  * Time: 16:23
  */
-public class GameActivity extends AndroidApplication implements IAppGameListener{
+public class GameActivity extends AndroidApplication implements IAppGameListener, IOnAdShowListener{
     public static final String LEVEL_PARAM_TAG = "Level";
     public static final String LEVEL_PACK_PARAM_TAG = "Level pack";
+    MyAdWhirlLayout adWhirlLayout;
+    RelativeLayout rootLayout;
+    boolean isShowingAd;
+    boolean shouldShowAd;
+    boolean canShowAd;
 
     Game game;
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +58,10 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         game = new Game();
         game.setStartLevel(level, pack);
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
@@ -52,8 +69,28 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         config.useCompass = false;
         config.useWakelock = false;
 
-        initialize(game, config);
-        UserPreferences.setContext(this);
+        View gameView = initializeForView(game, config);
+        rootLayout = new RelativeLayout(this);
+        rootLayout.addView(gameView);
+
+        RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        adParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        adParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        AdWhirlTargeting.setTestMode(true);
+
+        MyAdWhirlLayout.setEnforceUpdate(true);
+        //TODO: move adwirl key to safe place
+        adWhirlLayout = new MyAdWhirlLayout(this, "af87a4cc66d54347b277ff8b6c588b21");
+        rootLayout.addView(adWhirlLayout, adParams);
+        adWhirlLayout.setVisibility(View.INVISIBLE);
+        adWhirlLayout.setAdShowListener(this);
+
+        setContentView(rootLayout);
+
+        isShowingAd = false;
+        shouldShowAd = false;
+        canShowAd = false;
     }
 
     @Override
@@ -114,9 +151,41 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     }
 
     @Override
+    public int getAdHeight() {
+        return adWhirlLayout.isAdAvailable()? adWhirlLayout.getHeight() : 0;
+    }
+
+    @Override
+    public void showAd() {
+        shouldShowAd = true;
+        if (!canShowAd)
+            return;
+        isShowingAd = true;
+        runOnUiThread(showAD);
+    }
+
+    @Override
+    public void hideAd() {
+        shouldShowAd = isShowingAd = false;
+        int visibility = adWhirlLayout.getVisibility();
+        if (visibility == View.VISIBLE)
+            runOnUiThread(hideAD);
+    }
+
+    @Override
     public boolean isOnline() {
         //TODO:
         return checkNetworkStatus();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()){
+            adWhirlLayout.setAdShowListener(null);
+            MyAdWhirlLayout.setEnforceUpdate(false);
+            adWhirlLayout.setVisibility(View.GONE);
+        }
     }
 
     protected boolean checkNetworkStatus()
@@ -134,7 +203,52 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     }
 
     @Override
+    public void onAdShow() {
+        canShowAd = true;
+        if (shouldShowAd){
+            showAd();
+            game.setAdHeight(adWhirlLayout.getHeight());
+        }
+
+    }
+
+    @Override
+    public void onAdFail() {
+        canShowAd = false;
+        if (isShowingAd){
+            hideAd();
+            game.setAdHeight(0);
+        }
+    }
+
+    @Override
+    public void onAdSizeChanged(int width, int height) {
+        game.setAdHeight(height);
+    }
+
+    @Override
     public boolean isSoundEnabled() {
         return UserPreferences.getInstance(this).getSound();
     }
+
+    Runnable showAD = new Runnable() {
+        @Override
+        public void run() {
+            GameActivity.this.adWhirlLayout.setVisibility(View.VISIBLE);
+            if (adWhirlLayout.getChildCount() > 0){
+                View v = adWhirlLayout.getChildAt(0);
+                adWhirlLayout.removeView(v);
+                adWhirlLayout.addView(v);
+            }
+        }
+    };
+
+    Runnable hideAD = new Runnable() {
+        @Override
+        public void run() {
+            adWhirlLayout.setVisibility(View.INVISIBLE);
+        }
+    };
+
+
 }

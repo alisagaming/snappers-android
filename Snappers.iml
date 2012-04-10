@@ -33,11 +33,12 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Android 2.1" jdkType="Android SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="android-support-v4" level="project" />
     <orderEntry type="library" name="gdx-backend-android" level="project" />
     <orderEntry type="module" module-name="DbSnappers" />
+    <orderEntry type="library" name="ADS" level="project" />
   </component>
 </module>
 

@@ -176,6 +176,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         if (!canShowAd)
             return;
         isShowingAd = true;
+        MyAdWhirlLayout.setEnforceUpdate(true);
         runOnUiThread(showAD);
     }
 

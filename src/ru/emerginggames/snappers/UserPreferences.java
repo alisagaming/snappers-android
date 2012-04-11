@@ -30,9 +30,6 @@ public class UserPreferences {
     SharedPreferences prefs;
     DeviceUuidFactory factory;
 
-    //TODO: encrypt all sellable data
-
-
     public static UserPreferences getInstance(Context context){
         if (instance == null)
             return instance = new UserPreferences(context);
@@ -149,14 +146,12 @@ public class UserPreferences {
     }
 
     private void initialise(){
-        if (prefs.getBoolean(INITIIALISED, false))
+        if (getBoolean(INITIIALISED, false, INITIIALISED))
             return;
 
         unlockLevelPack(LevelPackTable.get(1, context));
         putInt(HINTS, INITIAL_HINTS, HINTS);
-        Editor editor = prefs.edit();
-        editor.putBoolean(INITIIALISED, true);
-        editor.commit();
+        putBoolean(INITIIALISED, true, INITIIALISED);
     }
 
     public void setMusic(boolean enabled){

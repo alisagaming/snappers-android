@@ -36,6 +36,14 @@ public class SplashGdxActivity extends AndroidApplication {
     }
 
     public void gotSize(int width, int height) {
+        if (width > height){
+            int scrWidth = getWindowManager().getDefaultDisplay().getWidth();
+            int scrHeight = getWindowManager().getDefaultDisplay().getHeight();
+            int panelHeight = scrHeight - height;
+            width = scrHeight;
+            height = scrWidth - panelHeight;
+        }
+
         Metrics.setSize(width, height);
     }
 

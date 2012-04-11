@@ -5,3 +5,4 @@ gen
 out
 .todo
 proguard_logs
+res/raw/commit.txt

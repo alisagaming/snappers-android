@@ -1,5 +1,8 @@
 package ru.emerginggames.snappers;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Build;
 import ru.emerginggames.snappers.gdx.Resources;
 
 public class Metrics {
@@ -55,12 +58,14 @@ public class Metrics {
     public static int menuMargin;
     public static final int instructionsWidth = 480;
     public static final int instructionsHeight = 640;
+    public static int screenSizeMode;
+    public static float squareButtonScale = 1;
 
 
     public static boolean initDone = false;
     
 
-    public static void setSize(int width, int height){
+    public static void setSize(int width, int height, Context context){
         screenWidth = width;
         screenHeight = height;
 
@@ -69,6 +74,8 @@ public class Metrics {
         setSnapperMult();
         Resources.init();
         initDone = true;
+        if (context != null)
+            screenSizeMode = context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
     }
 
     static void setScreenMode(int width){
@@ -124,6 +131,13 @@ public class Metrics {
         }
         screenMargin = squareButtonSize /12;
         largeFontSize = Math.round(fontSize * 1.38f);
+
+        if (screenSizeMode == Configuration.SCREENLAYOUT_SIZE_LARGE){
+            squareButtonScale = 0.8f;
+        } else if (Build.VERSION.SDK_INT >= 9 && screenSizeMode == Configuration.SCREENLAYOUT_SIZE_XLARGE){
+            squareButtonScale = 0.65f;
+        }
+
     }
 
 

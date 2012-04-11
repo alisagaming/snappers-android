@@ -40,34 +40,34 @@ public class GameOverStage extends DimBackStage{
         super(width, height, true, batch);
         this.logic = logic;
 
-        nextButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[5], Resources.buttonSound, new IOnEventListener() {
+        nextButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[5], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onNextBtn();
             }
         });
 
-        restartButton = new SimpleButton(Resources.squareButtonFrames[6], Resources.squareButtonFrames[7], Resources.buttonSound, new IOnEventListener() {
+        restartButton = new SimpleButton(Resources.squareButtonFrames[6], Resources.squareButtonFrames[7], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onRestartBtn();
             }
         });
 
-        shopButton = new SimpleButton(Resources.squareButtonFrames[8], Resources.squareButtonFrames[9], Resources.buttonSound, new IOnEventListener() {
+        shopButton = new SimpleButton(Resources.squareButtonFrames[8], Resources.squareButtonFrames[9], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onShopBtn();
             }
         });
 
-        menuButton = new SimpleButton(Resources.squareButtonFrames[10], Resources.squareButtonFrames[11], Resources.buttonSound, new IOnEventListener() {
+        menuButton = new SimpleButton(Resources.squareButtonFrames[10], Resources.squareButtonFrames[11], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onMenuBtn();
             }
         });
-        helpButton = new SimpleButton(Resources.menuButtonFrames[16], null, Resources.buttonSound, new IOnEventListener() {
+        helpButton = new SimpleButton(Resources.menuButtonFrames[16], null, Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onHelp();

@@ -269,6 +269,11 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         return UserPreferences.getInstance(this).getSound();
     }
 
+    @Override
+    public void gotScreenSize(int width, int height) {
+        Metrics.setSize(width, height, this);
+    }
+
     Runnable showAD = new Runnable() {
         @Override
         public void run() {

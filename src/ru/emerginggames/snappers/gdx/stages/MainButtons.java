@@ -21,13 +21,13 @@ public class MainButtons extends Group {
 
 
     public MainButtons(final IGameEventListener listener) {
-        pauseButton = new SimpleButton(Resources.squareButtonFrames[2], Resources.squareButtonFrames[3], Resources.buttonSound, new IOnEventListener() {
+        pauseButton = new SimpleButton(Resources.squareButtonFrames[2], Resources.squareButtonFrames[3], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onPauseBtn();
             }
         });
-        hintButton = new SimpleButton(Resources.squareButtonFrames[0], Resources.squareButtonFrames[1], Resources.buttonSound, new IOnEventListener() {
+        hintButton = new SimpleButton(Resources.squareButtonFrames[0], Resources.squareButtonFrames[1], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onHintBtn();
@@ -39,7 +39,7 @@ public class MainButtons extends Group {
 
     public void setViewport(int width, int height) {
         pauseButton.positionRelative(width, height, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
-        hintButton.positionRelative(pauseButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
+        hintButton.positionRelative(pauseButton, IPositionable.Dir.LEFT, Metrics.screenMargin / 2);
     }
 
     @Override

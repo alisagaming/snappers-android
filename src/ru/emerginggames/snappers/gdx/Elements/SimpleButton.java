@@ -24,7 +24,6 @@ public class SimpleButton extends Actor implements IPositionable {
     protected Sprite buttonDown;
     protected boolean isDown;
     protected Sound sound;
-    protected float scale = 1;
 
     public SimpleButton(TextureRegion normal, TextureRegion down, Sound sound, IOnEventListener listener){
         button = doSprite(normal);
@@ -39,14 +38,15 @@ public class SimpleButton extends Actor implements IPositionable {
     public SimpleButton(TextureRegion normal, TextureRegion down, float scale, Sound sound,  IOnEventListener listener){
         button = new Sprite(normal);
         button.setScale(scale);
+        button.setOrigin(0, 0);
         if (down != null){
             buttonDown = new Sprite(down);
             buttonDown.setScale(scale);
+            buttonDown.setOrigin(0, 0);
         }
         width = normal.getRegionWidth() * scale;
         height = normal.getRegionHeight() * scale;
         this.listener = listener;
-        this.scale = scale;
         this.sound = sound;
     }
 
@@ -102,12 +102,12 @@ public class SimpleButton extends Actor implements IPositionable {
 
     @Override
     public float getWidth() {
-        return button.getWidth();
+        return width;
     }
 
     @Override
     public float getHeight() {
-        return button.getHeight();
+        return height;
     }
 
     @Override

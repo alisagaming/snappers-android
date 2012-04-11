@@ -25,5 +25,6 @@ public interface IAppGameListener {
     public void showAd();
     public void hideAd();
     public int getAdHeight();
+    public void gotScreenSize(int width, int height);
 
 }

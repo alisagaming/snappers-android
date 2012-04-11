@@ -48,7 +48,7 @@ public class SplashGdxActivity extends AndroidApplication {
             height = scrWidth - panelHeight;
         }
 
-        Metrics.setSize(width, height);
+        Metrics.setSize(width, height, getApplicationContext());
     }
 
     @Override

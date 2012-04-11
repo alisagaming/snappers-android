@@ -77,7 +77,8 @@ public class Game implements ApplicationListener, IGameEventListener {
     public void resize(int i, int i1) {
         width = i;
         height = i1;
-        Metrics.setSize(width, height);
+
+        ((IAppGameListener)Gdx.app).gotScreenSize(width, height);
 
         createObjects();
 

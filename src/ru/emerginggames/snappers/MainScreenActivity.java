@@ -52,7 +52,7 @@ public class MainScreenActivity extends Activity {
     public void onMusicButtonClick(View v){
         UserPreferences.getInstance(this).setMusic(((CheckBox)v).isChecked());
         if (((CheckBox)v).isChecked())
-            SoundManager.getInstance(this).startMusic();
+            SoundManager.getInstance(this).startMusicIfShould();
         else
             SoundManager.getInstance(this).stopMusic();
 
@@ -87,7 +87,7 @@ public class MainScreenActivity extends Activity {
         super.onResume();
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
             checkForCrashes();
-        SoundManager.getInstance(this).startMusic();
+        SoundManager.getInstance(this).startMusicIfShould();
     }
 
     @Override

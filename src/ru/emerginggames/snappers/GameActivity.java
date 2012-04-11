@@ -108,6 +108,20 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        SoundManager.getInstance(this).stopMusic();
+        if (isFinishing()) {
+            if (adWhirlLayout != null){
+                adWhirlLayout.setAdShowListener(null);
+                MyAdWhirlLayout.setEnforceUpdate(false);
+                adWhirlLayout.setVisibility(View.GONE);
+            }
+            isFinished = true;
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         mayShowAd = !UserPreferences.getInstance(this).isAdFree();
@@ -116,6 +130,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
             if (game.initDone)
                 game.setAdHeight(0);
         }
+        SoundManager.getInstance(this).startMusicIfShould();
     }
 
     @Override
@@ -201,18 +216,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         return checkNetworkStatus();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (isFinishing()) {
-            if (adWhirlLayout != null){
-                adWhirlLayout.setAdShowListener(null);
-                MyAdWhirlLayout.setEnforceUpdate(false);
-                adWhirlLayout.setVisibility(View.GONE);
-            }
-            isFinished = true;
-        }
-    }
+
 
     protected boolean checkNetworkStatus() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

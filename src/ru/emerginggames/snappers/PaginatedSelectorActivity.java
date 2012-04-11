@@ -60,7 +60,7 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
         String scoreStr = getResources().getString(R.string.score, UserPreferences.getInstance(this).getScore());
         scoreView.setText(scoreStr);
-        SoundManager.getInstance(this).startMusic();
+        SoundManager.getInstance(this).startMusicIfShould();
     }
 
     @Override

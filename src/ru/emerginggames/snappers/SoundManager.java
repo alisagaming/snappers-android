@@ -37,7 +37,7 @@ public class SoundManager {
         } catch (IOException e){}
 
         if (UserPreferences.getInstance(context).getMusic())
-            startMusic();
+            startMusicIfShould();
     }
 
     public static SoundManager getInstance(Activity context){
@@ -58,7 +58,7 @@ public class SoundManager {
             soundPool.play(buttonSoundId, 1.0f, 1.0f, 0, 0, 1);
     }
 
-    public void startMusic(){
+    public void startMusicIfShould(){
         continuePlayingFlag = false;
         if (mediaPlayer.isPlaying() || ! UserPreferences.getInstance(context).getMusic())
             return;

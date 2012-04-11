@@ -61,6 +61,7 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
         this.strokeWidth = strokeWidth;
         preparePaint();
         setSize(desiredWidth = measureTextWidth(), getTextHeight());
+        setTextTexture();
     }
     
     public void setText(String text){

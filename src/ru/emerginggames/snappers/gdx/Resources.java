@@ -268,7 +268,6 @@ public class Resources {
         //popSounds[5] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop6.mp3"));
         winSound = Gdx.audio.newSound(Gdx.files.internal("sounds/win1.mp3"));
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button2g.mp3"));
-
     }
 
     public static void preload() {

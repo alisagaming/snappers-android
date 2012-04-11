@@ -10,6 +10,8 @@ import ru.emerginggames.snappers.data.DbCopyOpenHelper;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.Splash;
 
+import net.hockeyapp.android.UpdateManager;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -33,6 +35,7 @@ public class SplashGdxActivity extends AndroidApplication {
         config.useWakelock = false;
 
         initialize(new Splash(this), config);
+        checkForUpdates();
     }
 
     public void gotSize(int width, int height) {
@@ -95,5 +98,9 @@ public class SplashGdxActivity extends AndroidApplication {
             }
         };
         loadThread.execute();
+    }
+
+    private void checkForUpdates() {
+        UpdateManager.register(this, Settings.APP_ID);
     }
 }

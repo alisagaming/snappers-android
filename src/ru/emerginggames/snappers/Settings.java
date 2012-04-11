@@ -15,6 +15,7 @@ public class Settings {
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = true;
+    public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
 
     public static String getAdwhirlKey(Context context){
         try{

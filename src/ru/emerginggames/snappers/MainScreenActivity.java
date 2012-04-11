@@ -9,6 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 
+import net.hockeyapp.android.CrashManager;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -25,9 +27,6 @@ public class MainScreenActivity extends Activity {
         int width = getWindowManager().getDefaultDisplay().getWidth();
         int height = getWindowManager().getDefaultDisplay().getHeight();
 
-        int defPadding = width/40;
-        
-        //findViewById(R.id.root).setPadding(defPadding, defPadding, defPadding, defPadding);
         LayoutParams lp = findViewById(R.id.shopButton).getLayoutParams();
         lp.width = Math.round(width* 0.6f);
         findViewById(R.id.shopButton).setLayoutParams(lp);
@@ -86,6 +85,7 @@ public class MainScreenActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        checkForCrashes();
         SoundManager.getInstance(this).startMusic();
     }
 
@@ -94,5 +94,9 @@ public class MainScreenActivity extends Activity {
         super.onPause();
         SoundManager.getInstance(this).stopMusic();
 
+    }
+
+    private void checkForCrashes() {
+        CrashManager.register(this, Settings.APP_ID);
     }
 }

@@ -136,7 +136,6 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         if (game.initDone)
             game.backButtonPressed();
     }

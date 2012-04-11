@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.util.Log;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
@@ -27,8 +28,9 @@ import ru.emerginggames.snappers.gdx.core.ResizedFileTextureData;
  * Time: 19:08
  */
 public class Resources {
+    private static final String TAG = "Snappers Resources";
     protected static String dir;
-    protected static final Integer syncLock =  0;
+    protected static final Integer syncLock = 0;
 
     protected static class Preload {
         public static TextureData snappers;
@@ -65,8 +67,8 @@ public class Resources {
     public static PrepareableTextureAtlas buttonAtlas;
 
     public static Sound[] popSounds;
-    public static Sound  winSound;
-    public static Sound  buttonSound;
+    public static Sound winSound;
+    public static Sound buttonSound;
 
     public static BitmapFont fnt1;
 
@@ -74,8 +76,8 @@ public class Resources {
 
     public static boolean texturesLoaded = false;
 
-    public static void init(){
-        switch (Metrics.sizeMode){
+    public static void init() {
+        switch (Metrics.sizeMode) {
             case modeS:
                 dir = "lo/";
                 break;
@@ -88,17 +90,19 @@ public class Resources {
         }
     }
 
-    public static void loadTextures(boolean isGold){
+    public static void loadTextures(boolean isGold) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         loadSnapperTextures(isGold);
         loadButtonTextures();
         loadBmpFonts();
     }
 
-    public static void loadBmpFonts(){
+    public static void loadBmpFonts() {
         fnt1 = new BitmapFont(Gdx.files.internal("FontShag.fnt"), Gdx.files.internal("FontShag.png"), false);
     }
 
-    private static void loadButtonTextures(){
+    private static void loadButtonTextures() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         fillButtonRegions();
 
         dialog = new Texture(Preload.dialog);
@@ -106,11 +110,12 @@ public class Resources {
     }
 
 
-    private static void loadSnapperTextures(boolean isGold){
+    private static void loadSnapperTextures(boolean isGold) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         preload();
         int snapperSize = Metrics.snapperSize;
 
-        int snappersStart = isGold ? 25+4: 25;
+        int snappersStart = isGold ? 25 + 4 : 25;
         snapperTexture = new Texture(Preload.snappers);
         snapperTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         snapperTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
@@ -121,37 +126,45 @@ public class Resources {
         blastTexture = new Texture(Preload.blast);
         blastFrames = makeAnimationFrames(blastTexture, Metrics.blastSize, Metrics.blastSize, false, 0, 3);
 
-        if (Metrics.sizeMode == Metrics.SizeMode.modeS){
+        if (Metrics.sizeMode == Metrics.SizeMode.modeS) {
             bangFrames = makeAnimationFrames(snapperTexture, Metrics.bangSize, Metrics.bangSize, false, 33, 5);
-        }
-        else {
+        } else {
             bangTexture = new Texture(Preload.bang);
             bangFrames = makeAnimationFrames(bangTexture, Metrics.bangSize, Metrics.bangSize, false);
         }
 
         hintTexture = new Texture(Preload.hint);
-        hintFrames = makeAnimationFrames(hintTexture, Metrics.hintSize, Metrics.hintSize,false, 0, 11);
+        hintFrames = makeAnimationFrames(hintTexture, Metrics.hintSize, Metrics.hintSize, false, 0, 11);
     }
 
-    public static void disposeTextures(){
-        snapperTexture.dispose();
-        blastTexture.dispose();
-        if (bangTexture != null)
-            bangTexture.dispose();
-        if (dialog != null)
-            dialog.dispose();
-        if (bg!=null)
-            bg.getTexture().dispose();
-        if (buttonAtlas != null)
-            buttonAtlas.dispose();
+    public static void disposeTextures() {
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        synchronized (syncLock){
+            if (snapperTexture != null)
+                snapperTexture.dispose();
+            if (blastTexture != null)
+            blastTexture.dispose();
+            if (bangTexture != null)
+                bangTexture.dispose();
+            if (dialog != null)
+                dialog.dispose();
+            if (bg != null)
+                bg.getTexture().dispose();
+            if (buttonAtlas != null)
+                buttonAtlas.dispose();
+            snapperTexture = blastTexture = bangTexture = dialog = null;
+            bg = null;
+            buttonAtlas = null;
+        }
     }
 
 
-    private static TextureRegion getTextureRegion(Texture texture, int tileWidth, int tileHeight, int i, int j){
+    private static TextureRegion getTextureRegion(Texture texture, int tileWidth, int tileHeight, int i, int j) {
         return new TextureRegion(texture, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
     }
 
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack){
+    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         TextureRegion[][] frames2 = TextureRegion.split(texture, tileWidth, tileHeight);
         if (frames2.length == 1)
             return null;
@@ -160,74 +173,78 @@ public class Resources {
         int width = frames2[1].length;
 
         int size = width * height;
-        TextureRegion[] frames = new TextureRegion[goBack? size * 2 - 2 : size];
+        TextureRegion[] frames = new TextureRegion[goBack ? size * 2 - 2 : size];
 
-        int i; int j;
-        for (i=0; i<height; i++)
-            for (j=0; j<width; j++)
+        int i;
+        int j;
+        for (i = 0; i < height; i++)
+            for (j = 0; j < width; j++)
                 frames[i * width + j] = frames2[i][j];
 
         if (goBack)
-            for (i = 0; i< size-2; i++)
+            for (i = 0; i < size - 2; i++)
                 frames[size + i] = frames[size - i - 2];
 
         return frames;
     }
 
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int start,  int size){
+    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int start, int size) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         int cols = texture.getWidth() / tileWidth;
 
-        TextureRegion[] frames = new TextureRegion[goBack? size * 2 - 2 : size];
+        TextureRegion[] frames = new TextureRegion[goBack ? size * 2 - 2 : size];
 
-        for (int i=0; i<size; i++)
-            frames[i] = new TextureRegion(texture, tileWidth * ((i + start)%cols), tileHeight * ((i + start)/cols), tileWidth, tileHeight);
+        for (int i = 0; i < size; i++)
+            frames[i] = new TextureRegion(texture, tileWidth * ((i + start) % cols), tileHeight * ((i + start) / cols), tileWidth, tileHeight);
 
 
         if (goBack)
-            for (int i = 0; i< size-2; i++)
+            for (int i = 0; i < size - 2; i++)
                 frames[size + i] = frames[size - i - 2];
 
         return frames;
     }
 
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int startX, int startY,  int max){
+    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int startX, int startY, int max) {
         int width = texture.getWidth();
 
         int size = max;
-        TextureRegion[] frames = new TextureRegion[goBack? size * 2 - 2 : size];
+        TextureRegion[] frames = new TextureRegion[goBack ? size * 2 - 2 : size];
         int posx = startX;
         int posy = startY;
-        if (posx > width){
+        if (posx > width) {
             posy += (tileHeight * (posx / width));
             posx = posx % width;
         }
 
-        for (int i=0; i<max; i++){
+        for (int i = 0; i < max; i++) {
             frames[i] = new TextureRegion(texture, posx, posy, tileWidth, tileHeight);
             posx += tileWidth;
-            if (posx + tileWidth > width){
+            if (posx + tileWidth > width) {
                 posx = 0;
-                posy+=tileHeight;
+                posy += tileHeight;
             }
         }
 
         if (goBack)
-            for (int i = 0; i< size-2; i++)
+            for (int i = 0; i < size - 2; i++)
                 frames[size + i] = frames[size - i - 2];
 
         return frames;
     }
 
-    public static boolean loadBg(String name){
+    public static boolean loadBg(String name) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         preloadBg(name);
         if (Preload.bg == null)
             return false;
-        
-        bg = new TextureRegion(new Texture(Preload.bg),0 , 0, Metrics.screenWidth, Metrics.screenHeight);
+
+        bg = new TextureRegion(new Texture(Preload.bg), 0, 0, Metrics.screenWidth, Metrics.screenHeight);
         return true;
     }
 
     public static TextureRegion normLoadTexture(String name, Pixmap.Format format) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         try {
             Bitmap bgSource = BitmapFactory.decodeStream(context.getAssets().open(name));
 
@@ -240,7 +257,8 @@ public class Resources {
         }
     }
 
-    public static void loadSounds(){
+    public static void loadSounds() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         popSounds = new Sound[5];
         popSounds[0] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop1.mp3"));
         popSounds[1] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop2.mp3"));
@@ -253,35 +271,39 @@ public class Resources {
 
     }
 
-    public static void preload(){
+    public static void preload() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         init();
         createPreload();
         preparePreload();
     }
 
-    protected static void createPreload(){
+    protected static void createPreload() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Gdx.files == null)
             return;
-        
-        if (Preload.bang == null && Metrics.sizeMode != Metrics.SizeMode.modeS)
-            Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
-        if (Preload.blast == null)
-            Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
-        if (Preload.snappers == null)
-            Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
-        if (Preload.hint == null)
-            Preload.hint = new FileTextureData(Gdx.files.internal(dir + "hint_circle.png"), null, Pixmap.Format.RGBA4444, false);
-        if (Preload.dialog == null)
-        Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialog.png"), null, Pixmap.Format.RGBA8888, false);
+        synchronized (syncLock) {
+            if (Preload.bang == null && Metrics.sizeMode != Metrics.SizeMode.modeS)
+                Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
+            if (Preload.blast == null)
+                Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
+            if (Preload.snappers == null)
+                Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
+            if (Preload.hint == null)
+                Preload.hint = new FileTextureData(Gdx.files.internal(dir + "hint_circle.png"), null, Pixmap.Format.RGBA4444, false);
+            if (Preload.dialog == null)
+                Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialog.png"), null, Pixmap.Format.RGBA8888, false);
 
-        if (Preload.buttonAtlas == null){
-            FileHandle packFile = Gdx.files.internal(dir + "buttons.txt");
-            Preload.buttonAtlas = new PrepareableTextureAtlas.TextureAtlasData(packFile, packFile.parent(), false);
+            if (Preload.buttonAtlas == null) {
+                FileHandle packFile = Gdx.files.internal(dir + "buttons.txt");
+                Preload.buttonAtlas = new PrepareableTextureAtlas.TextureAtlasData(packFile, packFile.parent(), false);
+            }
         }
     }
 
-    public static void preparePreload(){
-        synchronized (syncLock){
+    public static void preparePreload() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        synchronized (syncLock) {
             prepareData(Preload.bang);
             prepareData(Preload.blast);
             prepareData(Preload.snappers);
@@ -291,39 +313,42 @@ public class Resources {
         }
     }
 
-    protected static void prepareData(TextureData data){
-        if (data != null &&!data.isPrepared())
+    protected static void prepareData(TextureData data) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        if (data != null && !data.isPrepared())
             data.prepare();
     }
 
-    protected static void prepareData(PrepareableTextureAtlas.TextureAtlasData data){
-        if (data != null &&!data.isPrepared())
+    protected static void prepareData(PrepareableTextureAtlas.TextureAtlasData data) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        if (data != null && !data.isPrepared())
             data.prepare();
     }
-    
-    public static void preloadBg(String name){
+
+    public static void preloadBg(String name) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         createBgPreload(name);
         prepareBgData();
     }
 
-    public static void prepareBgData(){
+    public static void prepareBgData() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Preload.isBgLoading)
             return;
 
-        try{
+        try {
             Preload.isBgLoading = true;
             prepareData(Preload.bg);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             utilizeBg();
-        }
-        finally {
+        } finally {
             Preload.isBgLoading = false;
         }
 
     }
-    
-    protected static void createBgPreload(String name){
+
+    protected static void createBgPreload(String name) {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (name.equals(Preload.bgName) && Preload.bg != null)
             return;
         utilizeBg();
@@ -334,7 +359,8 @@ public class Resources {
         Preload.bgName = name;
     }
 
-    protected static void utilizeBg(){
+    protected static void utilizeBg() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Preload.bg == null)
             return;
         if (Preload.bg.isPrepared())
@@ -342,14 +368,15 @@ public class Resources {
         Preload.bg = null;
     }
 
-    public static Typeface getFont(Context context){
+    public static Typeface getFont(Context context) {
         if (font == null)
             font = Typeface.createFromAsset(context.getAssets(), "shag_lounge.otf");
         return font;
     }
 
-    public static TextureRegion getHelpTexture(){
-        if (help == null){
+    public static TextureRegion getHelpTexture() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        if (help == null) {
             Texture helpTexture = new Texture(Gdx.files.internal("instructions.png"), Pixmap.Format.RGBA4444, false);
             helpTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             helpTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
@@ -358,10 +385,11 @@ public class Resources {
         return help;
     }
 
-    private static void fillButtonRegions(){
+    private static void fillButtonRegions() {
+        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         buttonAtlas = new PrepareableTextureAtlas(Preload.buttonAtlas);
         squareButtonFrames = new TextureRegion[12];
-        for (int i=0; i<squareButtonFrames.length; i++)
+        for (int i = 0; i < squareButtonFrames.length; i++)
             squareButtonFrames[i] = buttonAtlas.findRegion(String.format("b%02d", i));
 
         menuButtonFrames = new TextureRegion[17];

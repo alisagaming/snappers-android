@@ -24,20 +24,23 @@ public class Game implements ApplicationListener, IGameEventListener {
     int height;
 
     private SpriteBatch batch;
-    private MainStage snappersStage;
+
     protected Level level;
     protected Stage currentStage;
+    protected MainStage mainStage;
     protected GameOverStage gameOverStage;
     protected PausedStage pausedStage;
     protected HintMenuStage hintMenu;
+    protected HelpStage helpStage;
     protected LevelPack levelPack;
     protected Sprite bg;
     FPSLogger logger;
     protected ColorRect tempRect;
-    protected HelpStage helpStage;
+
     
     protected boolean objectsCreated = false;
     public static boolean isSoundEnabled;
+    public boolean initDone = false;
 
     @Override
     public void create() {
@@ -51,14 +54,14 @@ public class Game implements ApplicationListener, IGameEventListener {
         Resources.loadTextures(levelPack.isGold);
 
         batch = new SpriteBatch();
-        snappersStage = new MainStage(width, height, this);
-        gameOverStage = new GameOverStage(width,height,this, snappersStage.getLogic(), batch);
+        mainStage = new MainStage(width, height, this);
+        gameOverStage = new GameOverStage(width,height,this, mainStage.getLogic(), batch);
         pausedStage = new PausedStage(width, height, this, batch);
         hintMenu = new HintMenuStage(width, height, this, batch);
-        setStage(snappersStage);
+        setStage(mainStage);
 
         if (level != null)
-            snappersStage.setLevel(level);
+            mainStage.setLevel(level);
 
         objectsCreated = true;
         if (Resources.loadBg(levelPack.background))
@@ -80,6 +83,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
         if (bg != null)
             bg.setSize(width, height);
+        initDone = true;
     }
 
     @Override
@@ -96,11 +100,11 @@ public class Game implements ApplicationListener, IGameEventListener {
 
         float delta = Gdx.graphics.getDeltaTime();
         if (currentStage != pausedStage)
-            snappersStage.act(delta);
+            mainStage.act(delta);
         if (currentStage != helpStage)
-            snappersStage.draw();
+            mainStage.draw();
 
-        if (currentStage != snappersStage){
+        if (currentStage != mainStage){
             currentStage.act(delta);
             currentStage.draw();
         }
@@ -122,7 +126,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void dispose() {
-        snappersStage.dispose();
+        mainStage.dispose();
         gameOverStage.dispose();
         pausedStage.dispose();
         hintMenu.dispose();
@@ -141,19 +145,19 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onNextBtn() {
-        snappersStage.nextLevel();
-        setStage(snappersStage);
+        mainStage.nextLevel();
+        setStage(mainStage);
     }
 
     @Override
     public void onRestartBtn() {
-        snappersStage.restartLevel();
-        setStage(snappersStage);
+        mainStage.restartLevel();
+        setStage(mainStage);
     }
 
     @Override
     public void onResumeBtn() {
-        setStage(snappersStage);
+        setStage(mainStage);
     }
 
     @Override
@@ -163,9 +167,9 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHintBtn() {
-        Level level = snappersStage.getLogic().level;
+        Level level = mainStage.getLogic().level;
         if (level.number < 4 && level.packNumber == 1){
-            snappersStage.showHints(true);
+            mainStage.showHints(true);
             return;
         }
         hintMenu.show();
@@ -174,9 +178,9 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void useHint() {
-        setStage(snappersStage);
+        setStage(mainStage);
         ((IAppGameListener)Gdx.app).useHint();
-        snappersStage.showHints(false);
+        mainStage.showHints(false);
     }
 
     @Override
@@ -185,7 +189,7 @@ public class Game implements ApplicationListener, IGameEventListener {
         gameOverStage.showWon(true, ((IAppGameListener)Gdx.app).getAdHeight());
         if (isSoundEnabled)
             Resources.winSound.play(0.6f);
-        ((IAppGameListener)Gdx.app).levelSolved(snappersStage.getLogic().level);
+        ((IAppGameListener)Gdx.app).levelSolved(mainStage.getLogic().level);
     }
 
     @Override
@@ -203,7 +207,6 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onHelp() {
-
         if (helpStage == null)
             helpStage = new HelpStage(width, height, batch, this);
         setStage(helpStage);
@@ -220,7 +223,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     }
 
     public Level getLevel(){
-        return snappersStage.getLogic().level;
+        return mainStage.getLogic().level;
     }
 
     public LevelPack getLevelPack(){
@@ -236,12 +239,30 @@ public class Game implements ApplicationListener, IGameEventListener {
         else if (currentStage == gameOverStage)
             ((IAppGameListener)Gdx.app).hideAd();
 
+        if (stage == mainStage)
+            mainStage.setDrawButtons(true);
+        else if (currentStage == mainStage && stage != hintMenu)
+            mainStage.setDrawButtons(false);
+
         Gdx.input.setInputProcessor(currentStage = stage);
     }
 
     public void setAdHeight(int height){
         if (currentStage == gameOverStage)
             gameOverStage.setAdHeight(height);
+    }
+
+    public void backButtonPressed(){
+        if (currentStage == gameOverStage)
+            Gdx.app.exit();
+        else if (currentStage == helpStage)
+            setStage(gameOverStage);
+        else if (currentStage == pausedStage)
+            Gdx.app.exit();
+        else if (currentStage == hintMenu)
+            setStage(mainStage);
+        else if (currentStage == mainStage)
+            setStage(pausedStage);
     }
 
 

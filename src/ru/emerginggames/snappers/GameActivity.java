@@ -37,6 +37,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     boolean shouldShowAd;
     boolean canShowAd;
     boolean mayShowAd;
+    boolean isFinished = false;
 
     Game game;
 
@@ -109,7 +110,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         mayShowAd = !UserPreferences.getInstance(this).isAdFree();
         if (!mayShowAd && isShowingAd){
             hideAd();
-            game.setAdHeight(0);
+            if (game.initDone)
+                game.setAdHeight(0);
         }
     }
 
@@ -134,8 +136,9 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        //TODO: do - if pause menu open - it should close pause menu
+        //super.onBackPressed();
+        if (game.initDone)
+            game.backButtonPressed();
     }
 
     @Override
@@ -182,6 +185,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public void hideAd() {
+        if (adWhirlLayout == null)
+            return;
         shouldShowAd = isShowingAd = false;
         int visibility = adWhirlLayout.getVisibility();
         if (visibility == View.VISIBLE)
@@ -198,9 +203,12 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     protected void onPause() {
         super.onPause();
         if (isFinishing()) {
-            adWhirlLayout.setAdShowListener(null);
-            MyAdWhirlLayout.setEnforceUpdate(false);
-            adWhirlLayout.setVisibility(View.GONE);
+            if (adWhirlLayout != null){
+                adWhirlLayout.setAdShowListener(null);
+                MyAdWhirlLayout.setEnforceUpdate(false);
+                adWhirlLayout.setVisibility(View.GONE);
+            }
+            isFinished = true;
         }
     }
 
@@ -219,9 +227,12 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public void onAdShow() {
+        if (isFinished)
+            return;
         canShowAd = true;
         if (shouldShowAd) {
             showAd();
+            if (game.initDone)
             game.setAdHeight(adWhirlLayout.getHeight());
         }
 
@@ -229,16 +240,22 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public void onAdFail() {
+        if (isFinished)
+            return;
         canShowAd = false;
         if (isShowingAd) {
             hideAd();
-            game.setAdHeight(0);
+            if (game.initDone)
+                game.setAdHeight(0);
         }
     }
 
     @Override
     public void onAdSizeChanged(int width, int height) {
-        game.setAdHeight(height);
+        if (isFinished)
+            return;
+        if (game.initDone)
+            game.setAdHeight(height);
     }
 
     @Override
@@ -249,6 +266,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     Runnable showAD = new Runnable() {
         @Override
         public void run() {
+            if (adWhirlLayout == null)
+                return;
             GameActivity.this.adWhirlLayout.setVisibility(View.VISIBLE);
             if (adWhirlLayout.getChildCount() > 0) {
                 View v = adWhirlLayout.getChildAt(0);
@@ -261,6 +280,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     Runnable hideAD = new Runnable() {
         @Override
         public void run() {
+            if (adWhirlLayout == null)
+                return;
             adWhirlLayout.setVisibility(View.INVISIBLE);
         }
     };

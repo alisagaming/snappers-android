@@ -56,6 +56,7 @@ public class MainStage extends Stage implements ILogicListener {
     protected Hints hint;
     public boolean isHinting = false;
     boolean isTutorialAvailable = false;
+    boolean drawButtons = true;
 
     public MainStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
@@ -162,7 +163,7 @@ public class MainStage extends Stage implements ILogicListener {
 
     @Override
     public void draw() {
-        super.draw();
+        //super.draw();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -174,7 +175,8 @@ public class MainStage extends Stage implements ILogicListener {
 
         levelText.draw(batch);
         tapLeftText.draw(batch);
-        buttons.draw(batch, 1);
+        if (drawButtons)
+            buttons.draw(batch, 1);
         if (isHinting)
             hint.draw(batch);
         batch.end();
@@ -350,5 +352,13 @@ public class MainStage extends Stage implements ILogicListener {
 
     public boolean areSnappersTouched(){
         return logic.tapRemains != logic.level.tapsCount;
+    }
+
+    public boolean isDrawButtons() {
+        return drawButtons;
+    }
+
+    public void setDrawButtons(boolean drawButtons) {
+        this.drawButtons = drawButtons;
     }
 }

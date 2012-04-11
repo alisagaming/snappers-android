@@ -4377,7 +4377,7 @@ ru.emerginggames.snappers.GameActivity -> ru.emerginggames.snappers.GameActivity
     168:169:void addScore(int) -> a
     173:173:int getAdHeight() -> g
     178:186:void showAd() -> h
-    192:196:void hideAd() -> i
+    190:196:void hideAd() -> i
     201:201:boolean isOnline() -> j
     206:215:void onPause() -> onPause
     232:241:void onAdShow() -> k

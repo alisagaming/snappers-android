@@ -35,7 +35,8 @@ public class SplashGdxActivity extends AndroidApplication {
         config.useWakelock = false;
 
         initialize(new Splash(this), config);
-        checkForUpdates();
+        if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
+            checkForUpdates();
     }
 
     public void gotSize(int width, int height) {

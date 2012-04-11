@@ -85,7 +85,8 @@ public class MainScreenActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkForCrashes();
+        if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
+            checkForCrashes();
         SoundManager.getInstance(this).startMusic();
     }
 

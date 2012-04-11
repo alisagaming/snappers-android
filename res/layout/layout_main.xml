@@ -45,7 +45,6 @@
                       android:button="@drawable/sound_check"
                       android:onClick="onSoundButtonClick"
                     />
-
         </LinearLayout>
 
 

@@ -4,6 +4,11 @@ import android.content.Context;
 import android.util.Log;
 import ru.emerginggames.snappers.data.CryptHelperDES;
 
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -11,11 +16,15 @@ import ru.emerginggames.snappers.data.CryptHelperDES;
  * Time: 6:01
  */
 public class Settings {
+    public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
     public static final boolean ENABLE_ALL_LEVELS = false;
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = true;
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
+    public static final String BUGSENSE_API_KEY = "8a555912";
+    public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
+
 
     public static String getAdwhirlKey(Context context){
         try{
@@ -34,8 +43,14 @@ public class Settings {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
 
-
-
+    public static String getGitCommitString(Context context){
+        DataInputStream stream = new DataInputStream(context.getResources().openRawResource(R.raw.commit));
+        try{
+            return stream.readLine();
+        } catch (IOException e){
+            return "";
+        }
     }
 }

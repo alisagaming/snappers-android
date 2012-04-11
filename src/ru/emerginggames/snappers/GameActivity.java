@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import com.adwhirl.AdWhirlTargeting;
+import com.adwhirl.adapters.AdWhirlAdapter;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import ru.emerginggames.snappers.gdx.Game;
@@ -81,6 +82,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
             adParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             adParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
+            AdWhirlTargeting.setKeywords("game puzzle");
+            AdWhirlAdapter.setGoogleAdSenseExpandDirection("BOTTOM");
             if (Settings.DEBUG)
                 AdWhirlTargeting.setTestMode(true);
             MyAdWhirlLayout.setEnforceUpdate(true);

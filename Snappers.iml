@@ -40,6 +40,7 @@
     <orderEntry type="module" module-name="DbSnappers" />
     <orderEntry type="library" name="ADS" level="project" />
     <orderEntry type="module" module-name="Hockey" />
+    <orderEntry type="library" name="ACRA" level="project" />
   </component>
 </module>
 

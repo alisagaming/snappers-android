@@ -3,6 +3,7 @@ package ru.emerginggames.snappers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import org.acra.ACRA;
 import ru.emerginggames.snappers.data.CryptHelperAES;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.model.Level;
@@ -152,6 +153,8 @@ public class UserPreferences {
         unlockLevelPack(LevelPackTable.get(1, context));
         putInt(HINTS, INITIAL_HINTS, HINTS);
         putBoolean(INITIIALISED, true, INITIIALISED);
+
+        ACRA.getACRASharedPreferences().edit().putBoolean(ACRA.PREF_ENABLE_DEVICE_ID, false).commit();
     }
 
     public void setMusic(boolean enabled){

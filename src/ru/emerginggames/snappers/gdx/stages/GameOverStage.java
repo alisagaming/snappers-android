@@ -67,7 +67,7 @@ public class GameOverStage extends DimBackStage{
                 listener.onMenuBtn();
             }
         });
-        helpButton = new SimpleButton(Resources.menuButtonFrames[16], null, Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
+        helpButton = new SimpleButton("help", Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onHelp();

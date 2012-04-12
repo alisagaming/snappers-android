@@ -37,6 +37,22 @@ public class SimpleButton extends Actor implements IPositionable {
         this.sound = sound;
     }
 
+    public SimpleButton(String textureName, float scale, Sound sound, IOnEventListener listener){
+        button = doSprite(Resources.getBtnRegion(textureName));
+        button.setScale(scale);
+        button.setOrigin(0, 0);
+        TextureRegion down = Resources.getBtnRegion(textureName + "-tap");
+        if (down != null){
+            buttonDown = doSprite(down);
+            buttonDown.setScale(scale);
+            buttonDown.setOrigin(0, 0);
+        }
+        width = button.getWidth() * scale;
+        height = button.getHeight() * scale;
+        this.listener = listener;
+        this.sound = sound;
+    }
+
     public SimpleButton(TextureRegion normal, TextureRegion down, Sound sound, IOnEventListener listener){
         button = doSprite(normal);
         if (down != null)
@@ -48,11 +64,11 @@ public class SimpleButton extends Actor implements IPositionable {
     }
 
     public SimpleButton(TextureRegion normal, TextureRegion down, float scale, Sound sound,  IOnEventListener listener){
-        button = new Sprite(normal);
+        button = doSprite(normal);
         button.setScale(scale);
         button.setOrigin(0, 0);
         if (down != null){
-            buttonDown = new Sprite(down);
+            buttonDown = doSprite(down);
             buttonDown.setScale(scale);
             buttonDown.setOrigin(0, 0);
         }

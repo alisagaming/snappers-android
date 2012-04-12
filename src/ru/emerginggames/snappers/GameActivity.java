@@ -162,8 +162,10 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 //        if (tapjoyStore == null)
 //            tapjoyStore = new MyTapjoyStore(getApplicationContext(), null);
         //TapjoyConnect.getTapjoyConnectInstance().setEarnedPointsNotifier(new TapjoyPointsListener(getApplicationContext()));
-//        TapjoyConnect.getTapjoyConnectInstance().checkForVirtualGoods(tapjoyStore);
-//        TapjoyConnect.getTapjoyConnectInstance().showVirtualGoods(tapjoyStore);
+        //TapjoyConnect.getTapjoyConnectInstance().setUserDefinedColor(0xff808080);
+
+        //TapjoyConnect.getTapjoyConnectInstance().checkForVirtualGoods(tapjoyStore);
+        //TapjoyConnect.getTapjoyConnectInstance().showVirtualGoods(tapjoyStore);
         wentTapjoy = true;
         TapjoyConnect.getTapjoyConnectInstance().showOffers();
 

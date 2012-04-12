@@ -5250,23 +5250,23 @@ ru.emerginggames.snappers.model.Blast$Direction -> ru.emerginggames.snappers.e.b
     ru.emerginggames.snappers.model.Blast$Direction[] ENUM$VALUES -> e
     1:1:ru.emerginggames.snappers.model.Blast$Direction[] values() -> values
     1:1:ru.emerginggames.snappers.model.Blast$Direction valueOf(java.lang.String) -> valueOf
-ru.emerginggames.snappers.model.GoodsToShop -> ru.emerginggames.snappers.e.c:
-ru.emerginggames.snappers.model.GoodsToShop$Goods -> ru.emerginggames.snappers.e.d:
-    ru.emerginggames.snappers.model.GoodsToShop$Goods HintPack1 -> a
-    ru.emerginggames.snappers.model.GoodsToShop$Goods HintPack10 -> b
-    ru.emerginggames.snappers.model.GoodsToShop$Goods LevelPack2 -> c
-    ru.emerginggames.snappers.model.GoodsToShop$Goods LevelPack3 -> d
-    ru.emerginggames.snappers.model.GoodsToShop$Goods LevelPack4 -> e
-    ru.emerginggames.snappers.model.GoodsToShop$Goods LevelPack5 -> f
-    ru.emerginggames.snappers.model.GoodsToShop$Goods LevelPack6 -> g
-    ru.emerginggames.snappers.model.GoodsToShop$Goods LevelPack7 -> h
-    ru.emerginggames.snappers.model.GoodsToShop$Goods PremiumLevelPack1 -> i
-    ru.emerginggames.snappers.model.GoodsToShop$Goods PremiumLevelPack2 -> j
-    ru.emerginggames.snappers.model.GoodsToShop$Goods PremiumLevelPack3 -> k
-    ru.emerginggames.snappers.model.GoodsToShop$Goods PremiumLevelPack4 -> l
-    ru.emerginggames.snappers.model.GoodsToShop$Goods[] ENUM$VALUES -> m
-    1:1:ru.emerginggames.snappers.model.GoodsToShop$Goods[] values() -> values
-    1:1:ru.emerginggames.snappers.model.GoodsToShop$Goods valueOf(java.lang.String) -> valueOf
+ru.emerginggames.snappers.model.Goods -> ru.emerginggames.snappers.e.c:
+ru.emerginggames.snappers.model.Goods$Goods -> ru.emerginggames.snappers.e.d:
+    ru.emerginggames.snappers.model.Goods$Goods HintPack1 -> a
+    ru.emerginggames.snappers.model.Goods$Goods HintPack10 -> b
+    ru.emerginggames.snappers.model.Goods$Goods LevelPack2 -> c
+    ru.emerginggames.snappers.model.Goods$Goods LevelPack3 -> d
+    ru.emerginggames.snappers.model.Goods$Goods LevelPack4 -> e
+    ru.emerginggames.snappers.model.Goods$Goods LevelPack5 -> f
+    ru.emerginggames.snappers.model.Goods$Goods LevelPack6 -> g
+    ru.emerginggames.snappers.model.Goods$Goods LevelPack7 -> h
+    ru.emerginggames.snappers.model.Goods$Goods PremiumLevelPack1 -> i
+    ru.emerginggames.snappers.model.Goods$Goods PremiumLevelPack2 -> j
+    ru.emerginggames.snappers.model.Goods$Goods PremiumLevelPack3 -> k
+    ru.emerginggames.snappers.model.Goods$Goods PremiumLevelPack4 -> l
+    ru.emerginggames.snappers.model.Goods$Goods[] ENUM$VALUES -> m
+    1:1:ru.emerginggames.snappers.model.Goods$Goods[] values() -> values
+    1:1:ru.emerginggames.snappers.model.Goods$Goods valueOf(java.lang.String) -> valueOf
 ru.emerginggames.snappers.model.ILogicListener -> ru.emerginggames.snappers.e.e:
     void snapperHit(int,int) -> b
     void tap() -> e

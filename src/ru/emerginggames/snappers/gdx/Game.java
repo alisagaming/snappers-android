@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import ru.emerginggames.snappers.Metrics;
-import ru.emerginggames.snappers.controller.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 import ru.emerginggames.snappers.gdx.stages.*;
 import ru.emerginggames.snappers.model.Level;
@@ -123,6 +121,8 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void resume() {
         Texture.invalidateAllTextures(Gdx.app);
+        if (currentStage == hintMenu)
+            hintMenu.show();
     }
 
     @Override

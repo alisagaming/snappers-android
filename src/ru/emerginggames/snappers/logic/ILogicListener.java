@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.model;
+package ru.emerginggames.snappers.logic;
 
 /**
  * Created by IntelliJ IDEA.

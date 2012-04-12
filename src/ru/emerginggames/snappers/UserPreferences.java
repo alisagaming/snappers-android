@@ -6,9 +6,11 @@ import android.content.SharedPreferences.Editor;
 import org.acra.ACRA;
 import ru.emerginggames.snappers.data.CryptHelperAES;
 import ru.emerginggames.snappers.data.LevelPackTable;
+import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
-import ru.emerginggames.snappers.stuff.DeviceUuidFactory;
+import ru.emerginggames.snappers.utils.DeviceUuidFactory;
+import ru.emerginggames.snappers.utils.MyTapjoyStore;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,6 +27,10 @@ public class UserPreferences {
     private static final String ADFREE = "adfree";
     private static final String MUSIC = "music";
     private static final String SOUND = "sound";
+    private static final String TAPJOY_ITEM_BOUGHT = "tj_item_bought_%s";
+    private static final String TAPJOY_INIT_COMPLETE = "tj_item_bought_%s";
+    private static final String TAPJOY_HINTS = "tj_hints";
+    private static final String TAPJOY_HINTS_SPENT_NOT_UPLOADED = "tj_hints_spent_not_uploaded";
     private static final int INITIAL_HINTS = 10;
     Context context;
     private static UserPreferences instance;
@@ -47,7 +53,8 @@ public class UserPreferences {
                 factory = new DeviceUuidFactory(context);
         initialise();
 
-
+        if (!isTapjoyInitComplete())
+            new MyTapjoyStore(context, this);
     }
 
     public static void setContext(Context context) {
@@ -244,4 +251,39 @@ public class UserPreferences {
     public String getKey2(){
         return factory.getDeviceUuid().toString() + LevelPackTable.getHost();
     }
+
+    public int getTapjoyItemBought(Goods item){
+        String key = String.format(TAPJOY_ITEM_BOUGHT, item.toString());
+        return getInt(key, 0, key);
+    }
+
+    public void setTapjoyItemBought(Goods item, int amount){
+        String key = String.format(TAPJOY_ITEM_BOUGHT, item.toString());
+        putInt(key, amount, key);
+    }
+
+    public void setTapjoyInitComplete(){
+        putBoolean(TAPJOY_INIT_COMPLETE, true, TAPJOY_INIT_COMPLETE);
+    }
+
+    public boolean isTapjoyInitComplete(){
+        return getBoolean(TAPJOY_INIT_COMPLETE, false, TAPJOY_INIT_COMPLETE);
+    }
+
+    public int getTapjoyHints(){
+        return getInt(TAPJOY_HINTS, 0, TAPJOY_HINTS);
+    }
+
+    public void setTapjoyHints(int hints){
+        putInt(TAPJOY_HINTS, hints, TAPJOY_HINTS);
+    }
+
+    public int getSpentUnsentTapjoyHints(){
+        return getInt(TAPJOY_HINTS_SPENT_NOT_UPLOADED, 0, TAPJOY_HINTS_SPENT_NOT_UPLOADED);
+    }
+
+    public void setSpentUnsentTapjoyHints(int hints){
+        putInt(TAPJOY_HINTS_SPENT_NOT_UPLOADED, hints, TAPJOY_HINTS_SPENT_NOT_UPLOADED);
+    }
+
 }

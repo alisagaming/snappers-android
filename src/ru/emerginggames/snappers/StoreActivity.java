@@ -2,6 +2,7 @@ package ru.emerginggames.snappers;
 
 import android.os.Bundle;
 import android.view.View;
+import com.tapjoy.TJCOffers;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.model.ImagePaginatorParam;

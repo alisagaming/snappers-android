@@ -3,7 +3,7 @@ package ru.emerginggames.snappers.gdx.stages;
 import android.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.Metrics;
-import ru.emerginggames.snappers.controller.GameLogic;
+import ru.emerginggames.snappers.logic.GameLogic;
 import ru.emerginggames.snappers.gdx.Elements.AnimatedSprite;
 import ru.emerginggames.snappers.gdx.Elements.IAnimationListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;

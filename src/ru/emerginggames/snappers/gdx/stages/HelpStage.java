@@ -3,7 +3,7 @@ package ru.emerginggames.snappers.gdx.stages;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import ru.emerginggames.snappers.controller.IGameEventListener;
+import ru.emerginggames.snappers.gdx.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Resources;
 
 /**

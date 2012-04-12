@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.controller;
+package ru.emerginggames.snappers.logic;
 
 /**
  * Created by IntelliJ IDEA.

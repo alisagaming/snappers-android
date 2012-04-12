@@ -1,6 +1,7 @@
 package ru.emerginggames.snappers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 
+import com.tapjoy.TapjoyConnect;
+import com.tapjoy.TapjoyNotifier;
+import com.tapjoy.TapjoySpendPointsNotifier;
 import net.hockeyapp.android.CrashManager;
 
 /**

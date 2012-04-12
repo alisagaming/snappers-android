@@ -409,7 +409,10 @@ public class Resources {
         menuButtonFrames[14] = buttonAtlas.findRegion("useahintlong");
         menuButtonFrames[15] = buttonAtlas.findRegion("useahintlong-tap");
         menuButtonFrames[16] = buttonAtlas.findRegion("help");
+    }
 
+    public static TextureRegion getBtnRegion(String name){
+        return buttonAtlas.findRegion(name);
     }
 
 

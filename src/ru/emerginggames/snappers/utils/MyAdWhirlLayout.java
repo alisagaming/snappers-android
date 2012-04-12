@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.stuff;
+package ru.emerginggames.snappers.utils;
 
 import com.adwhirl.AdWhirlLayout;
 import com.adwhirl.AdWhirlManager;

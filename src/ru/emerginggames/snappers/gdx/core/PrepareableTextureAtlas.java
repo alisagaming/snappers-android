@@ -134,8 +134,9 @@ public class PrepareableTextureAtlas implements Disposable {
                         int top = Integer.parseInt(tuple[1]);
 
                         readTuple(reader);
-                        int width = Integer.parseInt(tuple[0]);
-                        int height = Integer.parseInt(tuple[1]);
+                        //my adjustment here! Babay
+                        int width = Integer.parseInt(tuple[rotate? 1: 0]);
+                        int height = Integer.parseInt(tuple[rotate? 0: 1]);
 
                         Region region = new Region();
                         region.page = pageImage;

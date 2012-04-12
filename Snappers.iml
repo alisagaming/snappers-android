@@ -41,6 +41,7 @@
     <orderEntry type="library" name="ADS" level="project" />
     <orderEntry type="module" module-name="Hockey" />
     <orderEntry type="library" name="ACRA" level="project" />
+    <orderEntry type="module" module-name="TapJoy" />
   </component>
 </module>
 

@@ -1,6 +1,6 @@
 package ru.emerginggames.snappers.gdx;
 
-import ru.emerginggames.snappers.model.GoodsToShop;
+import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 
@@ -16,7 +16,7 @@ public interface IAppGameListener {
     public void levelPackWon(LevelPack pack);
     public int getHintsLeft();
     public void useHint();
-    public void buy(GoodsToShop.Goods goods);
+    public void buy(Goods goods);
     public boolean isOnline();
     public void levelSolved(Level level);
     public boolean isLevelSolved(Level level);
@@ -26,5 +26,6 @@ public interface IAppGameListener {
     public void hideAd();
     public int getAdHeight();
     public void gotScreenSize(int width, int height);
+    public void freeHintsPressed();
 
 }

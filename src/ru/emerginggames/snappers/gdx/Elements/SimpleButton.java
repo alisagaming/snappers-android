@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import ru.emerginggames.snappers.gdx.Game;
+import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas.AtlasRegion;
@@ -24,6 +25,17 @@ public class SimpleButton extends Actor implements IPositionable {
     protected Sprite buttonDown;
     protected boolean isDown;
     protected Sound sound;
+
+    public SimpleButton(String textureName, Sound sound, IOnEventListener listener){
+        button = doSprite(Resources.getBtnRegion(textureName));
+        TextureRegion down = Resources.getBtnRegion(textureName + "-tap");
+        if (down != null)
+            buttonDown = doSprite(down);
+        width = button.getWidth();
+        height = button.getHeight();
+        this.listener = listener;
+        this.sound = sound;
+    }
 
     public SimpleButton(TextureRegion normal, TextureRegion down, Sound sound, IOnEventListener listener){
         button = doSprite(normal);

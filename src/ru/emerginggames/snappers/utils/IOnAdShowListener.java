@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.stuff;
+package ru.emerginggames.snappers.utils;
 
 /**
  * Created by IntelliJ IDEA.

@@ -3,9 +3,9 @@ package ru.emerginggames.snappers.gdx.stages;
 import android.graphics.Color;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import ru.emerginggames.snappers.model.GoodsToShop;
+import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.Metrics;
-import ru.emerginggames.snappers.controller.IGameEventListener;
+import ru.emerginggames.snappers.gdx.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
@@ -20,6 +20,7 @@ import ru.emerginggames.snappers.gdx.core.OutlinedTextSprite;
  * Time: 11:27
  */
 public class HintMenuStage extends MenuStage {
+    private static enum Mode {Use, Buy, GetOnline}
     public static final String YOU_HAVE_1_HINT = "You have 1 hint.";
     public static final String YOU_HAVE_D_HINTS = "You have %d hints";
     public static final String USE_IT = "Use it?";
@@ -32,11 +33,14 @@ public class HintMenuStage extends MenuStage {
     SimpleButton useButton;
     SimpleButton buy1Button;
     SimpleButton buy10Button;
+    SimpleButton freeHintsButton;
     OutlinedTextSprite line1;
     OutlinedTextSprite line2;
     OutlinedTextSprite line3;
     boolean showLine3 = false;
     IGameEventListener listener;
+    Mode mode;
+
 
 
     public HintMenuStage(int width, int height, final IGameEventListener listener, SpriteBatch batch) {
@@ -51,7 +55,6 @@ public class HintMenuStage extends MenuStage {
     @Override
     public void setViewport(float width, float height) {
         super.setViewport(width, height);
-        positionItems();
     }
 
     @Override
@@ -68,11 +71,26 @@ public class HintMenuStage extends MenuStage {
     private void  positionItems(){
         int marg = Metrics.screenMargin;
         cancelButton.positionRelative(width/2, getMenuBottom(), IPositionable.Dir.UP, 0);
-        buy10Button.positionRelative(cancelButton, IPositionable.Dir.UP, marg/2);
-        buy1Button.positionRelative(buy10Button, IPositionable.Dir.UP, marg/2);
-        useButton.positionRelative(cancelButton, IPositionable.Dir.UP, marg/2);
+        if (mode == Mode.Buy || mode == Mode.Use)
+            freeHintsButton.positionRelative(cancelButton, IPositionable.Dir.UP, marg/2);
+            freeHintsButton.visible = freeHintsButton.touchable = true;
+        if (mode == Mode.Buy){
+            buy10Button.positionRelative(freeHintsButton, IPositionable.Dir.UP, marg/2);
+            buy1Button.positionRelative(buy10Button, IPositionable.Dir.UP, marg/2);
+            buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = true;
+        } else if (mode == Mode.Use)
+            useButton.positionRelative(freeHintsButton, IPositionable.Dir.UP, marg/2);
 
-        IPositionable topButton = buy1Button.visible ? buy1Button : useButton;
+        IPositionable topButton = cancelButton;
+        switch (mode){
+            case Buy:
+                topButton = buy1Button;
+                break;
+            case Use:
+                topButton = useButton;
+                break;
+        }
+
         if (showLine3){
             line3.positionRelative(topButton.getX(), topButton.getTop() + marg*4, IPositionable.Dir.UPRIGHT, 0);
             line2.positionRelative(line3.getX(), line3.getTop() + marg, IPositionable.Dir.UPRIGHT, 0);
@@ -82,44 +100,68 @@ public class HintMenuStage extends MenuStage {
         line1.positionRelative(line2.getX(), line2.getTop() + marg, IPositionable.Dir.UPRIGHT, 0);
     }
 
+    private void setVisibility(){
+        useButton.visible = useButton.touchable = buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable =
+            freeHintsButton.visible = freeHintsButton.touchable = false;
+        switch (mode){
+            case Buy:
+                freeHintsButton.visible = freeHintsButton.touchable = buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = true;
+                break;
+            case Use:
+                freeHintsButton.visible = freeHintsButton.touchable = useButton.visible = useButton.touchable = true;
+                break;
+            case GetOnline:
+                break;
+        }
+    }
+
     public int calcContentHeight(){
         int height = Metrics.menuButtonHeight * 2 + Metrics.screenMargin/2 + Metrics.screenMargin*5 + line1.getTextHeight() * 2;
-        if (buy10Button.visible)
+        if (mode == Mode.Buy)
             height+= (Metrics.menuButtonHeight  + Metrics.screenMargin/2);
         if (showLine3)
             height += (line3.getHeight() + Metrics.screenMargin);
+        if (mode == Mode.Buy || mode == Mode.Use)
+            height+= (Metrics.menuButtonHeight  + Metrics.screenMargin/2);
         return height;
     }
 
     public void createElements(){
-        cancelButton = new SimpleButton(Resources.menuButtonFrames[4], Resources.menuButtonFrames[5], Resources.buttonSound, new IOnEventListener() {
+        cancelButton = new SimpleButton("cancellong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onResumeBtn();
             }
         });
-        useButton = new SimpleButton(Resources.menuButtonFrames[14], Resources.menuButtonFrames[15], Resources.buttonSound, new IOnEventListener() {
+        useButton = new SimpleButton("useahintlong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.useHint();
             }
         });
-        buy1Button = new SimpleButton(Resources.menuButtonFrames[0], Resources.menuButtonFrames[1], Resources.buttonSound, new IOnEventListener() {
+        buy1Button = new SimpleButton("buy1hint", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
-                buyHints(GoodsToShop.Goods.HintPack1);
+                buyHints(Goods.HintPack1);
             }
         });
-        buy10Button = new SimpleButton(Resources.menuButtonFrames[2], Resources.menuButtonFrames[3], Resources.buttonSound, new IOnEventListener() {
+        buy10Button = new SimpleButton("buyhintslong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
-                buyHints(GoodsToShop.Goods.HintPack10);
+                buyHints(Goods.HintPack10);
+            }
+        });
+        freeHintsButton = new SimpleButton("freehintslong", Resources.buttonSound, new IOnEventListener() {
+            @Override
+            public void onEvent() {
+                ((IAppGameListener)Gdx.app).freeHintsPressed();
             }
         });
         addActor(cancelButton);
         addActor(useButton);
         addActor(buy1Button);
         addActor(buy10Button);
+        addActor(freeHintsButton);
 
         int btnWidth = (Math.round(cancelButton.getWidth()));
         line1 = new OutlinedTextSprite(btnWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
@@ -140,19 +182,20 @@ public class HintMenuStage extends MenuStage {
             showGetOnline();
         setInnerMenuHeight(calcContentHeight());
         positionItems();
+        setVisibility();
     }
 
     private void showUseHintMenu(int hintsLeft){
+        mode = Mode.Use;
         if (hintsLeft == 1)
             line1.setText(YOU_HAVE_1_HINT);
         else
             line1.setText(String.format(YOU_HAVE_D_HINTS, hintsLeft));
         line2.setText(USE_IT);
-        useButton.visible = useButton.touchable = true;
-        buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = false;
     }
 
     private void showGetOnline(){
+        mode = Mode.GetOnline;
         line1.setText(YOU_HAVE_NO_HINTS);
         if (line2.measureTextWidth(GET_ONLINE_TO_GET_SOME) < getInnerWidth())
             line2.setText(GET_ONLINE_TO_GET_SOME);
@@ -161,17 +204,15 @@ public class HintMenuStage extends MenuStage {
             line3.setText(SOME);
             showLine3 = true;
         }
-        useButton.visible = useButton.touchable = buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = false;
     }
 
     private void showBuyMenu(){
+        mode = Mode.Buy;
         line1.setText(YOU_HAVE_NO_HINTS);
         line2.setText(BUY_SOME);
-        useButton.visible = useButton.touchable = false;
-        buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = true;
     }
 
-    private void buyHints(GoodsToShop.Goods goods){
+    private void buyHints(Goods goods){
         ((IAppGameListener)Gdx.app).buy(goods);
     }
 

@@ -1,9 +1,8 @@
-package ru.emerginggames.snappers.controller;
+package ru.emerginggames.snappers.logic;
 
 import android.graphics.Rect;
 import ru.emerginggames.snappers.Settings;
 import ru.emerginggames.snappers.model.Blast;
-import ru.emerginggames.snappers.model.ILogicListener;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.Snappers;
 

@@ -73,42 +73,42 @@ menulong-tap
   orig: 400, 128
   offset: 0, 0
   index: -1
-cancellong
+freehintslong
   rotate: false
   xy: 0, 896
   size: 400, 128
   orig: 400, 128
   offset: 0, 0
   index: -1
-cancellong-tap
+freehintslong-tap
   rotate: false
   xy: 400, 384
   size: 400, 128
   orig: 400, 128
   offset: 0, 0
   index: -1
-buyhintslong
+cancellong
   rotate: false
   xy: 400, 512
   size: 400, 128
   orig: 400, 128
   offset: 0, 0
   index: -1
-buyhintslong-tap
+cancellong-tap
   rotate: false
   xy: 400, 640
   size: 400, 128
   orig: 400, 128
   offset: 0, 0
   index: -1
-buy1hint
+buyhintslong
   rotate: false
   xy: 400, 768
   size: 400, 128
   orig: 400, 128
   offset: 0, 0
   index: -1
-buy1hint-tap
+buyhintslong-tap
   rotate: false
   xy: 400, 896
   size: 400, 128
@@ -174,39 +174,53 @@ b04
 
 buttons2.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
-help
+buy1hint
   rotate: true
   xy: 0, 0
-  size: 128, 320
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+buy1hint-tap
+  rotate: true
+  xy: 128, 0
+  size: 400, 128
+  orig: 400, 128
+  offset: 0, 0
+  index: -1
+help
+  rotate: true
+  xy: 0, 400
+  size: 320, 128
   orig: 320, 128
   offset: 0, 0
   index: -1
 b03
   rotate: false
-  xy: 0, 320
+  xy: 128, 400
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 b02
   rotate: false
-  xy: 0, 448
+  xy: 128, 528
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 b01
   rotate: false
-  xy: 0, 576
+  xy: 0, 720
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 b00
   rotate: false
-  xy: 0, 704
+  xy: 128, 720
   size: 128, 128
   orig: 128, 128
   offset: 0, 0

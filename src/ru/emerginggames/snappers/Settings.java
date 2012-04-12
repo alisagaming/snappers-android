@@ -53,4 +53,14 @@ public class Settings {
             return "";
         }
     }
+
+    public static String getTapJoyAppId(){
+        //TODO: encrypt
+        return "437aa914-31c2-4eb2-a061-9badc6d52fb8";
+    }
+
+    public static String getTapJoySecretKey(){
+        //TODO: encrypt
+        return "PfVKO1NNtOicS512X2jA";
+    }
 }

@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.stuff;
+package ru.emerginggames.snappers.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -9,15 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import ru.emerginggames.snappers.Metrics;
-import ru.emerginggames.snappers.controller.GameLogic;
-import ru.emerginggames.snappers.controller.IGameEventListener;
+import ru.emerginggames.snappers.logic.GameLogic;
+import ru.emerginggames.snappers.gdx.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Elements.*;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.core.OutlinedTextSprite;
 import ru.emerginggames.snappers.model.Blast;
-import ru.emerginggames.snappers.model.ILogicListener;
+import ru.emerginggames.snappers.logic.ILogicListener;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.Snappers;
 

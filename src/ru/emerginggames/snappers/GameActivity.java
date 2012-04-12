@@ -14,14 +14,20 @@ import com.adwhirl.AdWhirlTargeting;
 import com.adwhirl.adapters.AdWhirlAdapter;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.tapjoy.TapjoyConnect;
+import com.tapjoy.VGStoreItem;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.gdx.Resources;
-import ru.emerginggames.snappers.model.GoodsToShop;
+import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
-import ru.emerginggames.snappers.stuff.IOnAdShowListener;
-import ru.emerginggames.snappers.stuff.MyAdWhirlLayout;
+import ru.emerginggames.snappers.utils.IOnAdShowListener;
+import ru.emerginggames.snappers.utils.MyAdWhirlLayout;
+import ru.emerginggames.snappers.utils.MyTapjoyStore;
+import ru.emerginggames.snappers.utils.TapjoyPointsListener;
+
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,6 +45,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     boolean canShowAd;
     boolean mayShowAd;
     boolean isFinished = false;
+    MyTapjoyStore tapjoyStore;
+    boolean wentTapjoy;
 
     Game game;
 
@@ -131,12 +139,34 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
                 game.setAdHeight(0);
         }
         SoundManager.getInstance(this).startMusicIfShould();
+        if (wentTapjoy){
+            TapjoyConnect.getTapjoyConnectInstance().getTapPoints(new TapjoyPointsListener(getApplicationContext()));
+            //tapjoyStore.updatePurchasedItems();
+            wentTapjoy = false;
+        }
     }
 
     @Override
     public void launchStore() {
         Intent intent = new Intent(this, StoreActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void buy(Goods goods) {
+        //TODO:
+    }
+
+    @Override
+    public void freeHintsPressed() {
+//        if (tapjoyStore == null)
+//            tapjoyStore = new MyTapjoyStore(getApplicationContext(), null);
+        //TapjoyConnect.getTapjoyConnectInstance().setEarnedPointsNotifier(new TapjoyPointsListener(getApplicationContext()));
+//        TapjoyConnect.getTapjoyConnectInstance().checkForVirtualGoods(tapjoyStore);
+//        TapjoyConnect.getTapjoyConnectInstance().showVirtualGoods(tapjoyStore);
+        wentTapjoy = true;
+        TapjoyConnect.getTapjoyConnectInstance().showOffers();
+
     }
 
     @Override
@@ -168,10 +198,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         UserPreferences.getInstance(this).useHint();
     }
 
-    @Override
-    public void buy(GoodsToShop.Goods goods) {
-        //TODO:
-    }
+
 
     @Override
     public boolean isLevelSolved(Level level) {

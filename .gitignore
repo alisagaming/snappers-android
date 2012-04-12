@@ -10,3 +10,6 @@ proguard_logs/usage.txt
 res/raw/commit.txt
 Snappers.apk
 HockeySDK/bin
+HockeySDK/gen
+TapJoy/bin
+TapJoy/gen

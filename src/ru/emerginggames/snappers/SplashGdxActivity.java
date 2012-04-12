@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.tapjoy.TapjoyConnect;
+import com.tapjoy.TapjoyNotifier;
 import ru.emerginggames.snappers.data.DbCopyOpenHelper;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.Splash;
@@ -63,6 +65,9 @@ public class SplashGdxActivity extends AndroidApplication {
             protected Integer doInBackground(Integer... params) {
                 long startTime = System.currentTimeMillis();
                 new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
+                TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(), Settings.getTapJoySecretKey());
+
+
                 UserPreferences.getInstance(SplashGdxActivity.this);
 
                 long now = System.currentTimeMillis();

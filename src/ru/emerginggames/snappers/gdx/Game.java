@@ -98,6 +98,8 @@ public class Game implements ApplicationListener, IGameEventListener {
         }
 
         float delta = Gdx.graphics.getDeltaTime();
+        /*if (delta > 1)
+            delta = 0.01f;*/
         if (currentStage != pausedStage)
             mainStage.act(delta);
         if (currentStage != helpStage)

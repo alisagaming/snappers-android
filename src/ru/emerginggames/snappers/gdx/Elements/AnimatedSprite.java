@@ -3,6 +3,7 @@ package ru.emerginggames.snappers.gdx.Elements;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ru.emerginggames.snappers.gdx.helper.IPositionable;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 
 /**
@@ -11,7 +12,7 @@ import ru.emerginggames.snappers.gdx.helper.PositionHelper;
  * Date: 25.03.12
  * Time: 23:15
  */
-public class AnimatedSprite extends Sprite implements IPositionable{
+public class AnimatedSprite extends Sprite implements IPositionable {
     protected Animation animation;
     protected boolean looping;
     protected float animationTime;

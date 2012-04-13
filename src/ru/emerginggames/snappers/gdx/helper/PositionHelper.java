@@ -1,7 +1,6 @@
 package ru.emerginggames.snappers.gdx.helper;
 
-import ru.emerginggames.snappers.gdx.Elements.IPositionable;
-import ru.emerginggames.snappers.gdx.Elements.IPositionable.Dir;
+import ru.emerginggames.snappers.gdx.helper.IPositionable.Dir;
 import ru.emerginggames.snappers.gdx.Elements.PositionInfo;
 
 /**

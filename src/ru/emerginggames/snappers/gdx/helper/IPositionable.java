@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.gdx.Elements;
+package ru.emerginggames.snappers.gdx.helper;
 
 /**
  * Created by IntelliJ IDEA.

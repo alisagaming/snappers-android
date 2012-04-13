@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import ru.emerginggames.snappers.gdx.Elements.IPositionable;
+import ru.emerginggames.snappers.gdx.helper.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.PositionInfo;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 

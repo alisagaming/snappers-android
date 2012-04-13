@@ -13,7 +13,7 @@ import ru.emerginggames.snappers.gdx.Resources;
  * Date: 25.03.12
  * Time: 19:09
  */
-public class SnapperView extends Actor {
+public class SnapperView extends MovableActor{
     private static final float SHADOW_MULT = 1.125f;
     private static final float EYE_FRAME_TIME = 0.04f;
     private static final float EYE_FRAME_TIME_DEVIATION = 0.3f;
@@ -22,7 +22,7 @@ public class SnapperView extends Actor {
     public int j;
     public float scale;
     public float shadowScale;
-    
+
     public Sprite snapper;
     public AnimatedSprite eyes;
 
@@ -50,6 +50,15 @@ public class SnapperView extends Actor {
         this.x = x;
         this.y = y;
         snapper.setPosition(x,y);
+        eyes.setPosition(x, y);
+    }
+
+    @Override
+    public void setPosition (float x, float y) {
+        int dif = Metrics.snapperSize/2;
+        x-= dif;
+        y-= dif;
+        snapper.setPosition(x, y);
         eyes.setPosition(x, y);
     }
 
@@ -105,10 +114,24 @@ public class SnapperView extends Actor {
     }
 
     @Override
-    public void touchDragged(float x, float y, int pointer) {}
-
-    @Override
     public Actor hit(float x, float y) {
         return state>0 && x > 0 && x < width && y > 0 && y < height ? this : null;
     }
+
+    @Override
+    public void setNext(float destX, float destY, float animationTime) {
+        int dif = Metrics.snapperSize/2;
+        sourceX = snapper.getX() + dif;
+        sourceY = snapper.getY() + dif;
+        super.setNext(destX, destY, animationTime);
+    }
+
+    public void setRandomStart(int minX, int minY, int maxX, int maxY, float animationTime){
+        int dif = Metrics.snapperSize/2;
+        float x = (float)(minX + Math.random() * (maxX - minX));
+        float y = (float)(minY + Math.random() * (maxY - minY));
+        setAll(x, y, this.x + dif, this.y + dif, animationTime);
+    }
+
+
 }

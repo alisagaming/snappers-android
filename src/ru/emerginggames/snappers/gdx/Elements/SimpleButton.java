@@ -7,10 +7,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.Resources;
-import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas;
+import ru.emerginggames.snappers.gdx.helper.IPositionable;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas.AtlasRegion;
-import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas.AtlasSprite;
 
 /**
  * Created by IntelliJ IDEA.

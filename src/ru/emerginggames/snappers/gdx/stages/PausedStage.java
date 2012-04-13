@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.gdx.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
-import ru.emerginggames.snappers.gdx.Elements.IPositionable;
+import ru.emerginggames.snappers.gdx.helper.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.core.OutlinedTextSprite;

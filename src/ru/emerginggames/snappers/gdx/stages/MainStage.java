@@ -1,18 +1,16 @@
 package ru.emerginggames.snappers.gdx.stages;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.gdx.IAppGameListener;
+import ru.emerginggames.snappers.gdx.helper.*;
 import ru.emerginggames.snappers.logic.GameLogic;
 import ru.emerginggames.snappers.gdx.IGameEventListener;
-import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Elements.*;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.Resources;
@@ -36,6 +34,7 @@ public class MainStage extends MyStage implements ILogicListener {
     protected static final float POP_SOUND_DISTANCE = 0.1f;
     protected static final float BANG_FRAME_DURATION = 0.12f;
     protected static final int WAIT_FOR_TUTORIAL = 5000;
+    private static final float SNAPPER_WARM_TIME = 0.6f;
     public static final String LEVEL_D_D = "Level: %d-%d";
     public static final String TAPS_LEFT_D = "Taps left: %d";
     private Animation blastAnimation;
@@ -58,6 +57,9 @@ public class MainStage extends MyStage implements ILogicListener {
     public boolean isHinting = false;
     boolean isTutorialAvailable = false;
     boolean drawButtons = true;
+    IAnimationFunction snapperAnimFn = new LinearAnimation();
+    float animDelta;
+    int animActPassed;
 
     public MainStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
@@ -117,6 +119,8 @@ public class MainStage extends MyStage implements ILogicListener {
     }
 
     protected void defineSnapperViews(){
+        if (logic.level == null)
+            return;
         SnapperView view;
         int i; int j;
         int state;
@@ -125,7 +129,8 @@ public class MainStage extends MyStage implements ILogicListener {
             removeActor(activeSnappers.get(i));
         snapperViewPool.free(activeSnappers);
         activeSnappers.clear();
-
+        int w = logic.width;
+        int h = logic.height;
         for (i=0; i< Snappers.WIDTH; i++)
             for (j=0; j< Snappers.HEIGHT; j++)
                 if ((state = logic.snappers.getSnapper(i, j)) > 0){
@@ -133,6 +138,9 @@ public class MainStage extends MyStage implements ILogicListener {
                     view.set(i, j, state);
                     activeSnappers.add(view);
                     addActor(view);
+                    view.setListener(snapperAnimationListener);
+                    view.setAnimFn(snapperAnimFn);
+                    view.setRandomStart(0, 0, w, h, SNAPPER_WARM_TIME);
                 }
     }
 
@@ -160,6 +168,16 @@ public class MainStage extends MyStage implements ILogicListener {
 
         if (isTutorialAvailable && !isHinting && !areSnappersTouched() && (System.currentTimeMillis() - logic.startTime) > WAIT_FOR_TUTORIAL)
             showHints(true);
+
+        if (delta < 1)
+            animDelta += delta;
+        if (animActPassed >= 4){
+            for (int i=0; i< activeSnappers.size; i++)
+                activeSnappers.get(i).moveAct(animDelta);
+            animDelta = 0;
+            animActPassed = 0;
+        }
+        else animActPassed++;
     }
 
     @Override
@@ -363,4 +381,11 @@ public class MainStage extends MyStage implements ILogicListener {
     public void setDrawButtons(boolean drawButtons) {
         this.drawButtons = drawButtons;
     }
+
+    IPositionAnimationListener snapperAnimationListener = new IPositionAnimationListener() {
+        @Override
+        public void onAnimationEnd(MovableActor item) {
+            //TODO:
+        }
+    };
 }

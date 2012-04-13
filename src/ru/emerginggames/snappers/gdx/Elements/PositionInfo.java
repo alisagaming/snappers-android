@@ -1,5 +1,7 @@
 package ru.emerginggames.snappers.gdx.Elements;
 
+import ru.emerginggames.snappers.gdx.helper.IPositionable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay

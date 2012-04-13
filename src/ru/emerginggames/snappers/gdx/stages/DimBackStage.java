@@ -10,7 +10,7 @@ import ru.emerginggames.snappers.gdx.Elements.ColorRect;
  * Date: 06.04.12
  * Time: 11:29
  */
-public class DimBackStage extends Stage{
+public class DimBackStage extends MyStage{
     public static final float FADEIN_TIME = 0.4f;
     private ColorRect dimRect;
     private float sinceShow;
@@ -27,7 +27,9 @@ public class DimBackStage extends Stage{
         dimRect.setPosition(0,0,width, height);
     }
 
-    public void show(){
+    @Override
+    public void onShow(){
+        super.onShow();
         sinceShow = 0;
     }
 

@@ -24,7 +24,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     private SpriteBatch batch;
 
     protected Level level;
-    protected Stage currentStage;
+    protected MyStage currentStage;
     protected MainStage mainStage;
     protected GameOverStage gameOverStage;
     protected PausedStage pausedStage;
@@ -122,7 +122,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     public void resume() {
         Texture.invalidateAllTextures(Gdx.app);
         if (currentStage == hintMenu)
-            hintMenu.show();
+            hintMenu.onShow();
     }
 
     @Override
@@ -131,7 +131,8 @@ public class Game implements ApplicationListener, IGameEventListener {
         gameOverStage.dispose();
         pausedStage.dispose();
         hintMenu.dispose();
-        Resources.disposeTextures();
+        if (helpStage != null)
+            helpStage.dispose();
     }
 
     public void setStartLevel(Level level, LevelPack pack){
@@ -173,7 +174,6 @@ public class Game implements ApplicationListener, IGameEventListener {
             mainStage.showHints(true);
             return;
         }
-        hintMenu.show();
         setStage(hintMenu);
     }
 
@@ -187,7 +187,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void gameWon() {
         setStage(gameOverStage);
-        gameOverStage.showWon(true, ((IAppGameListener)Gdx.app).getAdHeight());
+        gameOverStage.show(true, ((IAppGameListener) Gdx.app).getAdHeight());
         if (isSoundEnabled)
             Resources.winSound.play(0.6f);
         ((IAppGameListener)Gdx.app).levelSolved(mainStage.getLogic().level);
@@ -196,13 +196,12 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void gameLost() {
         setStage(gameOverStage);
-        gameOverStage.showWon(false, ((IAppGameListener)Gdx.app).getAdHeight());
+        gameOverStage.show(false, ((IAppGameListener) Gdx.app).getAdHeight());
 
     }
 
     @Override
     public void onPauseBtn() {
-        pausedStage.show();
         Gdx.input.setInputProcessor(currentStage = pausedStage);
     }
 
@@ -231,7 +230,7 @@ public class Game implements ApplicationListener, IGameEventListener {
         return levelPack;
     }
 
-    private void setStage(Stage stage){
+    private void setStage(MyStage stage){
         if (stage == currentStage)
             return;
 
@@ -245,7 +244,10 @@ public class Game implements ApplicationListener, IGameEventListener {
         else if (currentStage == mainStage && stage != hintMenu)
             mainStage.setDrawButtons(false);
 
+        if (currentStage != null)
+            currentStage.onHide();
         Gdx.input.setInputProcessor(currentStage = stage);
+        stage.onShow();
     }
 
     public void setAdHeight(int height){

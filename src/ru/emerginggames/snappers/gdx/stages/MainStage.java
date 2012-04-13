@@ -30,7 +30,7 @@ import java.util.List;
  * Date: 26.03.12
  * Time: 2:18
  */
-public class MainStage extends Stage implements ILogicListener {
+public class MainStage extends MyStage implements ILogicListener {
     private static final float BLAST_ANIMATION_TIME = 0.1f;
     protected static final float POP_SOUND_DISTANCE = 0.1f;
     protected static final float BANG_FRAME_DURATION = 0.12f;

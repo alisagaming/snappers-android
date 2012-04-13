@@ -2,6 +2,7 @@ package ru.emerginggames.snappers.gdx.helper;
 
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable.Dir;
+import ru.emerginggames.snappers.gdx.Elements.PositionInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -48,6 +49,13 @@ public class PositionHelper {
             x -= (item.getWidth()/2 + margin );
 
         item.setPosition(Math.round(x), Math.round(y));
+    }
+
+    public static void Position(IPositionable item, PositionInfo info){
+        if (info.other != null)
+            Position(item, info.other, info.dir, info.margin);
+        else
+            Position(info.x, info.y, item, info.dir, info.margin);
     }
 
 

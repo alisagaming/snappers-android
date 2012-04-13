@@ -2,12 +2,14 @@ package ru.emerginggames.snappers.gdx.core;
 
 import android.graphics.*;
 import android.opengl.GLUtils;
+import android.os.AsyncTask;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.gdx.Elements.IPositionable;
+import ru.emerginggames.snappers.gdx.Elements.PositionInfo;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
 
 public class OutlinedTextSprite extends Sprite implements IPositionable, IOnTextureDataNeededHandler{
@@ -18,6 +20,10 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
     private Paint.FontMetrics fontMetrics;
     private int allocatedTextureWidth;
     private int allocatedTextureHeight;
+    private boolean updatingTexture;
+    private boolean postponeTextureUpdate;
+    private Bitmap updateBitmap;
+    protected PositionInfo positionInfo;
 
 
     String text;
@@ -79,14 +85,10 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
         Texture texture = getTexture();
         if (texture == null){
             texture = new Texture(new BitmapManagedTextureData(this, Pixmap.Format.RGBA4444));
+            setTexture(texture, 0, 0, measureTextWidth(), getTextHeight());
         }
-        else {
-            Bitmap  bitmap = makeTextBitmap(texture.getWidth(), texture.getHeight());
-            texture.bind();
-            GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, 0, 0, bitmap );
-            bitmap.recycle();
-        }
-        setTexture(texture, 0, 0, measureTextWidth(), getTextHeight());
+        else
+            startBitmapUpdate();
     }
 
     @Override
@@ -95,6 +97,16 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
             setTextTexture();
         if (getTexture() == null)
             return;
+        if (updatingTexture && updateBitmap != null){
+            updateTextureFromBitmap();
+            if (postponeTextureUpdate){
+                postponeTextureUpdate = false;
+                startBitmapUpdate();
+            }
+            else updatingTexture = false;
+            if (positionInfo != null)
+                PositionHelper.Position(this, positionInfo);
+        }
         super.draw(spriteBatch);
     }
 
@@ -181,11 +193,18 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
     @Override
     public void positionRelative(IPositionable other, Dir dir, float margin) {
         PositionHelper.Position(this, other, dir, margin);
+        if (positionInfo == null)
+            positionInfo = new PositionInfo();
+        positionInfo.set(other, dir, margin);
+
     }
 
     @Override
     public void positionRelative(float x, float y, Dir dir, float margin) {
         PositionHelper.Position(x, y, this, dir, margin);
+        if (positionInfo == null)
+            positionInfo = new PositionInfo();
+        positionInfo.set(x, y, dir, margin);
     }
 
     @Override
@@ -201,5 +220,37 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
     public void dispose(){
         if (getTexture() != null)
             getTexture().dispose();
+    }
+
+    private void startBitmapUpdate(){
+        if (updatingTexture){
+            postponeTextureUpdate = true;
+            return;
+        }
+
+        updatingTexture = true;
+        new UpdateBitmapAsyncTask().execute();
+    }
+
+    private void updateTextureFromBitmap(){
+        getTexture().bind();
+        GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, 0, 0, updateBitmap);
+        updateBitmap.recycle();
+        updateBitmap = null;
+        setTexture(getTexture(), 0, 0, measureTextWidth(), getTextHeight());
+    }
+
+
+    private class UpdateBitmapAsyncTask extends AsyncTask<Void, Void, Bitmap>{
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            Texture texture = getTexture();
+            return makeTextBitmap(texture.getWidth(), texture.getHeight());
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            updateBitmap = bitmap;
+        }
     }
 }

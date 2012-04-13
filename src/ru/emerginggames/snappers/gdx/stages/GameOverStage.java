@@ -95,19 +95,18 @@ public class GameOverStage extends DimBackStage{
         helpButton.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
 
         int textPos = Math.round(height * 0.6f);
-        wonText.setPosition(Math.round((width - wonText.getWidth())/2), textPos);
+        //wonText.setPosition(Math.round((width - wonText.getWidth())/2), textPos);
+        wonText.positionRelative(width/2, textPos, IPositionable.Dir.UP, 0);
         lostText.setPosition(Math.round((width - lostText.getWidth())/2), textPos);
         scoreText.positionRelative(wonText, IPositionable.Dir.DOWN, 5);
     }
 
-    public void showWon(boolean isWon, int adHeight){
+    public void show(boolean isWon, int adHeight){
         this.isWon = isWon;
 
         if (isWon){
             int score = logic.getScore(((IAppGameListener) Gdx.app).isLevelSolved(logic.level));
             scoreText.setText(String.format(SCORE, score));
-            wonText.setText(winMessages[(int)(Math.random()*winMessages.length)]);
-            wonText.positionRelative(width/2, wonText.getY(), IPositionable.Dir.UP, 0);
             ((IAppGameListener)Gdx.app).addScore(score);
         }
         else
@@ -115,11 +114,16 @@ public class GameOverStage extends DimBackStage{
 
         setAdHeight(adHeight);
 
-        scoreText.positionRelative(width/2, scoreText.getY(), IPositionable.Dir.UP, 0);
         nextButton.visible = nextButton.touchable = shopButton.visible = shopButton.touchable = isWon;
         helpButton.visible = helpButton.touchable = !isWon;
 
-        show();
+        onShow();
+    }
+
+    @Override
+    public void onHide() {
+        if (isWon)
+            wonText.setText(winMessages[(int)(Math.random()*winMessages.length)]);
     }
 
     public void setAdHeight(int adHeight){

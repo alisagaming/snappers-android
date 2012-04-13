@@ -12,7 +12,7 @@ import ru.emerginggames.snappers.gdx.Resources;
  * Date: 09.04.12
  * Time: 9:10
  */
-public class HelpStage extends Stage {
+public class HelpStage extends MyStage {
     IGameEventListener listener;
 
     Sprite helpSprite;

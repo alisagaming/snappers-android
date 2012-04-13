@@ -170,8 +170,8 @@ public class HintMenuStage extends MenuStage {
     }
 
     @Override
-    public void show() {
-        super.show();
+    public void onShow() {
+        super.onShow();
         showLine3 = false;
         int hintsLeft = ((IAppGameListener)Gdx.app).getHintsLeft();
         if (hintsLeft > 0)

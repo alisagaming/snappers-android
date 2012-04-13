@@ -137,28 +137,6 @@ public class Resources {
         hintFrames = makeAnimationFrames(hintTexture, Metrics.hintSize, Metrics.hintSize, false, 0, 11);
     }
 
-    public static void disposeTextures() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-        synchronized (syncLock){
-            if (snapperTexture != null)
-                snapperTexture.dispose();
-            if (blastTexture != null)
-            blastTexture.dispose();
-            if (bangTexture != null)
-                bangTexture.dispose();
-            if (dialog != null)
-                dialog.dispose();
-            if (bg != null)
-                bg.getTexture().dispose();
-            if (buttonAtlas != null)
-                buttonAtlas.dispose();
-            snapperTexture = blastTexture = bangTexture = dialog = null;
-            bg = null;
-            buttonAtlas = null;
-        }
-    }
-
-
     private static TextureRegion getTextureRegion(Texture texture, int tileWidth, int tileHeight, int i, int j) {
         return new TextureRegion(texture, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
     }

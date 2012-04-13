@@ -16,4 +16,5 @@ public class Level implements Serializable{
     public String solutions;
     public int tapsCount;
     public int packNumber;
+    public LevelPack pack;
 }

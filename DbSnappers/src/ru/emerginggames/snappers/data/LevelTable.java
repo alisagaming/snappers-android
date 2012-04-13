@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import ru.emerginggames.snappers.model.Level;
+import ru.emerginggames.snappers.model.LevelPack;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,18 +44,27 @@ public class LevelTable  extends SQLiteTable<Level>{
         super(context, isWriteable);
     }
 
-    public static Level getNextLevel(Context context, Level level){
-        return getLevel(context, level.number+1, level.packNumber);
+    public Level getNextLevel(Level level){
+        if (level.pack == null)
+            level.pack = LevelPackTable.get(level.packNumber, context);
+        return getLevel(level.number+1, level.pack);
     }
 
-    public static Level getLevel(Context context, int number, int levelPackId){
+    public static Level getLevel(Context context, int number, LevelPack pack){
         LevelTable table = new LevelTable(context, false);
-        String where = String.format("%s = %d AND %s = %d", KEY_LEVEL_PACK_ID, levelPackId, KEY_NUMBER, number);
         try {
-            return table.getByWhereStr(where);
+            return table.getLevel(number, pack);
         }finally {
             table.close();
         }
+    }
+
+    public Level getLevel(int number, LevelPack pack){
+        String where = String.format("%s = %d AND %s = %d", KEY_LEVEL_PACK_ID, pack.id, KEY_NUMBER, number);
+        Level level = getByWhereStr(where);
+        if (level != null)
+            level.pack = pack;
+        return level;
     }
     
     public static int countLevels(Context context, int levelPackId){

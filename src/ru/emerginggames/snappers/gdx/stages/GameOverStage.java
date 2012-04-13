@@ -39,6 +39,7 @@ public class GameOverStage extends DimBackStage{
     public GameOverStage(int width, int height, final IGameEventListener listener, GameLogic logic, SpriteBatch batch) {
         super(width, height, true, batch);
         this.logic = logic;
+        fadeinTime = 0.7f;
 
         nextButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[5], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override

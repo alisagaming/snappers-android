@@ -1,7 +1,6 @@
 package ru.emerginggames.snappers.gdx.stages;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 
 /**
@@ -11,7 +10,7 @@ import ru.emerginggames.snappers.gdx.Elements.ColorRect;
  * Time: 11:29
  */
 public class DimBackStage extends MyStage{
-    public static final float FADEIN_TIME = 0.4f;
+    protected float fadeinTime = 0.4f;
     private ColorRect dimRect;
     private float sinceShow;
 
@@ -29,7 +28,6 @@ public class DimBackStage extends MyStage{
 
     @Override
     public void onShow(){
-        super.onShow();
         sinceShow = 0;
     }
 
@@ -46,7 +44,7 @@ public class DimBackStage extends MyStage{
     }
 
     public float getOpacity(){
-        float opacity = sinceShow/FADEIN_TIME;
+        float opacity = sinceShow/ fadeinTime;
         return opacity>1? 1: opacity;
     }
 

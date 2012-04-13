@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import ru.emerginggames.snappers.Metrics;
+import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.logic.GameLogic;
 import ru.emerginggames.snappers.gdx.IGameEventListener;
 import ru.emerginggames.snappers.data.LevelTable;
@@ -277,7 +278,8 @@ public class MainStage extends MyStage implements ILogicListener {
     }
 
     public void nextLevel(){
-        Level next = LevelTable.getNextLevel((Context) Gdx.app, logic.level);
+        Level next = ((IAppGameListener)Gdx.app).getNextLevel(logic.level);
+
         if (next == null)
             listener.levelPackWon();
         else

@@ -15,8 +15,8 @@ import com.adwhirl.adapters.AdWhirlAdapter;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.tapjoy.TapjoyConnect;
-import com.tapjoy.VGStoreItem;
 import org.acra.ErrorReporter;
+import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.gdx.Resources;
@@ -25,10 +25,7 @@ import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.IOnAdShowListener;
 import ru.emerginggames.snappers.utils.MyAdWhirlLayout;
-import ru.emerginggames.snappers.utils.MyTapjoyStore;
 import ru.emerginggames.snappers.utils.TapjoyPointsListener;
-
-import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,7 +35,6 @@ import java.util.ArrayList;
  */
 public class GameActivity extends AndroidApplication implements IAppGameListener, IOnAdShowListener {
     public static final String LEVEL_PARAM_TAG = "Level";
-    public static final String LEVEL_PACK_PARAM_TAG = "Level pack";
     MyAdWhirlLayout adWhirlLayout;
     RelativeLayout rootLayout;
     boolean isShowingAd;
@@ -46,8 +42,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     boolean canShowAd;
     boolean mayShowAd;
     boolean isFinished = false;
-    MyTapjoyStore tapjoyStore;
     boolean wentTapjoy;
+    LevelTable levelTable;
 
     Game game;
 
@@ -58,18 +54,15 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
         Intent intent = getIntent();
         Level level = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
-        LevelPack pack = (LevelPack) intent.getSerializableExtra(LEVEL_PACK_PARAM_TAG);
         if (level == null)
             level = (Level) savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
-        if (pack == null)
-            pack = (LevelPack) savedInstanceState.getSerializable(LEVEL_PACK_PARAM_TAG);
-        if (level == null || pack == null) {
+        if (level == null || level.pack == null) {
             finish();
             return;
         }
 
         game = new Game();
-        game.setStartLevel(level, pack);
+        game.setStartLevel(level);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -107,13 +100,14 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         isShowingAd = false;
         shouldShowAd = false;
         canShowAd = false;
+        levelTable = new LevelTable(this);
+        levelTable.open(false);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(LEVEL_PARAM_TAG, game.getLevel());
-        outState.putSerializable(LEVEL_PACK_PARAM_TAG, game.getLevelPack());
     }
 
     @Override
@@ -129,6 +123,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
                 adWhirlLayout.setVisibility(View.GONE);
             }
             isFinished = true;
+            levelTable.close();
         }
     }
 
@@ -177,7 +172,11 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     @Override
     public void levelSolved(Level level) {
         UserPreferences.getInstance(this).unlockNextLevel(level);
+    }
 
+    @Override
+    public Level getNextLevel(Level currentLevel) {
+        return levelTable.getNextLevel(currentLevel);
     }
 
     @Override

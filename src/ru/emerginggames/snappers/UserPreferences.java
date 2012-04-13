@@ -132,12 +132,13 @@ public class UserPreferences {
     }
 
     public void unlockNextLevel(Level currentLevel){
-        LevelPack pack = LevelPackTable.get(currentLevel.packNumber, context);
-        int unlocked = getLevelUnlocked(pack);
+        if (currentLevel.pack == null)
+        currentLevel.pack = LevelPackTable.get(currentLevel.packNumber, context);
+        int unlocked = getLevelUnlocked(currentLevel.pack);
         if (unlocked> currentLevel.number)
             return;
 
-        putInt(String.format(LEVEL_UNLOCK, pack.name), currentLevel.number + 1, pack.name);
+        putInt(String.format(LEVEL_UNLOCK, currentLevel.pack.name), currentLevel.number + 1, currentLevel.pack.name);
     }
 
     public boolean isLevelSolved(Level level){

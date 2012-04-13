@@ -135,9 +135,9 @@ public class Game implements ApplicationListener, IGameEventListener {
             helpStage.dispose();
     }
 
-    public void setStartLevel(Level level, LevelPack pack){
+    public void setStartLevel(Level level){
         this.level = level;
-        levelPack = pack;
+        levelPack = level.pack;
     }
 
     @Override
@@ -186,11 +186,11 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void gameWon() {
+        ((IAppGameListener)Gdx.app).levelSolved(mainStage.getLogic().level);
         setStage(gameOverStage);
         gameOverStage.show(true, ((IAppGameListener) Gdx.app).getAdHeight());
         if (isSoundEnabled)
             Resources.winSound.play(0.6f);
-        ((IAppGameListener)Gdx.app).levelSolved(mainStage.getLogic().level);
     }
 
     @Override
@@ -202,7 +202,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onPauseBtn() {
-        Gdx.input.setInputProcessor(currentStage = pausedStage);
+        setStage(pausedStage);
     }
 
     @Override

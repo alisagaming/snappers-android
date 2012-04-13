@@ -97,16 +97,8 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
             setTextTexture();
         if (getTexture() == null)
             return;
-        if (updatingTexture && updateBitmap != null){
-            updateTextureFromBitmap();
-            if (postponeTextureUpdate){
-                postponeTextureUpdate = false;
-                startBitmapUpdate();
-            }
-            else updatingTexture = false;
-            if (positionInfo != null)
-                PositionHelper.Position(this, positionInfo);
-        }
+        if (updatingTexture && updateBitmap != null)
+            updateTexture();
         super.draw(spriteBatch);
     }
 
@@ -116,6 +108,8 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
             setTextTexture();
         if (getTexture() == null)
             return;
+        if (updatingTexture && updateBitmap != null)
+            updateTexture();
         super.draw(spriteBatch, alphaModulation);
     }
 
@@ -232,20 +226,34 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
         new UpdateBitmapAsyncTask().execute();
     }
 
-    private void updateTextureFromBitmap(){
+    private void updateTexture(){
+
         getTexture().bind();
         GLUtils.texSubImage2D(GL10.GL_TEXTURE_2D, 0, 0, 0, updateBitmap);
         updateBitmap.recycle();
         updateBitmap = null;
         setTexture(getTexture(), 0, 0, measureTextWidth(), getTextHeight());
-    }
 
+        if (postponeTextureUpdate){
+            postponeTextureUpdate = false;
+            updatingTexture = false;
+            startBitmapUpdate();
+        }
+        else updatingTexture = false;
+        if (positionInfo != null)
+            PositionHelper.Position(this, positionInfo);
+    }
 
     private class UpdateBitmapAsyncTask extends AsyncTask<Void, Void, Bitmap>{
         @Override
         protected Bitmap doInBackground(Void... params) {
             Texture texture = getTexture();
             return makeTextBitmap(texture.getWidth(), texture.getHeight());
+        }
+
+        @Override
+        protected void onCancelled() {
+            startBitmapUpdate();
         }
 
         @Override

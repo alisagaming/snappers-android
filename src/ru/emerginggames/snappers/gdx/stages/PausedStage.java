@@ -18,18 +18,13 @@ import ru.emerginggames.snappers.gdx.core.OutlinedTextSprite;
  */
 public class PausedStage extends MenuStage{
     public static final String GAME_PAUSED = "Game paused";
-    //protected Sprite menuBack;
     protected SimpleButton resumeBtn;
     protected SimpleButton restartBtn;
     protected SimpleButton menuBtn;
     protected SimpleButton storeBtn;
     protected OutlinedTextSprite titleText;
     IGameEventListener listener;
-    //int menuX;
-    //int menuY;
     com.badlogic.gdx.graphics.Color color;
-    
-    
 
     public PausedStage(int width, int height, IGameEventListener listener, SpriteBatch batch) {
         super(width, height, true, batch);

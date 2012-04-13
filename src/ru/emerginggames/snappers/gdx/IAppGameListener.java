@@ -27,5 +27,6 @@ public interface IAppGameListener {
     public int getAdHeight();
     public void gotScreenSize(int width, int height);
     public void freeHintsPressed();
+    public Level getNextLevel(Level currentLevel);
 
 }

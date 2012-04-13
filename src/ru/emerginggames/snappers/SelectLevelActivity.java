@@ -65,9 +65,8 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         SoundManager.getInstance(this).playButtonSound();
         ((SnappersApplication)getApplication()).setSwitchingActivities();
         Intent intent = new Intent(this, GameActivity.class);
-        Level level = LevelTable.getLevel(this, number, pack.id);
+        Level level = LevelTable.getLevel(this, number, pack);
         intent.putExtra(GameActivity.LEVEL_PARAM_TAG, level);
-        intent.putExtra(GameActivity.LEVEL_PACK_PARAM_TAG, pack);
         startActivityForResult(intent, 0);
     }
 

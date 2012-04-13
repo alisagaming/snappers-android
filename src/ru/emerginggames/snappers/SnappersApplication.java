@@ -49,7 +49,6 @@ public class SnappersApplication extends Application {
         super.onCreate();
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.ACRA)
             ErrorReporter.getInstance().putCustomData("git_commit", Settings.getGitCommitString(getApplicationContext()));
-        musicStatusChanged();
     }
 
     public void musicStatusChanged(){
@@ -77,6 +76,8 @@ public class SnappersApplication extends Application {
     }
 
     public void activityResumed(Activity activity) {
+        if (currentActivity == null)
+            musicStatusChanged();
         currentActivity = activity;
         isActivityActive = true;
         isSwitchingActivity = false;
@@ -88,7 +89,7 @@ public class SnappersApplication extends Application {
     }
 
     private void startMusicifShould(){
-        if (currentActivity != null && isScreenOn && isUnlocked && isActivityActive)
+        if (isMusicEnabled && currentActivity != null && isScreenOn && isUnlocked && isActivityActive)
             SoundManager.getInstance(currentActivity).startMusic();
     }
 

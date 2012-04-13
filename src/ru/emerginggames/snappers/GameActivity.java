@@ -119,6 +119,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     @Override
     protected void onPause() {
         super.onPause();
+        if (isFinishing())
+            ((SnappersApplication)getApplication()).setSwitchingActivities();
         ((SnappersApplication)getApplication()).activityPaused();
         if (isFinishing()) {
             if (adWhirlLayout != null){

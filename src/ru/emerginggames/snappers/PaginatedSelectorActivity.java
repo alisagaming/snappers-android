@@ -66,11 +66,12 @@ public class PaginatedSelectorActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if (isFinishing())
+            ((SnappersApplication)getApplication()).setSwitchingActivities();
         ((SnappersApplication)getApplication()).activityPaused();
     }
 
     public void onBackButtonClick(View v){
-        ((SnappersApplication)getApplication()).setSwitchingActivities();
         SoundManager.getInstance(this).playButtonSound();
         finish();
     }

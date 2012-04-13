@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import org.acra.ErrorReporter;
+import ru.emerginggames.snappers.Settings;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
@@ -161,7 +163,8 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
     @Override
     public void pushSubView(ViewGroup subView) {
         isLoadFailed = false;
-        subView.setBackgroundColor(0x80ff0000);
+        if (Settings.SEND_EXTENDED_AD_INFO)
+            ErrorReporter.getInstance().handleSilentException(new Exception("successfully received ad"));
         super.pushSubView(subView);
         invalidate();
         if (adShowListener != null)
@@ -170,6 +173,8 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
 
     public void rollover() {
         isLoadFailed = true;
+        if (Settings.SEND_EXTENDED_AD_INFO)
+            ErrorReporter.getInstance().handleSilentException(new Exception("failed to receive ad"));
         adShowListener.onAdFail();
         nextRation = adWhirlManager.getRollover();
         handler.post(new HandleAdRunnable(this));

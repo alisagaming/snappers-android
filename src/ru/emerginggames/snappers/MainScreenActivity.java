@@ -55,10 +55,7 @@ public class MainScreenActivity extends Activity {
 
     public void onMusicButtonClick(View v){
         UserPreferences.getInstance(this).setMusic(((CheckBox)v).isChecked());
-        if (((CheckBox)v).isChecked())
-            SoundManager.getInstance(this).startMusicIfShould();
-        else
-            SoundManager.getInstance(this).stopMusic();
+        ((SnappersApplication)getApplication()).musicStatusChanged();
 
         SoundManager.getInstance(this).playButtonSound();
     }
@@ -76,13 +73,13 @@ public class MainScreenActivity extends Activity {
 
     public void onStoreButtonClick(View v){
         SoundManager.getInstance(this).playButtonSound();
-        SoundManager.getInstance(this).riseContinuePlayingFlag();
+        ((SnappersApplication)getApplication()).setSwitchingActivities();
         startActivity(new Intent(this, StoreActivity.class));
     }
 
     public void onPlayButtonClick(View v){
         SoundManager.getInstance(this).playButtonSound();
-        SoundManager.getInstance(this).riseContinuePlayingFlag();
+        ((SnappersApplication)getApplication()).setSwitchingActivities();
         startActivity(new Intent(this, SelectPackActivity.class));
     }
 
@@ -91,14 +88,13 @@ public class MainScreenActivity extends Activity {
         super.onResume();
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
             checkForCrashes();
-        SoundManager.getInstance(this).startMusicIfShould();
+        ((SnappersApplication)getApplication()).activityResumed(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        SoundManager.getInstance(this).stopMusic();
-
+        ((SnappersApplication)getApplication()).activityPaused();
     }
 
     private void checkForCrashes() {

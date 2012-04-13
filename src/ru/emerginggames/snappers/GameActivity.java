@@ -16,6 +16,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.tapjoy.TapjoyConnect;
 import com.tapjoy.VGStoreItem;
+import org.acra.ErrorReporter;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.gdx.Resources;
@@ -118,7 +119,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     @Override
     protected void onPause() {
         super.onPause();
-        SoundManager.getInstance(this).stopMusic();
+        ((SnappersApplication)getApplication()).activityPaused();
         if (isFinishing()) {
             if (adWhirlLayout != null){
                 adWhirlLayout.setAdShowListener(null);
@@ -138,10 +139,10 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
             if (game.initDone)
                 game.setAdHeight(0);
         }
-        SoundManager.getInstance(this).startMusicIfShould();
+        ((SnappersApplication)getApplication()).activityResumed(this);
+
         if (wentTapjoy){
             TapjoyConnect.getTapjoyConnectInstance().getTapPoints(new TapjoyPointsListener(getApplicationContext()));
-            //tapjoyStore.updatePurchasedItems();
             wentTapjoy = false;
         }
     }
@@ -159,13 +160,6 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public void freeHintsPressed() {
-//        if (tapjoyStore == null)
-//            tapjoyStore = new MyTapjoyStore(getApplicationContext(), null);
-        //TapjoyConnect.getTapjoyConnectInstance().setEarnedPointsNotifier(new TapjoyPointsListener(getApplicationContext()));
-        //TapjoyConnect.getTapjoyConnectInstance().setUserDefinedColor(0xff808080);
-
-        //TapjoyConnect.getTapjoyConnectInstance().checkForVirtualGoods(tapjoyStore);
-        //TapjoyConnect.getTapjoyConnectInstance().showVirtualGoods(tapjoyStore);
         wentTapjoy = true;
         TapjoyConnect.getTapjoyConnectInstance().showOffers();
 
@@ -219,14 +213,22 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
 
     @Override
     public void showAd() {
-        if (!mayShowAd)
+        if (!mayShowAd){
+            if (Settings.SEND_EXTENDED_AD_INFO)
+                ErrorReporter.getInstance().handleSilentException(new Exception("may not show ad"));
             return;
+        }
         shouldShowAd = true;
-        if (!canShowAd)
+        if (!canShowAd){
+            if (Settings.SEND_EXTENDED_AD_INFO)
+                ErrorReporter.getInstance().handleSilentException(new Exception("can't show ad - it's not available"));
             return;
+        }
         isShowingAd = true;
         MyAdWhirlLayout.setEnforceUpdate(true);
         runOnUiThread(showAD);
+        if (Settings.SEND_EXTENDED_AD_INFO)
+            ErrorReporter.getInstance().handleSilentException(new Exception("showing ad"));
     }
 
     @Override

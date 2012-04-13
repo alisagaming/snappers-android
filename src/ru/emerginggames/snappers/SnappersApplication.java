@@ -1,11 +1,15 @@
 package ru.emerginggames.snappers;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import org.acra.ACRA;
 import org.acra.ErrorReporter;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-
 
 
 /**
@@ -30,6 +34,14 @@ import org.acra.annotation.ReportsCrashes;
         resDialogOkToast = R.string.crash_dialog_ok_toast // optional. displays a Toast message when the user accepts to send a report.
 )
 public class SnappersApplication extends Application {
+    private boolean isActivityActive;
+    private boolean isSwitchingActivity;
+    private boolean isScreenOn = true;
+    private boolean isUnlocked = true;
+    private boolean isMusicEnabled;
+    private Activity currentActivity;
+    private Receiver screenReceiver;
+
     @Override
     public void onCreate() {
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.ACRA)
@@ -37,5 +49,69 @@ public class SnappersApplication extends Application {
         super.onCreate();
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.ACRA)
             ErrorReporter.getInstance().putCustomData("git_commit", Settings.getGitCommitString(getApplicationContext()));
+        musicStatusChanged();
+    }
+
+    public void musicStatusChanged(){
+        isMusicEnabled = UserPreferences.getInstance(getApplicationContext()).getMusic();
+        if (isMusicEnabled){
+            if (screenReceiver == null)
+                screenReceiver = new Receiver();
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_ON);
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(Intent.ACTION_USER_PRESENT);
+            getApplicationContext().registerReceiver(screenReceiver, filter);
+            startMusicifShould();
+        } else{
+            if (screenReceiver != null)
+                unregisterReceiver(screenReceiver);
+            stopMusic();
+        }
+    }
+
+    public void activityPaused() {
+        isActivityActive = false;
+        if (!isSwitchingActivity)
+            stopMusic();
+    }
+
+    public void activityResumed(Activity activity) {
+        currentActivity = activity;
+        isActivityActive = true;
+        isSwitchingActivity = false;
+        startMusicifShould();
+    }
+
+    public void setSwitchingActivities() {
+        isSwitchingActivity = true;
+    }
+
+    private void startMusicifShould(){
+        if (currentActivity != null && isScreenOn && isUnlocked && isActivityActive)
+            SoundManager.getInstance(currentActivity).startMusic();
+    }
+
+    private void stopMusic(){
+        if (currentActivity != null)
+            SoundManager.getInstance(currentActivity).stopMusic();
+    }
+
+    private class Receiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+                isScreenOn = false;
+                isUnlocked = false;
+            } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+                isScreenOn = true;
+            }
+            else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+                isUnlocked = true;
+                startMusicifShould();
+            }
+
+        }
     }
 }

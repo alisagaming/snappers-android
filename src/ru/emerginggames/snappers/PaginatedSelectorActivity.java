@@ -60,23 +60,23 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
         String scoreStr = getResources().getString(R.string.score, UserPreferences.getInstance(this).getScore());
         scoreView.setText(scoreStr);
-        SoundManager.getInstance(this).startMusicIfShould();
+        ((SnappersApplication)getApplication()).activityResumed(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        SoundManager.getInstance(this).stopMusic();
+        ((SnappersApplication)getApplication()).activityPaused();
     }
 
     public void onBackButtonClick(View v){
-        SoundManager.getInstance(this).riseContinuePlayingFlag();
+        ((SnappersApplication)getApplication()).setSwitchingActivities();
         SoundManager.getInstance(this).playButtonSound();
         finish();
     }
 
     public void onStoreButtonClick(View v){
-        SoundManager.getInstance(this).riseContinuePlayingFlag();
+        ((SnappersApplication)getApplication()).setSwitchingActivities();
         SoundManager.getInstance(this).playButtonSound();
         startActivity(new Intent(this, StoreActivity.class));
     }

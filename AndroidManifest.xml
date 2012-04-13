@@ -11,6 +11,9 @@
     <!-- for updates by HockeyApp, for TapJoy -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- for ACRA, TODO: remove on production -->
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="13"/>
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".SnappersApplication" android:debuggable="true">
 

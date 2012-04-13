@@ -59,7 +59,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
             return;
         }
 
-        SoundManager.getInstance(this).riseContinuePlayingFlag();
+        ((SnappersApplication)getApplication()).setSwitchingActivities();
         Intent intent = new Intent(this, SelectLevelActivity.class);
         intent.putExtra(SelectLevelActivity.LEVEL_PACK_TAG, levelPacks[number]);
         startActivity(intent);

@@ -20,27 +20,27 @@ public class SoundManager {
     SoundPool soundPool;
     int buttonSoundId = 0;
     MediaPlayer mediaPlayer;
-    boolean continuePlayingFlag;
+    //boolean continuePlayingFlag;
 
     public SoundManager(Activity context) {
         this.context = context;
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         mediaPlayer = new MediaPlayer();
-        try{
+        try {
             AssetFileDescriptor descriptor = context.getAssets().openFd("sounds/button2g.mp3");
-             buttonSoundId= soundPool.load(descriptor, 1);
-        } catch (IOException e){ throw new RuntimeException(e);}
+            buttonSoundId = soundPool.load(descriptor, 1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        try{
+        try {
             AssetFileDescriptor afd = context.getAssets().openFd("sounds/soundtrack.mp3");
             mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-        } catch (IOException e){}
-
-        if (UserPreferences.getInstance(context).getMusic())
-            startMusicIfShould();
+        } catch (IOException e) {
+        }
     }
 
-    public static SoundManager getInstance(Activity context){
+    public static SoundManager getInstance(Activity context) {
         if (instance == null)
             instance = new SoundManager(context);
         else
@@ -49,32 +49,28 @@ public class SoundManager {
         return instance;
     }
 
-    public void setUp(){
+    public void setUp() {
         context.setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
-    public void playButtonSound(){
+    public void playButtonSound() {
         if (UserPreferences.getInstance(context).getSound())
             soundPool.play(buttonSoundId, 1.0f, 1.0f, 0, 0, 1);
     }
 
-    public void startMusicIfShould(){
-        continuePlayingFlag = false;
-        if (mediaPlayer.isPlaying() || ! UserPreferences.getInstance(context).getMusic())
+    public void startMusic() {
+        if (mediaPlayer.isPlaying())
             return;
-        try{
-        mediaPlayer.prepare();
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
-        }catch (IOException e){}
+        try {
+            mediaPlayer.prepare();
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        } catch (IOException e) {
+        }
     }
 
-    public void stopMusic(){
-        if (!continuePlayingFlag && mediaPlayer.isPlaying())
+    public void stopMusic() {
+        if (mediaPlayer.isPlaying())
             mediaPlayer.stop();
-    }
-
-    public void riseContinuePlayingFlag(){
-        continuePlayingFlag = true;
     }
 }

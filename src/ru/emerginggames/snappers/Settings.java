@@ -1,6 +1,8 @@
 package ru.emerginggames.snappers;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import ru.emerginggames.snappers.data.CryptHelperDES;
 
@@ -24,6 +26,9 @@ public class Settings {
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
     public static final String BUGSENSE_API_KEY = "8a555912";
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
+    public static final boolean SEND_EXTENDED_AD_INFO = false;
+
+
 
 
     public static String getAdwhirlKey(Context context){
@@ -63,4 +68,6 @@ public class Settings {
         //TODO: encrypt
         return "PfVKO1NNtOicS512X2jA";
     }
+
+
 }

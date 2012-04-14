@@ -131,7 +131,7 @@ public class SnapperView extends MovableActor{
     }
 
     public void shiftRandom(float time){
-        float shiftY = (float)(Math.random() * halfSize/8) + halfSize/10;
+        float shiftY = ((float)(Math.random() * halfSize/12) + halfSize/14) * Math.signum(dy);
         /*float shiftX = (float)(Math.random() * halfSize/12) + halfSize/16;
         int rnd =  (int)(Math.random()*3);
         if (rnd %2 == 0)
@@ -139,7 +139,7 @@ public class SnapperView extends MovableActor{
         if (rnd>0)
             shiftY *= -Math.signum(dy);*/
 
-        setNext(this.x + halfSize, this.y + halfSize + shiftY, time);
+        setNext(this.x + halfSize, this.y + halfSize - shiftY, time);
     }
 
 

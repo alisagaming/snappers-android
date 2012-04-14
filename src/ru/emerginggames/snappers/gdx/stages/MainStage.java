@@ -171,7 +171,7 @@ public class MainStage extends MyStage implements ILogicListener {
 
         if (delta < 1)
             animDelta += delta;
-        if (animDelta >= 0.1f){
+        if (animDelta >= 0.05f){
             for (int i=0; i< activeSnappers.size; i++)
                 activeSnappers.get(i).moveAct(animDelta);
             animDelta = 0;

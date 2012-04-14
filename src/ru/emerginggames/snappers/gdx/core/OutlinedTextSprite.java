@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.gdx.helper.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.PositionInfo;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
+import ru.emerginggames.snappers.gdx.helper.WorkerThread;
 
 public class OutlinedTextSprite extends Sprite implements IPositionable, IOnTextureDataNeededHandler{
 
@@ -24,6 +25,7 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
     private boolean postponeTextureUpdate;
     private Bitmap updateBitmap;
     protected PositionInfo positionInfo;
+    protected Object bmpMutex = new Object();
 
 
     String text;
@@ -108,8 +110,13 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
             setTextTexture();
         if (getTexture() == null)
             return;
-        if (updatingTexture && updateBitmap != null)
-            updateTexture();
+        if (updatingTexture){
+            synchronized (bmpMutex){
+                if (updateBitmap != null)
+                    updateTexture();
+            }
+        }
+
         super.draw(spriteBatch, alphaModulation);
     }
 
@@ -223,7 +230,7 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
         }
 
         updatingTexture = true;
-        new UpdateBitmapAsyncTask().execute();
+        WorkerThread.getInstance().post(updateTextureRunable);
     }
 
     private void updateTexture(){
@@ -244,21 +251,14 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
             PositionHelper.Position(this, positionInfo);
     }
 
-    private class UpdateBitmapAsyncTask extends AsyncTask<Void, Void, Bitmap>{
+    private Runnable updateTextureRunable = new Runnable() {
         @Override
-        protected Bitmap doInBackground(Void... params) {
+        public void run() {
             Texture texture = getTexture();
-            return makeTextBitmap(texture.getWidth(), texture.getHeight());
+            Bitmap prepared = makeTextBitmap(texture.getWidth(), texture.getHeight());
+            synchronized (bmpMutex){
+                updateBitmap = prepared;
+            }
         }
-
-        @Override
-        protected void onCancelled() {
-            startBitmapUpdate();
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            updateBitmap = bitmap;
-        }
-    }
+    };
 }

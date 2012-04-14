@@ -95,8 +95,7 @@ public class GameOverStage extends DimBackStage{
         nextButton.positionRelative(shopButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
         helpButton.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
 
-        int textPos = Math.round(height * 0.6f);
-        //wonText.setPosition(Math.round((width - wonText.getWidth())/2), textPos);
+        int textPos = Math.round(height * 0.55f);
         wonText.positionRelative(width/2, textPos, IPositionable.Dir.UP, 0);
         lostText.setPosition(Math.round((width - lostText.getWidth())/2), textPos);
         scoreText.positionRelative(wonText, IPositionable.Dir.DOWN, 5);

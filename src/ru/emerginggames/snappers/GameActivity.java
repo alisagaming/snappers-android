@@ -52,10 +52,13 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         Resources.context = this;
         Resources.getFont(this);
 
-        Intent intent = getIntent();
-        Level level = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
-        if (level == null)
+        Level level = null;
+        if (savedInstanceState != null && savedInstanceState.containsKey(LEVEL_PARAM_TAG))
             level = (Level) savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
+        Intent intent = getIntent();
+        if (intent.hasExtra(LEVEL_PARAM_TAG))
+            level = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
+
         if (level == null || level.pack == null) {
             finish();
             return;

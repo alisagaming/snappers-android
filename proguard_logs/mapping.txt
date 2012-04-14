@@ -5596,29 +5596,29 @@ ru.emerginggames.snappers.gdx.Game -> ru.emerginggames.snappers.c.a:
     boolean objectsCreated -> n
     boolean isSoundEnabled -> o
     boolean initDone -> p
-    44:46:void create() -> a
-    75:85:void resize(int,int) -> a
-    89:116:void render() -> b
-    124:127:void resume() -> c
-    131:137:void dispose() -> d
-    140:142:void setStartLevel(ru.emerginggames.snappers.model.Level) -> a
-    146:147:void onShopBtn() -> e
-    151:153:void onNextBtn() -> f
-    157:159:void onRestartBtn() -> g
-    163:164:void onResumeBtn() -> h
-    168:169:void onMenuBtn() -> i
-    173:179:void onHintBtn() -> j
-    183:186:void useHint() -> k
-    190:195:void gameWon() -> l
-    199:202:void gameLost() -> m
-    206:207:void onPauseBtn() -> n
-    211:214:void onHelp() -> o
-    218:219:void levelPackWon() -> p
-    223:224:void onHelpDone() -> q
-    227:227:ru.emerginggames.snappers.model.Level getLevel() -> r
-    235:252:void setStage(ru.emerginggames.snappers.gdx.stages.MyStage) -> a
-    255:257:void setAdHeight(int) -> a
-    260:270:void backButtonPressed() -> s
+    45:47:void create() -> a
+    76:86:void resize(int,int) -> a
+    90:117:void render() -> b
+    125:128:void resume() -> c
+    132:138:void dispose() -> d
+    141:143:void setStartLevel(ru.emerginggames.snappers.model.Level) -> a
+    147:148:void onShopBtn() -> e
+    152:154:void onNextBtn() -> f
+    158:160:void onRestartBtn() -> g
+    164:165:void onResumeBtn() -> h
+    169:170:void onMenuBtn() -> i
+    174:180:void onHintBtn() -> j
+    184:187:void useHint() -> k
+    191:196:void gameWon() -> l
+    200:203:void gameLost() -> m
+    207:208:void onPauseBtn() -> n
+    212:215:void onHelp() -> o
+    219:220:void levelPackWon() -> p
+    224:225:void onHelpDone() -> q
+    228:228:ru.emerginggames.snappers.model.Level getLevel() -> r
+    236:253:void setStage(ru.emerginggames.snappers.gdx.stages.MyStage) -> a
+    256:258:void setAdHeight(int) -> a
+    261:271:void backButtonPressed() -> s
 ru.emerginggames.snappers.gdx.IAppGameListener -> ru.emerginggames.snappers.c.b:
     void launchStore() -> d
     void levelPackWon(ru.emerginggames.snappers.model.LevelPack) -> a

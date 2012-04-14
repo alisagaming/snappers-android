@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import ru.emerginggames.snappers.Settings;
 import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 import ru.emerginggames.snappers.gdx.stages.*;
 import ru.emerginggames.snappers.model.Level;
@@ -110,8 +111,8 @@ public class Game implements ApplicationListener, IGameEventListener {
         }
 
         batch.begin();
-
-        Resources.fnt1.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, Resources.fnt1.getLineHeight());
+        if (Settings.DEBUG)
+            Resources.fnt1.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, Resources.fnt1.getLineHeight());
         batch.end();
     }
 

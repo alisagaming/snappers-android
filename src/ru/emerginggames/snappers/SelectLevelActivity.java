@@ -31,25 +31,25 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         Intent intent = getIntent();
         if (!intent.hasExtra(LEVEL_PACK_TAG))
             finish();
-        pack = (LevelPack)intent.getSerializableExtra(LEVEL_PACK_TAG);
+        pack = (LevelPack) intent.getSerializableExtra(LEVEL_PACK_TAG);
         pack.levelCount = LevelTable.countLevels(this, pack.id);
 
         adapter = new LevelPageAdapter(getSupportFragmentManager(), pack, this);
 
-        FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
+        FixedRatioPager pager = (FixedRatioPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setPageMargin(20);
         pager.setRatio(1);
-        int padV = getWindowManager().getDefaultDisplay().getWidth()/10;
-        pager.setInnerPaddings(padV, padV/3, padV, padV/3);
-        adapter.setInnerPaddings(padV, padV/3, padV, padV/3);
+        int padV = getWindowManager().getDefaultDisplay().getWidth() / 10;
+        pager.setInnerPaddings(padV, padV / 3, padV, padV / 3);
+        adapter.setInnerPaddings(padV, padV / 3, padV, padV / 3);
 
         com.viewpagerindicator.CirclePageIndicator
-        mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
+                mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
 
         View footer = findViewById(R.id.footer);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)footer.getLayoutParams();
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) footer.getLayoutParams();
         lp.weight = 1;
         footer.setLayoutParams(lp);
     }
@@ -63,7 +63,7 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
     @Override
     public void onItemSelected(int number) {
         SoundManager.getInstance(this).playButtonSound();
-        ((SnappersApplication)getApplication()).setSwitchingActivities();
+        ((SnappersApplication) getApplication()).setSwitchingActivities();
         Intent intent = new Intent(this, GameActivity.class);
         Level level = LevelTable.getLevel(this, number, pack);
         intent.putExtra(GameActivity.LEVEL_PARAM_TAG, level);
@@ -77,14 +77,22 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
             finish();
     }
 
-    protected void startPreload(){
+    protected void startPreload() {
         if (preloadTask != null)
             return;
 
         findViewById(R.id.resLoadIndicator).setBackgroundColor(0x80800000);
         findViewById(R.id.bgLoadIndicator).setBackgroundColor(0x80800000);
 
-        preloadTask = new AsyncTask<Integer, Integer, Integer>(){
+        preloadTask = new AsyncTask<Integer, Integer, Integer>() {
+            @Override
+            protected void onPreExecute() {
+                if (Settings.DEBUG) {
+                    findViewById(R.id.resLoadIndicator).setVisibility(View.VISIBLE);
+                    findViewById(R.id.bgLoadIndicator).setVisibility(View.VISIBLE);
+                }
+            }
+
             @Override
             protected Integer doInBackground(Integer... params) {
                 Resources.preparePreload();
@@ -96,10 +104,12 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
 
             @Override
             protected void onProgressUpdate(Integer... values) {
-                if (values[0] == 1)
-                    findViewById(R.id.resLoadIndicator).setBackgroundColor(0x80008000);
-                else if (values[0] == 2)
-                    findViewById(R.id.bgLoadIndicator).setBackgroundColor(0x80008000);
+                if (Settings.DEBUG) {
+                    if (values[0] == 1)
+                        findViewById(R.id.resLoadIndicator).setBackgroundColor(0x80008000);
+                    else if (values[0] == 2)
+                        findViewById(R.id.bgLoadIndicator).setBackgroundColor(0x80008000);
+                }
             }
 
             @Override

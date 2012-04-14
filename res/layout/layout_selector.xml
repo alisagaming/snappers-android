@@ -11,11 +11,11 @@
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content">
             <LinearLayout android:id="@+id/resLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
-                          android:background="#80FF0000"
+                          android:background="#80FF0000" android:visibility="gone"
                     />
 
             <LinearLayout android:id="@+id/bgLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
-                          android:background="#80FF0000"
+                          android:background="#80FF0000" android:visibility="gone"
                     />
 
             <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/score"

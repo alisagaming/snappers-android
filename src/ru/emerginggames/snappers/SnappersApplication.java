@@ -21,7 +21,7 @@ import org.acra.annotation.ReportsCrashes;
 
 @ReportsCrashes(formKey = "dE9Tby0xc2puWlBCXzhJb3lpQWxGTWc6MQ",
         /*formUri = "http://www.bugsense.com/api/acra?api_key=8a555912",*/
-        mode = ReportingInteractionMode.NOTIFICATION,
+        mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text, // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds
         resNotifTickerText = R.string.crash_notif_ticker_text,
         resNotifTitle = R.string.crash_notif_title,

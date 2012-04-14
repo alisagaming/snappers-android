@@ -1,7 +1,5 @@
 package ru.emerginggames.snappers.gdx.helper;
 
-import android.util.FloatMath;
-
 /**
  * Created by IntelliJ IDEA.
  * User: babay

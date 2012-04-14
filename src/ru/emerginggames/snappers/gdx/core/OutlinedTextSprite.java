@@ -2,7 +2,6 @@ package ru.emerginggames.snappers.gdx.core;
 
 import android.graphics.*;
 import android.opengl.GLUtils;
-import android.os.AsyncTask;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;

@@ -91,7 +91,7 @@ public class Resources {
     }
 
     public static void loadTextures(boolean isGold) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         loadSnapperTextures(isGold);
         loadButtonTextures();
         loadBmpFonts();
@@ -102,7 +102,7 @@ public class Resources {
     }
 
     private static void loadButtonTextures() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         fillButtonRegions();
 
         dialog = new Texture(Preload.dialog);
@@ -111,7 +111,7 @@ public class Resources {
 
 
     private static void loadSnapperTextures(boolean isGold) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         preload();
         int snapperSize = Metrics.snapperSize;
 
@@ -142,7 +142,7 @@ public class Resources {
     }
 
     private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         TextureRegion[][] frames2 = TextureRegion.split(texture, tileWidth, tileHeight);
         if (frames2.length == 1)
             return null;
@@ -167,7 +167,7 @@ public class Resources {
     }
 
     private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int start, int size) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         int cols = texture.getWidth() / tileWidth;
 
         TextureRegion[] frames = new TextureRegion[goBack ? size * 2 - 2 : size];
@@ -212,7 +212,7 @@ public class Resources {
     }
 
     public static boolean loadBg(String name) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         preloadBg(name);
         if (Preload.bg == null)
             return false;
@@ -222,7 +222,7 @@ public class Resources {
     }
 
     public static TextureRegion normLoadTexture(String name, Pixmap.Format format) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         try {
             Bitmap bgSource = BitmapFactory.decodeStream(context.getAssets().open(name));
 
@@ -236,7 +236,7 @@ public class Resources {
     }
 
     public static void loadSounds() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         popSounds = new Sound[5];
         popSounds[0] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop1.mp3"));
         popSounds[1] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop2.mp3"));
@@ -249,14 +249,14 @@ public class Resources {
     }
 
     public static void preload() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         init();
         createPreload();
         preparePreload();
     }
 
     protected static void createPreload() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Gdx.files == null)
             return;
         synchronized (syncLock) {
@@ -279,7 +279,7 @@ public class Resources {
     }
 
     public static void preparePreload() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         synchronized (syncLock) {
             prepareData(Preload.bang);
             prepareData(Preload.blast);
@@ -291,25 +291,25 @@ public class Resources {
     }
 
     protected static void prepareData(TextureData data) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (data != null && !data.isPrepared())
             data.prepare();
     }
 
     protected static void prepareData(PrepareableTextureAtlas.TextureAtlasData data) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (data != null && !data.isPrepared())
             data.prepare();
     }
 
     public static void preloadBg(String name) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         createBgPreload(name);
         prepareBgData();
     }
 
     public static void prepareBgData() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Preload.isBgLoading)
             return;
 
@@ -325,7 +325,7 @@ public class Resources {
     }
 
     protected static void createBgPreload(String name) {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (name.equals(Preload.bgName) && Preload.bg != null)
             return;
         utilizeBg();
@@ -337,7 +337,7 @@ public class Resources {
     }
 
     protected static void utilizeBg() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Preload.bg == null)
             return;
         if (Preload.bg.isPrepared())
@@ -352,7 +352,7 @@ public class Resources {
     }
 
     public static TextureRegion getHelpTexture() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (help == null) {
             Texture helpTexture = new Texture(Gdx.files.internal("instructions.png"), Pixmap.Format.RGBA4444, false);
             helpTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -363,7 +363,7 @@ public class Resources {
     }
 
     private static void fillButtonRegions() {
-        Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         buttonAtlas = new PrepareableTextureAtlas(Preload.buttonAtlas);
         squareButtonFrames = new TextureRegion[12];
         for (int i = 0; i < squareButtonFrames.length; i++)

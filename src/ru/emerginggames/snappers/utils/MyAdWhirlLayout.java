@@ -106,7 +106,7 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
         }
         enforceUpdate = false;
 
-        Log.i(AdWhirlUtil.ADWHIRL, "Rotating Ad");
+        if (Settings.DEBUG) Log.i(AdWhirlUtil.ADWHIRL, "Rotating Ad");
         nextRation = adWhirlManager.getRation();
 
         handler.post(new HandleAdRunnable(this));
@@ -127,7 +127,7 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
                         "Showing ad:\n\tnid: %s\n\tname: %s\n\ttype: %d\n\tkey: %s\n\tkey2: %s",
                         nextRation.nid, nextRation.name, nextRation.type, nextRation.key,
                         nextRation.key2);
-        Log.d(AdWhirlUtil.ADWHIRL, rationInfo);
+        if (Settings.DEBUG) Log.d(AdWhirlUtil.ADWHIRL, rationInfo);
 
         try {
             // Tell the previous adapter that its view will be destroyed.
@@ -137,7 +137,7 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
             this.previousAdapter = this.currentAdapter;
             this.currentAdapter = AdWhirlAdapter.handle(this, nextRation);
         } catch (Throwable t) {
-            Log.w(AdWhirlUtil.ADWHIRL, "Caught an exception in adapter:", t);
+            if (Settings.DEBUG) Log.w(AdWhirlUtil.ADWHIRL, "Caught an exception in adapter:", t);
             rollover();
             return;
         }
@@ -145,15 +145,15 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
 
     // Rotate immediately
     public void rotateThreadedNow() {
-        Log.d("ADWHIRL", "rotateThreadedNow");
+        if (Settings.DEBUG) Log.d("ADWHIRL", "rotateThreadedNow");
         enforceUpdate = true;
         scheduler.schedule(new RotateAdRunnable(this), 0, TimeUnit.SECONDS);
     }
 
     // Rotate in extra.cycleTime seconds
     public void rotateThreadedDelayed() {
-        Log.d("ADWHIRL", "rotateThreadedDelayed");
-        Log.d(AdWhirlUtil.ADWHIRL, "Will call rotateAd() in " + extra.cycleTime
+        if (Settings.DEBUG) Log.d("ADWHIRL", "rotateThreadedDelayed");
+        if (Settings.DEBUG) Log.d(AdWhirlUtil.ADWHIRL, "Will call rotateAd() in " + extra.cycleTime
                 + " seconds");
         scheduler.schedule(new RotateAdRunnable(this), extra.cycleTime,
                 TimeUnit.SECONDS);

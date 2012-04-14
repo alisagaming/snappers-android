@@ -57,7 +57,7 @@ public class MainStage extends MyStage implements ILogicListener {
     public boolean isHinting = false;
     boolean isTutorialAvailable = false;
     boolean drawButtons = true;
-    IAnimationFunction snapperAnimFn = new LinearAnimation();
+    IAnimationFunction snapperAnimFn = new PowEasingAnim(1.5f);
     float animDelta;
     int animActPassed;
 
@@ -171,13 +171,11 @@ public class MainStage extends MyStage implements ILogicListener {
 
         if (delta < 1)
             animDelta += delta;
-        if (animActPassed >= 4){
+        if (animDelta >= 0.1f){
             for (int i=0; i< activeSnappers.size; i++)
                 activeSnappers.get(i).moveAct(animDelta);
             animDelta = 0;
-            animActPassed = 0;
         }
-        else animActPassed++;
     }
 
     @Override
@@ -385,7 +383,8 @@ public class MainStage extends MyStage implements ILogicListener {
     IPositionAnimationListener snapperAnimationListener = new IPositionAnimationListener() {
         @Override
         public void onAnimationEnd(MovableActor item) {
-            //TODO:
+            float time = (float)Math.random() * 2f + 1f;
+            ((SnapperView)item).shiftRandom(time);
         }
     };
 }

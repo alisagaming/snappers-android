@@ -12,7 +12,7 @@ import ru.emerginggames.snappers.gdx.helper.IPositionAnimationListener;
  * Time: 1:08
  */
 public abstract class MovableActor extends Actor {
-    public float sourceX, sourceY, destX, destY, timePassed, animationTime;
+    public float sourceX, sourceY, timePassed, animationTime, dx, dy;
     IPositionAnimationListener listener;
     IAnimationFunction animFn;
     boolean animationIdle = true;
@@ -22,6 +22,8 @@ public abstract class MovableActor extends Actor {
             return;
         if (timePassed >= animationTime){
             animationIdle = true;
+            sourceX += dx;
+            sourceY += dy;
             listener.onAnimationEnd(this);
         }
         else{
@@ -47,9 +49,9 @@ public abstract class MovableActor extends Actor {
     public void setAll(float sourceX, float sourceY, float destX, float destY, float animationTime) {
         animationIdle = false;
         this.sourceX = sourceX;
-        this.destX = destX;
+        dx = destX - sourceX;
         this.sourceY = sourceY;
-        this.destY = destY;
+        dy = destY - sourceY;
         this.animationTime = animationTime;
         this.timePassed = 0;
         setPosition(sourceX, sourceY);
@@ -61,11 +63,10 @@ public abstract class MovableActor extends Actor {
 
     public void setNext(float destX, float destY, float animationTime) {
         animationIdle = false;
-        this.destX = destX;
-        this.destY = destY;
+        dx = destX - sourceX;
+        dy = destY - sourceY;
         this.animationTime = animationTime;
         this.timePassed = 0;
-        setPosition(sourceX, sourceY);
     }
 
     public void setAnimFn(IAnimationFunction fn) {
@@ -73,9 +74,10 @@ public abstract class MovableActor extends Actor {
     }
 
     private void animatePosition(){
-            float mult = animFn.getMult(getAnimationTimeNorm());
-            float x = sourceX + (destX - sourceX) * mult;
-            float y = sourceY + (destY - sourceY) * mult;
-            setPosition(x, y);
+        float mult = animFn.getMult(getAnimationTimeNorm());
+
+        float x = sourceX + dx * mult;
+        float y = sourceY + dy * mult;
+        setPosition(x, y);
     }
 }

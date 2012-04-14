@@ -7,5 +7,6 @@ package ru.emerginggames.snappers.gdx.helper;
  * Time: 0:13
  */
 public interface IAnimationFunction {
-    public float getMult(float timeNorm);
+    public float getMult(float normTime);
+    //public float getValue(float start, float diff, float normTime);
 }

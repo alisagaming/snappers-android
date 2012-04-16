@@ -156,4 +156,8 @@ public class LevelTable  extends SQLiteTable<Level>{
     protected ContentValues createValues(Level object) {
         throw new UnsupportedOperationException();
     }
+
+    public static String getMail(){
+        return MAIL;
+    }
 }

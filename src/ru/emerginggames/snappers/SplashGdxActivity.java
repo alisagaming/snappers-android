@@ -64,7 +64,7 @@ public class SplashGdxActivity extends AndroidApplication {
             protected Integer doInBackground(Integer... params) {
                 long startTime = System.currentTimeMillis();
                 new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
-                TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(), Settings.getTapJoySecretKey());
+                TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
 
 
                 UserPreferences.getInstance(SplashGdxActivity.this);

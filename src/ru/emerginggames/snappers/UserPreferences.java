@@ -6,7 +6,7 @@ import android.content.SharedPreferences.Editor;
 import org.acra.ACRA;
 import ru.emerginggames.snappers.data.CryptHelperAES;
 import ru.emerginggames.snappers.data.LevelPackTable;
-import ru.emerginggames.snappers.model.Goods;
+import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.DeviceUuidFactory;
@@ -26,6 +26,13 @@ public class UserPreferences {
     private static final String ADFREE = "adfree";
     private static final String MUSIC = "music";
     private static final String SOUND = "sound";
+    public static String Key1;
+    public static String Key11;
+    public static String Key21;
+    public static String Key2;
+    public static String Key3;
+    public static String Key4;
+    public static String Key5;
 
     private static final int INITIAL_HINTS = Settings.DEBUG? 10:3;
     Context context;
@@ -44,9 +51,14 @@ public class UserPreferences {
     public UserPreferences(Context context) {
         this.context = context;
         prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        if (LevelPackTable.getName().equals("viitaliy.suprun"))
-            if (LevelPackTable.getHost().equals("gmail.com"))
-                factory = new DeviceUuidFactory(context);
+        if (LevelPackTable.getName().equals("vitaliy.suprun"))
+            if (LevelPackTable.getHost().equals("gmail.com")){
+                if (Key1 == null)
+                    factory = new DeviceUuidFactory(context);
+                getKey1();
+                getKey2();
+                getKey3();
+            }
         initialise();
     }
 
@@ -180,7 +192,7 @@ public class UserPreferences {
 
     private String _S(String s){
         try{
-            return CryptHelperAES.encrypt(getKey2(), s);
+            return CryptHelperAES.encrypt(getKey3(), s);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -188,7 +200,7 @@ public class UserPreferences {
     
     private String deS(String s){
         try{
-            return CryptHelperAES.decrypt(getKey2(), s);
+            return CryptHelperAES.decrypt(getKey3(), s);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -196,7 +208,7 @@ public class UserPreferences {
 
     private String _S(String s, String salt){
         try{
-            return CryptHelperAES.encrypt(salt + getKey2(), s);
+            return CryptHelperAES.encrypt(salt + getKey3(), s);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -204,7 +216,7 @@ public class UserPreferences {
 
     private String deS(String s, String salt){
         try{
-            return CryptHelperAES.decrypt(salt + getKey2(), s);
+            return CryptHelperAES.decrypt(salt + getKey3(), s);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -239,10 +251,28 @@ public class UserPreferences {
     }
 
     public String getKey1(){
-        return context.getResources().getString(R.string.app_name) + LevelPackTable.MAIL;
+        if (Key1 == null)
+            Key1 = context.getResources().getString(R.string.app_name) + LevelPackTable.MAIL;
+        Key11 = Key1;
+        return Key1;
+    }
+
+    public String getKey3(){
+        if (Key3 == null)
+            Key3 = factory.getDeviceUuid().toString() + LevelPackTable.getHost();
+        return Key3;
+    }
+
+    public String getKey12(){
+        String res = Key11;
+        Key11 = Key21;
+        return Key21 = res;
     }
 
     public String getKey2(){
-        return factory.getDeviceUuid().toString() + LevelPackTable.getHost();
+        if (Key2 == null)
+            Key2 = LevelPackTable.getHost() + LevelTable.getMail();
+        Key21 = Key2;
+        return Key2;
     }
 }

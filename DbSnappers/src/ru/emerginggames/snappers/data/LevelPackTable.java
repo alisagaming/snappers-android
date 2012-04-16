@@ -16,7 +16,7 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Time: 0:52
  */
 public class LevelPackTable extends SQLiteTable<LevelPack>{
-    public static final String MAIL = "viitaliy.suprun@gmail.com";
+    public static final String MAIL = "vitaliy.suprun@gmail.com";
     protected static final String TABLE_NAME = "level_pack";
 
     protected static final String KEY_ID = "_id";

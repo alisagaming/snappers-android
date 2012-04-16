@@ -188,9 +188,9 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void gameWon() {
-        ((IAppGameListener)Gdx.app).levelSolved(mainStage.getLogic().level);
         setStage(gameOverStage);
         gameOverStage.show(true, ((IAppGameListener) Gdx.app).getAdHeight());
+        ((IAppGameListener)Gdx.app).levelSolved(mainStage.getLogic().level);
         if (isSoundEnabled)
             Resources.winSound.play(0.6f);
     }

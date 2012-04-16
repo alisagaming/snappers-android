@@ -5299,10 +5299,13 @@ ru.emerginggames.snappers.SelectPackActivity$2 -> ru.emerginggames.snappers.m:
 ru.emerginggames.snappers.Settings -> ru.emerginggames.snappers.n:
     boolean DEBUG -> a
     ru.emerginggames.snappers.Settings$CrashReporter CRASH_REPORTER -> b
-    38:44:java.lang.String getAdwhirlKey(android.content.Context) -> a
-    49:53:java.lang.String getGitCommitString(android.content.Context) -> b
-    59:59:java.lang.String getTapJoyAppId() -> a
-    64:64:java.lang.String getTapJoySecretKey() -> b
+    java.lang.String adwhirlKey -> c
+    java.lang.String TJKey -> d
+    java.lang.String TJSecretKey -> e
+    37:63:java.lang.String getAdwhirlKey(android.content.Context) -> a
+    68:72:java.lang.String getGitCommitString(android.content.Context) -> b
+    79:107:java.lang.String getTapJoyAppId(android.content.Context) -> c
+    115:140:java.lang.String getTapJoySecretKey(android.content.Context) -> d
 ru.emerginggames.snappers.Settings$CrashReporter -> ru.emerginggames.snappers.o:
     ru.emerginggames.snappers.Settings$CrashReporter HockeyApp -> a
     ru.emerginggames.snappers.Settings$CrashReporter ACRA -> b
@@ -5367,40 +5370,46 @@ ru.emerginggames.snappers.StoreActivity$2 -> ru.emerginggames.snappers.t:
     ru.emerginggames.snappers.StoreActivity this$0 -> a
     90:91:void onClick(android.view.View) -> onClick
 ru.emerginggames.snappers.UserPreferences -> ru.emerginggames.snappers.u:
-    int INITIAL_HINTS -> d
-    android.content.Context context -> a
-    ru.emerginggames.snappers.UserPreferences instance -> e
-    android.content.SharedPreferences prefs -> b
-    ru.emerginggames.snappers.utils.DeviceUuidFactory factory -> c
-    37:41:ru.emerginggames.snappers.UserPreferences getInstance(android.content.Context) -> a
-    62:62:int getHintsRemaining() -> a
-    66:67:void useHint() -> b
-    70:72:void addHints(int) -> a
-    75:75:boolean isPackUnlocked(int) -> b
-    79:79:boolean isPackUnlocked(ru.emerginggames.snappers.model.LevelPack) -> a
-    83:87:int getLevelUnlocked(ru.emerginggames.snappers.model.LevelPack) -> b
-    91:91:int getLevelUnlocked(int) -> d
-    95:104:void unlockNextLevelPack(ru.emerginggames.snappers.model.LevelPack) -> c
-    107:108:void unlockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> d
-    117:117:int getScore() -> c
-    121:125:void addScore(int) -> c
-    128:135:void unlockNextLevel(ru.emerginggames.snappers.model.Level) -> a
-    138:139:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
-    143:143:boolean isAdFree() -> d
-    147:148:void setAdFree$1385ff() -> e
-    162:165:void setMusic(boolean) -> a
-    168:168:boolean getMusic() -> f
-    172:175:void setSound(boolean) -> b
-    178:178:boolean getSound() -> g
-    183:185:java.lang.String _S(java.lang.String) -> a
-    199:201:java.lang.String _S(java.lang.String,java.lang.String) -> a
-    207:209:java.lang.String deS(java.lang.String,java.lang.String) -> b
-    215:217:int getInt$2498c65f(java.lang.String,java.lang.String) -> c
-    222:225:void putInt(java.lang.String,int,java.lang.String) -> a
-    229:231:boolean getBoolean$4e7078bd(java.lang.String,java.lang.String) -> d
-    236:239:void putBoolean$4e7078c1(java.lang.String,java.lang.String) -> e
-    242:242:java.lang.String getKey1() -> h
-    246:246:java.lang.String getKey2() -> i
+    java.lang.String Key1 -> a
+    java.lang.String Key11 -> b
+    java.lang.String Key21 -> c
+    java.lang.String Key2 -> d
+    java.lang.String Key3 -> e
+    int INITIAL_HINTS -> i
+    android.content.Context context -> f
+    ru.emerginggames.snappers.UserPreferences instance -> j
+    android.content.SharedPreferences prefs -> g
+    ru.emerginggames.snappers.utils.DeviceUuidFactory factory -> h
+    44:48:ru.emerginggames.snappers.UserPreferences getInstance(android.content.Context) -> a
+    74:74:int getHintsRemaining() -> a
+    78:79:void useHint() -> b
+    82:84:void addHints(int) -> a
+    87:87:boolean isPackUnlocked(int) -> b
+    91:91:boolean isPackUnlocked(ru.emerginggames.snappers.model.LevelPack) -> a
+    95:99:int getLevelUnlocked(ru.emerginggames.snappers.model.LevelPack) -> b
+    103:103:int getLevelUnlocked(int) -> d
+    107:116:void unlockNextLevelPack(ru.emerginggames.snappers.model.LevelPack) -> c
+    119:120:void unlockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> d
+    129:129:int getScore() -> c
+    133:137:void addScore(int) -> c
+    140:147:void unlockNextLevel(ru.emerginggames.snappers.model.Level) -> a
+    150:151:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
+    155:155:boolean isAdFree() -> d
+    159:160:void setAdFree$1385ff() -> e
+    174:177:void setMusic(boolean) -> a
+    180:180:boolean getMusic() -> f
+    184:187:void setSound(boolean) -> b
+    190:190:boolean getSound() -> g
+    195:197:java.lang.String _S(java.lang.String) -> a
+    211:213:java.lang.String _S(java.lang.String,java.lang.String) -> a
+    219:221:java.lang.String deS(java.lang.String,java.lang.String) -> b
+    227:229:int getInt$2498c65f(java.lang.String,java.lang.String) -> c
+    234:237:void putInt(java.lang.String,int,java.lang.String) -> a
+    241:243:boolean getBoolean$4e7078bd(java.lang.String,java.lang.String) -> d
+    248:251:void putBoolean$4e7078c1(java.lang.String,java.lang.String) -> e
+    254:257:java.lang.String getKey1() -> h
+    261:263:java.lang.String getKey3() -> j
+    267:269:java.lang.String getKey12() -> i
 ru.emerginggames.snappers.data.CryptHelperAES -> ru.emerginggames.snappers.a.a:
     12:14:java.lang.String encrypt(java.lang.String,java.lang.String) -> a
     18:21:java.lang.String decrypt(java.lang.String,java.lang.String) -> b
@@ -5445,6 +5454,7 @@ ru.emerginggames.snappers.data.LevelTable -> ru.emerginggames.snappers.a.f:
     95:95:java.lang.String getTableName() -> a
     100:100:java.lang.String[] getColumnList() -> b
     135:152:ru.emerginggames.snappers.model.Level parseFromCursor(android.database.Cursor) -> b
+    161:161:java.lang.String getMail() -> c
     1:1:java.lang.Object parseFromCursor(android.database.Cursor) -> a
 ru.emerginggames.snappers.data.SQLiteTable -> ru.emerginggames.snappers.a.g:
     android.database.sqlite.SQLiteOpenHelper helper -> b

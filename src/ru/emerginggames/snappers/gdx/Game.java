@@ -7,10 +7,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.Settings;
-import ru.emerginggames.snappers.gdx.Elements.ColorRect;
 import ru.emerginggames.snappers.gdx.stages.*;
 import ru.emerginggames.snappers.model.Level;
-import ru.emerginggames.snappers.model.LevelPack;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,32 +16,27 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Date: 25.03.12
  * Time: 16:25
  */
-public class Game implements ApplicationListener, IGameEventListener {
+public class Game implements ApplicationListener/*, IGameEventListener */{
     int width;
     int height;
-
     private SpriteBatch batch;
-
     protected Level level;
+    protected InputProcessor currentInputProcessor;
     protected MyStage currentStage;
     protected MainStage mainStage;
     protected GameOverStage gameOverStage;
     protected PausedStage pausedStage;
     protected HintMenuStage hintMenu;
     protected HelpStage helpStage;
-    protected LevelPack levelPack;
     protected Sprite bg;
-    FPSLogger logger;
-    protected ColorRect tempRect;
     public IAppGameListener mGameListener;
-    protected InputProcessor currentInputProcessor;
 
-    
     protected boolean objectsCreated = false;
     public static boolean isSoundEnabled;
     public boolean initDone = false;
 
-    public Game(IAppGameListener gameListener) {
+    public Game(Level level, IAppGameListener gameListener) {
+        this.level = level;
         mGameListener = gameListener;
     }
 
@@ -56,35 +49,26 @@ public class Game implements ApplicationListener, IGameEventListener {
     protected void createObjects(){
         if (objectsCreated)
             return;
-        Resources.loadTextures(levelPack.isGold);
+        Resources.loadTextures(level.pack.isGold);
 
         batch = new SpriteBatch();
-        mainStage = new MainStage(width, height, this);
-        gameOverStage = new GameOverStage(width,height,this, mainStage.getLogic(), batch);
-        pausedStage = new PausedStage(width, height, this, batch);
-        hintMenu = new HintMenuStage(width, height, this, batch);
+        mainStage = new MainStage(width, height, gameListener);
+        gameOverStage = new GameOverStage(width,height,gameListener, mainStage.getLogic(), batch);
+        pausedStage = new PausedStage(width, height, gameListener, batch);
+        hintMenu = new HintMenuStage(width, height, gameListener, batch);
         setStage(mainStage);
 
         if (level != null)
             mainStage.setLevel(level);
 
         objectsCreated = true;
-        if (Resources.loadBg(levelPack.background))
+        if (Resources.loadBg(level.pack.background))
             bg = new Sprite(Resources.bg);
-
-        logger = new FPSLogger();
-
-        tempRect = new ColorRect(50, 50, 100, 100);
-        tempRect.setColor(0,0,0,0.5f);
     }
 
     @Override
     public void resize(int i, int i1) {
-        width = i;
-        height = i1;
-
-        mGameListener.gotScreenSize(width, height);
-
+        mGameListener.gotScreenSize(width = i, height = i1);
         createObjects();
 
         if (bg != null)
@@ -148,104 +132,8 @@ public class Game implements ApplicationListener, IGameEventListener {
             helpStage.dispose();
     }
 
-    public void setStartLevel(Level level){
-        this.level = level;
-        levelPack = level.pack;
-    }
-
-    @Override
-    public void onShopBtn() {
-        mGameListener.launchStore();
-    }
-
-    @Override
-    public void onNextBtn() {
-        mainStage.nextLevel();
-        setStage(mainStage);
-    }
-
-    @Override
-    public void onRestartBtn() {
-        mainStage.restartLevel();
-        setStage(mainStage);
-    }
-
-    @Override
-    public void onResumeBtn() {
-        setStage(mainStage);
-    }
-
-    @Override
-    public void onMenuBtn() {
-        Gdx.app.exit();
-    }
-
-    @Override
-    public void onHintBtn() {
-        Level level = mainStage.getLogic().level;
-        if (level.number < 4 && level.packNumber == 1){
-            mainStage.showHints(true);
-            return;
-        }
-        setStage(hintMenu);
-    }
-
-    @Override
-    public void useHint() {
-        setStage(mainStage);
-        mGameListener.useHint();
-        mainStage.showHints(false);
-    }
-
-    @Override
-    public void gameWon() {
-        setStage(gameOverStage);
-        gameOverStage.show(true, mGameListener.getAdHeight());
-        mGameListener.levelSolved(mainStage.getLogic().level);
-        if (isSoundEnabled)
-            Resources.winSound.play(0.6f);
-    }
-
-    @Override
-    public void gameLost() {
-        setStage(gameOverStage);
-        gameOverStage.show(false, mGameListener.getAdHeight());
-
-    }
-
-    @Override
-    public void onPauseBtn() {
-        setStage(pausedStage);
-    }
-
-    @Override
-    public void onHelp() {
-        if (helpStage == null)
-            helpStage = new HelpStage(width, height, batch, this);
-        setStage(helpStage);
-    }
-
-    @Override
-    public void levelPackWon() {
-        mGameListener.levelPackWon(levelPack);
-    }
-
-    @Override
-    public void onHelpDone() {
-        setStage(gameOverStage);
-    }
-
-    @Override
-    public IAppGameListener getAppListener() {
-        return mGameListener;
-    }
-
     public Level getLevel(){
         return mainStage.getLogic().level;
-    }
-
-    public LevelPack getLevelPack(){
-        return levelPack;
     }
 
     private void setStage(MyStage stage){
@@ -287,6 +175,94 @@ public class Game implements ApplicationListener, IGameEventListener {
         else if (currentStage == mainStage)
             setStage(pausedStage);
     }
+
+    private IGameEventListener gameListener = new IGameEventListener() {
+        @Override
+        public void onShopBtn() {
+            mGameListener.launchStore();
+        }
+
+        @Override
+        public void onNextBtn() {
+            mainStage.nextLevel();
+            setStage(mainStage);
+        }
+
+        @Override
+        public void onRestartBtn() {
+            mainStage.restartLevel();
+            setStage(mainStage);
+        }
+
+        @Override
+        public void onResumeBtn() {
+            setStage(mainStage);
+        }
+
+        @Override
+        public void onMenuBtn() {
+            Gdx.app.exit();
+        }
+
+        @Override
+        public void onHintBtn() {
+            Level level = mainStage.getLogic().level;
+            if (level.number < 4 && level.packNumber == 1){
+                mainStage.showHints(true);
+                return;
+            }
+            setStage(hintMenu);
+        }
+
+        @Override
+        public void onPauseBtn() {
+            setStage(pausedStage);
+        }
+
+        @Override
+        public void gameWon() {
+            setStage(gameOverStage);
+            gameOverStage.show(true, mGameListener.getAdHeight());
+            mGameListener.levelSolved(mainStage.getLogic().level);
+            if (isSoundEnabled)
+                Resources.winSound.play(0.6f);
+        }
+
+        @Override
+        public void gameLost() {
+            setStage(gameOverStage);
+            gameOverStage.show(false, mGameListener.getAdHeight());
+        }
+
+        @Override
+        public void levelPackWon() {
+            mGameListener.levelPackWon(level.pack);
+        }
+
+        @Override
+        public void useHint() {
+            setStage(mainStage);
+            mGameListener.useHint();
+            mainStage.showHints(false);
+        }
+
+        @Override
+        public void onHelp() {
+            if (helpStage == null)
+                helpStage = new HelpStage(width, height, batch, this);
+            setStage(helpStage);
+        }
+
+        @Override
+        public void onHelpDone() {
+            setStage(gameOverStage);
+        }
+
+        @Override
+        public IAppGameListener getAppListener() {
+            return mGameListener;
+        }
+    };
 
 
 }

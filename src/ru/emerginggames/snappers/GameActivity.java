@@ -65,8 +65,7 @@ public class GameActivity extends AndroidApplication{
         }
 
         gameListener = new GameListener(UserPreferences.getInstance(getApplicationContext()));
-        game = new Game(gameListener);
-        game.setStartLevel(level);
+        game = new Game(level, gameListener);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

@@ -14,6 +14,24 @@ import ru.emerginggames.snappers.utils.WorkerThread;
 
 public class OutlinedTextSprite extends Sprite implements IPositionable, IOnTextureDataNeededHandler{
 
+    public static class FontStyle{
+        public int textSize;
+        public int color;
+        public int outlineTextColor;
+        public int backColor;
+        public int strokeWidth;
+        public Typeface typeface;
+
+        public FontStyle(int textSize, int color, int outlineTextColor, int backColor, int strokeWidth, Typeface typeface) {
+            this.textSize = textSize;
+            this.color = color;
+            this.outlineTextColor = outlineTextColor;
+            this.backColor = backColor;
+            this.strokeWidth = strokeWidth;
+            this.typeface = typeface;
+        }
+    }
+
     private Paint textPaint = new Paint();
     private Paint outlinePaint = new Paint();
     private Paint backPaint = new Paint();
@@ -28,48 +46,29 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
 
 
     String text;
-    int textSize;
-    int color;
-    int outlineColor;
-    int backColor;
-    int strokeWidth;
-    Typeface typeface;
+    protected FontStyle style;
     int desiredWidth = 0;
 
-    public OutlinedTextSprite(int width, int textSize, int color, int outlineColor, int strokeWidth, Typeface typeface) {
-        this(width, textSize, color, outlineColor, Color.TRANSPARENT, strokeWidth, typeface);
-    }
-
-    public OutlinedTextSprite(String text, int textSize, int color, int outlineColor, int strokeWidth, Typeface typeface) {
-        this(text, textSize, color, outlineColor, Color.TRANSPARENT, strokeWidth, typeface);
-    }
-
-    public OutlinedTextSprite(int width, int textSize, int color, int outlineColor, int backColor, int strokeWidth, Typeface typeface) {
-        super();
-        desiredWidth = width;
-        this.textSize = textSize;
-        this.color = color;
-        this.outlineColor = outlineColor;
-        this.backColor = backColor;
-        this.typeface = typeface;
-        this.strokeWidth = strokeWidth;
-        preparePaint();
-        setSize(width, getTextHeight());
-    }
-
     public OutlinedTextSprite(String text, int textSize, int color, int outlineColor, int backColor, int strokeWidth, Typeface typeface) {
+        this(text, new FontStyle(textSize, color, outlineColor, backColor, strokeWidth, typeface));
+    }
+
+    public OutlinedTextSprite(String text, FontStyle style){
         super();
         this.text = text;
-        this.textSize = textSize;
-        this.color = color;
-        this.outlineColor = outlineColor;
-        this.backColor = backColor;
-        this.typeface = typeface;
-        this.strokeWidth = strokeWidth;
+        this.style = style;
         preparePaint();
         setSize(desiredWidth = measureTextWidth(), getTextHeight());
         setTextTexture();
     }
+
+    public OutlinedTextSprite(int width, FontStyle style){
+        desiredWidth = width;
+        this.style = style;
+        preparePaint();
+        setSize(width, getTextHeight());
+    }
+
     
     public void setText(String text){
         this.text = text;
@@ -141,45 +140,45 @@ public class OutlinedTextSprite extends Sprite implements IPositionable, IOnText
         Canvas canvas = new Canvas(bitmap);
 
         canvas.drawRect(0, 0, getWidth(), getHeight(), backPaint);
-        float paddingTop  = Math.abs(fontMetrics.ascent) + strokeWidth * 2;
-        canvas.drawText(text, strokeWidth, paddingTop , outlinePaint);
-        canvas.drawText(text, strokeWidth, paddingTop, textPaint);
+        float paddingTop  = Math.abs(fontMetrics.ascent) + style.strokeWidth * 2;
+        canvas.drawText(text, style.strokeWidth, paddingTop , outlinePaint);
+        canvas.drawText(text, style.strokeWidth, paddingTop, textPaint);
         return bitmap;
     }
 
     protected void preparePaint() {
-        textPaint.setColor(this.color);
-        textPaint.setTypeface(this.typeface);
-        textPaint.setTextSize(this.textSize);
+        textPaint.setColor(style.color);
+        textPaint.setTypeface(style.typeface);
+        textPaint.setTextSize(style.textSize);
         textPaint.setAntiAlias(true);
         textPaint.setFilterBitmap(true);
 
-        outlinePaint.setColor(this.outlineColor);
-        outlinePaint.setTypeface(this.typeface);
-        outlinePaint.setTextSize(this.textSize);
+        outlinePaint.setColor(style.outlineTextColor);
+        outlinePaint.setTypeface(style.typeface);
+        outlinePaint.setTextSize(style.textSize);
         outlinePaint.setAntiAlias(true);
         outlinePaint.setStyle(Paint.Style.STROKE);
-        outlinePaint.setStrokeWidth(strokeWidth);
+        outlinePaint.setStrokeWidth(style.strokeWidth);
         outlinePaint.setFilterBitmap(true);
 
-        backPaint.setColor(this.backColor);
+        backPaint.setColor(style.backColor);
         backPaint.setStyle(Paint.Style.FILL);
         fontMetrics = outlinePaint.getFontMetrics();
     }
 
     public int getTextHeight() {
         return (int)Math.ceil(Math.abs(fontMetrics.ascent) +
-                Math.abs(fontMetrics.descent) + Math.abs(fontMetrics.leading)) + (int)(strokeWidth * 2);
+                Math.abs(fontMetrics.descent) + Math.abs(fontMetrics.leading)) + (style.strokeWidth * 2);
     }
 
     public int measureTextWidth() {
         if (text == null)
             return 0;
-        return (int)Math.ceil(outlinePaint.measureText(text) + strokeWidth * 2);
+        return (int)Math.ceil(outlinePaint.measureText(text) + style.strokeWidth * 2);
     }
 
     public int measureTextWidth(String text) {
-        return (int)Math.ceil(outlinePaint.measureText(text) + strokeWidth * 2);
+        return (int)Math.ceil(outlinePaint.measureText(text) + style.strokeWidth * 2);
     }    
 
     protected void setTexture(Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {

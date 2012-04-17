@@ -163,9 +163,10 @@ public class HintMenuStage extends MenuStage {
         addActor(freeHintsButton);
 
         int btnWidth = (Math.round(cancelButton.getWidth()));
-        line1 = new OutlinedTextSprite(btnWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
-        line2 = new OutlinedTextSprite(btnWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
-        line3 = new OutlinedTextSprite(btnWidth, Metrics.fontSize, Color.WHITE, Color.BLACK, 2, Resources.font);
+        OutlinedTextSprite.FontStyle style = new OutlinedTextSprite.FontStyle(Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        line1 = new OutlinedTextSprite(btnWidth, style);
+        line2 = new OutlinedTextSprite(btnWidth, style);
+        line3 = new OutlinedTextSprite(btnWidth, style);
     }
 
     @Override
@@ -214,6 +215,4 @@ public class HintMenuStage extends MenuStage {
     private void buyHints(Goods goods){
         mGame.getAppListener().buy(goods);
     }
-
-
 }

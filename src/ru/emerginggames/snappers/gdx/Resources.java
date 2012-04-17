@@ -29,7 +29,6 @@ import ru.emerginggames.snappers.utils.WorkerThread;
  * Time: 19:08
  */
 public class Resources {
-    private static final String TAG = "Snappers Resources";
     protected static String dir;
     protected static final Integer syncLock = 0;
 
@@ -61,7 +60,6 @@ public class Resources {
     public static TextureRegion[] blastFrames;
     public static TextureRegion[] bangFrames;
     public static TextureRegion[] squareButtonFrames;
-    public static TextureRegion[] menuButtonFrames;
     public static TextureRegion[] hintFrames;
     public static NinePatch dialog9;
 
@@ -72,10 +70,7 @@ public class Resources {
     public static Sound buttonSound;
 
     public static BitmapFont fnt1;
-
     public static Typeface font;
-
-    public static boolean texturesLoaded = false;
 
     public static void init() {
         switch (Metrics.sizeMode) {
@@ -139,7 +134,6 @@ public class Resources {
     }
 
     private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         TextureRegion[][] frames2 = TextureRegion.split(texture, tileWidth, tileHeight);
         if (frames2.length == 1)
             return null;
@@ -164,7 +158,6 @@ public class Resources {
     }
 
     private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int start, int size) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         int cols = texture.getWidth() / tileWidth;
 
         TextureRegion[] frames = new TextureRegion[goBack ? size * 2 - 2 : size];
@@ -229,7 +222,6 @@ public class Resources {
     }
 
     public static void loadSounds() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         popSounds = new Sound[5];
         popSounds[0] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop1.mp3"));
         popSounds[1] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop2.mp3"));
@@ -270,7 +262,6 @@ public class Resources {
     }
 
     public static void preparePreload() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         synchronized (syncLock) {
             prepareData(Preload.bang);
             prepareData(Preload.blast);
@@ -288,19 +279,16 @@ public class Resources {
     }
 
     protected static void prepareData(PrepareableTextureAtlas.TextureAtlasData data) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (data != null && !data.isPrepared())
             data.prepare();
     }
 
     public static void preloadBg(String name) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         createBgPreload(name);
         prepareBgData();
     }
 
     public static void prepareBgData() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Preload.isBgLoading)
             return;
 
@@ -312,11 +300,9 @@ public class Resources {
         } finally {
             Preload.isBgLoading = false;
         }
-
     }
 
     protected static void createBgPreload(String name) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (name.equals(Preload.bgName) && Preload.bg != null)
             return;
         utilizeBg();
@@ -354,30 +340,10 @@ public class Resources {
     }
 
     private static void fillButtonRegions() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         buttonAtlas = new PrepareableTextureAtlas(Preload.buttonAtlas);
         squareButtonFrames = new TextureRegion[12];
         for (int i = 0; i < squareButtonFrames.length; i++)
             squareButtonFrames[i] = buttonAtlas.findRegion(String.format("b%02d", i));
-
-        menuButtonFrames = new TextureRegion[17];
-        menuButtonFrames[0] = buttonAtlas.findRegion("buy1hint");
-        menuButtonFrames[1] = buttonAtlas.findRegion("buy1hint-tap");
-        menuButtonFrames[2] = buttonAtlas.findRegion("buyhintslong");
-        menuButtonFrames[3] = buttonAtlas.findRegion("buyhintslong-tap");
-        menuButtonFrames[4] = buttonAtlas.findRegion("cancellong");
-        menuButtonFrames[5] = buttonAtlas.findRegion("cancellong-tap");
-        menuButtonFrames[6] = buttonAtlas.findRegion("menulong");
-        menuButtonFrames[7] = buttonAtlas.findRegion("menulong-tap");
-        menuButtonFrames[8] = buttonAtlas.findRegion("restartlong");
-        menuButtonFrames[9] = buttonAtlas.findRegion("restartlong-tap");
-        menuButtonFrames[10] = buttonAtlas.findRegion("resumelong");
-        menuButtonFrames[11] = buttonAtlas.findRegion("resumelong-tap");
-        menuButtonFrames[12] = buttonAtlas.findRegion("storelong");
-        menuButtonFrames[13] = buttonAtlas.findRegion("storelong-tap");
-        menuButtonFrames[14] = buttonAtlas.findRegion("useahintlong");
-        menuButtonFrames[15] = buttonAtlas.findRegion("useahintlong-tap");
-        menuButtonFrames[16] = buttonAtlas.findRegion("help");
     }
 
     public static TextureRegion getBtnRegion(String name){

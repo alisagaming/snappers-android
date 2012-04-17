@@ -62,42 +62,47 @@ public class PausedStage extends MenuStage{
 
     protected void createItems(){
         titleText = new OutlinedTextSprite(GAME_PAUSED, Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 3, Resources.font);
-        titleText.positionRelative(width/2, menuY + menuHeight * 0.97f, IPositionable.Dir.DOWN, 0);
 
-        resumeBtn = new SimpleButton(Resources.menuButtonFrames[10], Resources.menuButtonFrames[11], Resources.buttonSound, new IOnEventListener() {
+        resumeBtn = new SimpleButton("resumelong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onResumeBtn();
             }
         });
-        resumeBtn.setPosition((width - resumeBtn.getWidth())/2, titleText.getY() - resumeBtn.getHeight() - Metrics.screenMargin);
-        addActor(resumeBtn);
 
-        restartBtn = new SimpleButton(Resources.menuButtonFrames[8], Resources.menuButtonFrames[9], Resources.buttonSound, new IOnEventListener() {
+
+        restartBtn = new SimpleButton("restartlong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onRestartBtn();
             }
         });
-        restartBtn.positionRelative(resumeBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
-        addActor(restartBtn);
 
-        menuBtn = new SimpleButton(Resources.menuButtonFrames[6], Resources.menuButtonFrames[7], Resources.buttonSound, new IOnEventListener() {
+
+        menuBtn = new SimpleButton("menulong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onMenuBtn();
             }
         });
-        menuBtn.positionRelative(restartBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
-        addActor(menuBtn);
 
-        storeBtn = new SimpleButton(Resources.menuButtonFrames[12], Resources.menuButtonFrames[13], Resources.buttonSound, new IOnEventListener() {
+
+        storeBtn = new SimpleButton("storelong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
                 listener.onShopBtn();
             }
         });
+
+        titleText.positionRelative(width/2, menuY + menuHeight * 0.97f, IPositionable.Dir.DOWN, 0);
+        resumeBtn.setPosition((width - resumeBtn.getWidth())/2, titleText.getY() - resumeBtn.getHeight() - Metrics.screenMargin);
+        restartBtn.positionRelative(resumeBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
+        menuBtn.positionRelative(restartBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
         storeBtn.positionRelative(menuBtn, IPositionable.Dir.DOWN, Metrics.screenMargin);
+
+        addActor(resumeBtn);
+        addActor(restartBtn);
+        addActor(menuBtn);
         addActor(storeBtn);
     }
 }

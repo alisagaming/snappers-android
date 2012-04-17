@@ -81,9 +81,9 @@ public class GameOverStage extends DimBackStage{
         addActor(shopButton);
         addActor(menuButton);
         addActor(helpButton);
-
-        wonText = new OutlinedTextSprite(winMessages[0], Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        lostText = new OutlinedTextSprite(LEVEL_FAILED, Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        OutlinedTextSprite.FontStyle largeFont = new OutlinedTextSprite.FontStyle(Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+        wonText = new OutlinedTextSprite(winMessages[0], largeFont);
+        lostText = new OutlinedTextSprite(LEVEL_FAILED, largeFont);
         scoreText = new OutlinedTextSprite(String.format(POSSIBLE_IN_TOUCHES, 99), Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
 
         if (width > 0)

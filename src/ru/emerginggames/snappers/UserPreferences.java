@@ -26,6 +26,9 @@ public class UserPreferences {
     private static final String ADFREE = "adfree";
     private static final String MUSIC = "music";
     private static final String SOUND = "sound";
+    private static final String TAPJOY_ENABLED = "TAPJOY_ENABLED";
+    private static final String INGAMEADS = "INGAMEADS";
+    private static final String HINTS_TOUCHED = "HINTS_TOUCHED";
     private static final String G_IN_APP_INIT_DONE = "IN_APP_INIT_DONE";
     public static String Key1;
     public static String Key11;
@@ -70,7 +73,30 @@ public class UserPreferences {
             instance.context = context;
     }
 
-    
+    public void setTapjoyEnabled(boolean enabled){
+        putBoolean(TAPJOY_ENABLED, enabled, TAPJOY_ENABLED);
+    }
+
+    public boolean isTapjoyEnabled(){
+        return getBoolean(TAPJOY_ENABLED, true, TAPJOY_ENABLED);
+    }
+
+    public void setIngameAds(boolean enabled){
+        putBoolean(INGAMEADS, enabled, INGAMEADS);
+    }
+
+    public boolean getIngameAds(){
+        return getBoolean(INGAMEADS, false, INGAMEADS);
+    }
+
+    public void touchHints(){
+        putBoolean(HINTS_TOUCHED, true, HINTS_TOUCHED);
+    }
+
+    public boolean areHintsTouched(){
+        return getBoolean(HINTS_TOUCHED, false, HINTS_TOUCHED);
+    }
+
     public int getHintsRemaining(){
         return getInt(HINTS, 0, HINTS);
     }
@@ -116,12 +142,11 @@ public class UserPreferences {
         if (cur.isPremium)
             return;
         LevelPack[] packs = LevelPackTable.getAllByPremium(context, false);
-        for (int i=0; i< packs.length-1; i++){
+        for (int i=0; i< packs.length-1; i++)
             if (packs[i].id == cur.id){
                 unlockLevelPack(packs[i + 1]);
                 return;
             }
-        }
     }
 
     public void unlockLevelPack(LevelPack pack){
@@ -147,7 +172,7 @@ public class UserPreferences {
 
     public void unlockNextLevel(Level currentLevel){
         if (currentLevel.pack == null)
-        currentLevel.pack = LevelPackTable.get(currentLevel.packNumber, context);
+            currentLevel.pack = LevelPackTable.get(currentLevel.packNumber, context);
         int unlocked = getLevelUnlocked(currentLevel.pack);
         if (unlocked> currentLevel.number)
             return;
@@ -156,8 +181,7 @@ public class UserPreferences {
     }
 
     public boolean isLevelSolved(Level level){
-        int unlocked = getLevelUnlocked(level.packNumber);
-        return level.number < unlocked;
+        return level.number < getLevelUnlocked(level.packNumber);
     }
 
     public boolean isAdFree(){
@@ -180,23 +204,19 @@ public class UserPreferences {
     }
 
     public void setMusic(boolean enabled){
-        Editor editor = prefs.edit();
-        editor.putBoolean(MUSIC, enabled);
-        editor.commit();
+        putBoolean(MUSIC, enabled, MUSIC);
     }
 
     public boolean getMusic(){
-        return prefs.getBoolean(MUSIC, true);
+        return getBoolean(MUSIC, true, MUSIC);
     }
 
     public void setSound(boolean enabled){
-        Editor editor = prefs.edit();
-        editor.putBoolean(SOUND, enabled);
-        editor.commit();
+        putBoolean(SOUND, enabled, SOUND);
     }
 
     public boolean getSound(){
-        return prefs.getBoolean(SOUND, true);
+        return getBoolean(SOUND, true, SOUND);
     }
 
     private String _S(String s){

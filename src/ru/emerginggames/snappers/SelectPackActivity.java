@@ -9,7 +9,6 @@ import ru.emerginggames.snappers.model.ImagePaginatorParam;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.FixedRatioPager;
-import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,8 +138,14 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
     protected void showPackLockedMessage(final LevelPack pack){
         String message = getResources().getString(R.string.level_locked, pack.id-1, pack.id);
+        showMessageDialog(message, new int[]{18, 41}, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideMessageDialog();
+            }
+        });
 
-        showMessageDialog(message, new int[]{18, 41, 0, 0}, new View.OnClickListener() {
+/*        showMessageDialog(message, new int[]{18, 41, 0, 0}, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SoundManager.getInstance(SelectPackActivity.this).playButtonSound();
@@ -153,7 +158,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
                 SoundManager.getInstance(SelectPackActivity.this).playButtonSound();
                 hideMessageDialog();
             }
-        });
+        });*/
     }
 
     void buyLevelPack(LevelPack pack){

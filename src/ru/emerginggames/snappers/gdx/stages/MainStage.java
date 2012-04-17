@@ -4,10 +4,10 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import ru.emerginggames.snappers.Metrics;
-import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.gdx.helper.*;
 import ru.emerginggames.snappers.logic.GameLogic;
 import ru.emerginggames.snappers.gdx.IGameEventListener;
@@ -175,6 +175,26 @@ public class MainStage extends MyStage implements ILogicListener {
             for (int i=0; i< activeSnappers.size; i++)
                 activeSnappers.get(i).moveAct(animDelta);
             animDelta = 0;
+        }
+    }
+
+    @Override
+    public boolean touchUp(int x, int y, int pointer, int button) {
+        boolean res = super.touchUp(x, y, pointer, button);
+        if (!res && isTutorialAvailable && ! isHinting && !areSnappersTouched())
+            showHints(true);
+        return res;
+    }
+
+    @Override
+    public void unfocusAll() {
+        super.unfocusAll();
+        List<Actor> actors = buttons.getActors ();
+        Actor actor;
+        for (int i =0; i< actors.size(); i++){
+            actor = actors.get(i);
+            if (actor instanceof SimpleButton)
+                ((SimpleButton)actor).unTouch();
         }
     }
 
@@ -387,4 +407,6 @@ public class MainStage extends MyStage implements ILogicListener {
             ((SnapperView)item).shiftRandom(time);
         }
     };
+
+
 }

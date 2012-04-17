@@ -1,7 +1,11 @@
 package ru.emerginggames.snappers.gdx.stages;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import ru.emerginggames.snappers.gdx.Elements.ColorRect;
+import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,5 +56,17 @@ public class DimBackStage extends MyStage{
     public void dispose() {
         super.dispose();
         dimRect.dispose();
+    }
+
+    @Override
+    public void unfocusAll() {
+        super.unfocusAll();
+        List<Actor> actors = getActors ();
+        Actor actor;
+        for (int i =0; i< actors.size(); i++){
+            actor = actors.get(i);
+            if (actor instanceof SimpleButton)
+                ((SimpleButton)actor).unTouch();
+        }
     }
 }

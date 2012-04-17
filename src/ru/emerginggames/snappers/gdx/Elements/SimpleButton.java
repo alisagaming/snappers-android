@@ -90,6 +90,10 @@ public class SimpleButton extends Actor implements IPositionable {
         return true;
     }
 
+    public void unTouch(){
+        isDown = false;
+    }
+
     @Override
     public void touchUp(float x, float y, int pointer) {
         isDown = false;

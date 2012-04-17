@@ -2,6 +2,7 @@ package ru.emerginggames.snappers.gdx;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,6 +36,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     FPSLogger logger;
     protected ColorRect tempRect;
     public IAppGameListener mGameListener;
+    protected InputProcessor currentInputProcessor;
 
     
     protected boolean objectsCreated = false;
@@ -92,6 +94,8 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void render() {
+        if (currentInputProcessor == null)
+            Gdx.input.setInputProcessor(currentInputProcessor = currentStage);
         Gdx.gl.glClearColor(0,1,1,1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         if (bg != null){
@@ -123,6 +127,9 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void pause() {
+        if (currentStage != null)
+            currentStage.unfocusAll();
+        Gdx.input.setInputProcessor(currentInputProcessor = null);
     }
 
     @Override
@@ -256,9 +263,11 @@ public class Game implements ApplicationListener, IGameEventListener {
         else if (currentStage == mainStage && stage != hintMenu)
             mainStage.setDrawButtons(false);
 
-        if (currentStage != null)
+        if (currentStage != null){
             currentStage.onHide();
-        Gdx.input.setInputProcessor(currentStage = stage);
+            currentStage.unfocusAll();
+        }
+        Gdx.input.setInputProcessor(currentInputProcessor = currentStage = stage);
         stage.onShow();
     }
 

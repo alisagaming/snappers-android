@@ -48,7 +48,16 @@ public class PausedStage extends MenuStage{
         batch.begin();
         titleText.draw(batch, getOpacity());
         batch.end();
+    }
 
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        return super.touchDown(x, y, pointer, button);
+    }
+
+    @Override
+    public boolean touchUp(int x, int y, int pointer, int button) {
+        return super.touchUp(x, y, pointer, button);
     }
 
     protected void createItems(){

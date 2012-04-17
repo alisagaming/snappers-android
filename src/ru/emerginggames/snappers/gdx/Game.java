@@ -16,7 +16,7 @@ import ru.emerginggames.snappers.model.Level;
  * Date: 25.03.12
  * Time: 16:25
  */
-public class Game implements ApplicationListener/*, IGameEventListener */{
+public class Game implements ApplicationListener{
     int width;
     int height;
     private SpriteBatch batch;

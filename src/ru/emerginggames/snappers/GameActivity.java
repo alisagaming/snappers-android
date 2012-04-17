@@ -161,22 +161,47 @@ public class GameActivity extends AndroidApplication{
 
     protected boolean checkNetworkStatus() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (netInfo != null && netInfo.isAvailable())
+        if (checkNetworkType(conMgr, ConnectivityManager.TYPE_MOBILE))
             return true;
 
-        netInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (netInfo != null && netInfo.isAvailable())
+        if (checkNetworkType(conMgr, ConnectivityManager.TYPE_WIFI))
             return true;
+
+        try{
+            if (checkNetworkType(conMgr, ConnectivityManager.TYPE_WIMAX))
+                return true;
+            if (checkNetworkType(conMgr, ConnectivityManager.TYPE_ETHERNET))
+                return true;
+            if (checkNetworkType(conMgr, ConnectivityManager.TYPE_BLUETOOTH))
+                return true;
+
+        }catch (Exception e){}
 
         return false;
     }
 
+    private boolean checkNetworkType(ConnectivityManager conMgr, int type){
+        NetworkInfo netInfo = conMgr.getNetworkInfo(type);
+        return netInfo != null && netInfo.isAvailable();
+    }
+
     class GameListener implements IAppGameListener {
         UserPreferences prefs;
+        boolean hintsTouched;
 
         GameListener(UserPreferences prefs) {
             this.prefs = prefs;
+            hintsTouched = prefs.areHintsTouched();
+        }
+
+        @Override
+        public boolean isIngameAdsEnabled() {
+            return prefs.getIngameAds();
+        }
+
+        @Override
+        public boolean isTapjoyEnabled() {
+            return prefs.isTapjoyEnabled();
         }
 
         @Override
@@ -187,19 +212,23 @@ public class GameActivity extends AndroidApplication{
 
         @Override
         public void levelPackWon(LevelPack pack) {
-            UserPreferences.getInstance(getApplicationContext()).unlockNextLevelPack(pack);
+            prefs.unlockNextLevelPack(pack);
             setResult(1);
             finish();
         }
 
         @Override
         public int getHintsLeft() {
-            return UserPreferences.getInstance(getApplicationContext()).getHintsRemaining();
+            return prefs.getHintsRemaining();
         }
 
         @Override
         public void useHint() {
-            UserPreferences.getInstance(getApplicationContext()).useHint();
+            prefs.useHint();
+            if (!hintsTouched){
+                hintsTouched = true;
+                prefs.touchHints();
+            }
         }
 
         @Override
@@ -218,22 +247,22 @@ public class GameActivity extends AndroidApplication{
 
         @Override
         public void levelSolved(Level level) {
-            UserPreferences.getInstance(getApplicationContext()).unlockNextLevel(level);
+            prefs.unlockNextLevel(level);
         }
 
         @Override
         public boolean isLevelSolved(Level level) {
-            return UserPreferences.getInstance(getApplicationContext()).isLevelSolved(level);
+            return prefs.isLevelSolved(level);
         }
 
         @Override
         public boolean isSoundEnabled() {
-            return UserPreferences.getInstance(getApplicationContext()).getSound();
+            return prefs.getSound();
         }
 
         @Override
         public void addScore(int score) {
-            UserPreferences.getInstance(getApplicationContext()).addScore(score);
+            prefs.addScore(score);
         }
 
         @Override
@@ -303,8 +332,6 @@ public class GameActivity extends AndroidApplication{
         };
     }
 
-
-
     IOnAdShowListener adShowListener = new IOnAdShowListener() {
         @Override
         public void onAdShow() {
@@ -338,5 +365,4 @@ public class GameActivity extends AndroidApplication{
             }
         }
     };
-
 }

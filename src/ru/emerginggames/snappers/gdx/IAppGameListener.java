@@ -28,5 +28,6 @@ public interface IAppGameListener {
     public void gotScreenSize(int width, int height);
     public void freeHintsPressed();
     public Level getNextLevel(Level currentLevel);
-
+    public boolean isTapjoyEnabled();
+    public boolean isIngameAdsEnabled();
 }

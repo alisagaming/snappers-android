@@ -39,6 +39,7 @@ public class HintMenuStage extends MenuStage {
     boolean showLine3 = false;
     IGameEventListener mGame;
     Mode mode;
+    boolean isTapjoyEnabled;
 
 
 
@@ -49,6 +50,7 @@ public class HintMenuStage extends MenuStage {
         setMenuSize(Metrics.menuWidth, Metrics.menuHeight);
         if (width> 0)
             setViewport(width, height);
+        isTapjoyEnabled = mGame.getAppListener().isTapjoyEnabled();
     }
 
     @Override
@@ -70,17 +72,20 @@ public class HintMenuStage extends MenuStage {
     private void  positionItems(){
         int marg = Metrics.screenMargin;
         cancelButton.positionRelative(width/2, getMenuBottom(), IPositionable.Dir.UP, 0);
-        if (mode == Mode.Buy || mode == Mode.Use)
+        IPositionable topButton = cancelButton;
+        if (isTapjoyEnabled && (mode == Mode.Buy || mode == Mode.Use)){
             freeHintsButton.positionRelative(cancelButton, IPositionable.Dir.UP, marg/2);
             freeHintsButton.visible = freeHintsButton.touchable = true;
+            topButton = freeHintsButton;
+        }
         if (mode == Mode.Buy){
-            buy10Button.positionRelative(freeHintsButton, IPositionable.Dir.UP, marg/2);
+            buy10Button.positionRelative(topButton, IPositionable.Dir.UP, marg/2);
             buy1Button.positionRelative(buy10Button, IPositionable.Dir.UP, marg/2);
             buy1Button.visible = buy1Button.touchable = buy10Button.visible = buy10Button.touchable = true;
         } else if (mode == Mode.Use)
-            useButton.positionRelative(freeHintsButton, IPositionable.Dir.UP, marg/2);
+            useButton.positionRelative(topButton, IPositionable.Dir.UP, marg/2);
 
-        IPositionable topButton = cancelButton;
+        topButton = cancelButton;
         switch (mode){
             case Buy:
                 topButton = buy1Button;
@@ -112,6 +117,9 @@ public class HintMenuStage extends MenuStage {
             case GetOnline:
                 break;
         }
+        if (!isTapjoyEnabled){
+            freeHintsButton.visible = freeHintsButton.touchable = false;
+        }
     }
 
     public int calcContentHeight(){
@@ -120,7 +128,7 @@ public class HintMenuStage extends MenuStage {
             height+= (Metrics.menuButtonHeight  + Metrics.screenMargin/2);
         if (showLine3)
             height += (line3.getHeight() + Metrics.screenMargin);
-        if (mode == Mode.Buy || mode == Mode.Use)
+        if (isTapjoyEnabled && (mode == Mode.Buy || mode == Mode.Use))
             height+= (Metrics.menuButtonHeight  + Metrics.screenMargin/2);
         return height;
     }

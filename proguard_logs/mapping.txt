@@ -1034,8 +1034,9 @@ com.badlogic.gdx.ApplicationListener -> com.badlogic.gdx.c:
     void create() -> a
     void resize(int,int) -> a
     void render() -> b
-    void resume() -> c
-    void dispose() -> d
+    void pause() -> c
+    void resume() -> d
+    void dispose() -> e
 com.badlogic.gdx.Audio -> com.badlogic.gdx.d:
     com.badlogic.gdx.audio.Sound newSound(com.badlogic.gdx.files.FileHandle) -> a
 com.badlogic.gdx.Files -> com.badlogic.gdx.e:
@@ -1100,15 +1101,15 @@ com.badlogic.gdx.InputAdapter -> com.badlogic.gdx.n:
     24:24:boolean keyDown$134632() -> a
     28:28:boolean keyUp$134632() -> a_
     32:32:boolean keyTyped$132fac() -> c
-    36:36:boolean touchDown$3b4dfe47(int,int,int) -> a
-    40:40:boolean touchUp$3b4dfe47(int,int,int) -> b
+    36:36:boolean touchDown(int,int,int,int) -> a
+    40:40:boolean touchUp(int,int,int,int) -> b
     44:44:boolean touchDragged$4868d312(int,int) -> a
 com.badlogic.gdx.InputProcessor -> com.badlogic.gdx.o:
     boolean keyDown$134632() -> a
     boolean keyUp$134632() -> a_
     boolean keyTyped$132fac() -> c
-    boolean touchDown$3b4dfe47(int,int,int) -> a
-    boolean touchUp$3b4dfe47(int,int,int) -> b
+    boolean touchDown(int,int,int,int) -> a
+    boolean touchUp(int,int,int,int) -> b
     boolean touchDragged$4868d312(int,int) -> a
 com.badlogic.gdx.Version -> com.badlogic.gdx.p:
     java.lang.String VERSION -> a
@@ -2298,9 +2299,7 @@ com.badlogic.gdx.graphics.Color -> com.badlogic.gdx.graphics.b:
     184:184:java.lang.String toString() -> toString
     217:218:float toFloatBits() -> a
     258:258:int rgba8888$40983718() -> b
-com.badlogic.gdx.graphics.FPSLogger -> com.badlogic.gdx.graphics.c:
-    long startTime -> a
-com.badlogic.gdx.graphics.GL10 -> com.badlogic.gdx.graphics.d:
+com.badlogic.gdx.graphics.GL10 -> com.badlogic.gdx.graphics.c:
     void glClientActiveTexture(int) -> a
     void glColor4f(float,float,float,float) -> a
     void glColorPointer(int,int,int,java.nio.Buffer) -> a
@@ -2312,7 +2311,7 @@ com.badlogic.gdx.graphics.GL10 -> com.badlogic.gdx.graphics.d:
     void glTexCoordPointer$5efd7755(int,int,java.nio.Buffer) -> a
     void glTexEnvf$4868c7cb() -> a
     void glVertexPointer$5efd7755(int,int,java.nio.Buffer) -> b
-com.badlogic.gdx.graphics.GL11 -> com.badlogic.gdx.graphics.e:
+com.badlogic.gdx.graphics.GL11 -> com.badlogic.gdx.graphics.d:
     void glBindBuffer(int,int) -> a
     void glBufferData(int,int,java.nio.Buffer,int) -> a
     void glBufferSubData$5efd7755(int,int,java.nio.Buffer) -> c
@@ -2323,7 +2322,7 @@ com.badlogic.gdx.graphics.GL11 -> com.badlogic.gdx.graphics.e:
     void glNormalPointer$4868d30e(int,int) -> b
     void glTexCoordPointer$3b4dfe4b(int,int,int) -> a
     void glDrawElements$3b4dfe4b$4868d30e(int,int) -> c
-com.badlogic.gdx.graphics.GL20 -> com.badlogic.gdx.graphics.f:
+com.badlogic.gdx.graphics.GL20 -> com.badlogic.gdx.graphics.e:
     void glAttachShader(int,int) -> glAttachShader
     void glBindBuffer(int,int) -> glBindBuffer
     void glBindFramebuffer(int,int) -> glBindFramebuffer
@@ -2364,7 +2363,7 @@ com.badlogic.gdx.graphics.GL20 -> com.badlogic.gdx.graphics.f:
     void glUseProgram(int) -> glUseProgram
     void glVertexAttribPointer(int,int,int,boolean,int,java.nio.Buffer) -> glVertexAttribPointer
     void glVertexAttribPointer(int,int,int,boolean,int,int) -> glVertexAttribPointer
-com.badlogic.gdx.graphics.GLCommon -> com.badlogic.gdx.graphics.g:
+com.badlogic.gdx.graphics.GLCommon -> com.badlogic.gdx.graphics.f:
     void glBindTexture(int,int) -> glBindTexture
     void glBlendFunc(int,int) -> glBlendFunc
     void glClear(int) -> glClear
@@ -2381,8 +2380,8 @@ com.badlogic.gdx.graphics.GLCommon -> com.badlogic.gdx.graphics.g:
     void glPixelStorei(int,int) -> glPixelStorei
     void glTexImage2D(int,int,int,int,int,int,int,int,java.nio.Buffer) -> glTexImage2D
     void glTexParameterf(int,int,float) -> glTexParameterf
-com.badlogic.gdx.graphics.GLU -> com.badlogic.gdx.graphics.h:
-com.badlogic.gdx.graphics.Mesh -> com.badlogic.gdx.graphics.i:
+com.badlogic.gdx.graphics.GLU -> com.badlogic.gdx.graphics.g:
+com.badlogic.gdx.graphics.Mesh -> com.badlogic.gdx.graphics.h:
     java.util.Map meshes -> a
     boolean forceVBO -> b
     com.badlogic.gdx.graphics.glutils.VertexData vertices -> c
@@ -2400,18 +2399,18 @@ com.badlogic.gdx.graphics.Mesh -> com.badlogic.gdx.graphics.i:
     504:512:void invalidateAllMeshes(com.badlogic.gdx.Application) -> a
     516:517:void clearAllMeshes(com.badlogic.gdx.Application) -> b
     520:528:java.lang.String getManagedStatus() -> c
-com.badlogic.gdx.graphics.Mesh$VertexDataType -> com.badlogic.gdx.graphics.j:
+com.badlogic.gdx.graphics.Mesh$VertexDataType -> com.badlogic.gdx.graphics.i:
     com.badlogic.gdx.graphics.Mesh$VertexDataType VertexArray -> a
     com.badlogic.gdx.graphics.Mesh$VertexDataType VertexBufferObject -> b
     com.badlogic.gdx.graphics.Mesh$VertexDataType VertexBufferObjectSubData -> c
     com.badlogic.gdx.graphics.Mesh$VertexDataType[] $VALUES -> d
     68:68:com.badlogic.gdx.graphics.Mesh$VertexDataType[] values() -> values
     68:68:com.badlogic.gdx.graphics.Mesh$VertexDataType valueOf(java.lang.String) -> valueOf
-com.badlogic.gdx.graphics.OrthographicCamera -> com.badlogic.gdx.graphics.k:
+com.badlogic.gdx.graphics.OrthographicCamera -> com.badlogic.gdx.graphics.j:
     float zoom -> o
     com.badlogic.gdx.math.Vector3 tmp -> p
     112:120:void update() -> a
-com.badlogic.gdx.graphics.Pixmap -> com.badlogic.gdx.graphics.l:
+com.badlogic.gdx.graphics.Pixmap -> com.badlogic.gdx.graphics.k:
     com.badlogic.gdx.graphics.Pixmap$Blending blending -> c
     com.badlogic.gdx.graphics.g2d.Gdx2DPixmap pixmap -> a
     int color -> b
@@ -2429,19 +2428,19 @@ com.badlogic.gdx.graphics.Pixmap -> com.badlogic.gdx.graphics.l:
     345:346:java.nio.ByteBuffer getPixels() -> g
     351:351:com.badlogic.gdx.graphics.Pixmap$Format getFormat() -> h
     356:356:com.badlogic.gdx.graphics.Pixmap$Blending getBlending() -> i
-com.badlogic.gdx.graphics.Pixmap$Blending -> com.badlogic.gdx.graphics.m:
+com.badlogic.gdx.graphics.Pixmap$Blending -> com.badlogic.gdx.graphics.l:
     com.badlogic.gdx.graphics.Pixmap$Blending None -> a
     com.badlogic.gdx.graphics.Pixmap$Blending SourceOver -> b
     com.badlogic.gdx.graphics.Pixmap$Blending[] $VALUES -> c
     76:76:com.badlogic.gdx.graphics.Pixmap$Blending[] values() -> values
     76:76:com.badlogic.gdx.graphics.Pixmap$Blending valueOf(java.lang.String) -> valueOf
-com.badlogic.gdx.graphics.Pixmap$Filter -> com.badlogic.gdx.graphics.n:
+com.badlogic.gdx.graphics.Pixmap$Filter -> com.badlogic.gdx.graphics.m:
     com.badlogic.gdx.graphics.Pixmap$Filter NearestNeighbour -> a
     com.badlogic.gdx.graphics.Pixmap$Filter BiLinear -> b
     com.badlogic.gdx.graphics.Pixmap$Filter[] $VALUES -> c
     83:83:com.badlogic.gdx.graphics.Pixmap$Filter[] values() -> values
     83:83:com.badlogic.gdx.graphics.Pixmap$Filter valueOf(java.lang.String) -> valueOf
-com.badlogic.gdx.graphics.Pixmap$Format -> com.badlogic.gdx.graphics.o:
+com.badlogic.gdx.graphics.Pixmap$Format -> com.badlogic.gdx.graphics.n:
     com.badlogic.gdx.graphics.Pixmap$Format Alpha -> a
     com.badlogic.gdx.graphics.Pixmap$Format Intensity -> b
     com.badlogic.gdx.graphics.Pixmap$Format LuminanceAlpha -> c
@@ -2454,13 +2453,13 @@ com.badlogic.gdx.graphics.Pixmap$Format -> com.badlogic.gdx.graphics.o:
     49:49:com.badlogic.gdx.graphics.Pixmap$Format valueOf(java.lang.String) -> valueOf
     53:60:int toGdx2DPixmapFormat(com.badlogic.gdx.graphics.Pixmap$Format) -> a
     64:70:com.badlogic.gdx.graphics.Pixmap$Format fromGdx2DPixmapFormat(int) -> a
-com.badlogic.gdx.graphics.PixmapIO -> com.badlogic.gdx.graphics.p:
+com.badlogic.gdx.graphics.PixmapIO -> com.badlogic.gdx.graphics.o:
     33:33:com.badlogic.gdx.graphics.Pixmap readCIM(com.badlogic.gdx.files.FileHandle) -> a
-com.badlogic.gdx.graphics.PixmapIO$CIM -> com.badlogic.gdx.graphics.q:
+com.badlogic.gdx.graphics.PixmapIO$CIM -> com.badlogic.gdx.graphics.p:
     byte[] writeBuffer -> a
     byte[] readBuffer -> b
     95:126:com.badlogic.gdx.graphics.Pixmap read(com.badlogic.gdx.files.FileHandle) -> a
-com.badlogic.gdx.graphics.Texture -> com.badlogic.gdx.graphics.r:
+com.badlogic.gdx.graphics.Texture -> com.badlogic.gdx.graphics.q:
     boolean enforcePotImages -> h
     boolean useHWMipMap -> i
     com.badlogic.gdx.assets.AssetManager assetManager -> j
@@ -2486,10 +2485,10 @@ com.badlogic.gdx.graphics.Texture -> com.badlogic.gdx.graphics.r:
     348:349:void clearAllTextures(com.badlogic.gdx.Application) -> a
     353:409:void invalidateAllTextures(com.badlogic.gdx.Application) -> b
     420:427:java.lang.String getManagedStatus() -> f
-com.badlogic.gdx.graphics.Texture$1 -> com.badlogic.gdx.graphics.s:
+com.badlogic.gdx.graphics.Texture$1 -> com.badlogic.gdx.graphics.r:
     int val$refCount -> a
     396:397:void finishedLoading$190c2c84(com.badlogic.gdx.assets.AssetManager,java.lang.String) -> a
-com.badlogic.gdx.graphics.Texture$TextureFilter -> com.badlogic.gdx.graphics.t:
+com.badlogic.gdx.graphics.Texture$TextureFilter -> com.badlogic.gdx.graphics.s:
     com.badlogic.gdx.graphics.Texture$TextureFilter Nearest -> a
     com.badlogic.gdx.graphics.Texture$TextureFilter Linear -> b
     com.badlogic.gdx.graphics.Texture$TextureFilter MipMap -> c
@@ -2503,7 +2502,7 @@ com.badlogic.gdx.graphics.Texture$TextureFilter -> com.badlogic.gdx.graphics.t:
     74:74:com.badlogic.gdx.graphics.Texture$TextureFilter valueOf(java.lang.String) -> valueOf
     86:86:boolean isMipMap() -> a
     90:90:int getGLEnum() -> b
-com.badlogic.gdx.graphics.Texture$TextureWrap -> com.badlogic.gdx.graphics.u:
+com.badlogic.gdx.graphics.Texture$TextureWrap -> com.badlogic.gdx.graphics.t:
     com.badlogic.gdx.graphics.Texture$TextureWrap ClampToEdge -> a
     com.badlogic.gdx.graphics.Texture$TextureWrap Repeat -> b
     int glEnum -> c
@@ -2511,7 +2510,7 @@ com.badlogic.gdx.graphics.Texture$TextureWrap -> com.badlogic.gdx.graphics.u:
     94:94:com.badlogic.gdx.graphics.Texture$TextureWrap[] values() -> values
     94:94:com.badlogic.gdx.graphics.Texture$TextureWrap valueOf(java.lang.String) -> valueOf
     104:104:int getGLEnum() -> a
-com.badlogic.gdx.graphics.TextureData -> com.badlogic.gdx.graphics.v:
+com.badlogic.gdx.graphics.TextureData -> com.badlogic.gdx.graphics.u:
     com.badlogic.gdx.graphics.TextureData$TextureDataType getType() -> a
     boolean isPrepared() -> b
     void prepare() -> c
@@ -2523,18 +2522,18 @@ com.badlogic.gdx.graphics.TextureData -> com.badlogic.gdx.graphics.v:
     com.badlogic.gdx.graphics.Pixmap$Format getFormat() -> i
     boolean useMipMaps() -> j
     boolean isManaged() -> k
-com.badlogic.gdx.graphics.TextureData$TextureDataType -> com.badlogic.gdx.graphics.w:
+com.badlogic.gdx.graphics.TextureData$TextureDataType -> com.badlogic.gdx.graphics.v:
     com.badlogic.gdx.graphics.TextureData$TextureDataType Pixmap -> a
     com.badlogic.gdx.graphics.TextureData$TextureDataType Compressed -> b
     com.badlogic.gdx.graphics.TextureData$TextureDataType[] $VALUES -> c
     41:41:com.badlogic.gdx.graphics.TextureData$TextureDataType[] values() -> values
     41:41:com.badlogic.gdx.graphics.TextureData$TextureDataType valueOf(java.lang.String) -> valueOf
-com.badlogic.gdx.graphics.VertexAttribute -> com.badlogic.gdx.graphics.x:
+com.badlogic.gdx.graphics.VertexAttribute -> com.badlogic.gdx.graphics.w:
     int usage -> a
     int numComponents -> b
     int offset -> c
     java.lang.String alias -> d
-com.badlogic.gdx.graphics.VertexAttributes -> com.badlogic.gdx.graphics.y:
+com.badlogic.gdx.graphics.VertexAttributes -> com.badlogic.gdx.graphics.x:
     com.badlogic.gdx.graphics.VertexAttribute[] attributes -> b
     int vertexSize -> a
     57:67:int calculateOffsets() -> b
@@ -3137,6 +3136,7 @@ com.badlogic.gdx.scenes.scene2d.Group -> com.badlogic.gdx.d.a.c:
     337:343:void removeActor(com.badlogic.gdx.scenes.scene2d.Actor) -> c
     349:360:void removeActorRecursive(com.badlogic.gdx.scenes.scene2d.Actor) -> b
     364:370:void setStage(com.badlogic.gdx.scenes.scene2d.Actor,com.badlogic.gdx.scenes.scene2d.Stage) -> a
+    414:414:java.util.List getActors() -> c
     461:537:void toChildCoordinates(com.badlogic.gdx.scenes.scene2d.Actor,float,float,com.badlogic.gdx.math.Vector2) -> a
 com.badlogic.gdx.scenes.scene2d.OnActionCompleted -> com.badlogic.gdx.d.a.d:
 com.badlogic.gdx.scenes.scene2d.Stage -> com.badlogic.gdx.d.a.e:
@@ -3156,18 +3156,20 @@ com.badlogic.gdx.scenes.scene2d.Stage -> com.badlogic.gdx.d.a.e:
     com.badlogic.gdx.math.Vector2 coords -> k
     com.badlogic.gdx.math.Vector3 tmp -> l
     107:135:void setViewport(float,float,boolean) -> a
-    211:216:boolean touchDown$3b4dfe47(int,int,int) -> a
-    227:234:boolean touchUp$3b4dfe47(int,int,int) -> b
+    192:192:java.util.List getActors() -> d
+    211:216:boolean touchDown(int,int,int,int) -> a
+    227:234:boolean touchUp(int,int,int,int) -> b
     244:255:boolean touchDragged$4868d312(int,int) -> a
     284:285:boolean keyDown$134632() -> a
     294:295:boolean keyUp$134632() -> a_
     304:305:boolean keyTyped$132fac() -> c
     312:313:void act(float) -> a
-    317:323:void draw() -> d
+    317:323:void draw() -> e
     327:328:void dispose() -> b
     333:334:void addActor(com.badlogic.gdx.scenes.scene2d.Actor) -> a
     403:406:void toStageCoordinates(int,int,com.badlogic.gdx.math.Vector2) -> a
     417:418:void removeActor(com.badlogic.gdx.scenes.scene2d.Actor) -> b
+    421:425:void unfocusAll() -> f
     428:432:void unfocus(com.badlogic.gdx.scenes.scene2d.Actor) -> c
     457:458:void setTouchFocus(com.badlogic.gdx.scenes.scene2d.Actor,int) -> a
     461:461:com.badlogic.gdx.scenes.scene2d.Actor getTouchFocus(int) -> a
@@ -4808,13 +4810,14 @@ net.hockeyapp.android.R$string -> net.hockeyapp.android.s:
     int download_failed_dialog_positive_button -> r
     int download_failed_dialog_title -> s
     int level_locked -> t
-    int score -> u
-    int update_dialog_message -> v
-    int update_dialog_negative_button -> w
-    int update_dialog_positive_button -> x
-    int update_dialog_title -> y
-    int update_mandatory_toast -> z
-    int your_ad_here -> A
+    int level_locked_can_unlock -> u
+    int score -> v
+    int update_dialog_message -> w
+    int update_dialog_negative_button -> x
+    int update_dialog_positive_button -> y
+    int update_dialog_title -> z
+    int update_mandatory_toast -> A
+    int your_ad_here -> B
 net.hockeyapp.android.UpdateActivity -> net.hockeyapp.android.UpdateActivity:
     net.hockeyapp.android.DownloadFileTask downloadTask -> a
     net.hockeyapp.android.UpdateInfoAdapter adapter -> b
@@ -5179,49 +5182,53 @@ ru.emerginggames.snappers.GameActivity -> ru.emerginggames.snappers.GameActivity
     boolean mayShowAd -> q
     boolean isFinished -> r
     boolean wentTapjoy -> s
-    ru.emerginggames.snappers.data.LevelTable levelTable -> t
-    ru.emerginggames.snappers.utils.Store mStore -> u
-    ru.emerginggames.snappers.GameActivity$GameListener gameListener -> v
-    ru.emerginggames.snappers.gdx.Game game -> w
-    ru.emerginggames.snappers.utils.IOnAdShowListener adShowListener -> x
-    50:111:void onCreate(android.os.Bundle) -> onCreate
+    boolean wentShop -> t
+    ru.emerginggames.snappers.data.LevelTable levelTable -> u
+    ru.emerginggames.snappers.utils.Store mStore -> v
+    ru.emerginggames.snappers.GameActivity$GameListener gameListener -> w
+    ru.emerginggames.snappers.gdx.Game game -> x
+    ru.emerginggames.snappers.utils.IOnAdShowListener adShowListener -> y
+    51:111:void onCreate(android.os.Bundle) -> onCreate
     115:117:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
-    121:134:void onPause() -> onPause
-    138:151:void onResume() -> onResume
-    155:157:void onBackPressed() -> onBackPressed
-    160:169:boolean checkNetworkStatus() -> d
+    121:136:void onPause() -> onPause
+    140:154:void onResume() -> onResume
+    158:160:void onBackPressed() -> onBackPressed
+    163:180:boolean checkNetworkStatus() -> d
+    184:185:boolean checkNetworkType(android.net.ConnectivityManager,int) -> a
 ru.emerginggames.snappers.GameActivity$1 -> ru.emerginggames.snappers.e:
     ru.emerginggames.snappers.GameActivity this$0 -> a
-    306:314:void onAdShow() -> a
-    318:322:void onAdSizeChanged$255f295(int) -> a
-    326:334:void onAdFail() -> b
+    338:346:void onAdShow() -> a
+    350:354:void onAdSizeChanged$255f295(int) -> a
+    358:366:void onAdFail() -> b
 ru.emerginggames.snappers.GameActivity$GameListener -> ru.emerginggames.snappers.f:
     ru.emerginggames.snappers.UserPreferences prefs -> a
-    java.lang.Runnable showAD -> b
-    java.lang.Runnable hideAD -> c
-    ru.emerginggames.snappers.GameActivity this$0 -> d
-    181:183:void launchStore() -> a
-    187:190:void levelPackWon(ru.emerginggames.snappers.model.LevelPack) -> a
-    194:194:int getHintsLeft() -> b
-    199:200:void useHint() -> c
-    204:206:void buy(ru.emerginggames.snappers.model.Goods) -> a
-    211:211:boolean isOnline() -> d
-    216:217:void levelSolved(ru.emerginggames.snappers.model.Level) -> a
-    221:221:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
-    226:226:boolean isSoundEnabled() -> e
-    231:232:void addScore(int) -> a
-    236:244:void showAd() -> f
-    248:254:void hideAd() -> g
-    258:258:int getAdHeight() -> h
-    263:264:void gotScreenSize(int,int) -> a
-    268:270:void freeHintsPressed() -> i
-    274:274:ru.emerginggames.snappers.model.Level getNextLevel(ru.emerginggames.snappers.model.Level) -> c
+    boolean hintsTouched -> b
+    java.lang.Runnable showAD -> c
+    java.lang.Runnable hideAD -> d
+    ru.emerginggames.snappers.GameActivity this$0 -> e
+    204:204:boolean isTapjoyEnabled() -> a
+    209:211:void launchStore() -> b
+    215:218:void levelPackWon(ru.emerginggames.snappers.model.LevelPack) -> a
+    222:222:int getHintsLeft() -> c
+    227:232:void useHint() -> d
+    236:240:void buy(ru.emerginggames.snappers.model.Goods) -> a
+    245:245:boolean isOnline() -> e
+    250:251:void levelSolved(ru.emerginggames.snappers.model.Level) -> a
+    255:255:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
+    260:260:boolean isSoundEnabled() -> f
+    265:266:void addScore(int) -> a
+    270:278:void showAd() -> g
+    282:288:void hideAd() -> h
+    292:292:int getAdHeight() -> i
+    297:298:void gotScreenSize(int,int) -> a
+    302:304:void freeHintsPressed() -> j
+    308:308:ru.emerginggames.snappers.model.Level getNextLevel(ru.emerginggames.snappers.model.Level) -> c
 ru.emerginggames.snappers.GameActivity$GameListener$1 -> ru.emerginggames.snappers.g:
     ru.emerginggames.snappers.GameActivity$GameListener this$1 -> a
-    280:288:void run() -> run
+    314:322:void run() -> run
 ru.emerginggames.snappers.GameActivity$GameListener$2 -> ru.emerginggames.snappers.h:
     ru.emerginggames.snappers.GameActivity$GameListener this$1 -> a
-    294:297:void run() -> run
+    328:331:void run() -> run
 ru.emerginggames.snappers.LevelPageAdapter -> ru.emerginggames.snappers.i:
     ru.emerginggames.snappers.model.LevelPack pack -> a
     ru.emerginggames.snappers.view.IOnItemSelectedListener listener -> g
@@ -5281,7 +5288,7 @@ ru.emerginggames.snappers.PaginatedSelectorActivity -> ru.emerginggames.snappers
     68:72:void onPause() -> onPause
     75:77:void onBackButtonClick(android.view.View) -> onBackButtonClick
     80:83:void onStoreButtonClick(android.view.View) -> onStoreButtonClick
-    87:108:void showMessageDialog(java.lang.String,int[],android.view.View$OnClickListener,android.view.View$OnClickListener) -> a
+    87:108:void showMessageDialog$58e38b13(java.lang.String,int[],android.view.View$OnClickListener) -> a
     120:121:void hideMessageDialog() -> d
 ru.emerginggames.snappers.PaginatedSelectorActivity$1 -> ru.emerginggames.snappers.l:
     ru.emerginggames.snappers.PaginatedSelectorActivity this$0 -> a
@@ -5323,20 +5330,15 @@ ru.emerginggames.snappers.SelectPackActivity -> ru.emerginggames.snappers.Select
     ru.emerginggames.snappers.model.LevelPack[] levelPacks -> m
     ru.emerginggames.snappers.RotatedImagePagerAdapter adapter -> n
     boolean[] levelPackStatus -> o
-    33:45:void onCreate(android.os.Bundle) -> onCreate
-    49:66:void onItemSelected(int) -> c
-    69:84:java.util.List getPaginatorParamList() -> e
-    102:116:void onResume() -> onResume
-    135:138:void setPagerAdapter() -> f
-    160:164:void buyLevelPack(ru.emerginggames.snappers.model.LevelPack) -> a
+    32:44:void onCreate(android.os.Bundle) -> onCreate
+    48:65:void onItemSelected(int) -> c
+    68:83:java.util.List getPaginatorParamList() -> e
+    101:115:void onResume() -> onResume
+    134:137:void setPagerAdapter() -> f
 ru.emerginggames.snappers.SelectPackActivity$1 -> ru.emerginggames.snappers.q:
     ru.emerginggames.snappers.SelectPackActivity this$0 -> a
-    ru.emerginggames.snappers.model.LevelPack val$pack -> b
-    146:149:void onClick(android.view.View) -> onClick
-ru.emerginggames.snappers.SelectPackActivity$2 -> ru.emerginggames.snappers.r:
-    ru.emerginggames.snappers.SelectPackActivity this$0 -> a
-    153:155:void onClick(android.view.View) -> onClick
-ru.emerginggames.snappers.Settings -> ru.emerginggames.snappers.s:
+    144:145:void onClick(android.view.View) -> onClick
+ru.emerginggames.snappers.Settings -> ru.emerginggames.snappers.r:
     boolean DEBUG -> a
     boolean ENABLE_ALL_LEVELS -> b
     boolean NO_PREF_ENCRYPT -> c
@@ -5350,7 +5352,7 @@ ru.emerginggames.snappers.Settings -> ru.emerginggames.snappers.s:
     84:113:java.lang.String getTapJoyAppId(android.content.Context) -> c
     121:146:java.lang.String getTapJoySecretKey(android.content.Context) -> d
     153:153:java.lang.String getInAppKey() -> a
-ru.emerginggames.snappers.Settings$CrashReporter -> ru.emerginggames.snappers.t:
+ru.emerginggames.snappers.Settings$CrashReporter -> ru.emerginggames.snappers.s:
     ru.emerginggames.snappers.Settings$CrashReporter HockeyApp -> a
     ru.emerginggames.snappers.Settings$CrashReporter ACRA -> b
     ru.emerginggames.snappers.Settings$CrashReporter ACRA_BUGSENSE -> c
@@ -5376,10 +5378,10 @@ ru.emerginggames.snappers.SnappersApplication -> ru.emerginggames.snappers.Snapp
     39:39:void access$0(ru.emerginggames.snappers.SnappersApplication,boolean) -> a
     40:40:void access$1(ru.emerginggames.snappers.SnappersApplication,boolean) -> b
     91:91:void access$2(ru.emerginggames.snappers.SnappersApplication) -> a
-ru.emerginggames.snappers.SnappersApplication$Receiver -> ru.emerginggames.snappers.u:
+ru.emerginggames.snappers.SnappersApplication$Receiver -> ru.emerginggames.snappers.t:
     ru.emerginggames.snappers.SnappersApplication this$0 -> a
     105:116:void onReceive(android.content.Context,android.content.Intent) -> onReceive
-ru.emerginggames.snappers.SoundManager -> ru.emerginggames.snappers.v:
+ru.emerginggames.snappers.SoundManager -> ru.emerginggames.snappers.u:
     ru.emerginggames.snappers.SoundManager instance -> d
     android.app.Activity context -> e
     android.media.SoundPool soundPool -> a
@@ -5389,11 +5391,11 @@ ru.emerginggames.snappers.SoundManager -> ru.emerginggames.snappers.v:
     53:54:void setUp() -> a
     57:59:void playButtonSound() -> b
 ru.emerginggames.snappers.SplashGdxActivity -> ru.emerginggames.snappers.SplashGdxActivity:
-    android.os.AsyncTask loadThread -> l
+    android.os.AsyncTask loadTask -> l
     28:42:void onCreate(android.os.Bundle) -> onCreate
     45:54:void gotSize(int,int) -> a
     58:107:void onResume() -> onResume
-ru.emerginggames.snappers.SplashGdxActivity$1 -> ru.emerginggames.snappers.w:
+ru.emerginggames.snappers.SplashGdxActivity$1 -> ru.emerginggames.snappers.v:
     ru.emerginggames.snappers.SplashGdxActivity this$0 -> a
     66:92:java.lang.Integer doInBackground$3271b81e() -> a
     1:1:void onPostExecute(java.lang.Object) -> onPostExecute
@@ -5411,7 +5413,7 @@ ru.emerginggames.snappers.StoreActivity -> ru.emerginggames.snappers.StoreActivi
     111:112:void onItemBought$7a5be7bf() -> e
     116:117:void onItemRefunded$7a5be7bf() -> f
     121:123:void onBillingSupported(boolean) -> b
-ru.emerginggames.snappers.UserPreferences -> ru.emerginggames.snappers.x:
+ru.emerginggames.snappers.UserPreferences -> ru.emerginggames.snappers.w:
     java.lang.String Key1 -> a
     java.lang.String Key11 -> b
     java.lang.String Key21 -> c
@@ -5422,40 +5424,43 @@ ru.emerginggames.snappers.UserPreferences -> ru.emerginggames.snappers.x:
     ru.emerginggames.snappers.UserPreferences instance -> j
     android.content.SharedPreferences prefs -> g
     ru.emerginggames.snappers.utils.DeviceUuidFactory factory -> h
-    45:49:ru.emerginggames.snappers.UserPreferences getInstance(android.content.Context) -> a
-    75:75:int getHintsRemaining() -> a
-    79:80:void setGInAppInitDone$1385ff() -> b
-    83:83:boolean isGInAppInitDone() -> c
-    87:88:void useHint() -> d
-    91:93:void addHints(int) -> a
-    96:96:boolean isPackUnlocked(int) -> b
-    100:100:boolean isPackUnlocked(ru.emerginggames.snappers.model.LevelPack) -> a
-    104:108:int getLevelUnlocked(ru.emerginggames.snappers.model.LevelPack) -> b
-    112:112:int getLevelUnlocked(int) -> d
-    116:125:void unlockNextLevelPack(ru.emerginggames.snappers.model.LevelPack) -> c
-    128:129:void unlockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> d
-    132:135:void lockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> e
-    138:138:int getScore() -> e
-    142:146:void addScore(int) -> c
-    149:156:void unlockNextLevel(ru.emerginggames.snappers.model.Level) -> a
-    159:160:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
-    164:164:boolean isAdFree() -> f
-    168:169:void setAdFree(boolean) -> a
-    183:186:void setMusic(boolean) -> b
-    189:189:boolean getMusic() -> g
-    193:196:void setSound(boolean) -> c
-    199:199:boolean getSound() -> h
-    204:209:java.lang.String _S(java.lang.String) -> a
-    223:228:java.lang.String _S(java.lang.String,java.lang.String) -> a
-    234:239:java.lang.String deS(java.lang.String,java.lang.String) -> b
-    245:247:int getInt$2498c65f(java.lang.String,java.lang.String) -> c
-    252:255:void putInt(java.lang.String,int,java.lang.String) -> a
-    259:261:boolean getBoolean$4e7078bd(java.lang.String,java.lang.String) -> d
-    266:269:void putBoolean(java.lang.String,boolean,java.lang.String) -> a
-    272:275:java.lang.String getKey1() -> i
-    279:281:java.lang.String getKey3() -> l
-    285:287:java.lang.String getKey12() -> j
-    291:294:java.lang.String getKey2() -> k
+    48:52:ru.emerginggames.snappers.UserPreferences getInstance(android.content.Context) -> a
+    81:81:boolean isTapjoyEnabled() -> a
+    93:94:void touchHints() -> b
+    97:97:boolean areHintsTouched() -> c
+    101:101:int getHintsRemaining() -> d
+    105:106:void setGInAppInitDone$1385ff() -> e
+    109:109:boolean isGInAppInitDone() -> f
+    113:114:void useHint() -> g
+    117:119:void addHints(int) -> a
+    122:122:boolean isPackUnlocked(int) -> b
+    126:126:boolean isPackUnlocked(ru.emerginggames.snappers.model.LevelPack) -> a
+    130:134:int getLevelUnlocked(ru.emerginggames.snappers.model.LevelPack) -> b
+    138:138:int getLevelUnlocked(int) -> d
+    142:150:void unlockNextLevelPack(ru.emerginggames.snappers.model.LevelPack) -> c
+    153:154:void unlockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> d
+    157:160:void lockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> e
+    163:163:int getScore() -> h
+    167:171:void addScore(int) -> c
+    174:181:void unlockNextLevel(ru.emerginggames.snappers.model.Level) -> a
+    184:184:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
+    188:188:boolean isAdFree() -> i
+    192:193:void setAdFree(boolean) -> a
+    207:208:void setMusic(boolean) -> b
+    211:211:boolean getMusic() -> j
+    215:216:void setSound(boolean) -> c
+    219:219:boolean getSound() -> k
+    224:229:java.lang.String _S(java.lang.String) -> a
+    243:248:java.lang.String _S(java.lang.String,java.lang.String) -> a
+    254:259:java.lang.String deS(java.lang.String,java.lang.String) -> b
+    265:267:int getInt$2498c65f(java.lang.String,java.lang.String) -> c
+    272:275:void putInt(java.lang.String,int,java.lang.String) -> a
+    279:281:boolean getBoolean(java.lang.String,boolean,java.lang.String) -> a
+    286:289:void putBoolean(java.lang.String,boolean,java.lang.String) -> b
+    292:295:java.lang.String getKey1() -> l
+    299:301:java.lang.String getKey3() -> o
+    305:307:java.lang.String getKey12() -> m
+    311:314:java.lang.String getKey2() -> n
 ru.emerginggames.snappers.data.CryptHelperAES -> ru.emerginggames.snappers.a.a:
     12:14:java.lang.String encrypt(java.lang.String,java.lang.String) -> a
     18:21:java.lang.String decrypt(java.lang.String,java.lang.String) -> b
@@ -5537,13 +5542,14 @@ ru.emerginggames.snappers.db.R$string -> ru.emerginggames.snappers.b.b:
     int download_failed_dialog_positive_button -> r
     int download_failed_dialog_title -> s
     int level_locked -> t
-    int score -> u
-    int update_dialog_message -> v
-    int update_dialog_negative_button -> w
-    int update_dialog_positive_button -> x
-    int update_dialog_title -> y
-    int update_mandatory_toast -> z
-    int your_ad_here -> A
+    int level_locked_can_unlock -> u
+    int score -> v
+    int update_dialog_message -> w
+    int update_dialog_negative_button -> x
+    int update_dialog_positive_button -> y
+    int update_dialog_title -> z
+    int update_mandatory_toast -> A
+    int your_ad_here -> B
 ru.emerginggames.snappers.gdx.Elements.AnimatedSprite -> ru.emerginggames.snappers.c.a.a:
     com.badlogic.gdx.graphics.g2d.Animation animation -> i
     boolean looping -> j
@@ -5564,7 +5570,7 @@ ru.emerginggames.snappers.gdx.Elements.ColorRect -> ru.emerginggames.snappers.c.
     float b -> g
     float a -> h
     com.badlogic.gdx.graphics.Mesh mesh -> i
-    39:47:void setPosition(float,float,float,float) -> a
+    39:47:void setPosition$4098370b(float,float) -> a
     50:54:void setColor$4098370b() -> a
     64:68:void draw(float) -> a
     71:72:void dispose() -> b
@@ -5603,16 +5609,17 @@ ru.emerginggames.snappers.gdx.Elements.SimpleButton -> ru.emerginggames.snappers
     com.badlogic.gdx.audio.Sound sound -> u
     82:85:void draw(com.badlogic.gdx.graphics.g2d.SpriteBatch,float) -> a
     89:90:boolean touchDown(float,float,int) -> a
-    95:99:void touchUp$483d2f6e() -> a
-    107:107:com.badlogic.gdx.scenes.scene2d.Actor hit(float,float) -> a
-    117:118:void positionRelative(float,float,ru.emerginggames.snappers.gdx.helper.IPositionable$Dir,float) -> a
-    122:122:float getX() -> c
-    127:127:float getY() -> d
-    132:132:float getWidth() -> e
-    137:137:float getHeight() -> f
-    142:147:void setPosition(float,float) -> b
-    156:156:float getTop() -> k
-    160:166:com.badlogic.gdx.graphics.g2d.Sprite doSprite(com.badlogic.gdx.graphics.g2d.TextureRegion) -> a
+    94:95:void unTouch() -> g
+    99:103:void touchUp$483d2f6e() -> a
+    111:111:com.badlogic.gdx.scenes.scene2d.Actor hit(float,float) -> a
+    121:122:void positionRelative(float,float,ru.emerginggames.snappers.gdx.helper.IPositionable$Dir,float) -> a
+    126:126:float getX() -> c
+    131:131:float getY() -> d
+    136:136:float getWidth() -> e
+    141:141:float getHeight() -> f
+    146:151:void setPosition(float,float) -> b
+    160:160:float getTop() -> k
+    164:170:com.badlogic.gdx.graphics.g2d.Sprite doSprite(com.badlogic.gdx.graphics.g2d.TextureRegion) -> a
 ru.emerginggames.snappers.gdx.Elements.SnapperView -> ru.emerginggames.snappers.c.a.h:
     int halfSize -> z
     int state -> A
@@ -5638,79 +5645,83 @@ ru.emerginggames.snappers.gdx.Elements.SnapperView -> ru.emerginggames.snappers.
 ru.emerginggames.snappers.gdx.Game -> ru.emerginggames.snappers.c.a:
     int width -> a
     int height -> b
-    com.badlogic.gdx.graphics.g2d.SpriteBatch batch -> r
+    com.badlogic.gdx.graphics.g2d.SpriteBatch batch -> p
     ru.emerginggames.snappers.model.Level level -> c
-    ru.emerginggames.snappers.gdx.stages.MyStage currentStage -> d
-    ru.emerginggames.snappers.gdx.stages.MainStage mainStage -> e
-    ru.emerginggames.snappers.gdx.stages.GameOverStage gameOverStage -> f
-    ru.emerginggames.snappers.gdx.stages.PausedStage pausedStage -> g
-    ru.emerginggames.snappers.gdx.stages.HintMenuStage hintMenu -> h
-    ru.emerginggames.snappers.gdx.stages.HelpStage helpStage -> i
-    ru.emerginggames.snappers.model.LevelPack levelPack -> j
+    com.badlogic.gdx.InputProcessor currentInputProcessor -> d
+    ru.emerginggames.snappers.gdx.stages.MyStage currentStage -> e
+    ru.emerginggames.snappers.gdx.stages.MainStage mainStage -> f
+    ru.emerginggames.snappers.gdx.stages.GameOverStage gameOverStage -> g
+    ru.emerginggames.snappers.gdx.stages.PausedStage pausedStage -> h
+    ru.emerginggames.snappers.gdx.stages.HintMenuStage hintMenu -> i
+    ru.emerginggames.snappers.gdx.stages.HelpStage helpStage -> j
     com.badlogic.gdx.graphics.g2d.Sprite bg -> k
-    com.badlogic.gdx.graphics.FPSLogger logger -> l
-    ru.emerginggames.snappers.gdx.Elements.ColorRect tempRect -> m
-    ru.emerginggames.snappers.gdx.IAppGameListener mGameListener -> n
-    boolean objectsCreated -> o
-    boolean isSoundEnabled -> p
-    boolean initDone -> q
-    50:52:void create() -> a
-    81:91:void resize(int,int) -> a
-    95:122:void render() -> b
-    130:133:void resume() -> c
-    137:143:void dispose() -> d
-    146:148:void setStartLevel(ru.emerginggames.snappers.model.Level) -> a
-    152:153:void onShopBtn() -> e
-    157:159:void onNextBtn() -> f
-    163:165:void onRestartBtn() -> g
-    169:170:void onResumeBtn() -> h
-    174:175:void onMenuBtn() -> i
-    179:185:void onHintBtn() -> j
-    189:192:void useHint() -> k
-    196:201:void gameWon() -> l
-    205:208:void gameLost() -> m
-    212:213:void onPauseBtn() -> n
-    217:220:void onHelp() -> o
-    224:225:void levelPackWon() -> p
-    229:230:void onHelpDone() -> q
-    234:234:ru.emerginggames.snappers.gdx.IAppGameListener getAppListener() -> r
-    238:238:ru.emerginggames.snappers.model.Level getLevel() -> s
-    246:263:void setStage(ru.emerginggames.snappers.gdx.stages.MyStage) -> a
-    266:268:void setAdHeight(int) -> a
-    271:281:void backButtonPressed() -> t
-ru.emerginggames.snappers.gdx.IAppGameListener -> ru.emerginggames.snappers.c.b:
-    void launchStore() -> a
+    ru.emerginggames.snappers.gdx.IAppGameListener mGameListener -> l
+    boolean objectsCreated -> m
+    boolean isSoundEnabled -> n
+    boolean initDone -> o
+    ru.emerginggames.snappers.gdx.IGameEventListener gameListener -> q
+    45:47:void create() -> a
+    71:77:void resize(int,int) -> a
+    81:110:void render() -> b
+    114:117:void pause() -> c
+    121:123:void resume() -> d
+    127:133:void dispose() -> e
+    136:136:ru.emerginggames.snappers.model.Level getLevel() -> f
+    140:159:void setStage(ru.emerginggames.snappers.gdx.stages.MyStage) -> a
+    162:164:void setAdHeight(int) -> a
+    167:177:void backButtonPressed() -> g
+    139:139:void access$0(ru.emerginggames.snappers.gdx.Game,ru.emerginggames.snappers.gdx.stages.MyStage) -> a
+    22:22:com.badlogic.gdx.graphics.g2d.SpriteBatch access$1(ru.emerginggames.snappers.gdx.Game) -> a
+ru.emerginggames.snappers.gdx.Game$1 -> ru.emerginggames.snappers.c.b:
+    ru.emerginggames.snappers.gdx.Game this$0 -> a
+    182:183:void onShopBtn() -> a
+    187:189:void onNextBtn() -> b
+    193:195:void onRestartBtn() -> c
+    199:200:void onResumeBtn() -> d
+    204:205:void onMenuBtn() -> e
+    209:215:void onHintBtn() -> f
+    219:220:void onPauseBtn() -> g
+    224:229:void gameWon() -> h
+    233:235:void gameLost() -> i
+    239:240:void levelPackWon() -> j
+    244:247:void useHint() -> k
+    251:254:void onHelp() -> l
+    258:259:void onHelpDone() -> m
+    263:263:ru.emerginggames.snappers.gdx.IAppGameListener getAppListener() -> n
+ru.emerginggames.snappers.gdx.IAppGameListener -> ru.emerginggames.snappers.c.c:
+    void launchStore() -> b
     void levelPackWon(ru.emerginggames.snappers.model.LevelPack) -> a
-    int getHintsLeft() -> b
-    void useHint() -> c
+    int getHintsLeft() -> c
+    void useHint() -> d
     void buy(ru.emerginggames.snappers.model.Goods) -> a
-    boolean isOnline() -> d
+    boolean isOnline() -> e
     void levelSolved(ru.emerginggames.snappers.model.Level) -> a
     boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
-    boolean isSoundEnabled() -> e
+    boolean isSoundEnabled() -> f
     void addScore(int) -> a
-    void showAd() -> f
-    void hideAd() -> g
-    int getAdHeight() -> h
+    void showAd() -> g
+    void hideAd() -> h
+    int getAdHeight() -> i
     void gotScreenSize(int,int) -> a
-    void freeHintsPressed() -> i
+    void freeHintsPressed() -> j
     ru.emerginggames.snappers.model.Level getNextLevel(ru.emerginggames.snappers.model.Level) -> c
-ru.emerginggames.snappers.gdx.IGameEventListener -> ru.emerginggames.snappers.c.c:
-    void onShopBtn() -> e
-    void onNextBtn() -> f
-    void onRestartBtn() -> g
-    void onResumeBtn() -> h
-    void onMenuBtn() -> i
-    void onHintBtn() -> j
-    void onPauseBtn() -> n
-    void gameWon() -> l
-    void gameLost() -> m
-    void levelPackWon() -> p
+    boolean isTapjoyEnabled() -> a
+ru.emerginggames.snappers.gdx.IGameEventListener -> ru.emerginggames.snappers.c.d:
+    void onShopBtn() -> a
+    void onNextBtn() -> b
+    void onRestartBtn() -> c
+    void onResumeBtn() -> d
+    void onMenuBtn() -> e
+    void onHintBtn() -> f
+    void onPauseBtn() -> g
+    void gameWon() -> h
+    void gameLost() -> i
+    void levelPackWon() -> j
     void useHint() -> k
-    void onHelp() -> o
-    void onHelpDone() -> q
-    ru.emerginggames.snappers.gdx.IAppGameListener getAppListener() -> r
-ru.emerginggames.snappers.gdx.Resources -> ru.emerginggames.snappers.c.d:
+    void onHelp() -> l
+    void onHelpDone() -> m
+    ru.emerginggames.snappers.gdx.IAppGameListener getAppListener() -> n
+ru.emerginggames.snappers.gdx.Resources -> ru.emerginggames.snappers.c.e:
     java.lang.String dir -> a
     java.lang.Integer syncLock -> b
     android.content.Context context -> c
@@ -5726,33 +5737,34 @@ ru.emerginggames.snappers.gdx.Resources -> ru.emerginggames.snappers.c.d:
     com.badlogic.gdx.graphics.g2d.TextureRegion[] blastFrames -> m
     com.badlogic.gdx.graphics.g2d.TextureRegion[] bangFrames -> n
     com.badlogic.gdx.graphics.g2d.TextureRegion[] squareButtonFrames -> o
-    com.badlogic.gdx.graphics.g2d.TextureRegion[] menuButtonFrames -> p
-    com.badlogic.gdx.graphics.g2d.TextureRegion[] hintFrames -> q
-    com.badlogic.gdx.graphics.g2d.NinePatch dialog9 -> r
-    ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas buttonAtlas -> s
-    com.badlogic.gdx.audio.Sound[] popSounds -> t
-    com.badlogic.gdx.audio.Sound winSound -> u
-    com.badlogic.gdx.audio.Sound buttonSound -> v
-    com.badlogic.gdx.graphics.g2d.BitmapFont fnt1 -> w
-    android.graphics.Typeface font -> x
-    boolean texturesLoaded -> y
-    int[] $SWITCH_TABLE$ru$emerginggames$snappers$Metrics$SizeMode -> z
-    80:91:void init() -> a
-    95:98:void loadTextures(boolean) -> a
-    171:183:com.badlogic.gdx.graphics.g2d.TextureRegion[] makeAnimationFrames(com.badlogic.gdx.graphics.Texture,int,int,boolean,int,int) -> a
-    216:221:boolean loadBg(java.lang.String) -> a
-    227:234:com.badlogic.gdx.graphics.g2d.TextureRegion normLoadTexture$7c921e74(java.lang.String) -> b
-    240:249:void loadSounds() -> b
-    253:256:void preload() -> c
-    283:283:void preparePreload() -> d
-    295:297:void prepareData(com.badlogic.gdx.graphics.TextureData) -> a
-    307:309:void preloadBg(java.lang.String) -> c
-    341:346:void utilizeBg() -> f
-    349:351:android.graphics.Typeface getFont(android.content.Context) -> a
-    356:362:com.badlogic.gdx.graphics.g2d.TextureRegion getHelpTexture() -> e
-    393:393:com.badlogic.gdx.graphics.g2d.TextureRegion getBtnRegion(java.lang.String) -> d
-    30:30:int[] $SWITCH_TABLE$ru$emerginggames$snappers$Metrics$SizeMode() -> g
-ru.emerginggames.snappers.gdx.Resources$Preload -> ru.emerginggames.snappers.c.e:
+    com.badlogic.gdx.graphics.g2d.TextureRegion[] hintFrames -> p
+    com.badlogic.gdx.graphics.g2d.NinePatch dialog9 -> q
+    ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas buttonAtlas -> r
+    com.badlogic.gdx.audio.Sound[] popSounds -> s
+    com.badlogic.gdx.audio.Sound winSound -> t
+    com.badlogic.gdx.audio.Sound buttonSound -> u
+    com.badlogic.gdx.graphics.g2d.BitmapFont fnt1 -> v
+    android.graphics.Typeface font -> w
+    ru.emerginggames.snappers.gdx.Resources$PreloadRunnable preloadRunnable -> x
+    int[] $SWITCH_TABLE$ru$emerginggames$snappers$Metrics$SizeMode -> y
+    76:87:void init() -> a
+    90:94:void loadTextures(boolean) -> a
+    161:173:com.badlogic.gdx.graphics.g2d.TextureRegion[] makeAnimationFrames(com.badlogic.gdx.graphics.Texture,int,int,boolean,int,int) -> a
+    205:210:boolean loadBg(java.lang.String) -> a
+    215:220:com.badlogic.gdx.graphics.g2d.TextureRegion normLoadTexture$7c921e74(java.lang.String) -> b
+    225:234:void loadSounds() -> b
+    237:240:void preload() -> c
+    243:245:void createPreload() -> d
+    265:265:void preparePreload() -> e
+    277:279:void prepareData(com.badlogic.gdx.graphics.TextureData) -> a
+    287:289:void preloadBg(java.lang.String) -> c
+    318:323:void utilizeBg() -> h
+    326:328:android.graphics.Typeface getFont(android.content.Context) -> a
+    333:339:com.badlogic.gdx.graphics.g2d.TextureRegion getHelpTexture() -> f
+    350:350:com.badlogic.gdx.graphics.g2d.TextureRegion getBtnRegion(java.lang.String) -> d
+    354:357:void preloadResourcesInWorker$552c4e01() -> g
+    31:31:int[] $SWITCH_TABLE$ru$emerginggames$snappers$Metrics$SizeMode() -> i
+ru.emerginggames.snappers.gdx.Resources$Preload -> ru.emerginggames.snappers.c.f:
     com.badlogic.gdx.graphics.TextureData snappers -> a
     com.badlogic.gdx.graphics.TextureData bang -> b
     com.badlogic.gdx.graphics.TextureData blast -> c
@@ -5762,7 +5774,10 @@ ru.emerginggames.snappers.gdx.Resources$Preload -> ru.emerginggames.snappers.c.e
     boolean isBgLoading -> g
     java.lang.String bgName -> h
     ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData buttonAtlas -> i
-ru.emerginggames.snappers.gdx.Splash -> ru.emerginggames.snappers.c.f:
+ru.emerginggames.snappers.gdx.Resources$PreloadRunnable -> ru.emerginggames.snappers.c.g:
+    java.lang.String bgName -> a
+    363:368:void run() -> run
+ru.emerginggames.snappers.gdx.Splash -> ru.emerginggames.snappers.c.h:
     ru.emerginggames.snappers.SplashGdxActivity activity -> a
     boolean done -> b
     com.badlogic.gdx.graphics.g2d.Sprite bg -> c
@@ -5771,8 +5786,9 @@ ru.emerginggames.snappers.gdx.Splash -> ru.emerginggames.snappers.c.f:
     29:32:void create() -> a
     36:41:void resize(int,int) -> a
     45:48:void render() -> b
-    56:56:void resume() -> c
-    60:61:void dispose() -> d
+    52:52:void pause() -> c
+    56:56:void resume() -> d
+    60:61:void dispose() -> e
 ru.emerginggames.snappers.gdx.core.BitmapManagedTextureData -> ru.emerginggames.snappers.c.b.a:
     android.graphics.Bitmap bitmap -> a
     com.badlogic.gdx.graphics.Pixmap$Format format -> b
@@ -5796,47 +5812,49 @@ ru.emerginggames.snappers.gdx.core.BitmapPixmap -> ru.emerginggames.snappers.c.b
 ru.emerginggames.snappers.gdx.core.IOnTextureDataNeededHandler -> ru.emerginggames.snappers.c.b.c:
     android.graphics.Bitmap textureInfoNeeded(int,int) -> a
 ru.emerginggames.snappers.gdx.core.OutlinedTextSprite -> ru.emerginggames.snappers.c.b.d:
-    android.graphics.Paint textPaint -> s
-    android.graphics.Paint outlinePaint -> t
-    android.graphics.Paint backPaint -> u
-    android.graphics.Paint$FontMetrics fontMetrics -> v
-    int allocatedTextureWidth -> w
-    int allocatedTextureHeight -> x
-    boolean updatingTexture -> y
-    boolean postponeTextureUpdate -> z
-    android.graphics.Bitmap updateBitmap -> A
+    android.graphics.Paint textPaint -> n
+    android.graphics.Paint outlinePaint -> o
+    android.graphics.Paint backPaint -> p
+    android.graphics.Paint$FontMetrics fontMetrics -> q
+    int allocatedTextureWidth -> r
+    int allocatedTextureHeight -> s
+    boolean updatingTexture -> t
+    boolean postponeTextureUpdate -> u
+    android.graphics.Bitmap updateBitmap -> v
     ru.emerginggames.snappers.gdx.Elements.PositionInfo positionInfo -> i
     java.lang.Object bmpMutex -> j
     java.lang.String text -> k
-    int textSize -> l
-    int color -> m
-    int outlineColor -> n
-    int backColor -> o
-    int strokeWidth -> p
-    android.graphics.Typeface typeface -> q
-    int desiredWidth -> r
-    java.lang.Runnable updateTextureRunable -> B
-    75:79:void setText(java.lang.String) -> a
-    86:93:void setTextTexture() -> l
-    97:104:void draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) -> a
-    108:120:void draw(com.badlogic.gdx.graphics.g2d.SpriteBatch,float) -> a
-    129:134:android.graphics.Bitmap textureInfoNeeded(int,int) -> a
-    139:147:android.graphics.Bitmap makeTextBitmap(int,int) -> b
-    151:168:void preparePaint() -> m
-    171:171:int getTextHeight() -> j
-    176:178:int measureTextWidth() -> n
-    182:182:int measureTextWidth(java.lang.String) -> b
-    186:191:void setTexture$1ff17247(com.badlogic.gdx.graphics.Texture,int,int) -> b
-    195:200:void positionRelative(ru.emerginggames.snappers.gdx.helper.IPositionable,ru.emerginggames.snappers.gdx.helper.IPositionable$Dir,float) -> a
-    204:208:void positionRelative(float,float,ru.emerginggames.snappers.gdx.helper.IPositionable$Dir,float) -> a
-    217:217:float getTop() -> k
-    226:233:void startBitmapUpdate() -> o
-    237:251:void updateTexture() -> p
-    25:25:void access$0(ru.emerginggames.snappers.gdx.core.OutlinedTextSprite,android.graphics.Bitmap) -> a
+    ru.emerginggames.snappers.gdx.core.OutlinedTextSprite$FontStyle style -> l
+    int desiredWidth -> m
+    java.lang.Runnable updateTextureRunable -> w
+    74:78:void setText(java.lang.String) -> a
+    85:92:void setTextTexture() -> l
+    96:103:void draw(com.badlogic.gdx.graphics.g2d.SpriteBatch) -> a
+    107:119:void draw(com.badlogic.gdx.graphics.g2d.SpriteBatch,float) -> a
+    128:133:android.graphics.Bitmap textureInfoNeeded(int,int) -> a
+    138:146:android.graphics.Bitmap makeTextBitmap(int,int) -> b
+    150:167:void preparePaint() -> m
+    170:170:int getTextHeight() -> j
+    175:177:int measureTextWidth() -> n
+    181:181:int measureTextWidth(java.lang.String) -> b
+    185:190:void setTexture$1ff17247(com.badlogic.gdx.graphics.Texture,int,int) -> b
+    194:199:void positionRelative(ru.emerginggames.snappers.gdx.helper.IPositionable,ru.emerginggames.snappers.gdx.helper.IPositionable$Dir,float) -> a
+    203:207:void positionRelative(float,float,ru.emerginggames.snappers.gdx.helper.IPositionable$Dir,float) -> a
+    216:216:float getTop() -> k
+    225:232:void startBitmapUpdate() -> o
+    236:250:void updateTexture() -> p
+    43:43:void access$0(ru.emerginggames.snappers.gdx.core.OutlinedTextSprite,android.graphics.Bitmap) -> a
 ru.emerginggames.snappers.gdx.core.OutlinedTextSprite$1 -> ru.emerginggames.snappers.c.b.e:
     ru.emerginggames.snappers.gdx.core.OutlinedTextSprite this$0 -> a
-    256:258:void run() -> run
-ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas -> ru.emerginggames.snappers.c.b.f:
+    255:257:void run() -> run
+ru.emerginggames.snappers.gdx.core.OutlinedTextSprite$FontStyle -> ru.emerginggames.snappers.c.b.f:
+    int textSize -> a
+    int color -> b
+    int outlineTextColor -> c
+    int backColor -> d
+    int strokeWidth -> e
+    android.graphics.Typeface typeface -> f
+ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas -> ru.emerginggames.snappers.c.b.g:
     java.lang.String[] tuple -> a
     java.util.HashSet textures -> c
     java.util.ArrayList regions -> d
@@ -5846,9 +5864,9 @@ ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas -> ru.emerginggames.s
     394:397:void dispose() -> b
     410:413:java.lang.String readValue(java.io.BufferedReader) -> a
     417:423:void readTuple(java.io.BufferedReader) -> b
-ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$1 -> ru.emerginggames.snappers.c.b.g:
+ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$1 -> ru.emerginggames.snappers.c.b.h:
     1:1:int compare(java.lang.Object,java.lang.Object) -> compare
-ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$AtlasRegion -> ru.emerginggames.snappers.c.b.h:
+ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$AtlasRegion -> ru.emerginggames.snappers.c.b.i:
     int index -> a
     java.lang.String name -> b
     float offsetX -> c
@@ -5859,12 +5877,12 @@ ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$AtlasRegion -> ru.eme
     int originalHeight -> m
     boolean rotate -> n
     482:485:void flip(boolean,boolean) -> a
-ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData -> ru.emerginggames.snappers.c.b.i:
+ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData -> ru.emerginggames.snappers.c.b.j:
     com.badlogic.gdx.utils.Array pages -> a
     com.badlogic.gdx.utils.Array regions -> b
     188:190:void prepare() -> a
     193:196:boolean isPrepared() -> b
-ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Page -> ru.emerginggames.snappers.c.b.j:
+ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Page -> ru.emerginggames.snappers.c.b.k:
     com.badlogic.gdx.files.FileHandle textureFile -> a
     com.badlogic.gdx.graphics.Texture texture -> b
     boolean useMipMaps -> c
@@ -5876,7 +5894,7 @@ ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Page
     com.badlogic.gdx.graphics.TextureData textureData -> i
     60:65:void prepare() -> a
     68:68:boolean isPrepared() -> b
-ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Region -> ru.emerginggames.snappers.c.b.k:
+ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Region -> ru.emerginggames.snappers.c.b.l:
     ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Page page -> a
     int index -> b
     java.lang.String name -> c
@@ -5890,7 +5908,7 @@ ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Regi
     int width -> k
     int height -> l
     boolean flip -> m
-ru.emerginggames.snappers.gdx.core.ResizedFileTextureData -> ru.emerginggames.snappers.c.b.l:
+ru.emerginggames.snappers.gdx.core.ResizedFileTextureData -> ru.emerginggames.snappers.c.b.m:
     com.badlogic.gdx.files.FileHandle file -> a
     boolean isPrepared -> b
     com.badlogic.gdx.graphics.Pixmap$Format format -> c
@@ -5946,12 +5964,13 @@ ru.emerginggames.snappers.gdx.stages.DimBackStage -> ru.emerginggames.snappers.c
     float fadeinTime -> m
     ru.emerginggames.snappers.gdx.Elements.ColorRect dimRect -> n
     float sinceShow -> o
-    25:27:void setViewport(float,float) -> a
-    31:32:void onShow() -> e
-    36:38:void act(float) -> a
-    41:44:void drawBack() -> f
-    47:48:float getOpacity() -> g
-    53:55:void dispose() -> b
+    29:31:void setViewport(float,float) -> a
+    35:36:void onShow() -> g
+    40:42:void act(float) -> a
+    45:48:void drawBack() -> h
+    51:52:float getOpacity() -> i
+    57:59:void dispose() -> b
+    63:71:void unfocusAll() -> f
 ru.emerginggames.snappers.gdx.stages.GameOverStage -> ru.emerginggames.snappers.c.d.b:
     java.lang.String[] winMessages -> v
     ru.emerginggames.snappers.logic.GameLogic logic -> n
@@ -5967,9 +5986,9 @@ ru.emerginggames.snappers.gdx.stages.GameOverStage -> ru.emerginggames.snappers.
     ru.emerginggames.snappers.gdx.IGameEventListener mGame -> u
     95:104:void setViewport(float,float) -> a
     107:123:void show(boolean,int) -> a
-    127:129:void onHide() -> h
+    127:129:void onHide() -> j
     132:143:void setAdHeight(int) -> b
-    147:161:void draw() -> d
+    147:161:void draw() -> e
 ru.emerginggames.snappers.gdx.stages.GameOverStage$1 -> ru.emerginggames.snappers.c.d.c:
     ru.emerginggames.snappers.gdx.stages.GameOverStage this$0 -> a
     ru.emerginggames.snappers.gdx.IGameEventListener val$listener -> b
@@ -5993,8 +6012,8 @@ ru.emerginggames.snappers.gdx.stages.GameOverStage$5 -> ru.emerginggames.snapper
 ru.emerginggames.snappers.gdx.stages.HelpStage -> ru.emerginggames.snappers.c.d.h:
     ru.emerginggames.snappers.gdx.IGameEventListener listener -> m
     com.badlogic.gdx.graphics.g2d.Sprite helpSprite -> n
-    31:34:void draw() -> d
-    38:40:boolean touchUp$3b4dfe47(int,int,int) -> b
+    31:34:void draw() -> e
+    38:40:boolean touchUp(int,int,int,int) -> b
 ru.emerginggames.snappers.gdx.stages.HintMenuStage -> ru.emerginggames.snappers.c.d.i:
     ru.emerginggames.snappers.gdx.Elements.SimpleButton cancelButton -> n
     ru.emerginggames.snappers.gdx.Elements.SimpleButton useButton -> o
@@ -6007,27 +6026,28 @@ ru.emerginggames.snappers.gdx.stages.HintMenuStage -> ru.emerginggames.snappers.
     boolean showLine3 -> v
     ru.emerginggames.snappers.gdx.IGameEventListener mGame -> w
     ru.emerginggames.snappers.gdx.stages.HintMenuStage$Mode mode -> x
-    int[] $SWITCH_TABLE$ru$emerginggames$snappers$gdx$stages$HintMenuStage$Mode -> C
-    56:57:void setViewport(float,float) -> a
-    61:68:void draw() -> d
-    173:185:void onShow() -> e
-    21:21:int[] $SWITCH_TABLE$ru$emerginggames$snappers$gdx$stages$HintMenuStage$Mode() -> i
-    214:214:void access$1(ru.emerginggames.snappers.gdx.stages.HintMenuStage,ru.emerginggames.snappers.model.Goods) -> a
+    boolean isTapjoyEnabled -> y
+    int[] $SWITCH_TABLE$ru$emerginggames$snappers$gdx$stages$HintMenuStage$Mode -> D
+    58:59:void setViewport(float,float) -> a
+    63:70:void draw() -> e
+    182:194:void onShow() -> g
+    21:21:int[] $SWITCH_TABLE$ru$emerginggames$snappers$gdx$stages$HintMenuStage$Mode() -> k
+    223:223:void access$1(ru.emerginggames.snappers.gdx.stages.HintMenuStage,ru.emerginggames.snappers.model.Goods) -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$1 -> ru.emerginggames.snappers.c.d.j:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    132:133:void onEvent() -> a
+    140:141:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$2 -> ru.emerginggames.snappers.c.d.k:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    138:139:void onEvent() -> a
+    146:147:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$3 -> ru.emerginggames.snappers.c.d.l:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    144:145:void onEvent() -> a
+    152:153:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$4 -> ru.emerginggames.snappers.c.d.m:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    150:151:void onEvent() -> a
+    158:159:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$5 -> ru.emerginggames.snappers.c.d.n:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    156:157:void onEvent() -> a
+    164:165:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$Mode -> ru.emerginggames.snappers.c.d.o:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage$Mode Use -> a
     ru.emerginggames.snappers.gdx.stages.HintMenuStage$Mode Buy -> b
@@ -6060,69 +6080,98 @@ ru.emerginggames.snappers.gdx.stages.MainButtons$2 -> ru.emerginggames.snappers.
     ru.emerginggames.snappers.gdx.IGameEventListener val$listener -> b
     33:34:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.MainStage -> ru.emerginggames.snappers.c.d.t:
-    com.badlogic.gdx.graphics.g2d.Animation blastAnimation -> A
-    ru.emerginggames.snappers.logic.GameLogic logic -> B
-    com.badlogic.gdx.utils.Array activeSnappers -> C
-    com.badlogic.gdx.utils.Pool snapperViewPool -> D
-    com.badlogic.gdx.utils.Array activeBangs -> E
-    com.badlogic.gdx.utils.Pool bangPool -> F
+    ru.emerginggames.snappers.logic.GameLogic logic -> w
     ru.emerginggames.snappers.gdx.core.OutlinedTextSprite levelText -> m
     ru.emerginggames.snappers.gdx.core.OutlinedTextSprite tapLeftText -> n
     ru.emerginggames.snappers.gdx.IGameEventListener mGame -> o
     ru.emerginggames.snappers.gdx.stages.MainButtons buttons -> p
     boolean gameOverFired -> q
-    float sincePopped -> r
-    int toPop -> s
-    ru.emerginggames.snappers.gdx.stages.Hints hint -> t
-    boolean isHinting -> u
-    boolean isTutorialAvailable -> v
-    boolean drawButtons -> w
-    ru.emerginggames.snappers.gdx.helper.IAnimationFunction snapperAnimFn -> x
-    float animDelta -> y
-    ru.emerginggames.snappers.gdx.helper.IPositionAnimationListener snapperAnimationListener -> z
-    int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Blast$Direction -> G
-    83:92:void setLevel(ru.emerginggames.snappers.model.Level) -> a
-    122:145:void defineSnapperViews() -> k
-    149:179:void act(float) -> a
-    184:200:void draw() -> d
-    256:263:void snapperHit(int,int) -> b
-    267:274:void tap() -> f
-    277:289:void showHints(boolean) -> a
-    293:294:void restartLevel() -> g
-    297:303:void nextLevel() -> i
-    306:306:ru.emerginggames.snappers.logic.GameLogic getLogic() -> j
-    372:372:boolean areSnappersTouched() -> l
-    380:381:void setDrawButtons(boolean) -> b
-    32:32:int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Blast$Direction() -> m
-    41:41:ru.emerginggames.snappers.logic.GameLogic access$1(ru.emerginggames.snappers.gdx.stages.MainStage) -> a
-    45:45:com.badlogic.gdx.utils.Array access$2(ru.emerginggames.snappers.gdx.stages.MainStage) -> b
-    46:46:com.badlogic.gdx.utils.Pool access$3(ru.emerginggames.snappers.gdx.stages.MainStage) -> c
+    ru.emerginggames.snappers.gdx.stages.Hints hint -> r
+    boolean isHinting -> s
+    boolean isTutorialAvailable -> t
+    boolean drawButtons -> u
+    float animDelta -> v
+    ru.emerginggames.snappers.gdx.stages.MainStage$Bangs bangs -> x
+    ru.emerginggames.snappers.gdx.stages.MainStage$Blasts blasts -> y
+    ru.emerginggames.snappers.gdx.stages.MainStage$Snappers_ snappers -> z
+    ru.emerginggames.snappers.gdx.stages.MainStage$Sounds sounds -> A
+    ru.emerginggames.snappers.logic.ILogicListener logicListener -> B
+    80:89:void setLevel(ru.emerginggames.snappers.model.Level) -> a
+    118:138:void act(float) -> a
+    142:145:boolean touchUp(int,int,int,int) -> b
+    150:158:void unfocusAll() -> f
+    162:177:void draw() -> e
+    180:192:void showHints(boolean) -> a
+    195:196:void restartLevel() -> h
+    199:205:void nextLevel() -> i
+    208:208:ru.emerginggames.snappers.logic.GameLogic getLogic() -> k
+    212:212:boolean areSnappersTouched() -> l
+    216:217:void setDrawButtons(boolean) -> b
+    57:57:ru.emerginggames.snappers.gdx.stages.MainStage$Snappers_ access$0(ru.emerginggames.snappers.gdx.stages.MainStage) -> a
+    55:55:ru.emerginggames.snappers.gdx.stages.MainStage$Bangs access$1(ru.emerginggames.snappers.gdx.stages.MainStage) -> b
+    41:41:ru.emerginggames.snappers.logic.GameLogic access$2(ru.emerginggames.snappers.gdx.stages.MainStage) -> c
+    32:32:com.badlogic.gdx.graphics.g2d.SpriteBatch access$3(ru.emerginggames.snappers.gdx.stages.MainStage) -> d
 ru.emerginggames.snappers.gdx.stages.MainStage$1 -> ru.emerginggames.snappers.c.d.u:
     ru.emerginggames.snappers.gdx.stages.MainStage this$0 -> a
-    386:388:void onAnimationEnd(ru.emerginggames.snappers.gdx.Elements.MovableActor) -> a
-ru.emerginggames.snappers.gdx.stages.MainStage$2 -> ru.emerginggames.snappers.c.d.v:
+    224:230:void snapperHit(int,int) -> a
+    234:241:void tap() -> a
+ru.emerginggames.snappers.gdx.stages.MainStage$Bangs -> ru.emerginggames.snappers.c.d.v:
+    com.badlogic.gdx.utils.Array activeBangs -> b
+    com.badlogic.gdx.utils.Pool bangPool -> c
     ru.emerginggames.snappers.gdx.stages.MainStage this$0 -> a
-    1:1:java.lang.Object newObject() -> a
-ru.emerginggames.snappers.gdx.stages.MainStage$3 -> ru.emerginggames.snappers.c.d.w:
-    ru.emerginggames.snappers.gdx.stages.MainStage this$0 -> a
-    355:357:void onAnimationEnd(ru.emerginggames.snappers.gdx.Elements.AnimatedSprite) -> a
-ru.emerginggames.snappers.gdx.stages.MainStage$4 -> ru.emerginggames.snappers.c.d.x:
-    ru.emerginggames.snappers.gdx.stages.MainStage this$0 -> a
+    267:269:void act(float) -> a
+    272:274:void draw() -> a
+    277:281:void add(int,int) -> a
+    245:245:com.badlogic.gdx.utils.Array access$0(ru.emerginggames.snappers.gdx.stages.MainStage$Bangs) -> a
+    246:246:com.badlogic.gdx.utils.Pool access$1(ru.emerginggames.snappers.gdx.stages.MainStage$Bangs) -> b
+ru.emerginggames.snappers.gdx.stages.MainStage$Bangs$1 -> ru.emerginggames.snappers.c.d.w:
+    ru.emerginggames.snappers.gdx.stages.MainStage$Bangs this$1 -> a
+    252:254:void onAnimationEnd(ru.emerginggames.snappers.gdx.Elements.AnimatedSprite) -> a
+ru.emerginggames.snappers.gdx.stages.MainStage$Bangs$2 -> ru.emerginggames.snappers.c.d.x:
+    ru.emerginggames.snappers.gdx.stages.MainStage$Bangs this$1 -> a
     ru.emerginggames.snappers.gdx.Elements.IAnimationListener val$bangListener -> c
     1:1:java.lang.Object newObject() -> a
-ru.emerginggames.snappers.gdx.stages.MenuStage -> ru.emerginggames.snappers.c.d.y:
-    int menuWidth -> y
-    int menuHeight -> z
-    int menuX -> A
-    int menuY -> B
+ru.emerginggames.snappers.gdx.stages.MainStage$Blasts -> ru.emerginggames.snappers.c.d.y:
+    com.badlogic.gdx.graphics.g2d.Animation blastAnimation -> b
+    ru.emerginggames.snappers.gdx.stages.MainStage this$0 -> a
+    int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Blast$Direction -> c
+    293:300:void draw() -> a
+    284:284:int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Blast$Direction() -> b
+ru.emerginggames.snappers.gdx.stages.MainStage$Snappers_ -> ru.emerginggames.snappers.c.d.z:
+    com.badlogic.gdx.utils.Array activeSnappers -> d
+    com.badlogic.gdx.utils.Pool snapperViewPool -> e
+    ru.emerginggames.snappers.gdx.helper.IAnimationFunction snapperAnimFn -> a
+    ru.emerginggames.snappers.gdx.helper.IPositionAnimationListener snapperAnimationListener -> b
+    ru.emerginggames.snappers.gdx.stages.MainStage this$0 -> c
+    333:340:void act(float) -> a
+    343:366:void defineSnapperViews() -> a
+    370:377:void draw() -> b
+    381:386:ru.emerginggames.snappers.gdx.Elements.SnapperView find(int,int) -> a
+    390:392:void free(ru.emerginggames.snappers.gdx.Elements.SnapperView) -> a
+ru.emerginggames.snappers.gdx.stages.MainStage$Snappers_$1 -> ru.emerginggames.snappers.c.d.aa:
+    ru.emerginggames.snappers.gdx.stages.MainStage$Snappers_ this$1 -> a
+    397:399:void onAnimationEnd(ru.emerginggames.snappers.gdx.Elements.MovableActor) -> a
+ru.emerginggames.snappers.gdx.stages.MainStage$Snappers_$2 -> ru.emerginggames.snappers.c.d.ab:
+    ru.emerginggames.snappers.gdx.stages.MainStage$Snappers_ this$1 -> a
+    1:1:java.lang.Object newObject() -> a
+ru.emerginggames.snappers.gdx.stages.MainStage$Sounds -> ru.emerginggames.snappers.c.d.ac:
+    float sincePopped -> a
+    int toPop -> b
+    ru.emerginggames.snappers.gdx.stages.MainStage this$0 -> c
+    408:411:void act(float,int) -> a
+ru.emerginggames.snappers.gdx.stages.MenuStage -> ru.emerginggames.snappers.c.d.ad:
+    int menuWidth -> z
+    int menuHeight -> A
+    int menuX -> B
+    int menuY -> C
     24:27:void setMenuSize(int,int) -> b
     31:33:void setViewport(float,float) -> a
-    37:44:void draw() -> d
-    47:49:void calcMenuPosition() -> i
-ru.emerginggames.snappers.gdx.stages.MyStage -> ru.emerginggames.snappers.c.d.z:
-    22:22:void onShow() -> e
-    24:24:void onHide() -> h
-ru.emerginggames.snappers.gdx.stages.PausedStage -> ru.emerginggames.snappers.c.d.aa:
+    37:44:void draw() -> e
+    47:49:void calcMenuPosition() -> k
+ru.emerginggames.snappers.gdx.stages.MyStage -> ru.emerginggames.snappers.c.d.ae:
+    22:22:void onShow() -> g
+    24:24:void onHide() -> j
+ru.emerginggames.snappers.gdx.stages.PausedStage -> ru.emerginggames.snappers.c.d.af:
     ru.emerginggames.snappers.gdx.Elements.SimpleButton resumeBtn -> n
     ru.emerginggames.snappers.gdx.Elements.SimpleButton restartBtn -> o
     ru.emerginggames.snappers.gdx.Elements.SimpleButton menuBtn -> p
@@ -6131,19 +6180,21 @@ ru.emerginggames.snappers.gdx.stages.PausedStage -> ru.emerginggames.snappers.c.
     ru.emerginggames.snappers.gdx.IGameEventListener listener -> s
     com.badlogic.gdx.graphics.Color color -> t
     40:41:void setViewport(float,float) -> a
-    45:52:void draw() -> d
-ru.emerginggames.snappers.gdx.stages.PausedStage$1 -> ru.emerginggames.snappers.c.d.ab:
+    45:51:void draw() -> e
+    55:55:boolean touchDown(int,int,int,int) -> a
+    60:60:boolean touchUp(int,int,int,int) -> b
+ru.emerginggames.snappers.gdx.stages.PausedStage$1 -> ru.emerginggames.snappers.c.d.ag:
     ru.emerginggames.snappers.gdx.stages.PausedStage this$0 -> a
-    61:62:void onEvent() -> a
-ru.emerginggames.snappers.gdx.stages.PausedStage$2 -> ru.emerginggames.snappers.c.d.ac:
+    69:70:void onEvent() -> a
+ru.emerginggames.snappers.gdx.stages.PausedStage$2 -> ru.emerginggames.snappers.c.d.ah:
     ru.emerginggames.snappers.gdx.stages.PausedStage this$0 -> a
-    70:71:void onEvent() -> a
-ru.emerginggames.snappers.gdx.stages.PausedStage$3 -> ru.emerginggames.snappers.c.d.ad:
+    77:78:void onEvent() -> a
+ru.emerginggames.snappers.gdx.stages.PausedStage$3 -> ru.emerginggames.snappers.c.d.ai:
     ru.emerginggames.snappers.gdx.stages.PausedStage this$0 -> a
-    79:80:void onEvent() -> a
-ru.emerginggames.snappers.gdx.stages.PausedStage$4 -> ru.emerginggames.snappers.c.d.ae:
+    85:86:void onEvent() -> a
+ru.emerginggames.snappers.gdx.stages.PausedStage$4 -> ru.emerginggames.snappers.c.d.aj:
     ru.emerginggames.snappers.gdx.stages.PausedStage this$0 -> a
-    88:89:void onEvent() -> a
+    93:94:void onEvent() -> a
 ru.emerginggames.snappers.logic.GameLogic -> ru.emerginggames.snappers.d.a:
     java.util.List blastsToKill -> a
     ru.emerginggames.snappers.logic.Pool blastPool -> b
@@ -6182,8 +6233,8 @@ ru.emerginggames.snappers.logic.GameLogic$1 -> ru.emerginggames.snappers.d.b:
     ru.emerginggames.snappers.logic.GameLogic this$0 -> a
     1:1:java.lang.Object createObject() -> a
 ru.emerginggames.snappers.logic.ILogicListener -> ru.emerginggames.snappers.d.c:
-    void snapperHit(int,int) -> b
-    void tap() -> f
+    void snapperHit(int,int) -> a
+    void tap() -> a
 ru.emerginggames.snappers.logic.Pool -> ru.emerginggames.snappers.d.d:
     java.util.List freeObjects -> a
     ru.emerginggames.snappers.logic.PoolObjectFactory factory -> b

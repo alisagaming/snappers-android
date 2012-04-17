@@ -19,6 +19,7 @@ import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.gdx.core.BitmapPixmap;
 import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas;
 import ru.emerginggames.snappers.gdx.core.ResizedFileTextureData;
+import ru.emerginggames.snappers.utils.WorkerThread;
 
 
 /**
@@ -91,10 +92,10 @@ public class Resources {
     }
 
     public static void loadTextures(boolean isGold) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         loadSnapperTextures(isGold);
         loadButtonTextures();
         loadBmpFonts();
+        help = null;
     }
 
     public static void loadBmpFonts() {
@@ -102,16 +103,12 @@ public class Resources {
     }
 
     private static void loadButtonTextures() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         fillButtonRegions();
-
         dialog = new Texture(Preload.dialog);
         dialog9 = new NinePatch(dialog, Metrics.menuMargin, Metrics.menuMargin, Metrics.menuMargin, Metrics.menuMargin);
     }
 
-
     private static void loadSnapperTextures(boolean isGold) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         preload();
         int snapperSize = Metrics.snapperSize;
 
@@ -212,7 +209,6 @@ public class Resources {
     }
 
     public static boolean loadBg(String name) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         preloadBg(name);
         if (Preload.bg == null)
             return false;
@@ -222,13 +218,10 @@ public class Resources {
     }
 
     public static TextureRegion normLoadTexture(String name, Pixmap.Format format) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         try {
             Bitmap bgSource = BitmapFactory.decodeStream(context.getAssets().open(name));
-
             TextureRegion reg = BitmapPixmap.bitmapToTexture(bgSource, format);
             bgSource.recycle();
-
             return reg;
         } catch (Exception e) {
             return null;
@@ -249,14 +242,12 @@ public class Resources {
     }
 
     public static void preload() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         init();
         createPreload();
         preparePreload();
     }
 
     protected static void createPreload() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Gdx.files == null)
             return;
         synchronized (syncLock) {
@@ -392,6 +383,26 @@ public class Resources {
     public static TextureRegion getBtnRegion(String name){
         return buttonAtlas.findRegion(name);
     }
+
+    public static void preloadResourcesInWorker(String backName){
+        if (backName != null)
+            preloadRunnable.bgName = backName;
+        WorkerThread.getInstance().post(preloadRunnable);
+    }
+
+    private static class PreloadRunnable implements Runnable{
+        public String bgName;
+        @Override
+        public void run() {
+            createPreload();
+            preparePreload();
+            if (bgName != null)
+                preloadBg(bgName);
+            Log.v("Snappers - PRELOAD", "Preload done");
+        }
+    }
+    private static PreloadRunnable preloadRunnable = new PreloadRunnable();
+
 
 
 }

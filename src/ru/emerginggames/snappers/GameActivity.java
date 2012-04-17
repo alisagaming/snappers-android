@@ -39,7 +39,8 @@ public class GameActivity extends AndroidApplication{
     boolean canShowAd;
     boolean mayShowAd;
     boolean isFinished = false;
-    boolean wentTapjoy;
+    boolean wentTapjoy = false;
+    boolean wentShop = false;
     LevelTable levelTable;
     Store mStore;
     GameListener gameListener;
@@ -131,6 +132,8 @@ public class GameActivity extends AndroidApplication{
             isFinished = true;
             levelTable.close();
         }
+        if (wentShop || wentTapjoy)
+            Resources.preloadResourcesInWorker(null);
     }
 
     @Override
@@ -148,6 +151,7 @@ public class GameActivity extends AndroidApplication{
             TapjoyConnect.getTapjoyConnectInstance().getTapPoints(new TapjoyPointsListener(getApplicationContext()));
             wentTapjoy = false;
         }
+        wentShop = false;
     }
 
     @Override
@@ -201,8 +205,10 @@ public class GameActivity extends AndroidApplication{
 
         @Override
         public void buy(Goods goods) {
-            if (mStore != null)
+            if (mStore != null){
+                wentShop = true;
                 mStore.buy(goods);
+            }
         }
 
         @Override

@@ -134,7 +134,6 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void resume() {
-        Texture.invalidateAllTextures(Gdx.app);
         if (currentStage == hintMenu)
             hintMenu.onShow();
     }

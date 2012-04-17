@@ -22,7 +22,7 @@ import ru.emerginggames.snappers.utils.GInAppStore;
  */
 public class SplashGdxActivity extends AndroidApplication {
     private static final int SPLASH_TIME = 2000;
-    AsyncTask<Integer, Integer, Integer> loadThread;
+    AsyncTask<Integer, Integer, Integer> loadTask;
 
     public void onCreate(Bundle savedInstanceState) {
         DbSettings.ENABLE_ALL_LEVELS = Settings.ENABLE_ALL_LEVELS;
@@ -57,10 +57,10 @@ public class SplashGdxActivity extends AndroidApplication {
     protected void onResume() {
         super.onResume();
 
-        if (loadThread != null)
+        if (loadTask != null)
             return;
 
-        loadThread = new AsyncTask<Integer, Integer, Integer>(){
+        loadTask = new AsyncTask<Integer, Integer, Integer>(){
             @Override
             protected Integer doInBackground(Integer... params) {
                 long startTime = System.currentTimeMillis();
@@ -100,10 +100,10 @@ public class SplashGdxActivity extends AndroidApplication {
 
             @Override
             protected void onPostExecute(Integer integer) {
-                SplashGdxActivity.this.loadThread = null;
+                SplashGdxActivity.this.loadTask = null;
             }
         };
-        loadThread.execute();
+        loadTask.execute();
     }
 
     private void checkForUpdates() {

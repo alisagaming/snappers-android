@@ -1005,6 +1005,15 @@ com.adwhirl.util.AdWhirlUtil -> com.adwhirl.util.AdWhirlUtil:
     146:160:java.lang.String getEncodedDeviceId(android.content.Context) -> getEncodedDeviceId
     172:184:java.lang.String md5(java.lang.String) -> md5
     193:193:boolean isEmulator() -> isEmulator
+com.android.vending.billing.IMarketBillingService -> com.a.a.a.a:
+    android.os.Bundle sendBillingRequest(android.os.Bundle) -> a
+com.android.vending.billing.IMarketBillingService$Stub -> com.a.a.a.b:
+    23:30:com.android.vending.billing.IMarketBillingService asInterface(android.os.IBinder) -> a
+    38:67:boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
+com.android.vending.billing.IMarketBillingService$Stub$Proxy -> com.a.a.a.c:
+    android.os.IBinder mRemote -> a
+    78:78:android.os.IBinder asBinder() -> asBinder
+    87:112:android.os.Bundle sendBillingRequest(android.os.Bundle) -> a
 com.badlogic.gdx.Application -> com.badlogic.gdx.a:
     com.badlogic.gdx.Graphics getGraphics() -> a
     void log(java.lang.String,java.lang.String) -> a
@@ -5137,7 +5146,29 @@ org.acra.util.NaiveTrustManager -> org.acra.c.f:
     34:34:java.security.cert.X509Certificate[] getAcceptedIssuers() -> getAcceptedIssuers
     47:47:void checkClientTrusted(java.security.cert.X509Certificate[],java.lang.String) -> checkClientTrusted
     59:59:void checkServerTrusted(java.security.cert.X509Certificate[],java.lang.String) -> checkServerTrusted
-ru.emerginggames.snappers.DbSettings -> ru.emerginggames.snappers.a:
+ru.emerginggames.snappers.Consts -> ru.emerginggames.snappers.a:
+    long BILLING_RESPONSE_INVALID_REQUEST_ID -> a
+ru.emerginggames.snappers.Consts$PurchaseState -> ru.emerginggames.snappers.b:
+    ru.emerginggames.snappers.Consts$PurchaseState PURCHASED -> a
+    ru.emerginggames.snappers.Consts$PurchaseState CANCELED -> b
+    ru.emerginggames.snappers.Consts$PurchaseState REFUNDED -> c
+    ru.emerginggames.snappers.Consts$PurchaseState[] ENUM$VALUES -> d
+    53:57:ru.emerginggames.snappers.Consts$PurchaseState valueOf(int) -> a
+    1:1:ru.emerginggames.snappers.Consts$PurchaseState[] values() -> values
+    1:1:ru.emerginggames.snappers.Consts$PurchaseState valueOf(java.lang.String) -> valueOf
+ru.emerginggames.snappers.Consts$ResponseCode -> ru.emerginggames.snappers.c:
+    ru.emerginggames.snappers.Consts$ResponseCode RESULT_OK -> a
+    ru.emerginggames.snappers.Consts$ResponseCode RESULT_USER_CANCELED -> b
+    ru.emerginggames.snappers.Consts$ResponseCode RESULT_SERVICE_UNAVAILABLE -> c
+    ru.emerginggames.snappers.Consts$ResponseCode RESULT_BILLING_UNAVAILABLE -> d
+    ru.emerginggames.snappers.Consts$ResponseCode RESULT_ITEM_UNAVAILABLE -> e
+    ru.emerginggames.snappers.Consts$ResponseCode RESULT_DEVELOPER_ERROR -> f
+    ru.emerginggames.snappers.Consts$ResponseCode RESULT_ERROR -> g
+    ru.emerginggames.snappers.Consts$ResponseCode[] ENUM$VALUES -> h
+    36:40:ru.emerginggames.snappers.Consts$ResponseCode valueOf(int) -> a
+    1:1:ru.emerginggames.snappers.Consts$ResponseCode[] values() -> values
+    1:1:ru.emerginggames.snappers.Consts$ResponseCode valueOf(java.lang.String) -> valueOf
+ru.emerginggames.snappers.DbSettings -> ru.emerginggames.snappers.d:
     boolean ENABLE_ALL_LEVELS -> a
 ru.emerginggames.snappers.GameActivity -> ru.emerginggames.snappers.GameActivity:
     ru.emerginggames.snappers.utils.MyAdWhirlLayout adWhirlLayout -> l
@@ -5149,39 +5180,49 @@ ru.emerginggames.snappers.GameActivity -> ru.emerginggames.snappers.GameActivity
     boolean isFinished -> r
     boolean wentTapjoy -> s
     ru.emerginggames.snappers.data.LevelTable levelTable -> t
-    ru.emerginggames.snappers.gdx.Game game -> u
-    java.lang.Runnable showAD -> v
-    java.lang.Runnable hideAD -> w
-    51:108:void onCreate(android.os.Bundle) -> onCreate
-    112:114:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
-    118:131:void onPause() -> onPause
-    135:148:void onResume() -> onResume
-    152:154:void launchStore() -> d
-    163:166:void freeHintsPressed() -> e
-    170:173:void levelPackWon(ru.emerginggames.snappers.model.LevelPack) -> a
-    177:178:void levelSolved(ru.emerginggames.snappers.model.Level) -> a
-    182:182:ru.emerginggames.snappers.model.Level getNextLevel(ru.emerginggames.snappers.model.Level) -> b
-    187:189:void onBackPressed() -> onBackPressed
-    193:193:int getHintsLeft() -> f
-    198:199:void useHint() -> g
-    205:205:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> c
-    210:211:void addScore(int) -> a
-    215:215:int getAdHeight() -> h
-    220:236:void showAd() -> i
-    240:246:void hideAd() -> j
-    251:251:boolean isOnline() -> k
-    271:280:void onAdShow() -> l
-    284:292:void onAdFail() -> m
-    296:300:void onAdSizeChanged$255f295(int) -> b
-    304:304:boolean isSoundEnabled() -> n
-    309:310:void gotScreenSize(int,int) -> a
-ru.emerginggames.snappers.GameActivity$1 -> ru.emerginggames.snappers.b:
+    ru.emerginggames.snappers.utils.Store mStore -> u
+    ru.emerginggames.snappers.GameActivity$GameListener gameListener -> v
+    ru.emerginggames.snappers.gdx.Game game -> w
+    ru.emerginggames.snappers.utils.IOnAdShowListener adShowListener -> x
+    50:111:void onCreate(android.os.Bundle) -> onCreate
+    115:117:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
+    121:134:void onPause() -> onPause
+    138:151:void onResume() -> onResume
+    155:157:void onBackPressed() -> onBackPressed
+    160:169:boolean checkNetworkStatus() -> d
+ru.emerginggames.snappers.GameActivity$1 -> ru.emerginggames.snappers.e:
     ru.emerginggames.snappers.GameActivity this$0 -> a
-    315:323:void run() -> run
-ru.emerginggames.snappers.GameActivity$2 -> ru.emerginggames.snappers.c:
-    ru.emerginggames.snappers.GameActivity this$0 -> a
-    329:332:void run() -> run
-ru.emerginggames.snappers.LevelPageAdapter -> ru.emerginggames.snappers.d:
+    306:314:void onAdShow() -> a
+    318:322:void onAdSizeChanged$255f295(int) -> a
+    326:334:void onAdFail() -> b
+ru.emerginggames.snappers.GameActivity$GameListener -> ru.emerginggames.snappers.f:
+    ru.emerginggames.snappers.UserPreferences prefs -> a
+    java.lang.Runnable showAD -> b
+    java.lang.Runnable hideAD -> c
+    ru.emerginggames.snappers.GameActivity this$0 -> d
+    181:183:void launchStore() -> a
+    187:190:void levelPackWon(ru.emerginggames.snappers.model.LevelPack) -> a
+    194:194:int getHintsLeft() -> b
+    199:200:void useHint() -> c
+    204:206:void buy(ru.emerginggames.snappers.model.Goods) -> a
+    211:211:boolean isOnline() -> d
+    216:217:void levelSolved(ru.emerginggames.snappers.model.Level) -> a
+    221:221:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
+    226:226:boolean isSoundEnabled() -> e
+    231:232:void addScore(int) -> a
+    236:244:void showAd() -> f
+    248:254:void hideAd() -> g
+    258:258:int getAdHeight() -> h
+    263:264:void gotScreenSize(int,int) -> a
+    268:270:void freeHintsPressed() -> i
+    274:274:ru.emerginggames.snappers.model.Level getNextLevel(ru.emerginggames.snappers.model.Level) -> c
+ru.emerginggames.snappers.GameActivity$GameListener$1 -> ru.emerginggames.snappers.g:
+    ru.emerginggames.snappers.GameActivity$GameListener this$1 -> a
+    280:288:void run() -> run
+ru.emerginggames.snappers.GameActivity$GameListener$2 -> ru.emerginggames.snappers.h:
+    ru.emerginggames.snappers.GameActivity$GameListener this$1 -> a
+    294:297:void run() -> run
+ru.emerginggames.snappers.LevelPageAdapter -> ru.emerginggames.snappers.i:
     ru.emerginggames.snappers.model.LevelPack pack -> a
     ru.emerginggames.snappers.view.IOnItemSelectedListener listener -> g
     android.util.SparseArray fragments -> b
@@ -5200,7 +5241,7 @@ ru.emerginggames.snappers.MainScreenActivity -> ru.emerginggames.snappers.MainSc
     77:80:void onPlayButtonClick(android.view.View) -> onPlayButtonClick
     84:88:void onResume() -> onResume
     92:94:void onPause() -> onPause
-ru.emerginggames.snappers.Metrics -> ru.emerginggames.snappers.e:
+ru.emerginggames.snappers.Metrics -> ru.emerginggames.snappers.j:
     int snapperSize -> a
     int blastSize -> b
     int squareButtonSize -> c
@@ -5227,7 +5268,7 @@ ru.emerginggames.snappers.Metrics -> ru.emerginggames.snappers.e:
     int[] $SWITCH_TABLE$ru$emerginggames$snappers$Metrics$SizeMode -> x
     69:79:void setSize(int,int,android.content.Context) -> a
     8:8:int[] $SWITCH_TABLE$ru$emerginggames$snappers$Metrics$SizeMode() -> a
-ru.emerginggames.snappers.Metrics$SizeMode -> ru.emerginggames.snappers.f:
+ru.emerginggames.snappers.Metrics$SizeMode -> ru.emerginggames.snappers.k:
     ru.emerginggames.snappers.Metrics$SizeMode modeS -> a
     ru.emerginggames.snappers.Metrics$SizeMode modeM -> b
     ru.emerginggames.snappers.Metrics$SizeMode modeL -> c
@@ -5241,17 +5282,16 @@ ru.emerginggames.snappers.PaginatedSelectorActivity -> ru.emerginggames.snappers
     75:77:void onBackButtonClick(android.view.View) -> onBackButtonClick
     80:83:void onStoreButtonClick(android.view.View) -> onStoreButtonClick
     87:108:void showMessageDialog(java.lang.String,int[],android.view.View$OnClickListener,android.view.View$OnClickListener) -> a
-    111:117:void showMessage(java.lang.String) -> a
     120:121:void hideMessageDialog() -> d
-ru.emerginggames.snappers.PaginatedSelectorActivity$1 -> ru.emerginggames.snappers.g:
+ru.emerginggames.snappers.PaginatedSelectorActivity$1 -> ru.emerginggames.snappers.l:
     ru.emerginggames.snappers.PaginatedSelectorActivity this$0 -> a
     114:115:void onClick(android.view.View) -> onClick
-ru.emerginggames.snappers.R -> ru.emerginggames.snappers.h:
-ru.emerginggames.snappers.R$styleable -> ru.emerginggames.snappers.i:
+ru.emerginggames.snappers.R -> ru.emerginggames.snappers.m:
+ru.emerginggames.snappers.R$styleable -> ru.emerginggames.snappers.n:
     int[] CirclePageIndicator -> a
     int[] TitlePageIndicator -> b
     int[] ViewPagerIndicator -> c
-ru.emerginggames.snappers.RotatedImagePagerAdapter -> ru.emerginggames.snappers.j:
+ru.emerginggames.snappers.RotatedImagePagerAdapter -> ru.emerginggames.snappers.o:
     android.view.View currentView -> a
     android.content.Context context -> b
     java.util.List paramList -> c
@@ -5273,7 +5313,7 @@ ru.emerginggames.snappers.SelectLevelActivity -> ru.emerginggames.snappers.Selec
     59:61:void onResume() -> onResume
     65:71:void onItemSelected(int) -> c
     75:78:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
-ru.emerginggames.snappers.SelectLevelActivity$1 -> ru.emerginggames.snappers.k:
+ru.emerginggames.snappers.SelectLevelActivity$1 -> ru.emerginggames.snappers.p:
     ru.emerginggames.snappers.SelectLevelActivity this$0 -> a
     90:94:void onPreExecute() -> onPreExecute
     1:1:void onPostExecute(java.lang.Object) -> onPostExecute
@@ -5289,24 +5329,28 @@ ru.emerginggames.snappers.SelectPackActivity -> ru.emerginggames.snappers.Select
     102:116:void onResume() -> onResume
     135:138:void setPagerAdapter() -> f
     160:164:void buyLevelPack(ru.emerginggames.snappers.model.LevelPack) -> a
-ru.emerginggames.snappers.SelectPackActivity$1 -> ru.emerginggames.snappers.l:
+ru.emerginggames.snappers.SelectPackActivity$1 -> ru.emerginggames.snappers.q:
     ru.emerginggames.snappers.SelectPackActivity this$0 -> a
     ru.emerginggames.snappers.model.LevelPack val$pack -> b
     146:149:void onClick(android.view.View) -> onClick
-ru.emerginggames.snappers.SelectPackActivity$2 -> ru.emerginggames.snappers.m:
+ru.emerginggames.snappers.SelectPackActivity$2 -> ru.emerginggames.snappers.r:
     ru.emerginggames.snappers.SelectPackActivity this$0 -> a
     153:155:void onClick(android.view.View) -> onClick
-ru.emerginggames.snappers.Settings -> ru.emerginggames.snappers.n:
+ru.emerginggames.snappers.Settings -> ru.emerginggames.snappers.s:
     boolean DEBUG -> a
-    ru.emerginggames.snappers.Settings$CrashReporter CRASH_REPORTER -> b
-    java.lang.String adwhirlKey -> c
-    java.lang.String TJKey -> d
-    java.lang.String TJSecretKey -> e
-    37:63:java.lang.String getAdwhirlKey(android.content.Context) -> a
-    68:72:java.lang.String getGitCommitString(android.content.Context) -> b
-    79:107:java.lang.String getTapJoyAppId(android.content.Context) -> c
-    115:140:java.lang.String getTapJoySecretKey(android.content.Context) -> d
-ru.emerginggames.snappers.Settings$CrashReporter -> ru.emerginggames.snappers.o:
+    boolean ENABLE_ALL_LEVELS -> b
+    boolean NO_PREF_ENCRYPT -> c
+    boolean GoogleInAppEnabled -> d
+    ru.emerginggames.snappers.Settings$CrashReporter CRASH_REPORTER -> e
+    java.lang.String adwhirlKey -> f
+    java.lang.String TJKey -> g
+    java.lang.String TJSecretKey -> h
+    42:68:java.lang.String getAdwhirlKey(android.content.Context) -> a
+    73:77:java.lang.String getGitCommitString(android.content.Context) -> b
+    84:113:java.lang.String getTapJoyAppId(android.content.Context) -> c
+    121:146:java.lang.String getTapJoySecretKey(android.content.Context) -> d
+    153:153:java.lang.String getInAppKey() -> a
+ru.emerginggames.snappers.Settings$CrashReporter -> ru.emerginggames.snappers.t:
     ru.emerginggames.snappers.Settings$CrashReporter HockeyApp -> a
     ru.emerginggames.snappers.Settings$CrashReporter ACRA -> b
     ru.emerginggames.snappers.Settings$CrashReporter ACRA_BUGSENSE -> c
@@ -5328,13 +5372,14 @@ ru.emerginggames.snappers.SnappersApplication -> ru.emerginggames.snappers.Snapp
     88:89:void setSwitchingActivities() -> c
     92:94:void startMusicifShould() -> d
     97:99:void stopMusic() -> e
+    121:122:void onTerminate() -> onTerminate
     39:39:void access$0(ru.emerginggames.snappers.SnappersApplication,boolean) -> a
     40:40:void access$1(ru.emerginggames.snappers.SnappersApplication,boolean) -> b
     91:91:void access$2(ru.emerginggames.snappers.SnappersApplication) -> a
-ru.emerginggames.snappers.SnappersApplication$Receiver -> ru.emerginggames.snappers.p:
+ru.emerginggames.snappers.SnappersApplication$Receiver -> ru.emerginggames.snappers.u:
     ru.emerginggames.snappers.SnappersApplication this$0 -> a
     105:116:void onReceive(android.content.Context,android.content.Intent) -> onReceive
-ru.emerginggames.snappers.SoundManager -> ru.emerginggames.snappers.q:
+ru.emerginggames.snappers.SoundManager -> ru.emerginggames.snappers.v:
     ru.emerginggames.snappers.SoundManager instance -> d
     android.app.Activity context -> e
     android.media.SoundPool soundPool -> a
@@ -5345,31 +5390,28 @@ ru.emerginggames.snappers.SoundManager -> ru.emerginggames.snappers.q:
     57:59:void playButtonSound() -> b
 ru.emerginggames.snappers.SplashGdxActivity -> ru.emerginggames.snappers.SplashGdxActivity:
     android.os.AsyncTask loadThread -> l
-    27:41:void onCreate(android.os.Bundle) -> onCreate
-    44:53:void gotSize(int,int) -> a
-    57:106:void onResume() -> onResume
-ru.emerginggames.snappers.SplashGdxActivity$1 -> ru.emerginggames.snappers.r:
+    28:42:void onCreate(android.os.Bundle) -> onCreate
+    45:54:void gotSize(int,int) -> a
+    58:107:void onResume() -> onResume
+ru.emerginggames.snappers.SplashGdxActivity$1 -> ru.emerginggames.snappers.w:
     ru.emerginggames.snappers.SplashGdxActivity this$0 -> a
-    65:91:java.lang.Integer doInBackground$3271b81e() -> a
+    66:92:java.lang.Integer doInBackground$3271b81e() -> a
     1:1:void onPostExecute(java.lang.Object) -> onPostExecute
     1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
     1:1:void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
 ru.emerginggames.snappers.StoreActivity -> ru.emerginggames.snappers.StoreActivity:
     ru.emerginggames.snappers.model.LevelPack[] levelPacks -> m
     ru.emerginggames.snappers.RotatedImagePagerAdapter adapter -> n
-    26:40:void onCreate(android.os.Bundle) -> onCreate
-    43:56:java.util.List getPaginatorParamList() -> e
-    60:63:void setPagerAdapter() -> f
-    68:76:void onItemSelected(int) -> c
-    97:101:void buyLevelPack(ru.emerginggames.snappers.model.LevelPack) -> a
-ru.emerginggames.snappers.StoreActivity$1 -> ru.emerginggames.snappers.s:
-    ru.emerginggames.snappers.StoreActivity this$0 -> a
-    ru.emerginggames.snappers.model.LevelPack val$pack -> b
-    84:86:void onClick(android.view.View) -> onClick
-ru.emerginggames.snappers.StoreActivity$2 -> ru.emerginggames.snappers.t:
-    ru.emerginggames.snappers.StoreActivity this$0 -> a
-    90:91:void onClick(android.view.View) -> onClick
-ru.emerginggames.snappers.UserPreferences -> ru.emerginggames.snappers.u:
+    ru.emerginggames.snappers.utils.Store mGStore -> o
+    32:50:void onCreate(android.os.Bundle) -> onCreate
+    54:57:void onPause() -> onPause
+    60:73:java.util.List getPaginatorParamList() -> g
+    77:80:void setPagerAdapter() -> h
+    84:92:void onItemSelected(int) -> c
+    111:112:void onItemBought$7a5be7bf() -> e
+    116:117:void onItemRefunded$7a5be7bf() -> f
+    121:123:void onBillingSupported(boolean) -> b
+ru.emerginggames.snappers.UserPreferences -> ru.emerginggames.snappers.x:
     java.lang.String Key1 -> a
     java.lang.String Key11 -> b
     java.lang.String Key21 -> c
@@ -5380,36 +5422,40 @@ ru.emerginggames.snappers.UserPreferences -> ru.emerginggames.snappers.u:
     ru.emerginggames.snappers.UserPreferences instance -> j
     android.content.SharedPreferences prefs -> g
     ru.emerginggames.snappers.utils.DeviceUuidFactory factory -> h
-    44:48:ru.emerginggames.snappers.UserPreferences getInstance(android.content.Context) -> a
-    74:74:int getHintsRemaining() -> a
-    78:79:void useHint() -> b
-    82:84:void addHints(int) -> a
-    87:87:boolean isPackUnlocked(int) -> b
-    91:91:boolean isPackUnlocked(ru.emerginggames.snappers.model.LevelPack) -> a
-    95:99:int getLevelUnlocked(ru.emerginggames.snappers.model.LevelPack) -> b
-    103:103:int getLevelUnlocked(int) -> d
-    107:116:void unlockNextLevelPack(ru.emerginggames.snappers.model.LevelPack) -> c
-    119:120:void unlockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> d
-    129:129:int getScore() -> c
-    133:137:void addScore(int) -> c
-    140:147:void unlockNextLevel(ru.emerginggames.snappers.model.Level) -> a
-    150:151:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
-    155:155:boolean isAdFree() -> d
-    159:160:void setAdFree$1385ff() -> e
-    174:177:void setMusic(boolean) -> a
-    180:180:boolean getMusic() -> f
-    184:187:void setSound(boolean) -> b
-    190:190:boolean getSound() -> g
-    195:197:java.lang.String _S(java.lang.String) -> a
-    211:213:java.lang.String _S(java.lang.String,java.lang.String) -> a
-    219:221:java.lang.String deS(java.lang.String,java.lang.String) -> b
-    227:229:int getInt$2498c65f(java.lang.String,java.lang.String) -> c
-    234:237:void putInt(java.lang.String,int,java.lang.String) -> a
-    241:243:boolean getBoolean$4e7078bd(java.lang.String,java.lang.String) -> d
-    248:251:void putBoolean$4e7078c1(java.lang.String,java.lang.String) -> e
-    254:257:java.lang.String getKey1() -> h
-    261:263:java.lang.String getKey3() -> j
-    267:269:java.lang.String getKey12() -> i
+    45:49:ru.emerginggames.snappers.UserPreferences getInstance(android.content.Context) -> a
+    75:75:int getHintsRemaining() -> a
+    79:80:void setGInAppInitDone$1385ff() -> b
+    83:83:boolean isGInAppInitDone() -> c
+    87:88:void useHint() -> d
+    91:93:void addHints(int) -> a
+    96:96:boolean isPackUnlocked(int) -> b
+    100:100:boolean isPackUnlocked(ru.emerginggames.snappers.model.LevelPack) -> a
+    104:108:int getLevelUnlocked(ru.emerginggames.snappers.model.LevelPack) -> b
+    112:112:int getLevelUnlocked(int) -> d
+    116:125:void unlockNextLevelPack(ru.emerginggames.snappers.model.LevelPack) -> c
+    128:129:void unlockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> d
+    132:135:void lockLevelPack(ru.emerginggames.snappers.model.LevelPack) -> e
+    138:138:int getScore() -> e
+    142:146:void addScore(int) -> c
+    149:156:void unlockNextLevel(ru.emerginggames.snappers.model.Level) -> a
+    159:160:boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
+    164:164:boolean isAdFree() -> f
+    168:169:void setAdFree(boolean) -> a
+    183:186:void setMusic(boolean) -> b
+    189:189:boolean getMusic() -> g
+    193:196:void setSound(boolean) -> c
+    199:199:boolean getSound() -> h
+    204:209:java.lang.String _S(java.lang.String) -> a
+    223:228:java.lang.String _S(java.lang.String,java.lang.String) -> a
+    234:239:java.lang.String deS(java.lang.String,java.lang.String) -> b
+    245:247:int getInt$2498c65f(java.lang.String,java.lang.String) -> c
+    252:255:void putInt(java.lang.String,int,java.lang.String) -> a
+    259:261:boolean getBoolean$4e7078bd(java.lang.String,java.lang.String) -> d
+    266:269:void putBoolean(java.lang.String,boolean,java.lang.String) -> a
+    272:275:java.lang.String getKey1() -> i
+    279:281:java.lang.String getKey3() -> l
+    285:287:java.lang.String getKey12() -> j
+    291:294:java.lang.String getKey2() -> k
 ru.emerginggames.snappers.data.CryptHelperAES -> ru.emerginggames.snappers.a.a:
     12:14:java.lang.String encrypt(java.lang.String,java.lang.String) -> a
     18:21:java.lang.String decrypt(java.lang.String,java.lang.String) -> b
@@ -5438,6 +5484,7 @@ ru.emerginggames.snappers.data.FileHelper -> ru.emerginggames.snappers.a.d:
 ru.emerginggames.snappers.data.LevelPackTable -> ru.emerginggames.snappers.a.e:
     java.lang.String[] COLUNM_LIST -> a
     45:48:ru.emerginggames.snappers.model.LevelPack get(int,android.content.Context) -> a
+    52:55:ru.emerginggames.snappers.model.LevelPack get(java.lang.String,android.content.Context) -> a
     59:62:ru.emerginggames.snappers.model.LevelPack[] getAll(android.content.Context) -> a
     66:69:ru.emerginggames.snappers.model.LevelPack[] getAllByPremium(android.content.Context,boolean) -> a
     135:135:java.lang.String getTableName() -> a
@@ -5591,7 +5638,7 @@ ru.emerginggames.snappers.gdx.Elements.SnapperView -> ru.emerginggames.snappers.
 ru.emerginggames.snappers.gdx.Game -> ru.emerginggames.snappers.c.a:
     int width -> a
     int height -> b
-    com.badlogic.gdx.graphics.g2d.SpriteBatch batch -> q
+    com.badlogic.gdx.graphics.g2d.SpriteBatch batch -> r
     ru.emerginggames.snappers.model.Level level -> c
     ru.emerginggames.snappers.gdx.stages.MyStage currentStage -> d
     ru.emerginggames.snappers.gdx.stages.MainStage mainStage -> e
@@ -5603,48 +5650,51 @@ ru.emerginggames.snappers.gdx.Game -> ru.emerginggames.snappers.c.a:
     com.badlogic.gdx.graphics.g2d.Sprite bg -> k
     com.badlogic.gdx.graphics.FPSLogger logger -> l
     ru.emerginggames.snappers.gdx.Elements.ColorRect tempRect -> m
-    boolean objectsCreated -> n
-    boolean isSoundEnabled -> o
-    boolean initDone -> p
-    45:47:void create() -> a
-    76:86:void resize(int,int) -> a
-    90:117:void render() -> b
-    125:128:void resume() -> c
-    132:138:void dispose() -> d
-    141:143:void setStartLevel(ru.emerginggames.snappers.model.Level) -> a
-    147:148:void onShopBtn() -> e
-    152:154:void onNextBtn() -> f
-    158:160:void onRestartBtn() -> g
-    164:165:void onResumeBtn() -> h
-    169:170:void onMenuBtn() -> i
-    174:180:void onHintBtn() -> j
-    184:187:void useHint() -> k
-    191:196:void gameWon() -> l
-    200:203:void gameLost() -> m
-    207:208:void onPauseBtn() -> n
-    212:215:void onHelp() -> o
-    219:220:void levelPackWon() -> p
-    224:225:void onHelpDone() -> q
-    228:228:ru.emerginggames.snappers.model.Level getLevel() -> r
-    236:253:void setStage(ru.emerginggames.snappers.gdx.stages.MyStage) -> a
-    256:258:void setAdHeight(int) -> a
-    261:271:void backButtonPressed() -> s
+    ru.emerginggames.snappers.gdx.IAppGameListener mGameListener -> n
+    boolean objectsCreated -> o
+    boolean isSoundEnabled -> p
+    boolean initDone -> q
+    50:52:void create() -> a
+    81:91:void resize(int,int) -> a
+    95:122:void render() -> b
+    130:133:void resume() -> c
+    137:143:void dispose() -> d
+    146:148:void setStartLevel(ru.emerginggames.snappers.model.Level) -> a
+    152:153:void onShopBtn() -> e
+    157:159:void onNextBtn() -> f
+    163:165:void onRestartBtn() -> g
+    169:170:void onResumeBtn() -> h
+    174:175:void onMenuBtn() -> i
+    179:185:void onHintBtn() -> j
+    189:192:void useHint() -> k
+    196:201:void gameWon() -> l
+    205:208:void gameLost() -> m
+    212:213:void onPauseBtn() -> n
+    217:220:void onHelp() -> o
+    224:225:void levelPackWon() -> p
+    229:230:void onHelpDone() -> q
+    234:234:ru.emerginggames.snappers.gdx.IAppGameListener getAppListener() -> r
+    238:238:ru.emerginggames.snappers.model.Level getLevel() -> s
+    246:263:void setStage(ru.emerginggames.snappers.gdx.stages.MyStage) -> a
+    266:268:void setAdHeight(int) -> a
+    271:281:void backButtonPressed() -> t
 ru.emerginggames.snappers.gdx.IAppGameListener -> ru.emerginggames.snappers.c.b:
-    void launchStore() -> d
+    void launchStore() -> a
     void levelPackWon(ru.emerginggames.snappers.model.LevelPack) -> a
-    int getHintsLeft() -> f
-    void useHint() -> g
-    boolean isOnline() -> k
+    int getHintsLeft() -> b
+    void useHint() -> c
+    void buy(ru.emerginggames.snappers.model.Goods) -> a
+    boolean isOnline() -> d
     void levelSolved(ru.emerginggames.snappers.model.Level) -> a
-    boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> c
-    boolean isSoundEnabled() -> n
+    boolean isLevelSolved(ru.emerginggames.snappers.model.Level) -> b
+    boolean isSoundEnabled() -> e
     void addScore(int) -> a
-    void showAd() -> i
-    void hideAd() -> j
+    void showAd() -> f
+    void hideAd() -> g
     int getAdHeight() -> h
     void gotScreenSize(int,int) -> a
-    void freeHintsPressed() -> e
-    ru.emerginggames.snappers.model.Level getNextLevel(ru.emerginggames.snappers.model.Level) -> b
+    void freeHintsPressed() -> i
+    ru.emerginggames.snappers.model.Level getNextLevel(ru.emerginggames.snappers.model.Level) -> c
 ru.emerginggames.snappers.gdx.IGameEventListener -> ru.emerginggames.snappers.c.c:
     void onShopBtn() -> e
     void onNextBtn() -> f
@@ -5659,6 +5709,7 @@ ru.emerginggames.snappers.gdx.IGameEventListener -> ru.emerginggames.snappers.c.
     void useHint() -> k
     void onHelp() -> o
     void onHelpDone() -> q
+    ru.emerginggames.snappers.gdx.IAppGameListener getAppListener() -> r
 ru.emerginggames.snappers.gdx.Resources -> ru.emerginggames.snappers.c.d:
     java.lang.String dir -> a
     java.lang.Integer syncLock -> b
@@ -5891,13 +5942,6 @@ ru.emerginggames.snappers.gdx.helper.PowEasingAnim -> ru.emerginggames.snappers.
     double rate -> a
     float k -> b
     21:21:float getMult(float) -> a
-ru.emerginggames.snappers.gdx.helper.WorkerThread -> ru.emerginggames.snappers.c.c.g:
-    ru.emerginggames.snappers.gdx.helper.WorkerThread instance -> d
-    android.os.HandlerThread thread -> a
-    android.os.Looper looper -> b
-    android.os.Handler handler -> c
-    27:29:ru.emerginggames.snappers.gdx.helper.WorkerThread getInstance() -> a
-    33:34:void post(java.lang.Runnable) -> a
 ru.emerginggames.snappers.gdx.stages.DimBackStage -> ru.emerginggames.snappers.c.d.a:
     float fadeinTime -> m
     ru.emerginggames.snappers.gdx.Elements.ColorRect dimRect -> n
@@ -5909,7 +5953,7 @@ ru.emerginggames.snappers.gdx.stages.DimBackStage -> ru.emerginggames.snappers.c
     47:48:float getOpacity() -> g
     53:55:void dispose() -> b
 ru.emerginggames.snappers.gdx.stages.GameOverStage -> ru.emerginggames.snappers.c.d.b:
-    java.lang.String[] winMessages -> u
+    java.lang.String[] winMessages -> v
     ru.emerginggames.snappers.logic.GameLogic logic -> n
     boolean isWon -> o
     ru.emerginggames.snappers.gdx.Elements.SimpleButton nextButton -> p
@@ -5917,34 +5961,35 @@ ru.emerginggames.snappers.gdx.stages.GameOverStage -> ru.emerginggames.snappers.
     ru.emerginggames.snappers.gdx.Elements.SimpleButton shopButton -> r
     ru.emerginggames.snappers.gdx.Elements.SimpleButton menuButton -> s
     ru.emerginggames.snappers.gdx.Elements.SimpleButton helpButton -> t
-    ru.emerginggames.snappers.gdx.core.OutlinedTextSprite wonText -> v
-    ru.emerginggames.snappers.gdx.core.OutlinedTextSprite lostText -> w
-    ru.emerginggames.snappers.gdx.core.OutlinedTextSprite scoreText -> x
-    93:102:void setViewport(float,float) -> a
-    105:121:void show(boolean,int) -> a
-    125:127:void onHide() -> h
-    130:141:void setAdHeight(int) -> b
-    145:159:void draw() -> d
+    ru.emerginggames.snappers.gdx.core.OutlinedTextSprite wonText -> w
+    ru.emerginggames.snappers.gdx.core.OutlinedTextSprite lostText -> x
+    ru.emerginggames.snappers.gdx.core.OutlinedTextSprite scoreText -> y
+    ru.emerginggames.snappers.gdx.IGameEventListener mGame -> u
+    95:104:void setViewport(float,float) -> a
+    107:123:void show(boolean,int) -> a
+    127:129:void onHide() -> h
+    132:143:void setAdHeight(int) -> b
+    147:161:void draw() -> d
 ru.emerginggames.snappers.gdx.stages.GameOverStage$1 -> ru.emerginggames.snappers.c.d.c:
     ru.emerginggames.snappers.gdx.stages.GameOverStage this$0 -> a
     ru.emerginggames.snappers.gdx.IGameEventListener val$listener -> b
-    47:48:void onEvent() -> a
+    49:50:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.GameOverStage$2 -> ru.emerginggames.snappers.c.d.d:
     ru.emerginggames.snappers.gdx.stages.GameOverStage this$0 -> a
     ru.emerginggames.snappers.gdx.IGameEventListener val$listener -> b
-    54:55:void onEvent() -> a
+    56:57:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.GameOverStage$3 -> ru.emerginggames.snappers.c.d.e:
     ru.emerginggames.snappers.gdx.stages.GameOverStage this$0 -> a
     ru.emerginggames.snappers.gdx.IGameEventListener val$listener -> b
-    61:62:void onEvent() -> a
+    63:64:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.GameOverStage$4 -> ru.emerginggames.snappers.c.d.f:
     ru.emerginggames.snappers.gdx.stages.GameOverStage this$0 -> a
     ru.emerginggames.snappers.gdx.IGameEventListener val$listener -> b
-    68:69:void onEvent() -> a
+    70:71:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.GameOverStage$5 -> ru.emerginggames.snappers.c.d.g:
     ru.emerginggames.snappers.gdx.stages.GameOverStage this$0 -> a
     ru.emerginggames.snappers.gdx.IGameEventListener val$listener -> b
-    74:75:void onEvent() -> a
+    76:77:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HelpStage -> ru.emerginggames.snappers.c.d.h:
     ru.emerginggames.snappers.gdx.IGameEventListener listener -> m
     com.badlogic.gdx.graphics.g2d.Sprite helpSprite -> n
@@ -5960,28 +6005,29 @@ ru.emerginggames.snappers.gdx.stages.HintMenuStage -> ru.emerginggames.snappers.
     ru.emerginggames.snappers.gdx.core.OutlinedTextSprite line2 -> t
     ru.emerginggames.snappers.gdx.core.OutlinedTextSprite line3 -> u
     boolean showLine3 -> v
-    ru.emerginggames.snappers.gdx.IGameEventListener listener -> w
+    ru.emerginggames.snappers.gdx.IGameEventListener mGame -> w
     ru.emerginggames.snappers.gdx.stages.HintMenuStage$Mode mode -> x
     int[] $SWITCH_TABLE$ru$emerginggames$snappers$gdx$stages$HintMenuStage$Mode -> C
-    57:58:void setViewport(float,float) -> a
-    62:69:void draw() -> d
-    174:186:void onShow() -> e
-    22:22:int[] $SWITCH_TABLE$ru$emerginggames$snappers$gdx$stages$HintMenuStage$Mode() -> i
+    56:57:void setViewport(float,float) -> a
+    61:68:void draw() -> d
+    173:185:void onShow() -> e
+    21:21:int[] $SWITCH_TABLE$ru$emerginggames$snappers$gdx$stages$HintMenuStage$Mode() -> i
+    214:214:void access$1(ru.emerginggames.snappers.gdx.stages.HintMenuStage,ru.emerginggames.snappers.model.Goods) -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$1 -> ru.emerginggames.snappers.c.d.j:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    133:134:void onEvent() -> a
+    132:133:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$2 -> ru.emerginggames.snappers.c.d.k:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    139:140:void onEvent() -> a
+    138:139:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$3 -> ru.emerginggames.snappers.c.d.l:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    145:146:void onEvent() -> a
+    144:145:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$4 -> ru.emerginggames.snappers.c.d.m:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    151:152:void onEvent() -> a
+    150:151:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$5 -> ru.emerginggames.snappers.c.d.n:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage this$0 -> a
-    157:158:void onEvent() -> a
+    156:157:void onEvent() -> a
 ru.emerginggames.snappers.gdx.stages.HintMenuStage$Mode -> ru.emerginggames.snappers.c.d.o:
     ru.emerginggames.snappers.gdx.stages.HintMenuStage$Mode Use -> a
     ru.emerginggames.snappers.gdx.stages.HintMenuStage$Mode Buy -> b
@@ -6022,7 +6068,7 @@ ru.emerginggames.snappers.gdx.stages.MainStage -> ru.emerginggames.snappers.c.d.
     com.badlogic.gdx.utils.Pool bangPool -> F
     ru.emerginggames.snappers.gdx.core.OutlinedTextSprite levelText -> m
     ru.emerginggames.snappers.gdx.core.OutlinedTextSprite tapLeftText -> n
-    ru.emerginggames.snappers.gdx.IGameEventListener listener -> o
+    ru.emerginggames.snappers.gdx.IGameEventListener mGame -> o
     ru.emerginggames.snappers.gdx.stages.MainButtons buttons -> p
     boolean gameOverFired -> q
     float sincePopped -> r
@@ -6178,18 +6224,30 @@ ru.emerginggames.snappers.model.Goods -> ru.emerginggames.snappers.e.c:
     ru.emerginggames.snappers.model.Goods PremiumLevelPack4 -> l
     ru.emerginggames.snappers.model.Goods AdFree -> m
     ru.emerginggames.snappers.model.Goods AdFree6hours -> n
-    ru.emerginggames.snappers.model.Goods[] ENUM$VALUES -> o
+    int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Goods -> o
+    ru.emerginggames.snappers.model.Goods[] ENUM$VALUES -> p
+    38:68:ru.emerginggames.snappers.model.Goods getGoodsByLevelPack(ru.emerginggames.snappers.model.LevelPack) -> a
+    72:94:java.lang.String getLevelPackName() -> a
+    98:117:ru.emerginggames.snappers.model.Goods$Type getType() -> b
     1:1:ru.emerginggames.snappers.model.Goods[] values() -> values
     1:1:ru.emerginggames.snappers.model.Goods valueOf(java.lang.String) -> valueOf
-ru.emerginggames.snappers.model.ImageDrawInfo -> ru.emerginggames.snappers.e.d:
+    9:9:int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Goods() -> c
+ru.emerginggames.snappers.model.Goods$Type -> ru.emerginggames.snappers.e.d:
+    ru.emerginggames.snappers.model.Goods$Type Hint -> a
+    ru.emerginggames.snappers.model.Goods$Type LevelPack -> b
+    ru.emerginggames.snappers.model.Goods$Type adFree -> c
+    ru.emerginggames.snappers.model.Goods$Type[] ENUM$VALUES -> d
+    1:1:ru.emerginggames.snappers.model.Goods$Type[] values() -> values
+    1:1:ru.emerginggames.snappers.model.Goods$Type valueOf(java.lang.String) -> valueOf
+ru.emerginggames.snappers.model.ImageDrawInfo -> ru.emerginggames.snappers.e.e:
     int id -> a
     boolean isTransparent -> b
     boolean isHighQuality -> c
-ru.emerginggames.snappers.model.ImagePaginatorParam -> ru.emerginggames.snappers.e.e:
+ru.emerginggames.snappers.model.ImagePaginatorParam -> ru.emerginggames.snappers.e.f:
     ru.emerginggames.snappers.model.ImageDrawInfo[] images -> a
     int retParam -> b
     30:91:ru.emerginggames.snappers.model.ImageDrawInfo[] getLevelImageIds(int) -> a
-ru.emerginggames.snappers.model.Level -> ru.emerginggames.snappers.e.f:
+ru.emerginggames.snappers.model.Level -> ru.emerginggames.snappers.e.g:
     int id -> a
     int number -> b
     int complexity -> c
@@ -6198,7 +6256,7 @@ ru.emerginggames.snappers.model.Level -> ru.emerginggames.snappers.e.f:
     int tapsCount -> f
     int packNumber -> g
     ru.emerginggames.snappers.model.LevelPack pack -> h
-ru.emerginggames.snappers.model.LevelPack -> ru.emerginggames.snappers.e.g:
+ru.emerginggames.snappers.model.LevelPack -> ru.emerginggames.snappers.e.h:
     int id -> a
     java.lang.String background -> b
     boolean shadows -> c
@@ -6207,17 +6265,102 @@ ru.emerginggames.snappers.model.LevelPack -> ru.emerginggames.snappers.e.g:
     boolean isGold -> f
     boolean isPremium -> g
     int levelCount -> h
-ru.emerginggames.snappers.model.Snappers -> ru.emerginggames.snappers.e.h:
+ru.emerginggames.snappers.model.Snappers -> ru.emerginggames.snappers.e.i:
     int[][] snappers -> a
     int snappersCount -> b
     39:39:boolean isValidSnapper(int,int) -> a
-ru.emerginggames.snappers.utils.DeviceUuidFactory -> ru.emerginggames.snappers.utils.a:
+ru.emerginggames.snappers.utils.Base64 -> ru.emerginggames.snappers.utils.a:
+    byte[] ALPHABET -> b
+    byte[] WEBSAFE_ALPHABET -> c
+    byte[] DECODABET -> d
+    byte[] WEBSAFE_DECODABET -> e
+    boolean $assertionsDisabled -> a
+    378:406:int decode4to3$355785af(byte[],byte[],int,byte[]) -> a
+    419:420:byte[] decode(java.lang.String) -> a
+ru.emerginggames.snappers.utils.Base64DecoderException -> ru.emerginggames.snappers.utils.b:
+ru.emerginggames.snappers.utils.BillingReceiver -> ru.emerginggames.snappers.utils.BillingReceiver:
+    50:69:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+ru.emerginggames.snappers.utils.BillingService -> ru.emerginggames.snappers.utils.BillingService:
+    com.android.vending.billing.IMarketBillingService mService -> a
+    java.util.LinkedList mPendingRequests -> b
+    java.util.HashMap mSentRequests -> c
+    344:345:void setContext(android.content.Context) -> a
+    352:352:android.os.IBinder onBind(android.content.Intent) -> onBind
+    357:358:void onStart(android.content.Intent,int) -> onStart
+    402:415:boolean bindToMarketBillingService() -> g
+    423:423:boolean checkBillingSupported() -> a
+    437:437:boolean requestPurchase$16da05f3(java.lang.String) -> a
+    447:447:boolean restoreTransactions() -> b
+    462:462:boolean confirmNotifications(int,java.lang.String[]) -> a
+    578:580:void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
+    586:588:void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
+    397:397:boolean access$0(ru.emerginggames.snappers.utils.BillingService) -> a
+    59:59:java.util.LinkedList access$1() -> c
+    53:53:com.android.vending.billing.IMarketBillingService access$2() -> d
+    66:66:java.util.HashMap access$3() -> e
+    53:53:void access$4$78d40d3f() -> f
+ru.emerginggames.snappers.utils.BillingService$BillingRequest -> ru.emerginggames.snappers.utils.c:
+    int mStartId -> c
+    long mRequestId -> a
+    ru.emerginggames.snappers.utils.BillingService this$0 -> b
+    86:86:int getStartId() -> a
+    95:104:boolean runRequest() -> b
+    116:130:boolean runIfConnected() -> c
+    140:142:void onRemoteException(android.os.RemoteException) -> a
+    long run() -> d
+    156:156:void responseCodeReceived$1221a4f() -> e
+    159:163:android.os.Bundle makeRequestBundle(java.lang.String) -> a
+    168:172:void logResponseCode$5dc9c75(android.os.Bundle) -> a
+ru.emerginggames.snappers.utils.BillingService$CheckBillingSupported -> ru.emerginggames.snappers.utils.d:
+    ru.emerginggames.snappers.utils.BillingService this$0 -> c
+    188:197:long run() -> d
+ru.emerginggames.snappers.utils.BillingService$ConfirmNotifications -> ru.emerginggames.snappers.utils.e:
+    java.lang.String[] mNotifyIds -> c
+    ru.emerginggames.snappers.utils.BillingService this$0 -> d
+    261:265:long run() -> d
+ru.emerginggames.snappers.utils.BillingService$GetPurchaseInformation -> ru.emerginggames.snappers.utils.f:
+    long mNonce -> c
+    java.lang.String[] mNotifyIds -> d
+    ru.emerginggames.snappers.utils.BillingService this$0 -> e
+    284:291:long run() -> d
+    297:299:void onRemoteException(android.os.RemoteException) -> a
+ru.emerginggames.snappers.utils.BillingService$RequestPurchase -> ru.emerginggames.snappers.utils.g:
+    java.lang.String mProductId -> c
+    java.lang.String mDeveloperPayload -> d
+    ru.emerginggames.snappers.utils.BillingService this$0 -> e
+    223:238:long run() -> d
+    244:245:void responseCodeReceived$1221a4f() -> e
+ru.emerginggames.snappers.utils.BillingService$RestoreTransactions -> ru.emerginggames.snappers.utils.h:
+    long mNonce -> c
+    ru.emerginggames.snappers.utils.BillingService this$0 -> d
+    317:323:long run() -> d
+    329:331:void onRemoteException(android.os.RemoteException) -> a
+    335:336:void responseCodeReceived$1221a4f() -> e
+ru.emerginggames.snappers.utils.DeviceUuidFactory -> ru.emerginggames.snappers.utils.i:
     java.util.UUID uuid -> a
     73:73:java.util.UUID getDeviceUuid() -> a
-ru.emerginggames.snappers.utils.IOnAdShowListener -> ru.emerginggames.snappers.utils.b:
-    void onAdShow() -> l
-    void onAdSizeChanged$255f295(int) -> b
-    void onAdFail() -> m
+ru.emerginggames.snappers.utils.GInAppStore -> ru.emerginggames.snappers.utils.j:
+    ru.emerginggames.snappers.utils.BillingService mBillingService -> a
+    ru.emerginggames.snappers.utils.GInAppStore$GoogleInAppStoreObserver mObserver -> b
+    int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Goods -> k
+    29:31:ru.emerginggames.snappers.utils.Store getInstance(android.content.Context) -> a
+    46:46:boolean buy(ru.emerginggames.snappers.model.Goods) -> a
+    93:93:void access$0(ru.emerginggames.snappers.utils.GInAppStore) -> a
+    15:15:int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Goods() -> b
+ru.emerginggames.snappers.utils.GInAppStore$GoogleInAppStoreObserver -> ru.emerginggames.snappers.utils.k:
+    ru.emerginggames.snappers.utils.GInAppStore this$0 -> a
+    105:109:void onBillingSupported(boolean) -> a
+    113:118:void onPurchaseStateChange$14988178(ru.emerginggames.snappers.Consts$PurchaseState,java.lang.String) -> a
+    123:123:void onRequestPurchaseResponse$d7de37() -> a
+    127:128:void onRestoreTransactionsResponse$5e43aedc() -> b
+ru.emerginggames.snappers.utils.IOnAdShowListener -> ru.emerginggames.snappers.utils.l:
+    void onAdShow() -> a
+    void onAdSizeChanged$255f295(int) -> a
+    void onAdFail() -> b
+ru.emerginggames.snappers.utils.IStoreListener -> ru.emerginggames.snappers.utils.m:
+    void onItemBought$7a5be7bf() -> e
+    void onItemRefunded$7a5be7bf() -> f
+    void onBillingSupported(boolean) -> b
 ru.emerginggames.snappers.utils.MyAdWhirlLayout -> ru.emerginggames.snappers.utils.MyAdWhirlLayout:
     java.lang.String keyAdWhirl -> c
     com.adwhirl.adapters.AdWhirlAdapter previousAdapter -> d
@@ -6242,20 +6385,118 @@ ru.emerginggames.snappers.utils.MyAdWhirlLayout -> ru.emerginggames.snappers.uti
     30:30:void access$2$22c76f72(ru.emerginggames.snappers.utils.MyAdWhirlLayout) -> b
     102:102:void access$3(ru.emerginggames.snappers.utils.MyAdWhirlLayout) -> c
     116:116:void access$4(ru.emerginggames.snappers.utils.MyAdWhirlLayout) -> d
-ru.emerginggames.snappers.utils.MyAdWhirlLayout$HandleAdRunnable -> ru.emerginggames.snappers.utils.c:
+ru.emerginggames.snappers.utils.MyAdWhirlLayout$HandleAdRunnable -> ru.emerginggames.snappers.utils.n:
     java.lang.ref.WeakReference adWhirlLayoutReference -> a
     232:236:void run() -> run
-ru.emerginggames.snappers.utils.MyAdWhirlLayout$InitRunnable -> ru.emerginggames.snappers.utils.d:
+ru.emerginggames.snappers.utils.MyAdWhirlLayout$InitRunnable -> ru.emerginggames.snappers.utils.o:
     java.lang.ref.WeakReference adWhirlLayoutReference -> a
     java.lang.String keyAdWhirl -> b
     193:220:void run() -> run
-ru.emerginggames.snappers.utils.MyAdWhirlLayout$RotateAdRunnable -> ru.emerginggames.snappers.utils.e:
+ru.emerginggames.snappers.utils.MyAdWhirlLayout$RotateAdRunnable -> ru.emerginggames.snappers.utils.p:
     java.lang.ref.WeakReference adWhirlLayoutReference -> a
     248:252:void run() -> run
-ru.emerginggames.snappers.utils.TapjoyPointsListener -> ru.emerginggames.snappers.utils.f:
+ru.emerginggames.snappers.utils.PurchaseDatabase -> ru.emerginggames.snappers.utils.q:
+    java.lang.String[] HISTORY_COLUMNS -> a
+    java.lang.String[] PURCHASED_COLUMNS -> b
+    android.database.sqlite.SQLiteDatabase mDb -> c
+    ru.emerginggames.snappers.utils.PurchaseDatabase$DatabaseHelper mDatabaseHelper -> d
+    73:74:void close() -> a
+    130:156:int updatePurchase(java.lang.String,java.lang.String,ru.emerginggames.snappers.Consts$PurchaseState,long,java.lang.String) -> a
+ru.emerginggames.snappers.utils.PurchaseDatabase$DatabaseHelper -> ru.emerginggames.snappers.utils.r:
+    ru.emerginggames.snappers.utils.PurchaseDatabase this$0 -> a
+    178:179:void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
+    186:194:void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
+    197:206:void createPurchaseTable(android.database.sqlite.SQLiteDatabase) -> a
+ru.emerginggames.snappers.utils.PurchaseObserver -> ru.emerginggames.snappers.utils.s:
+    android.content.Context mContext -> a
+    java.lang.Class[] START_INTENT_SENDER_SIG -> b
+    void onBillingSupported(boolean) -> a
+    void onPurchaseStateChange$14988178(ru.emerginggames.snappers.Consts$PurchaseState,java.lang.String) -> a
+    void onRequestPurchaseResponse$d7de37() -> a
+    void onRestoreTransactionsResponse$5e43aedc() -> b
+    95:99:void startBuyPageActivity(android.app.PendingIntent,android.content.Intent) -> a
+ru.emerginggames.snappers.utils.ResponseHandler -> ru.emerginggames.snappers.utils.t:
+    ru.emerginggames.snappers.utils.PurchaseObserver sPurchaseObserver -> a
+    42:43:void register(ru.emerginggames.snappers.utils.PurchaseObserver) -> a
+    62:65:void checkBillingSupportedResponse(boolean) -> a
+    78:85:void buyPageIntentResponse(android.app.PendingIntent,android.content.Intent) -> a
+    116:131:void purchaseResponse(android.content.Context,ru.emerginggames.snappers.Consts$PurchaseState,java.lang.String,java.lang.String,long,java.lang.String) -> a
+    149:152:void responseCodeReceived$2b6dcb8b$d7de37() -> a
+    166:169:void responseCodeReceived$383aa79e$5e43aedc() -> b
+    34:34:ru.emerginggames.snappers.utils.PurchaseObserver access$0() -> c
+ru.emerginggames.snappers.utils.ResponseHandler$1 -> ru.emerginggames.snappers.utils.u:
+    android.content.Context val$context -> a
+    java.lang.String val$orderId -> b
+    java.lang.String val$productId -> c
+    ru.emerginggames.snappers.Consts$PurchaseState val$purchaseState -> d
+    long val$purchaseTime -> e
+    java.lang.String val$developerPayload -> f
+    118:125:void run() -> run
+ru.emerginggames.snappers.utils.Security -> ru.emerginggames.snappers.utils.v:
+    java.security.SecureRandom RANDOM -> a
+    java.util.HashSet sKnownNonces -> b
+    71:73:long generateNonce() -> a
+    77:78:void removeNonce(long) -> a
+    97:179:java.util.ArrayList verifyPurchase(java.lang.String,java.lang.String) -> a
+    191:201:java.security.PublicKey generatePublicKey(java.lang.String) -> a
+    220:237:boolean verify(java.security.PublicKey,java.lang.String,java.lang.String) -> a
+ru.emerginggames.snappers.utils.Security$VerifiedPurchase -> ru.emerginggames.snappers.utils.w:
+    ru.emerginggames.snappers.Consts$PurchaseState purchaseState -> a
+    java.lang.String notificationId -> b
+    java.lang.String productId -> c
+    java.lang.String orderId -> d
+    long purchaseTime -> e
+    java.lang.String developerPayload -> f
+ru.emerginggames.snappers.utils.Store -> ru.emerginggames.snappers.utils.x:
+    ru.emerginggames.snappers.utils.Store instance -> c
+    android.content.Context context -> d
+    ru.emerginggames.snappers.utils.Store$BillingSupported isBillingSupported -> e
+    ru.emerginggames.snappers.utils.IStoreListener mStoreListener -> f
+    android.os.Handler mHandler -> g
+    ru.emerginggames.snappers.utils.Store$PostableRunable runOnBillingSupported -> h
+    ru.emerginggames.snappers.utils.Store$PostableRunable runOnItemBought -> i
+    ru.emerginggames.snappers.utils.Store$PostableRunable runOnItemRefund -> j
+    int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Goods -> a
+    int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Goods$Type -> b
+    boolean buy(ru.emerginggames.snappers.model.Goods) -> a
+    32:36:void setListener(ru.emerginggames.snappers.utils.IStoreListener,android.os.Handler) -> a
+    39:41:void unSetListener() -> a
+    48:82:boolean itemBought$2edf62e6(ru.emerginggames.snappers.model.Goods) -> b
+    86:120:boolean itemReturned$2edf62e6(ru.emerginggames.snappers.model.Goods) -> c
+    16:16:int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Goods() -> b
+    16:16:int[] $SWITCH_TABLE$ru$emerginggames$snappers$model$Goods$Type() -> c
+ru.emerginggames.snappers.utils.Store$1 -> ru.emerginggames.snappers.utils.y:
+    ru.emerginggames.snappers.utils.Store this$0 -> a
+    139:140:void run() -> run
+ru.emerginggames.snappers.utils.Store$2 -> ru.emerginggames.snappers.utils.z:
+    ru.emerginggames.snappers.utils.Store this$0 -> a
+    146:147:void run() -> run
+ru.emerginggames.snappers.utils.Store$3 -> ru.emerginggames.snappers.utils.aa:
+    ru.emerginggames.snappers.utils.Store this$0 -> a
+    153:154:void run() -> run
+ru.emerginggames.snappers.utils.Store$BillingSupported -> ru.emerginggames.snappers.utils.ab:
+    ru.emerginggames.snappers.utils.Store$BillingSupported YES -> a
+    ru.emerginggames.snappers.utils.Store$BillingSupported NO -> b
+    ru.emerginggames.snappers.utils.Store$BillingSupported UNKNOWN -> c
+    ru.emerginggames.snappers.utils.Store$BillingSupported[] ENUM$VALUES -> d
+    1:1:ru.emerginggames.snappers.utils.Store$BillingSupported[] values() -> values
+    1:1:ru.emerginggames.snappers.utils.Store$BillingSupported valueOf(java.lang.String) -> valueOf
+ru.emerginggames.snappers.utils.Store$PostableRunable -> ru.emerginggames.snappers.utils.ac:
+    ru.emerginggames.snappers.utils.IStoreListener mListener -> b
+    java.lang.Object mPayload -> c
+    ru.emerginggames.snappers.utils.Store this$0 -> d
+    127:133:void postMe(android.os.Handler,ru.emerginggames.snappers.utils.IStoreListener,java.lang.Object) -> a
+ru.emerginggames.snappers.utils.TapjoyPointsListener -> ru.emerginggames.snappers.utils.ad:
     ru.emerginggames.snappers.UserPreferences prefs -> a
     32:36:void getUpdatePoints$505cff1c(int) -> b
     45:47:void earnedTapPoints(int) -> a
+ru.emerginggames.snappers.utils.WorkerThread -> ru.emerginggames.snappers.utils.ae:
+    ru.emerginggames.snappers.utils.WorkerThread instance -> d
+    android.os.HandlerThread thread -> a
+    android.os.Looper looper -> b
+    android.os.Handler handler -> c
+    27:29:ru.emerginggames.snappers.utils.WorkerThread getInstance() -> a
+    33:34:void post(java.lang.Runnable) -> a
 ru.emerginggames.snappers.view.FixedRatioPager -> ru.emerginggames.snappers.view.FixedRatioPager:
     float mRatio -> a
     int innerPaddingLeft -> b

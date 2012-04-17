@@ -21,5 +21,6 @@ public interface IGameEventListener {
     public void useHint();
     public void onHelp();
     public void onHelpDone();
+    public IAppGameListener getAppListener();
 
 }

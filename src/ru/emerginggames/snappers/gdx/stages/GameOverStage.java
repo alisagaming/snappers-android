@@ -35,11 +35,13 @@ public class GameOverStage extends DimBackStage{
     private OutlinedTextSprite wonText;
     private OutlinedTextSprite lostText;
     private OutlinedTextSprite scoreText;
+    IGameEventListener mGame;
 
     public GameOverStage(int width, int height, final IGameEventListener listener, GameLogic logic, SpriteBatch batch) {
         super(width, height, true, batch);
         this.logic = logic;
         fadeinTime = 0.7f;
+        mGame = listener;
 
         nextButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[5], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
             @Override
@@ -105,9 +107,9 @@ public class GameOverStage extends DimBackStage{
         this.isWon = isWon;
 
         if (isWon){
-            int score = logic.getScore(((IAppGameListener) Gdx.app).isLevelSolved(logic.level));
+            int score = logic.getScore(mGame.getAppListener().isLevelSolved(logic.level));
             scoreText.setText(String.format(SCORE, score));
-            ((IAppGameListener)Gdx.app).addScore(score);
+            mGame.getAppListener().addScore(score);
         }
         else
             scoreText.setText(String.format(POSSIBLE_IN_TOUCHES, logic.level.tapsCount));

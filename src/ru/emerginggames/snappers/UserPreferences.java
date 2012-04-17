@@ -26,6 +26,7 @@ public class UserPreferences {
     private static final String ADFREE = "adfree";
     private static final String MUSIC = "music";
     private static final String SOUND = "sound";
+    private static final String G_IN_APP_INIT_DONE = "IN_APP_INIT_DONE";
     public static String Key1;
     public static String Key11;
     public static String Key21;
@@ -72,6 +73,14 @@ public class UserPreferences {
     
     public int getHintsRemaining(){
         return getInt(HINTS, 0, HINTS);
+    }
+
+    public void setGInAppInitDone(boolean done){
+        putBoolean(G_IN_APP_INIT_DONE, done, G_IN_APP_INIT_DONE);
+    }
+
+    public boolean isGInAppInitDone(){
+        return getBoolean(G_IN_APP_INIT_DONE, false, G_IN_APP_INIT_DONE);
     }
 
     public void useHint(){
@@ -192,7 +201,10 @@ public class UserPreferences {
 
     private String _S(String s){
         try{
-            return CryptHelperAES.encrypt(getKey3(), s);
+            if (Settings.NO_PREF_ENCRYPT)
+                return s;
+            else
+                return CryptHelperAES.encrypt(getKey3(), s);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -208,7 +220,10 @@ public class UserPreferences {
 
     private String _S(String s, String salt){
         try{
-            return CryptHelperAES.encrypt(salt + getKey3(), s);
+            if (Settings.NO_PREF_ENCRYPT)
+                return s;
+            else
+                return CryptHelperAES.encrypt(salt + getKey3(), s);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -216,7 +231,10 @@ public class UserPreferences {
 
     private String deS(String s, String salt){
         try{
-            return CryptHelperAES.decrypt(salt + getKey3(), s);
+            if (Settings.NO_PREF_ENCRYPT)
+                return s;
+            else
+                return CryptHelperAES.decrypt(salt + getKey3(), s);
         } catch (Exception e){
             throw new RuntimeException(e);
         }

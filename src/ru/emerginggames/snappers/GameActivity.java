@@ -15,7 +15,6 @@ import com.adwhirl.adapters.AdWhirlAdapter;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.tapjoy.TapjoyConnect;
-import org.acra.ErrorReporter;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.IAppGameListener;
@@ -23,9 +22,7 @@ import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
-import ru.emerginggames.snappers.utils.IOnAdShowListener;
-import ru.emerginggames.snappers.utils.MyAdWhirlLayout;
-import ru.emerginggames.snappers.utils.TapjoyPointsListener;
+import ru.emerginggames.snappers.utils.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,7 +30,7 @@ import ru.emerginggames.snappers.utils.TapjoyPointsListener;
  * Date: 25.03.12
  * Time: 16:23
  */
-public class GameActivity extends AndroidApplication implements IAppGameListener, IOnAdShowListener {
+public class GameActivity extends AndroidApplication{
     public static final String LEVEL_PARAM_TAG = "Level";
     MyAdWhirlLayout adWhirlLayout;
     RelativeLayout rootLayout;
@@ -44,6 +41,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     boolean isFinished = false;
     boolean wentTapjoy;
     LevelTable levelTable;
+    Store mStore;
+    GameListener gameListener;
 
     Game game;
 
@@ -64,7 +63,8 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
             return;
         }
 
-        game = new Game();
+        gameListener = new GameListener(UserPreferences.getInstance(getApplicationContext()));
+        game = new Game(gameListener);
         game.setStartLevel(level);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -95,7 +95,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
             adWhirlLayout = new MyAdWhirlLayout(this, Settings.getAdwhirlKey(this));
             rootLayout.addView(adWhirlLayout, adParams);
             adWhirlLayout.setVisibility(View.INVISIBLE);
-            adWhirlLayout.setAdShowListener(this);
+            adWhirlLayout.setAdShowListener(adShowListener);
         }
 
         setContentView(rootLayout);
@@ -105,6 +105,9 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         canShowAd = false;
         levelTable = new LevelTable(this);
         levelTable.open(false);
+
+        if (Settings.GoogleInAppEnabled)
+            mStore = GInAppStore.getInstance(getApplicationContext());
     }
 
     @Override
@@ -135,7 +138,7 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         super.onResume();
         mayShowAd = !UserPreferences.getInstance(this).isAdFree();
         if (!mayShowAd && isShowingAd){
-            hideAd();
+            gameListener.hideAd();
             if (game.initDone)
                 game.setAdHeight(0);
         }
@@ -148,110 +151,10 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
     }
 
     @Override
-    public void launchStore() {
-        Intent intent = new Intent(this, StoreActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void buy(Goods goods) {
-        //TODO:
-    }
-
-    @Override
-    public void freeHintsPressed() {
-        wentTapjoy = true;
-        TapjoyConnect.getTapjoyConnectInstance().showOffers();
-
-    }
-
-    @Override
-    public void levelPackWon(LevelPack pack) {
-        UserPreferences.getInstance(this).unlockNextLevelPack(pack);
-        setResult(1);
-        finish();
-    }
-
-    @Override
-    public void levelSolved(Level level) {
-        UserPreferences.getInstance(this).unlockNextLevel(level);
-    }
-
-    @Override
-    public Level getNextLevel(Level currentLevel) {
-        return levelTable.getNextLevel(currentLevel);
-    }
-
-    @Override
     public void onBackPressed() {
         if (game.initDone)
             game.backButtonPressed();
     }
-
-    @Override
-    public int getHintsLeft() {
-        return UserPreferences.getInstance(this).getHintsRemaining();
-    }
-
-    @Override
-    public void useHint() {
-        UserPreferences.getInstance(this).useHint();
-    }
-
-
-
-    @Override
-    public boolean isLevelSolved(Level level) {
-        return UserPreferences.getInstance(this).isLevelSolved(level);
-    }
-
-    @Override
-    public void addScore(int score) {
-        UserPreferences.getInstance(this).addScore(score);
-    }
-
-    @Override
-    public int getAdHeight() {
-        return mayShowAd && adWhirlLayout.isAdAvailable() ? adWhirlLayout.getHeight() : 0;
-    }
-
-    @Override
-    public void showAd() {
-        if (!mayShowAd){
-            if (Settings.SEND_EXTENDED_AD_INFO)
-                ErrorReporter.getInstance().handleSilentException(new Exception("may not show ad"));
-            return;
-        }
-        shouldShowAd = true;
-        if (!canShowAd){
-            if (Settings.SEND_EXTENDED_AD_INFO)
-                ErrorReporter.getInstance().handleSilentException(new Exception("can't show ad - it's not available"));
-            return;
-        }
-        isShowingAd = true;
-        MyAdWhirlLayout.setEnforceUpdate(true);
-        runOnUiThread(showAD);
-        if (Settings.SEND_EXTENDED_AD_INFO)
-            ErrorReporter.getInstance().handleSilentException(new Exception("showing ad"));
-    }
-
-    @Override
-    public void hideAd() {
-        if (adWhirlLayout == null)
-            return;
-        shouldShowAd = isShowingAd = false;
-        int visibility = adWhirlLayout.getVisibility();
-        if (visibility == View.VISIBLE)
-            runOnUiThread(hideAD);
-    }
-
-    @Override
-    public boolean isOnline() {
-        //TODO:
-        return checkNetworkStatus();
-    }
-
-
 
     protected boolean checkNetworkStatus() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -266,71 +169,169 @@ public class GameActivity extends AndroidApplication implements IAppGameListener
         return false;
     }
 
-    @Override
-    public void onAdShow() {
-        if (isFinished)
-            return;
-        canShowAd = true;
-        if (shouldShowAd) {
-            showAd();
-            if (game.initDone)
-            game.setAdHeight(adWhirlLayout.getHeight());
+    class GameListener implements IAppGameListener {
+        UserPreferences prefs;
+
+        GameListener(UserPreferences prefs) {
+            this.prefs = prefs;
         }
 
-    }
-
-    @Override
-    public void onAdFail() {
-        if (isFinished)
-            return;
-        canShowAd = false;
-        if (isShowingAd) {
-            hideAd();
-            if (game.initDone)
-                game.setAdHeight(0);
-        }
-    }
-
-    @Override
-    public void onAdSizeChanged(int width, int height) {
-        if (isFinished)
-            return;
-        if (game.initDone)
-            game.setAdHeight(height);
-    }
-
-    @Override
-    public boolean isSoundEnabled() {
-        return UserPreferences.getInstance(this).getSound();
-    }
-
-    @Override
-    public void gotScreenSize(int width, int height) {
-        Metrics.setSize(width, height, this);
-    }
-
-    Runnable showAD = new Runnable() {
         @Override
-        public void run() {
+        public void launchStore() {
+            Intent intent = new Intent(GameActivity.this, StoreActivity.class);
+            startActivity(intent);
+        }
+
+        @Override
+        public void levelPackWon(LevelPack pack) {
+            UserPreferences.getInstance(getApplicationContext()).unlockNextLevelPack(pack);
+            setResult(1);
+            finish();
+        }
+
+        @Override
+        public int getHintsLeft() {
+            return UserPreferences.getInstance(getApplicationContext()).getHintsRemaining();
+        }
+
+        @Override
+        public void useHint() {
+            UserPreferences.getInstance(getApplicationContext()).useHint();
+        }
+
+        @Override
+        public void buy(Goods goods) {
+            if (mStore != null)
+                mStore.buy(goods);
+        }
+
+        @Override
+        public boolean isOnline() {
+            //TODO:
+            return checkNetworkStatus();
+        }
+
+        @Override
+        public void levelSolved(Level level) {
+            UserPreferences.getInstance(getApplicationContext()).unlockNextLevel(level);
+        }
+
+        @Override
+        public boolean isLevelSolved(Level level) {
+            return UserPreferences.getInstance(getApplicationContext()).isLevelSolved(level);
+        }
+
+        @Override
+        public boolean isSoundEnabled() {
+            return UserPreferences.getInstance(getApplicationContext()).getSound();
+        }
+
+        @Override
+        public void addScore(int score) {
+            UserPreferences.getInstance(getApplicationContext()).addScore(score);
+        }
+
+        @Override
+        public void showAd() {
+            if (!mayShowAd)
+                return;
+            shouldShowAd = true;
+            if (!canShowAd)
+                return;
+            isShowingAd = true;
+            MyAdWhirlLayout.setEnforceUpdate(true);
+            runOnUiThread(showAD);
+        }
+
+        @Override
+        public void hideAd() {
             if (adWhirlLayout == null)
                 return;
-            GameActivity.this.adWhirlLayout.setVisibility(View.VISIBLE);
-            if (adWhirlLayout.getChildCount() > 0) {
-                View v = adWhirlLayout.getChildAt(0);
-                adWhirlLayout.removeView(v);
-                adWhirlLayout.addView(v);
+            shouldShowAd = isShowingAd = false;
+            int visibility = adWhirlLayout.getVisibility();
+            if (visibility == View.VISIBLE)
+                runOnUiThread(hideAD);
+        }
+
+        @Override
+        public int getAdHeight() {
+            return mayShowAd && adWhirlLayout.isAdAvailable() ? adWhirlLayout.getHeight() : 0;
+        }
+
+        @Override
+        public void gotScreenSize(int width, int height) {
+            Metrics.setSize(width, height, GameActivity.this);
+        }
+
+        @Override
+        public void freeHintsPressed() {
+            wentTapjoy = true;
+            TapjoyConnect.getTapjoyConnectInstance().showOffers();
+        }
+
+        @Override
+        public Level getNextLevel(Level currentLevel) {
+            return levelTable.getNextLevel(currentLevel);
+        }
+
+        Runnable showAD = new Runnable() {
+            @Override
+            public void run() {
+                if (adWhirlLayout == null)
+                    return;
+                GameActivity.this.adWhirlLayout.setVisibility(View.VISIBLE);
+                if (adWhirlLayout.getChildCount() > 0) {
+                    View v = adWhirlLayout.getChildAt(0);
+                    adWhirlLayout.removeView(v);
+                    adWhirlLayout.addView(v);
+                }
+            }
+        };
+
+        Runnable hideAD = new Runnable() {
+            @Override
+            public void run() {
+                if (adWhirlLayout == null)
+                    return;
+                adWhirlLayout.setVisibility(View.INVISIBLE);
+            }
+        };
+    }
+
+
+
+    IOnAdShowListener adShowListener = new IOnAdShowListener() {
+        @Override
+        public void onAdShow() {
+            if (isFinished)
+                return;
+            canShowAd = true;
+            if (shouldShowAd) {
+                gameListener.showAd();
+                if (game.initDone)
+                    game.setAdHeight(adWhirlLayout.getHeight());
+            }
+        }
+
+        @Override
+        public void onAdSizeChanged(int width, int height) {
+            if (isFinished)
+                return;
+            if (game.initDone)
+                game.setAdHeight(height);
+        }
+
+        @Override
+        public void onAdFail() {
+            if (isFinished)
+                return;
+            canShowAd = false;
+            if (isShowingAd) {
+                gameListener.hideAd();
+                if (game.initDone)
+                    game.setAdHeight(0);
             }
         }
     };
-
-    Runnable hideAD = new Runnable() {
-        @Override
-        public void run() {
-            if (adWhirlLayout == null)
-                return;
-            adWhirlLayout.setVisibility(View.INVISIBLE);
-        }
-    };
-
 
 }

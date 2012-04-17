@@ -50,7 +50,7 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
 
     public static LevelPack get(String name, Context context){
         LevelPackTable table = new LevelPackTable(context, false);
-        LevelPack result = table.getByWhereStr(String.format("%s = %s", KEY_NAME, name));
+        LevelPack result = table.getByWhereStr(String.format("%s = '%s'", KEY_NAME, name));
         table.close();
         return result;
     }

@@ -1,6 +1,7 @@
 package ru.emerginggames.snappers.utils;
 
 import android.content.Context;
+import android.os.Handler;
 import ru.emerginggames.snappers.UserPreferences;
 import ru.emerginggames.snappers.data.LevelPackTable;
 import ru.emerginggames.snappers.model.Goods;
@@ -12,36 +13,55 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Date: 12.04.12
  * Time: 12:34
  */
-public class Store {
-    Context context;
-    static Store store;
+public abstract class Store {
+    public static enum BillingSupported{YES, NO, UNKNOWN}
+    protected static Store instance;
+    protected Context context;
+    protected BillingSupported isBillingSupported = BillingSupported.UNKNOWN;
+    protected IStoreListener mStoreListener;
+    protected Handler mHandler;
+
 
     public Store(Context context) {
         this.context = context;
     }
 
-    public static Store getInstance(Context context){
-        if (store == null)
-            store = new Store(context);
-        return store;
+    public abstract boolean buy(Goods item);
+
+    public void setListener(IStoreListener itemBoughtListener, Handler uiLoopHandler) {
+        this.mStoreListener = itemBoughtListener;
+        mHandler = uiLoopHandler;
+        if (isBillingSupported != BillingSupported.UNKNOWN)
+            itemBoughtListener.onBillingSupported(isBillingSupported == BillingSupported.YES);
     }
 
-    public boolean itemBought(Goods item){
+    public void unSetListener(){
+        mHandler = null;
+        mStoreListener = null;
+    }
+
+    public BillingSupported isAvailable() {
+        return isBillingSupported;
+    }
+
+    public boolean itemBought(Goods item, int amount){
         switch (item.getType()){
             case adFree:
-                if (item == Goods.AdFree){
+                if (item == Goods.AdFree)
                     UserPreferences.getInstance(context).setAdFree(true);
-                    return true;
-                }
+                else
+                    throw new RuntimeException("cant process item: " + item);
                 break;
             case Hint:
                 switch (item){
                     case HintPack1:
-                        UserPreferences.getInstance(context).addHints(1);
-                        return true;
+                        UserPreferences.getInstance(context).addHints(amount);
+                        break;
                     case HintPack10:
-                        UserPreferences.getInstance(context).addHints(10);
-                        return true;
+                        UserPreferences.getInstance(context).addHints(10 * amount);
+                        break;
+                    default:
+                        throw new RuntimeException("cant process item: " + item);
                 }
                 break;
             case LevelPack:
@@ -54,27 +74,32 @@ public class Store {
                 if (UserPreferences.getInstance(context).isPackUnlocked(pack))
                     return false;
                 UserPreferences.getInstance(context).unlockLevelPack(pack);
-                return true;
+                break;
+            default:
+                throw new RuntimeException("cant process item: " + item);
         }
-        throw new RuntimeException("cant process item: " + item);
+        runOnItemBought.postMe(mHandler, mStoreListener, item);
+        return true;
     }
 
-    public boolean itemReturned(Goods item){
+    public boolean itemReturned(Goods item, int amount){
         switch (item.getType()){
             case adFree:
-                if (item == Goods.AdFree){
+                if (item == Goods.AdFree)
                     UserPreferences.getInstance(context).setAdFree(false);
-                    return true;
-                }
+                else
+                    throw new RuntimeException("cant process item: " + item);
                 break;
             case Hint:
                 switch (item){
                     case HintPack1:
-                        UserPreferences.getInstance(context).addHints(-1);
-                        return true;
+                        UserPreferences.getInstance(context).addHints(-1 * amount);
+                        break;
                     case HintPack10:
-                        UserPreferences.getInstance(context).addHints(-10);
-                        return true;
+                        UserPreferences.getInstance(context).addHints(-10 * amount);
+                        break;
+                    default:
+                        throw new RuntimeException("cant process item: " + item);
                 }
                 break;
             case LevelPack:
@@ -87,8 +112,45 @@ public class Store {
                 if (!UserPreferences.getInstance(context).isPackUnlocked(pack))
                     return false;
                 UserPreferences.getInstance(context).lockLevelPack(pack);
-                return true;
+                break;
+            default:
+                throw new RuntimeException("cant process item: " + item);
         }
-        throw new RuntimeException("cant process item: " + item);
+        runOnItemRefund.postMe(mHandler, mStoreListener, item);
+        return true;
     }
+
+    protected abstract class PostableRunable<T> implements Runnable{
+        protected IStoreListener mListener;
+        protected T mPayload;
+        public void postMe(Handler handler, IStoreListener listener, T payload){
+            mListener = listener;
+            mPayload = payload;
+            if (handler != null && listener != null)
+                handler.post(this);
+            else if (mListener != null)
+                run();
+        }
+    }
+
+    protected PostableRunable<Boolean> runOnBillingSupported = new PostableRunable<Boolean>() {
+        @Override
+        public void run() {
+            mListener.onBillingSupported(mPayload);
+        }
+    };
+
+    protected PostableRunable<Goods> runOnItemBought = new PostableRunable<Goods>() {
+        @Override
+        public void run() {
+            mListener.onItemBought(mPayload);
+        }
+    };
+
+    protected PostableRunable<Goods> runOnItemRefund = new PostableRunable<Goods>() {
+        @Override
+        public void run() {
+            mListener.onItemRefunded(mPayload);
+        }
+    };
 }

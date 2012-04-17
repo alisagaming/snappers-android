@@ -47,7 +47,7 @@ public class MainStage extends MyStage implements ILogicListener {
 
     OutlinedTextSprite levelText;
     OutlinedTextSprite tapLeftText;
-    IGameEventListener listener;
+    IGameEventListener mGame;
     protected MainButtons buttons;
     protected boolean gameOverFired;
     protected float sincePopped;
@@ -64,7 +64,7 @@ public class MainStage extends MyStage implements ILogicListener {
     public MainStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
         logic = new GameLogic(this);
-        this.listener = listener;
+        this.mGame = listener;
 
         setupSnappers();
         setupBangs();
@@ -152,9 +152,9 @@ public class MainStage extends MyStage implements ILogicListener {
         if (logic.isGameOver() && !gameOverFired){
             gameOverFired = true;
             if (logic.isGameLost())
-                listener.gameLost();
+                mGame.gameLost();
             else
-                listener.gameWon();
+                mGame.gameWon();
         }
         sincePopped+=delta;
         addPopSound(acts);
@@ -294,10 +294,10 @@ public class MainStage extends MyStage implements ILogicListener {
     }
 
     public void nextLevel(){
-        Level next = ((IAppGameListener)Gdx.app).getNextLevel(logic.level);
+        Level next = mGame.getAppListener().getNextLevel(logic.level);
 
         if (next == null)
-            listener.levelPackWon();
+            mGame.levelPackWon();
         else
             setLevel(next);
     }

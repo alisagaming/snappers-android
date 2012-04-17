@@ -12,6 +12,7 @@ import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.Splash;
 
 import net.hockeyapp.android.UpdateManager;
+import ru.emerginggames.snappers.utils.GInAppStore;
 
 /**
  * Created by IntelliJ IDEA.
@@ -66,8 +67,8 @@ public class SplashGdxActivity extends AndroidApplication {
                 new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
                 TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
 
-
                 UserPreferences.getInstance(SplashGdxActivity.this);
+                GInAppStore.getInstance(getApplicationContext());
 
                 long now = System.currentTimeMillis();
                 if (now - startTime < SPLASH_TIME)

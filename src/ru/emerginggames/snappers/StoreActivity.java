@@ -1,11 +1,16 @@
 package ru.emerginggames.snappers;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
+import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.ImagePaginatorParam;
 import ru.emerginggames.snappers.model.LevelPack;
+import ru.emerginggames.snappers.utils.GInAppStore;
+import ru.emerginggames.snappers.utils.IStoreListener;
+import ru.emerginggames.snappers.utils.Store;
 import ru.emerginggames.snappers.view.FixedRatioPager;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 
@@ -18,9 +23,10 @@ import java.util.List;
  * Date: 31.03.12
  * Time: 4:30
  */
-public class StoreActivity extends PaginatedSelectorActivity implements IOnItemSelectedListener {
+public class StoreActivity extends PaginatedSelectorActivity implements IOnItemSelectedListener, IStoreListener {
     LevelPack[] levelPacks;
     RotatedImagePagerAdapter adapter;
+    Store mGStore;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +41,19 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
 
         CirclePageIndicator mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
-
         findViewById(R.id.shopButton).setVisibility(View.GONE);
+        if (Settings.GoogleInAppEnabled) {
+            mGStore = GInAppStore.getInstance(getApplicationContext());
+            mGStore.setListener(this, new Handler());
+        } else
+            onBillingSupported(false);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing() && mGStore != null)
+            mGStore.unSetListener();
     }
 
     List<ImagePaginatorParam> getPaginatorParamList() {
@@ -62,12 +79,11 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
         pager.setAdapter(adapter);
     }
 
-
     @Override
     public void onItemSelected(int number) {
         SoundManager.getInstance(this).playButtonSound();
         if (number >= 0 && number < levelPacks.length) {
-            showPackLockedMessage(levelPacks[number]);
+            buyLevelPack(levelPacks[number]);
         }
         if (number == ImagePaginatorParam.ADFREE)
             buyAdFree();
@@ -75,44 +91,34 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
             buyHints();
     }
 
-    protected void showPackLockedMessage(final LevelPack pack) {
-        String message = getResources().getString(R.string.level_locked, pack.id - 1, pack.id);
-
-        showMessageDialog(message, new int[]{18, 41, 0, 0}, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideMessageDialog();
-                        buyLevelPack(pack);
-                    }
-                }, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideMessageDialog();
-                    }
-                }
-        );
-    }
-
     void buyLevelPack(LevelPack pack) {
-        if (Settings.DEBUG) {
-            UserPreferences.getInstance(this).unlockLevelPack(pack);
-            setPagerAdapter();
-        }
+        if (mGStore != null)
+            mGStore.buy(Goods.getGoodsByLevelPack(pack));
     }
 
     void buyHints() {
-        if (Settings.DEBUG) {
-            UserPreferences.getInstance(this).addHints(10);
-            showMessage("bought it!");
-        }
+        if (mGStore != null)
+            mGStore.buy(Goods.HintPack10);
     }
 
     void buyAdFree() {
-        if (Settings.DEBUG) {
-            UserPreferences.getInstance(this).setAdFree(true);
-            setPagerAdapter();
-            showMessage("bought it!");
-        }
+        if (mGStore != null)
+            mGStore.buy(Goods.AdFree);
     }
 
+    @Override
+    public void onItemBought(Goods item) {
+        setPagerAdapter();
+    }
+
+    @Override
+    public void onItemRefunded(Goods item) {
+        setPagerAdapter();
+    }
+
+    @Override
+    public void onBillingSupported(boolean supported) {
+        if (!supported)
+            showMessage("No in-app billing supported");
+    }
 }

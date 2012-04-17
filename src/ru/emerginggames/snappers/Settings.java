@@ -15,10 +15,12 @@ import java.io.IOException;
  */
 public class Settings {
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
-    public static final boolean ENABLE_ALL_LEVELS = false;
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = true;
+    public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
+    public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
+    public static boolean GoogleInAppEnabled = true;
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
     public static final String BUGSENSE_API_KEY = "8a555912";
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
@@ -28,8 +30,11 @@ public class Settings {
     //App ID ? 6ac99625-6d02-4326-becd-213a233c511a
     private static String TJKey = "A69127567A50A671572E74997F8580A6JC78105DD8B3BFAE7J1BBB20C96D5B687BJ24B66487EDBAF2C1JAC0A19640D6AAD514B8E1BBE3F8248E2";
     //GvTn bQgQ 1P86 bB5X gr4L
+
+                                       //E5FDD91C61783906K0357C137318677C4KE887BEF3AE633FABK5DD66C05D4227322K4AD4B5F812A26DCD
     private static String TJSecretKey = "E5FDD91C61783906K19727591AFFB805AKE887BEF3AE633FABK5153EAA399A85809K4AD4B5F812A26DCD";
 
+    private static final String gInAPPKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgWK5eC6WW8fiRuvVfxaSaqUyMnpthTtV8abNUYLbS4pRcjbolfQJTFqZg+rzIADeBV1VZ0Iw/ZHO6i7n3iqFSDqKdBHwkteoEgynBJy+9THP7X8kN+C+h1V25cJforTyZiaXaY0Nz2Vq+mphnmGl9tettg/ZUiyqPm3Tt6SSJFdhdk1y5SO8LtTB+2VLHYe8e+XiEI2YGXm4NJ2G79pXooDSrmYV0CZ0uT6w3w7F9vmPEF0fvxtEN5D9SMhRfWlJ6rV/Mhnf46JmZTC5nGXhCwMG/uhWQbywhgLtQyMGzehsKxZyW5SSGq80RwHhmpYMN9F6Ekq8I6UTC/KHqt1UhQIDAQAB";
 
 
 
@@ -78,8 +83,9 @@ public class Settings {
     public static String getTapJoyAppId(Context context){
         UserPreferences prefs = UserPreferences.getInstance(context);
 
-        /*try{
+/*        try{
             prefs.getKey1();
+            prefs.getKey2();
             Log.e("ENCODED - TjAppKey!!!", CryptHelperDES.encrypt(prefs.getKey12(), "6ac99625"));
             Log.e("ENCODED - TjAppKey!!!", CryptHelperDES.encrypt(prefs.getKey12(), "6d02"));
             Log.e("ENCODED - TjAppKey!!!", CryptHelperDES.encrypt(prefs.getKey12(), "4326"));
@@ -89,12 +95,12 @@ public class Settings {
             throw new RuntimeException(e);
         }*/
 
-        String key = prefs.getKey1();
+        String key = prefs.getKey1() + prefs.getKey2();
         try{
             String[] chunks = TJKey.split("J");
             StringBuilder b = new StringBuilder();
 
-            for (int i=0; i< chunks.length; i++){
+            for (int i=0; i< chunks.length; i++){//C78105DD8B3BFAE7
                 b.append(CryptHelperDES.decrypt(prefs.getKey12(), chunks[i]));
                 if (i != chunks.length-1)
                     b.append('-');
@@ -115,8 +121,8 @@ public class Settings {
         UserPreferences prefs = UserPreferences.getInstance(context);
 
 
-/*        //GvTn bQgQ 1P86 bB5X gr4L
-        try{
+        //GvTn bQgQ 1P86 bB5X gr4L
+/*        try{
             prefs.getKey1();
             Log.e("ENCODED - Tj-secret!!!", CryptHelperDES.encrypt(prefs.getKey12(), "GvTn"));
             Log.e("ENCODED - Tj-secret!!!", CryptHelperDES.encrypt(prefs.getKey12(), "bQgQ"));
@@ -139,8 +145,12 @@ public class Settings {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        //TODO: encrypt
         //return "PfVKO1NNtOicS512X2jA";
+    }
+
+    public static String getInAppKey(){
+        //TODO: encrypt
+        return gInAPPKey;
     }
 
 

@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ru.emerginggames.snappers.gdx.helper.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.PositionInfo;
 import ru.emerginggames.snappers.gdx.helper.PositionHelper;
-import ru.emerginggames.snappers.gdx.helper.WorkerThread;
+import ru.emerginggames.snappers.utils.WorkerThread;
 
 public class OutlinedTextSprite extends Sprite implements IPositionable, IOnTextureDataNeededHandler{
 

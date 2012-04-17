@@ -34,16 +34,21 @@ public class Game implements ApplicationListener, IGameEventListener {
     protected Sprite bg;
     FPSLogger logger;
     protected ColorRect tempRect;
+    public IAppGameListener mGameListener;
 
     
     protected boolean objectsCreated = false;
     public static boolean isSoundEnabled;
     public boolean initDone = false;
 
+    public Game(IAppGameListener gameListener) {
+        mGameListener = gameListener;
+    }
+
     @Override
     public void create() {
         Resources.loadSounds();
-        isSoundEnabled = ((IAppGameListener)Gdx.app).isSoundEnabled();
+        isSoundEnabled = mGameListener.isSoundEnabled();
     }
 
     protected void createObjects(){
@@ -76,7 +81,7 @@ public class Game implements ApplicationListener, IGameEventListener {
         width = i;
         height = i1;
 
-        ((IAppGameListener)Gdx.app).gotScreenSize(width, height);
+        mGameListener.gotScreenSize(width, height);
 
         createObjects();
 
@@ -144,7 +149,7 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void onShopBtn() {
-        ((IAppGameListener)Gdx.app).launchStore();
+        mGameListener.launchStore();
     }
 
     @Override
@@ -182,15 +187,15 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void useHint() {
         setStage(mainStage);
-        ((IAppGameListener)Gdx.app).useHint();
+        mGameListener.useHint();
         mainStage.showHints(false);
     }
 
     @Override
     public void gameWon() {
         setStage(gameOverStage);
-        gameOverStage.show(true, ((IAppGameListener) Gdx.app).getAdHeight());
-        ((IAppGameListener)Gdx.app).levelSolved(mainStage.getLogic().level);
+        gameOverStage.show(true, mGameListener.getAdHeight());
+        mGameListener.levelSolved(mainStage.getLogic().level);
         if (isSoundEnabled)
             Resources.winSound.play(0.6f);
     }
@@ -198,7 +203,7 @@ public class Game implements ApplicationListener, IGameEventListener {
     @Override
     public void gameLost() {
         setStage(gameOverStage);
-        gameOverStage.show(false, ((IAppGameListener) Gdx.app).getAdHeight());
+        gameOverStage.show(false, mGameListener.getAdHeight());
 
     }
 
@@ -216,12 +221,17 @@ public class Game implements ApplicationListener, IGameEventListener {
 
     @Override
     public void levelPackWon() {
-        ((IAppGameListener)Gdx.app).levelPackWon(levelPack);
+        mGameListener.levelPackWon(levelPack);
     }
 
     @Override
     public void onHelpDone() {
         setStage(gameOverStage);
+    }
+
+    @Override
+    public IAppGameListener getAppListener() {
+        return mGameListener;
     }
 
     public Level getLevel(){
@@ -237,9 +247,9 @@ public class Game implements ApplicationListener, IGameEventListener {
             return;
 
         if (stage == gameOverStage)
-            ((IAppGameListener)Gdx.app).showAd();
+            mGameListener.showAd();
         else if (currentStage == gameOverStage)
-            ((IAppGameListener)Gdx.app).hideAd();
+            mGameListener.hideAd();
 
         if (stage == mainStage)
             mainStage.setDrawButtons(true);

@@ -94,7 +94,7 @@
                     />
 
             <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
-                          android:layout_height="wrap_content">
+                          android:layout_height="wrap_content" android:weightSum="100" android:gravity="center">
 
                 <ru.emerginggames.snappers.view.ImageView android:id="@+id/leftButton" android:layout_width="0dp"
                                                           android:layout_weight="45"
@@ -102,7 +102,7 @@
                                                           android:src="@drawable/unlock_button"
                                                           android:scaleType="fitCenter" android:adjustViewBounds="true"
                                                           android:clickable="true"
-                                                          android:layout_gravity="bottom"/>
+                                                          android:layout_gravity="bottom|center_vertical"/>
 
                 <LinearLayout android:id="@+id/spacer" android:layout_weight="10" android:layout_width="0dp" android:layout_height="0dp"/>
 
@@ -111,9 +111,7 @@
                                                           android:layout_height="wrap_content"
                                                           android:src="@drawable/ok_button"
                                                           android:scaleType="fitCenter" android:adjustViewBounds="true"
-                                                          android:layout_gravity="center"
-                        />
-
+                                                          android:layout_gravity="bottom|center_vertical"/>
             </LinearLayout>
         </LinearLayout>
 

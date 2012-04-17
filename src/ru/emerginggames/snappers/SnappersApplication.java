@@ -115,4 +115,9 @@ public class SnappersApplication extends Application {
 
         }
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+    }
 }

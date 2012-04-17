@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.gdx.helper;
+package ru.emerginggames.snappers.utils;
 
 import android.os.Handler;
 import android.os.HandlerThread;

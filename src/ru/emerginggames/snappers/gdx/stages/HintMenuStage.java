@@ -9,7 +9,6 @@ import ru.emerginggames.snappers.gdx.IGameEventListener;
 import ru.emerginggames.snappers.gdx.Elements.IOnEventListener;
 import ru.emerginggames.snappers.gdx.helper.IPositionable;
 import ru.emerginggames.snappers.gdx.Elements.SimpleButton;
-import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.gdx.core.OutlinedTextSprite;
 
@@ -38,14 +37,14 @@ public class HintMenuStage extends MenuStage {
     OutlinedTextSprite line2;
     OutlinedTextSprite line3;
     boolean showLine3 = false;
-    IGameEventListener listener;
+    IGameEventListener mGame;
     Mode mode;
 
 
 
-    public HintMenuStage(int width, int height, final IGameEventListener listener, SpriteBatch batch) {
+    public HintMenuStage(int width, int height, final IGameEventListener mGame, SpriteBatch batch) {
         super(width, height, true, batch);
-        this.listener = listener;
+        this.mGame = mGame;
         createElements();
         setMenuSize(Metrics.menuWidth, Metrics.menuHeight);
         if (width> 0)
@@ -130,13 +129,13 @@ public class HintMenuStage extends MenuStage {
         cancelButton = new SimpleButton("cancellong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
-                listener.onResumeBtn();
+                mGame.onResumeBtn();
             }
         });
         useButton = new SimpleButton("useahintlong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
-                listener.useHint();
+                mGame.useHint();
             }
         });
         buy1Button = new SimpleButton("buy1hint", Resources.buttonSound, new IOnEventListener() {
@@ -154,7 +153,7 @@ public class HintMenuStage extends MenuStage {
         freeHintsButton = new SimpleButton("freehintslong", Resources.buttonSound, new IOnEventListener() {
             @Override
             public void onEvent() {
-                ((IAppGameListener)Gdx.app).freeHintsPressed();
+                mGame.getAppListener().freeHintsPressed();
             }
         });
         addActor(cancelButton);
@@ -173,10 +172,10 @@ public class HintMenuStage extends MenuStage {
     public void onShow() {
         super.onShow();
         showLine3 = false;
-        int hintsLeft = ((IAppGameListener)Gdx.app).getHintsLeft();
+        int hintsLeft = mGame.getAppListener().getHintsLeft();
         if (hintsLeft > 0)
             showUseHintMenu(hintsLeft);
-        else if (((IAppGameListener)Gdx.app).isOnline())
+        else if (mGame.getAppListener().isOnline())
                 showBuyMenu();
         else
             showGetOnline();
@@ -213,7 +212,7 @@ public class HintMenuStage extends MenuStage {
     }
 
     private void buyHints(Goods goods){
-        ((IAppGameListener)Gdx.app).buy(goods);
+        mGame.getAppListener().buy(goods);
     }
 
 

@@ -82,6 +82,12 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
     }
 
     @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        onWindowVisibilityChanged(visibility);
+    }
+
+    @Override
     protected void onWindowVisibilityChanged(int visibility) {
         if (visibility == VISIBLE) {
             this.hasWindow = true;

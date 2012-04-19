@@ -98,6 +98,9 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
 
     void buyHints() {
         if (mGStore != null)
+        if (Settings.DEBUG_BUY)
+            mGStore.itemBought(Goods.HintPack10, 1);
+        else
             mGStore.buy(Goods.HintPack10);
     }
 

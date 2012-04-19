@@ -16,7 +16,7 @@ public class Settings {
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
     public static final boolean DEBUG_BUY = true;
     public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
     public static final boolean NO_PREF_ENCRYPT = false & DEBUG;

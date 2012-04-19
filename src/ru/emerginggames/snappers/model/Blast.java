@@ -16,4 +16,5 @@ public class Blast {
     public int destJ;
     public float source;
     public float age;
+    public int checkAge;
 }

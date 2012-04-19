@@ -168,12 +168,9 @@ public class GameActivity extends AndroidApplication {
     class GameListener implements IAppGameListener {
         UserPreferences prefs;
 
-        boolean hintsTouched;
 
         GameListener(UserPreferences prefs) {
             this.prefs = prefs;
-            hintsTouched = prefs.areHintsTouched();
-
         }
 
         @Override
@@ -202,10 +199,6 @@ public class GameActivity extends AndroidApplication {
         @Override
         public void useHint() {
             prefs.useHint();
-            if (!hintsTouched) {
-                hintsTouched = true;
-                prefs.touchHints();
-            }
         }
 
         @Override

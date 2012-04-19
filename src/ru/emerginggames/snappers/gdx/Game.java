@@ -105,7 +105,7 @@ public class Game implements ApplicationListener{
 
         batch.begin();
         if (Settings.DEBUG)
-            Resources.fnt1.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, Resources.fnt1.getLineHeight());
+            Resources.fnt1.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, Resources.fnt1.getLineHeight() + mainStage.marginBottom);
         batch.end();
     }
 

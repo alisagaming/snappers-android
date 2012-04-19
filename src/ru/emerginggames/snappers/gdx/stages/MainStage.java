@@ -29,7 +29,7 @@ import java.util.List;
  * Date: 26.03.12
  * Time: 2:18
  */
-public class MainStage extends MyStage /*implements ILogicListener*/ {
+public class MainStage extends MyStage {
     private static final float BLAST_ANIMATION_TIME = 0.1f;
     protected static final float POP_SOUND_DISTANCE = 0.1f;
     protected static final float BANG_FRAME_DURATION = 0.12f;
@@ -303,7 +303,7 @@ public class MainStage extends MyStage /*implements ILogicListener*/ {
             Blast b;
             int blSize = Metrics.blastSize;
             int blShift = blSize/2;
-            List<Blast> blasts = logic.activeBlasts;
+            List<Blast> blasts = logic.getBlasts();
             for (int i=0; i<blasts.size(); i++){
                 b = blasts.get(i);
                 batch.draw(blastAnimation.getKeyFrame(b.age, false), b.x - blShift, b.y - blShift, blShift, blShift, blSize, blSize, 1, 1, getBlastRotation(b));

@@ -119,6 +119,8 @@ public class UserPreferences {
 
     public void setHints(int amount){
         putInt(HINTS, amount, HINTS);
+        if (!areHintsTouched())
+            touchHints();
     }
     
     public boolean isPackUnlocked(int id){

@@ -51,8 +51,6 @@ public class SnapperView extends MovableActor{
         int y = logic.getSnapperYPosision(j) - halfSize;
         this.x = x;
         this.y = y;
-        snapper.setPosition(x,y);
-        eyes.setPosition(x, y);
     }
 
     @Override

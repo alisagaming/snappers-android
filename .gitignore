@@ -4,9 +4,7 @@
 gen
 out
 .todo
-proguard_logs/dump.txt
-proguard_logs/seeds.txt
-proguard_logs/usage.txt
+proguard_logs
 res/raw/commit.txt
 Snappers.apk
 HockeySDK/bin

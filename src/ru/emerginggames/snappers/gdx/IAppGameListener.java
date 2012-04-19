@@ -22,12 +22,12 @@ public interface IAppGameListener {
     public boolean isLevelSolved(Level level);
     public boolean isSoundEnabled();
     public void addScore(int score);
-    public void showAd();
-    public void hideAd();
+    public void gameoverStageShown();
+    public void gameoverStageHidden();
     public int getAdHeight();
     public void gotScreenSize(int width, int height);
     public void freeHintsPressed();
     public Level getNextLevel(Level currentLevel);
     public boolean isTapjoyEnabled();
-    public boolean isIngameAdsEnabled();
+    public void onInitDone();
 }

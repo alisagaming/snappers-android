@@ -56,6 +56,8 @@ public class MainStage extends MyStage /*implements ILogicListener*/ {
     private Blasts blasts;
     private Snappers_ snappers;
     private Sounds sounds;
+    public int marginBottom;
+    public int maxMarginBottom;
 
     public MainStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
@@ -110,7 +112,16 @@ public class MainStage extends MyStage /*implements ILogicListener*/ {
                 marginBottom = 0;
             }
         }
+        this.marginBottom = marginBottom;
+        maxMarginBottom = height - marginTop - Math.min(width, (int)(Metrics.snapperSize * Metrics.snapperMult1 * 6));
         return new Rect(0, height - marginTop, width, marginBottom);
+    }
+
+    public void resizeGameRect(int marginBottom){
+        int marginTop = Math.round(Metrics.squareButtonSize * 1.1f);
+        Rect gameRect = new Rect(0, (int)height - marginTop, (int)width, marginBottom);
+        logic.setScreen((int)width, (int)height, gameRect);
+        snappers.updatePositions();
     }
 
     @Override
@@ -339,6 +350,11 @@ public class MainStage extends MyStage /*implements ILogicListener*/ {
             }
         }
 
+        public void updatePositions(){
+            for (int i=0; i< activeSnappers.size; i++)
+                activeSnappers.get(i).setPosition();
+        }
+
         public void defineSnapperViews(){
             if (logic.level == null)
                 return;
@@ -357,11 +373,12 @@ public class MainStage extends MyStage /*implements ILogicListener*/ {
                     if ((state = logic.snappers.getSnapper(i, j)) > 0){
                         view = snapperViewPool.obtain();
                         view.set(i, j, state);
+                        view.setRandomStart(0, 0, w, h, SNAPPER_WARM_TIME);
                         activeSnappers.add(view);
                         addActor(view);
                         view.setListener(snapperAnimationListener);
                         view.setAnimFn(snapperAnimFn);
-                        view.setRandomStart(0, 0, w, h, SNAPPER_WARM_TIME);
+
                     }
         }
 

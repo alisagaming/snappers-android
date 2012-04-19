@@ -18,6 +18,7 @@ public class Settings {
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = false;
+    public static final boolean DEBUG_BUY = true;
     public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
     public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
     public static boolean GoogleInAppEnabled = true;
@@ -26,7 +27,7 @@ public class Settings {
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
     public static final boolean SEND_EXTENDED_AD_INFO = false;
     //1543619c1de44e80af13f861b204b778
-    private static String adwhirlKey = "5D43298AD9AB6642HED6DFBDA4F442B33HAAD7E50F0B01C4B6H285690406470CD02H16B7733B6AFA5528HE7AA041885AA117AHAD9A87096A80397FHE9C3FAAC58D1D615";
+    private static String adwhirlKey = "5D43298AD9AB6642H81E3D3F20BA02E8FHAAD7E50F0B01C4B6H13863AC093001CC1H16B7733B6AFA5528H39DA19D96F7DF7F3HAD9A87096A80397FHDF9A4393DB6D4F33";
     //App ID ? 6ac99625-6d02-4326-becd-213a233c511a
     private static String TJKey = "A69127567A50A671572E74997F8580A6JC78105DD8B3BFAE7J1BBB20C96D5B687BJ24B66487EDBAF2C1JAC0A19640D6AAD514B8E1BBE3F8248E2";
     //GvTn bQgQ 1P86 bB5X gr4L
@@ -38,11 +39,14 @@ public class Settings {
 
 
 
+
+
     public static String getAdwhirlKey(Context context) {
         UserPreferences prefs = UserPreferences.getInstance(context);
 
 /*        try{
             prefs.getKey1();
+            prefs.getKey2();
             Log.e("ENCODED - adwirl!!!", CryptHelperDES.encrypt(prefs.getKey12(), "1543"));
             Log.e("ENCODED - adwirl!!!", CryptHelperDES.encrypt(prefs.getKey12(), "619c"));
             Log.e("ENCODED - adwirl!!!", CryptHelperDES.encrypt(prefs.getKey12(), "1de4"));
@@ -54,7 +58,7 @@ public class Settings {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }*/
-        String key = prefs.getKey1();
+        String key = prefs.getKey1() + prefs.getKey2();
         try{
             String[] chunks = adwhirlKey.split("H");
             StringBuilder b = new StringBuilder();

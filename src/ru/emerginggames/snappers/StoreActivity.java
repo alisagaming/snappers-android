@@ -102,8 +102,12 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
     }
 
     void buyAdFree() {
-        if (mGStore != null)
-            mGStore.buy(Goods.AdFree);
+        if (mGStore != null){
+            if (Settings.DEBUG_BUY)
+                mGStore.itemBought(Goods.AdFree, 1);
+            else
+                mGStore.buy(Goods.AdFree);
+        }
     }
 
     @Override

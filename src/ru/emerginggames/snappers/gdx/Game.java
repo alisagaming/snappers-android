@@ -47,8 +47,6 @@ public class Game implements ApplicationListener{
     }
 
     protected void createObjects(){
-        if (objectsCreated)
-            return;
         Resources.loadTextures(level.pack.isGold);
 
         batch = new SpriteBatch();
@@ -58,22 +56,24 @@ public class Game implements ApplicationListener{
         hintMenu = new HintMenuStage(width, height, gameListener, batch);
         setStage(mainStage);
 
-        if (level != null)
-            mainStage.setLevel(level);
+        mainStage.setLevel(level);
 
-        objectsCreated = true;
         if (Resources.loadBg(level.pack.background))
             bg = new Sprite(Resources.bg);
+
+        objectsCreated = true;
     }
 
     @Override
     public void resize(int i, int i1) {
         mGameListener.gotScreenSize(width = i, height = i1);
-        createObjects();
+        if (!objectsCreated)
+            createObjects();
 
         if (bg != null)
             bg.setSize(width, height);
         initDone = true;
+        mGameListener.onInitDone();
     }
 
     @Override
@@ -141,9 +141,9 @@ public class Game implements ApplicationListener{
             return;
 
         if (stage == gameOverStage)
-            mGameListener.showAd();
+            mGameListener.gameoverStageShown();
         else if (currentStage == gameOverStage)
-            mGameListener.hideAd();
+            mGameListener.gameoverStageHidden();
 
         if (stage == mainStage)
             mainStage.setDrawButtons(true);
@@ -158,9 +158,22 @@ public class Game implements ApplicationListener{
         stage.onShow();
     }
 
-    public void setAdHeight(int height){
+    public void setTopAdHeight(int height){
         if (currentStage == gameOverStage)
             gameOverStage.setAdHeight(height);
+    }
+
+    public int getMarginBottom(){
+        return mainStage.marginBottom;
+    }
+
+    public int getMaxMarginBottom(){
+        return mainStage.maxMarginBottom;
+    }
+
+    public void resizeMarginBottom(int newMarginBottom){
+        newMarginBottom = Math.min(mainStage.maxMarginBottom, (int)(newMarginBottom * 1.1f));
+        mainStage.resizeGameRect(newMarginBottom);
     }
 
     public void backButtonPressed(){

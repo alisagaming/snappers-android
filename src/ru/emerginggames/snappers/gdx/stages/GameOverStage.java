@@ -101,6 +101,7 @@ public class GameOverStage extends DimBackStage{
         wonText.positionRelative(width/2, textPos, IPositionable.Dir.UP, 0);
         lostText.setPosition(Math.round((width - lostText.getWidth())/2), textPos);
         scoreText.positionRelative(wonText, IPositionable.Dir.DOWN, 5);
+        setAdHeight(0);
     }
 
     public void show(boolean isWon, int adHeight){

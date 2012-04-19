@@ -70,6 +70,10 @@ public class GameLogic {
         grainSpeedY = ySnapperMargin * GRAIN_SPEED_MARGIN_PER_SECOND;
     }
 
+    public int getBottmoHeight(){
+        return snappersRect.bottom;
+    }
+
     public void startLevel(Level level) {
         for (Blast blast : activeBlasts)
             blastPool.free(blast);

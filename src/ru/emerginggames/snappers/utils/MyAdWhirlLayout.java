@@ -61,8 +61,9 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int newWidth = getMeasuredWidth();
         int newHeight = getMeasuredHeight();
-        if (width != newWidth || height != newHeight)
-            adShowListener.onAdSizeChanged(newWidth, newHeight);
+        if (width != newWidth || height != newHeight )
+            if (adShowListener != null)
+                adShowListener.onAdSizeChanged(newWidth, newHeight);
     }
 
     @Override
@@ -181,7 +182,8 @@ public class MyAdWhirlLayout extends AdWhirlLayout {
         isLoadFailed = true;
         if (Settings.SEND_EXTENDED_AD_INFO)
             ErrorReporter.getInstance().handleSilentException(new Exception("failed to receive ad"));
-        adShowListener.onAdFail();
+        if (adShowListener != null)
+            adShowListener.onAdFail();
         nextRation = adWhirlManager.getRollover();
         handler.post(new HandleAdRunnable(this));
     }

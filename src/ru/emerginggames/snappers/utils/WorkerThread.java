@@ -33,6 +33,10 @@ public class WorkerThread {
         handler.post(r);
     }
 
+    public void postDelayed(Runnable r, long delayMillis){
+        handler.postDelayed(r, delayMillis);
+    }
+
     public void dispose(){
         thread.quit();
         instance = null;

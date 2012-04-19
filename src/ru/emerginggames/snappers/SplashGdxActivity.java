@@ -13,6 +13,7 @@ import ru.emerginggames.snappers.gdx.Splash;
 
 import net.hockeyapp.android.UpdateManager;
 import ru.emerginggames.snappers.utils.GInAppStore;
+import ru.emerginggames.snappers.utils.OnlineSettings;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,6 +40,7 @@ public class SplashGdxActivity extends AndroidApplication {
         initialize(new Splash(this), config);
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
             checkForUpdates();
+        OnlineSettings.update(getApplicationContext());
     }
 
     public void gotSize(int width, int height) {

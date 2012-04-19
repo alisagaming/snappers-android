@@ -38,7 +38,7 @@ public class UserPreferences {
     public static String Key4;
     public static String Key5;
 
-    private static final int INITIAL_HINTS = Settings.DEBUG? 10:3;
+    private static final int INITIAL_HINTS = Settings.DEBUG? 10:2;
     Context context;
     private static UserPreferences instance;
     SharedPreferences prefs;
@@ -78,7 +78,7 @@ public class UserPreferences {
     }
 
     public boolean isTapjoyEnabled(){
-        return getBoolean(TAPJOY_ENABLED, true, TAPJOY_ENABLED);
+        return getBoolean(TAPJOY_ENABLED, false, TAPJOY_ENABLED);
     }
 
     public void setIngameAds(boolean enabled){
@@ -114,8 +114,11 @@ public class UserPreferences {
     }
 
     public void addHints(int amount){
-        int hints = getHintsRemaining();
-        putInt(HINTS, hints + amount, HINTS);
+        setHints(amount + getHintsRemaining());
+    }
+
+    public void setHints(int amount){
+        putInt(HINTS, amount, HINTS);
     }
     
     public boolean isPackUnlocked(int id){

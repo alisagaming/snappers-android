@@ -1,7 +1,6 @@
 package ru.emerginggames.snappers;
 
 import android.content.Context;
-import android.util.Log;
 import ru.emerginggames.snappers.data.CryptHelperDES;
 
 import java.io.DataInputStream;

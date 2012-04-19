@@ -1,9 +1,6 @@
 package ru.emerginggames.snappers.gdx;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.emerginggames.snappers.SplashGdxActivity;
 
 /**
@@ -15,9 +12,6 @@ import ru.emerginggames.snappers.SplashGdxActivity;
 public class Splash implements ApplicationListener {
     SplashGdxActivity activity;
     boolean done = false;
-    Sprite bg;
-    SpriteBatch batch;
-    TextureRegion bgTex;
 
     public Splash(SplashGdxActivity activity) {
         this.activity = activity;
@@ -25,10 +19,6 @@ public class Splash implements ApplicationListener {
 
     @Override
     public void create() {
-
-        bgTex =Resources.normLoadTexture("Default.png", null);
-        bg = new Sprite(bgTex);
-        batch = new SpriteBatch();
     }
 
     @Override
@@ -36,15 +26,10 @@ public class Splash implements ApplicationListener {
         if (!done)
             activity.gotSize(width, height);
         done = true;
-
-        bg.setSize(width, height);
     }
 
     @Override
     public void render() {
-        batch.begin();
-        bg.draw(batch);
-        batch.end();
     }
 
     @Override
@@ -57,6 +42,5 @@ public class Splash implements ApplicationListener {
 
     @Override
     public void dispose() {
-        bgTex.getTexture().dispose();
     }
 }

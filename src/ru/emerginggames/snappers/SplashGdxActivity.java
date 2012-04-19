@@ -1,9 +1,15 @@
 package ru.emerginggames.snappers;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.tapjoy.TapjoyConnect;
@@ -14,6 +20,7 @@ import ru.emerginggames.snappers.gdx.Splash;
 import net.hockeyapp.android.UpdateManager;
 import ru.emerginggames.snappers.utils.GInAppStore;
 import ru.emerginggames.snappers.utils.OnlineSettings;
+import ru.emerginggames.snappers.view.OutlinedTextView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,18 +35,31 @@ public class SplashGdxActivity extends AndroidApplication {
     public void onCreate(Bundle savedInstanceState) {
         DbSettings.ENABLE_ALL_LEVELS = Settings.ENABLE_ALL_LEVELS;
         super.onCreate(savedInstanceState);
-        Resources.context = this;
-        Resources.font = Typeface.createFromAsset(getAssets(), "shag_lounge.otf");
+        Resources.context = getApplicationContext();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
         config.useAccelerometer = false;
         config.useCompass = false;
-        config.useWakelock = false;
 
-        initialize(new Splash(this), config);
+        View gameView = initializeForView(new Splash(this), config);
+        RelativeLayout rootLayout = new RelativeLayout(this);
+        rootLayout.addView(gameView);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+        rootLayout.addView(getLayoutInflater().inflate(R.layout.splash, null), lp);
+
+        setContentView(rootLayout);
+        OutlinedTextView textView = (OutlinedTextView)rootLayout.findViewById(R.id.message);
+        textView.setStroke(Color.BLACK, 2);
+        textView.setTypeface(Resources.getFont(this));
+
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
             checkForUpdates();
+
         OnlineSettings.update(getApplicationContext());
     }
 

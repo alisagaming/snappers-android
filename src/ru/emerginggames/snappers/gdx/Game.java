@@ -17,6 +17,9 @@ import ru.emerginggames.snappers.model.Level;
  * Time: 16:25
  */
 public class Game implements ApplicationListener{
+    public enum Stages{MainStage, GameOverStage, HelpStage, PausedStage, HintMenu}
+    public Stages currentStageE;
+
     int width;
     int height;
     private SpriteBatch batch;
@@ -25,10 +28,10 @@ public class Game implements ApplicationListener{
     protected MyStage currentStage;
     protected MainStage mainStage;
     protected GameOverStage gameOverStage;
-    protected PausedStage pausedStage;
     protected HintMenuStage hintMenu;
     protected HelpStage helpStage;
     protected Sprite bg;
+    boolean isPaused;
     public IAppGameListener mGameListener;
 
     protected boolean objectsCreated = false;
@@ -52,9 +55,8 @@ public class Game implements ApplicationListener{
         batch = new SpriteBatch();
         mainStage = new MainStage(width, height, gameListener);
         gameOverStage = new GameOverStage(width,height,gameListener, mainStage.getLogic(), batch);
-        pausedStage = new PausedStage(width, height, gameListener, batch);
         hintMenu = new HintMenuStage(width, height, gameListener, batch);
-        setStage(mainStage);
+        setCurrentStage(Stages.MainStage);
 
         mainStage.setLevel(level);
 
@@ -93,7 +95,7 @@ public class Game implements ApplicationListener{
         float delta = Gdx.graphics.getDeltaTime();
         /*if (delta > 1)
             delta = 0.01f;*/
-        if (currentStage != pausedStage)
+        if (!isPaused)
             mainStage.act(delta);
         if (currentStage != helpStage)
             mainStage.draw();
@@ -107,6 +109,14 @@ public class Game implements ApplicationListener{
         if (Settings.DEBUG)
             Resources.fnt1.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, Resources.fnt1.getLineHeight() + mainStage.marginBottom);
         batch.end();
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+
+    public void restartLevel(){
+        mainStage.restartLevel();
     }
 
     @Override
@@ -126,7 +136,6 @@ public class Game implements ApplicationListener{
     public void dispose() {
         mainStage.dispose();
         gameOverStage.dispose();
-        pausedStage.dispose();
         hintMenu.dispose();
         if (helpStage != null)
             helpStage.dispose();
@@ -158,6 +167,29 @@ public class Game implements ApplicationListener{
         stage.onShow();
     }
 
+    public void setCurrentStage(Stages stage){
+        if (currentStageE == stage)
+            return;
+        currentStageE = stage;
+        switch (stage){
+            case MainStage:
+                setStage(mainStage);
+                break;
+            case HelpStage:
+                setStage(helpStage);
+                break;
+            case HintMenu:
+                setStage(hintMenu);
+                break;
+            case GameOverStage:
+                setStage(gameOverStage);
+                break;
+            case PausedStage:
+                mGameListener.showPaused();
+                break;
+        }
+    }
+
     public void setTopAdHeight(int height){
         if (currentStage == gameOverStage)
             gameOverStage.setAdHeight(height);
@@ -176,17 +208,24 @@ public class Game implements ApplicationListener{
         mainStage.resizeGameRect(newMarginBottom);
     }
 
+
+
     public void backButtonPressed(){
-        if (currentStage == gameOverStage)
-            Gdx.app.exit();
-        else if (currentStage == helpStage)
-            setStage(gameOverStage);
-        else if (currentStage == pausedStage)
-            Gdx.app.exit();
-        else if (currentStage == hintMenu)
-            setStage(mainStage);
-        else if (currentStage == mainStage)
-            setStage(pausedStage);
+        switch (currentStageE){
+            case MainStage:
+                setCurrentStage(Stages.PausedStage);
+                break;
+            case PausedStage:
+            case GameOverStage:
+                Gdx.app.exit();
+                break;
+            case HelpStage:
+                setCurrentStage(Stages.GameOverStage);
+                break;
+            case HintMenu:
+                setCurrentStage(Stages.MainStage);
+                break;
+        }
     }
 
     private IGameEventListener gameListener = new IGameEventListener() {
@@ -198,18 +237,18 @@ public class Game implements ApplicationListener{
         @Override
         public void onNextBtn() {
             mainStage.nextLevel();
-            setStage(mainStage);
+            setCurrentStage(Stages.MainStage);
         }
 
         @Override
         public void onRestartBtn() {
             mainStage.restartLevel();
-            setStage(mainStage);
+            setCurrentStage(Stages.MainStage);
         }
 
         @Override
         public void onResumeBtn() {
-            setStage(mainStage);
+            setCurrentStage(Stages.MainStage);
         }
 
         @Override
@@ -224,17 +263,18 @@ public class Game implements ApplicationListener{
                 mainStage.showHints(true);
                 return;
             }
-            setStage(hintMenu);
+            setCurrentStage(Stages.HintMenu);
         }
 
         @Override
         public void onPauseBtn() {
-            setStage(pausedStage);
+            isPaused = true;
+            mGameListener.showPaused();
         }
 
         @Override
         public void gameWon() {
-            setStage(gameOverStage);
+            setCurrentStage(Stages.GameOverStage);
             gameOverStage.show(true, mGameListener.getAdHeight());
             mGameListener.levelSolved(mainStage.getLogic().level);
             if (isSoundEnabled)
@@ -243,7 +283,7 @@ public class Game implements ApplicationListener{
 
         @Override
         public void gameLost() {
-            setStage(gameOverStage);
+            setCurrentStage(Stages.GameOverStage);
             gameOverStage.show(false, mGameListener.getAdHeight());
         }
 
@@ -254,7 +294,7 @@ public class Game implements ApplicationListener{
 
         @Override
         public void useHint() {
-            setStage(mainStage);
+            setCurrentStage(Stages.MainStage);
             mGameListener.useHint();
             mainStage.showHints(false);
         }
@@ -263,12 +303,12 @@ public class Game implements ApplicationListener{
         public void onHelp() {
             if (helpStage == null)
                 helpStage = new HelpStage(width, height, batch, this);
-            setStage(helpStage);
+            setCurrentStage(Stages.HelpStage);
         }
 
         @Override
         public void onHelpDone() {
-            setStage(gameOverStage);
+            setCurrentStage(Stages.GameOverStage);
         }
 
         @Override

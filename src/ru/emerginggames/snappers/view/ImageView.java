@@ -14,8 +14,8 @@ public class ImageView extends android.widget.ImageView {
     private int mDrawableWidth;
     private int mDrawableHeight;
     private boolean mAdjustViewBounds;
-    private int mMaxWidth;
-    private int mMaxHeight;
+    private int mMaxWidth = Integer.MAX_VALUE;
+    private int mMaxHeight = Integer.MAX_VALUE;
 
     public ImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);

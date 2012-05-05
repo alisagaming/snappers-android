@@ -1,6 +1,7 @@
 package ru.emerginggames.snappers.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
@@ -13,7 +14,7 @@ import android.widget.Button;
  * Date: 05.05.12
  * Time: 16:31
  */
-public class TwoStateButton extends Button {
+public class TwoStateButton extends ImageView {
     public TwoStateButton(Context context) {
         super(context);
     }
@@ -33,11 +34,16 @@ public class TwoStateButton extends Button {
         StateListDrawable dr = new StateListDrawable();
         dr.addState(new int[]{-android.R.attr.state_pressed}, b1);
         dr.addState(new int[]{android.R.attr.state_pressed}, b2);
-        setBackgroundDrawable(dr);
+        setImageDrawable(dr);
     }
 
     public void setup(int idUnpressed, int idPressed, OnClickListener onClickListener){
         setStates(idUnpressed, idPressed);
         setOnClickListener(onClickListener);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

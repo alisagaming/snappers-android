@@ -23,6 +23,7 @@ import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.*;
+import ru.emerginggames.snappers.view.GameDialog;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,6 +44,7 @@ public class GameActivity extends AndroidApplication {
     GameListener gameListener;
     AdController adController;
     Game game;
+    GameDialog dlg;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,9 +167,59 @@ public class GameActivity extends AndroidApplication {
         return netInfo != null && netInfo.isAvailable();
     }
 
+    Runnable showPausedDialog = new Runnable() {
+        @Override
+        public void run() {
+            if (dlg == null){
+                dlg = new GameDialog(GameActivity.this);
+                dlg.setWidth(Math.min(Metrics.menuWidth, Metrics.screenWidth * 9 / 10));
+                dlg.setBtnClickListener(dialogButtonListener);
+                dlg.setItemSpacing(Metrics.screenMargin);
+            }
+
+            dlg.clear();
+            dlg.setTitle(R.string.game_paused);
+            dlg.addButton(R.drawable.resumelong, R.drawable.resumelong_tap);
+            dlg.addButton(R.drawable.restartlong, R.drawable.restartlong_tap);
+            dlg.addButton(R.drawable.menulong, R.drawable.menulong_tap);
+            dlg.addButton(R.drawable.storelong, R.drawable.storelong_tap);
+            dlg.show();
+        }
+    };
+
+    GameDialog.OnButtonClickListener dialogButtonListener = new GameDialog.OnButtonClickListener() {
+        @Override
+        public void onButtonClick(int unpressedDrawableId) {
+            switch (unpressedDrawableId){
+                case R.drawable.resumelong:
+                    dlg.hide();
+                    game.setPaused(false);
+                    break;
+
+                case R.drawable.restartlong:
+                    game.setPaused(false);
+                    dlg.hide();
+                    game.restartLevel();
+                    break;
+
+                case R.drawable.menulong:
+                    finish();
+                    break;
+
+                case R.drawable.storelong:
+                    gameListener.launchStore();
+                    break;
+            }
+        }
+    };
+
     class GameListener implements IAppGameListener {
         UserPreferences prefs;
 
+        @Override
+        public void showPaused() {
+            runOnUiThread(showPausedDialog);
+        }
 
         GameListener(UserPreferences prefs) {
             this.prefs = prefs;

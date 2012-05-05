@@ -74,4 +74,9 @@ public class SoundManager {
         if (mediaPlayer.isPlaying())
             mediaPlayer.stop();
     }
+
+    public static void PlayButtonSoundIfPossible(){
+        if (instance!= null)
+            instance.playButtonSound();
+    }
 }

@@ -28,8 +28,9 @@ public class OutlinedTextView extends TextView{
     private Paint.FontMetrics fontMetrics;
 
     private boolean needResize = true;
-    private boolean setTextSizeToFit = false;
+    private boolean setTextSizeToFit;
     private boolean isSquare;
+    boolean isPaintPrepared;
     
     Layout mLayout;
     Layout mStrokeLayout;
@@ -62,6 +63,7 @@ public class OutlinedTextView extends TextView{
     public void setStroke(int color, int width){
         strokeColor = color;
         strokeWidth = width;
+        isPaintPrepared = false;
     }
 
     public void drawBoring(Canvas canvas){
@@ -105,15 +107,18 @@ public class OutlinedTextView extends TextView{
         needResize = true;
     }
 
-    protected void setTextSizeToFit(){
+    protected void setTextSizeToFit(int measuredWidth, int measuredHeight){
         CharSequence text = getText();
         if (text.length() <1)
             return;
-        
-        if (maxLines == 1){
+
+        if (!isPaintPrepared)
             preparePaint();
-            int width = getMeasuredWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight();
-            int height = getMeasuredHeight() - getCompoundPaddingTop() - getCompoundPaddingBottom();
+
+        if (maxLines == 1){
+
+            int width = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight();
+            int height = measuredHeight - getCompoundPaddingTop() - getCompoundPaddingBottom();
             float size = getTextSize();
 
             float textWidth = outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2;
@@ -126,21 +131,14 @@ public class OutlinedTextView extends TextView{
                 return;
             }
 
-/*            setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-            super.onMeasure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-            int newHeight = getMeasuredHeight();
-            if (newHeight > height){
-                size = (float)Math.ceil(size * height/newHeight);
-            }*/
+            size = (float)Math.ceil(size * width/ textWidth);
             setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
-
             return;
         }
         
         if (mLineEnds == null)
             return;
 
-        preparePaint();
         if (mLayout == null)
             makeNewLayout();
         if (mLayout == null)
@@ -173,18 +171,42 @@ public class OutlinedTextView extends TextView{
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int lastMeasuredWidth = getMeasuredWidth();
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        needResize |=  (lastMeasuredWidth != getMeasuredWidth());
+        int wSize = MeasureSpec.getSize(widthMeasureSpec);
+        int wMode = MeasureSpec.getMode(widthMeasureSpec);
+        int hSize = MeasureSpec.getSize(heightMeasureSpec);
+        int hMode = MeasureSpec.getMode(widthMeasureSpec);
+
+        if (wMode == MeasureSpec.UNSPECIFIED || hMode == MeasureSpec.UNSPECIFIED){
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
+
+        needResize |=  (lastMeasuredWidth != wSize);
+        if (needResize && isSquare && maxLines == 1 && setTextSizeToFit){
+            setTextSizeToFit(wSize, hSize);
+            setMeasuredDimension(wSize, wSize);
+
+            if (mLayout == null)
+                makeNewLayout();
+            return;
+        }
+
         if (needResize && setTextSizeToFit){
-            setTextSizeToFit();
-            if(maxLines > 1 )
+            setTextSizeToFit(wSize, hSize);
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+/*        needResize |=  (lastMeasuredWidth != getMeasuredWidth());
+        if (needResize && setTextSizeToFit){
+            setTextSizeToFit(wSize, hSize);
+            if(!isSquare)
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             makeNewLayout();
-        }
+        }*/
         if (mLayout == null)
             makeNewLayout();
     }
-    
+
     void makeNewLayout(){
         Layout.Alignment alignment;
         int gravity = getGravity();
@@ -218,6 +240,29 @@ public class OutlinedTextView extends TextView{
         needResize = true;
     }
 
+    @Override
+    public void setTypeface(Typeface tf) {
+        super.setTypeface(tf);
+        isPaintPrepared = false;
+    }
+
+    @Override
+    public void setTypeface(Typeface tf, int style) {
+        super.setTypeface(tf, style);
+        isPaintPrepared = false;
+    }
+
+    @Override
+    public void setTextColor(int color) {
+        super.setTextColor(color);
+        isPaintPrepared = false;
+    }
+
+    @Override
+    public void setTextColor(ColorStateList colors) {
+        super.setTextColor(colors);
+        isPaintPrepared = false;
+    }
 
     protected void preparePaint(){
         Typeface typeface = getTypeface();

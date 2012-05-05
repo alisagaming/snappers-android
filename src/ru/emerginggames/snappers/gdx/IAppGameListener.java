@@ -30,4 +30,5 @@ public interface IAppGameListener {
     public Level getNextLevel(Level currentLevel);
     public boolean isTapjoyEnabled();
     public void onInitDone();
+    public void showPaused();
 }

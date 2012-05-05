@@ -47,9 +47,11 @@ public class ImageView extends android.widget.ImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        mDrawableWidth = getDrawable().getIntrinsicWidth();
-        mDrawableHeight = getDrawable().getIntrinsicHeight();
+        mDrawableWidth = mDrawableHeight = 0;
+        if (getDrawable() != null){
+            mDrawableWidth = getDrawable().getIntrinsicWidth();
+            mDrawableHeight = getDrawable().getIntrinsicHeight();
+        }
 
         int w = 0;
         int h = 0;
@@ -176,5 +178,11 @@ public class ImageView extends android.widget.ImageView {
                 break;
         }
         return result;
+    }
+
+    @Override
+    public void setBackgroundResource(int resid) {
+        super.setBackgroundResource(resid);
+
     }
 }

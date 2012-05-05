@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import ru.emerginggames.snappers.gdx.Resources;
+import ru.emerginggames.snappers.view.MyAlertDialog;
 import ru.emerginggames.snappers.view.OutlinedTextView;
 
 /**
@@ -18,6 +19,7 @@ import ru.emerginggames.snappers.view.OutlinedTextView;
  * Time: 15:01
  */
 public class PaginatedSelectorActivity extends FragmentActivity {
+    MyAlertDialog dlg;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -38,17 +40,6 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         findViewById(R.id.root).setPadding(0, 0 , 0, defPadding);
         findViewById(R.id.footer).setPadding(0, 0, 0, 0);
         
-        OutlinedTextView messageText = (OutlinedTextView)findViewById(R.id.message);
-        messageText.setStroke(Color.BLACK, 2);
-        messageText.setTypeface(Resources.getFont(this));
-        messageText.setTextSize(width/12);
-        messageText.setLineSpacing(0, 1.2f);
-
-        View dialog = findViewById(R.id.dialog);
-        ViewGroup.LayoutParams lp = dialog.getLayoutParams();
-        lp.width = width * 8/10;
-        dialog.setLayoutParams(lp);
-
         findViewById(R.id.indicator).setPadding(defPadding, defPadding, defPadding, defPadding);
 
         SoundManager.getInstance(this).setUp();
@@ -83,28 +74,12 @@ public class PaginatedSelectorActivity extends FragmentActivity {
     }
     
     public void showMessageDialog(String message, int[] lineEnds, View.OnClickListener leftListener, View.OnClickListener rightListener){
-
-        findViewById(R.id.dialogCont).setVisibility(View.VISIBLE);
-
-        OutlinedTextView msgText = (OutlinedTextView)findViewById(R.id.message);
-        msgText.setText(message);
-        if (lineEnds != null){
-            msgText.setMaxLines2(lineEnds.length);
-            msgText.setLineEnds(lineEnds);
-        }
-        msgText.setTextSizeToFit(true);
-        if(leftListener != null)
-            findViewById(R.id.leftButton).setOnClickListener(leftListener);
-        else
-            findViewById(R.id.leftButton).setVisibility(View.GONE);
-
-        if (rightListener != null)
-            findViewById(R.id.rightButton).setOnClickListener(rightListener);
-        else
-            findViewById(R.id.rightButton).setVisibility(View.GONE);
-        
-        if (leftListener == null || rightListener == null)
-            findViewById(R.id.spacer).setVisibility(View.GONE);
+        if (dlg == null)
+            dlg = new MyAlertDialog(this);
+        dlg.setLeftButton(R.drawable.unlock_button, leftListener);
+        dlg.setRightButton(R.drawable.ok_button, rightListener);
+        dlg.setMessage(message, lineEnds);
+        dlg.show();
     }
     
     public void showMessage(String msg){
@@ -117,6 +92,6 @@ public class PaginatedSelectorActivity extends FragmentActivity {
     }
 
     public void hideMessageDialog(){
-        findViewById(R.id.dialogCont).setVisibility(View.GONE);
+        dlg.hide();
     }
 }

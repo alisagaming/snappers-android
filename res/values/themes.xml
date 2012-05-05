@@ -1,0 +1,5 @@
+<resources>
+    <style name="RCAlertDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog</item>
+    </style>
+</resources>

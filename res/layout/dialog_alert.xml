@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
+              android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+    <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/message" android:layout_width="fill_parent"
+                                                     android:layout_height="0dp"
+                                                     android:textColor="@android:color/white" android:gravity="center"
+                                                     android:layout_weight="1"/>
+
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                  android:layout_height="wrap_content" android:weightSum="100" android:gravity="center">
+        <ru.emerginggames.snappers.view.ImageView android:id="@+id/leftButton" android:layout_width="0dp"
+                                                  android:layout_weight="45" android:layout_height="wrap_content"
+                                                  android:src="@drawable/unlock_button" android:scaleType="fitCenter"
+                                                  android:visibility="gone"
+                                                  android:adjustViewBounds="true"
+                                                  android:layout_gravity="bottom|center_vertical"/>
+        <LinearLayout android:id="@+id/spacer" android:layout_weight="10" android:layout_width="0dp"
+                      android:layout_height="0dp"/>
+        <ru.emerginggames.snappers.view.ImageView android:id="@+id/rightButton" android:layout_width="0dp"
+                                                  android:layout_weight="45" android:layout_height="wrap_content"
+                                                  android:src="@drawable/ok_button" android:scaleType="fitCenter"
+                                                  android:visibility="gone"
+                                                  android:adjustViewBounds="true"
+                                                  android:layout_gravity="bottom|center_vertical"/>
+    </LinearLayout>
+</LinearLayout>
+
+

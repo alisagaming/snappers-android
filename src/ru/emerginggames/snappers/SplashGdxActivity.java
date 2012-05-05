@@ -54,7 +54,6 @@ public class SplashGdxActivity extends AndroidApplication {
 
         setContentView(rootLayout);
         OutlinedTextView textView = (OutlinedTextView)rootLayout.findViewById(R.id.message);
-        textView.setStroke(Color.BLACK, 4);
         textView.setTypeface(Resources.getFont(this));
 
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)

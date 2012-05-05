@@ -2,4 +2,7 @@
     <style name="RCAlertDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog</item>
     </style>
+    <style name="GameDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/game_dialog</item>
+    </style>
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:background="@drawable/background"
@@ -9,6 +10,7 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Loading..." android:textSize="40dp" android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" android:paddingBottom="5dp" android:textColor="@android:color/white"
+            app:strokeWidth="3dp" app:strokeColor="#000"
             />
 
 </RelativeLayout>

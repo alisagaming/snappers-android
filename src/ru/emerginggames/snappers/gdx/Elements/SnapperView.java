@@ -21,6 +21,7 @@ public class SnapperView extends MovableActor{
     public int state;
     public int i;
     public int j;
+    float yEyeShift;
     public float scale;
     public float shadowScale;
 
@@ -37,6 +38,7 @@ public class SnapperView extends MovableActor{
         width = Metrics.snapperSize;
         height = Metrics.snapperSize;
         halfSize = Metrics.snapperSize/2;
+
     }
 
     public void set(int i, int j, int state){
@@ -58,7 +60,7 @@ public class SnapperView extends MovableActor{
         x-= halfSize;
         y-= halfSize;
         snapper.setPosition(x, y);
-        eyes.setPosition(x, y);
+        eyes.setPosition(x, y + yEyeShift);
     }
 
     public void touch(){
@@ -76,6 +78,7 @@ public class SnapperView extends MovableActor{
         snapper.setRegion(Resources.snapperBack[state-1]);
         snapper.setScale(scale);
         eyes.setScale(scale);
+        yEyeShift = Metrics.snapperSize/25f * scale;
     }
 
     private float getScale(){

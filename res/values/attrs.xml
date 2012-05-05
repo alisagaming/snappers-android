@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="OutlinedTextView">
+        <attr name="strokeColor"/>
+        <attr name="strokeWidth"/>
+        <attr name="setTextSizeToFit" format="boolean"/>
+    </declare-styleable>
+</resources>

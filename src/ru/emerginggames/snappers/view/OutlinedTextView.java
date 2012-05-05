@@ -2,6 +2,7 @@ package ru.emerginggames.snappers.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.*;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -10,6 +11,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
+import ru.emerginggames.snappers.R;
 
 /**
  * Created by IntelliJ IDEA.
@@ -50,12 +52,13 @@ public class OutlinedTextView extends TextView{
 
     public OutlinedTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.OutlinedTextView);
+        setTextSizeToFit = styledAttributes.getBoolean(R.styleable.OutlinedTextView_setTextSizeToFit, false);
+        strokeColor = styledAttributes.getColor(R.styleable.OutlinedTextView_strokeColor, android.R.color.transparent);
+        strokeWidth = styledAttributes.getDimensionPixelSize(R.styleable.OutlinedTextView_strokeWidth, 0);
+        styledAttributes.recycle();
     }
 
-    public OutlinedTextView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-    
     public void setStroke(int color, int width){
         strokeColor = color;
         strokeWidth = width;

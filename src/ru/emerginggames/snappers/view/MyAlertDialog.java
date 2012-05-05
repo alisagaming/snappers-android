@@ -24,7 +24,6 @@ public class MyAlertDialog extends Dialog {
 
         int width = getWindow().getWindowManager().getDefaultDisplay().getWidth();
         OutlinedTextView messageText = (OutlinedTextView)findViewById(R.id.message);
-        messageText.setStroke(Color.BLACK, 2);
         messageText.setTypeface(Resources.getFont(getContext()));
         messageText.setTextSize(width/12);
         messageText.setLineSpacing(0, 1.2f);

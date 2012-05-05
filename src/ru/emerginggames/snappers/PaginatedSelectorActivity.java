@@ -30,7 +30,6 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         int defPadding = width/40;
 
         OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
-        scoreView.setStroke(Color.BLACK, 2);
         scoreView.setTypeface(Resources.getFont(this));
         scoreView.setTextSize(width/15);
         scoreView.setPadding(0, defPadding, defPadding, -defPadding);

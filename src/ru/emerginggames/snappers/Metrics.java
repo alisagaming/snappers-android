@@ -97,7 +97,7 @@ public class Metrics {
                 menuButtonWidth = 200;
                 menuButtonHeight = 64;
                 fontSize = 24;
-                menuWidth = 236;
+                menuWidth = 240;
                 menuHeight = 353;
                 hintSize=64;
                 menuMargin = 32;
@@ -110,7 +110,7 @@ public class Metrics {
                 menuButtonWidth = 300;
                 menuButtonHeight = 96;
                 fontSize = 38;
-                menuWidth = 343;
+                menuWidth = 360;
                 menuHeight = 512;
                 hintSize=128;
                 menuMargin = 32;
@@ -122,7 +122,7 @@ public class Metrics {
                 squareButtonSize = 128;
                 menuButtonWidth = 400;
                 menuButtonHeight = 128;
-                menuWidth = 472;
+                menuWidth = 500;
                 menuHeight = 705;
                 fontSize = 48;
                 hintSize=128;

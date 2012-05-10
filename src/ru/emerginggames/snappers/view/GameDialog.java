@@ -2,6 +2,8 @@ package ru.emerginggames.snappers.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -18,7 +20,7 @@ import ru.emerginggames.snappers.SoundManager;
  * Time: 16:41
  */
 public class GameDialog extends Dialog {
-    OnButtonClickListener btnClickListener;
+    OnDialogEventListener btnClickListener;
     int itemSpacing;
 
     public GameDialog(Context context) {
@@ -27,12 +29,17 @@ public class GameDialog extends Dialog {
         setContentView(R.layout.dialog_game);
     }
 
-    public void setBtnClickListener(OnButtonClickListener btnClickListener) {
+    public void setBtnClickListener(OnDialogEventListener btnClickListener) {
         this.btnClickListener = btnClickListener;
     }
 
     public void setItemSpacing(int itemSpacing) {
         this.itemSpacing = itemSpacing;
+    }
+
+    public void setTypeface(Typeface typeface){
+        ((OutlinedTextView)findViewById(R.id.title)).setTypeface(typeface);
+        ((OutlinedTextView)findViewById(R.id.message)).setTypeface(typeface);
     }
 
     public void clear(){
@@ -59,22 +66,22 @@ public class GameDialog extends Dialog {
     @Override
     public void setTitle(int msg){
         OutlinedTextView t = (OutlinedTextView)findViewById(R.id.title);
-        t.setText(msg);
+        t.setText2(msg);
         t.setVisibility(View.VISIBLE);
         t.setMaxLines2(1);
     }
 
     public void setMessage(int messageId, int size){
-        TextView t = (TextView)findViewById(R.id.message);
-        t.setText(messageId);
-        t.setTextSize(size);
+        OutlinedTextView t = (OutlinedTextView)findViewById(R.id.message);
+        t.setText2(messageId);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         t.setVisibility(View.VISIBLE);
     }
 
     public void setMessage(CharSequence message, int size){
-        TextView t = (TextView)findViewById(R.id.message);
-        t.setText(message);
-        t.setTextSize(size);
+        OutlinedTextView t = (OutlinedTextView)findViewById(R.id.message);
+        t.setText2(message);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         t.setVisibility(View.VISIBLE);
     }
 
@@ -87,7 +94,15 @@ public class GameDialog extends Dialog {
         }
     };
 
-    public interface OnButtonClickListener {
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (btnClickListener!= null)
+            btnClickListener.onCancel();
+    }
+
+    public interface OnDialogEventListener {
         void onButtonClick(int unpressedDrawableId);
+        void onCancel();
     }
 }

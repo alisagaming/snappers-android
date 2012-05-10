@@ -11,6 +11,8 @@ import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.DeviceUuidFactory;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -43,12 +45,13 @@ public class UserPreferences {
     private static UserPreferences instance;
     SharedPreferences prefs;
     DeviceUuidFactory factory;
+    HintChangedListener hintChangedListener;
 
     public static UserPreferences getInstance(Context context){
         if (instance == null)
             return instance = new UserPreferences(context);
-        else if (context != null)
-            instance.context = context;
+        //else if (context != null)
+        //    instance.context = context;
         return instance;
     }
 
@@ -114,7 +117,11 @@ public class UserPreferences {
     }
 
     public void addHints(int amount){
-        setHints(amount + getHintsRemaining());
+        int hintsRemaining = getHintsRemaining();
+        setHints(amount + hintsRemaining);
+        if (hintChangedListener!= null)
+            hintChangedListener.onHintsChanged(hintsRemaining, hintsRemaining +amount);
+
     }
 
     public void setHints(int amount){
@@ -317,5 +324,13 @@ public class UserPreferences {
             Key2 = LevelPackTable.getHost() + LevelTable.getMail();
         Key21 = Key2;
         return Key2;
+    }
+
+    public void setHintChangedListener(HintChangedListener hintChangedListener) {
+        this.hintChangedListener = hintChangedListener;
+    }
+
+    public interface HintChangedListener{
+        public void onHintsChanged(int old, int current);
     }
 }

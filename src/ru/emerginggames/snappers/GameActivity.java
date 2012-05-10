@@ -45,11 +45,14 @@ public class GameActivity extends AndroidApplication {
     AdController adController;
     Game game;
     GameDialog dlg;
+    UserPreferences prefs;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Resources.context = this;
         Resources.getFont(this);
+        prefs = UserPreferences.getInstance(getApplicationContext());
+        prefs.setHintChangedListener(hintChangedListener);
 
         Level level = null;
         if (savedInstanceState != null && savedInstanceState.containsKey(LEVEL_PARAM_TAG))
@@ -63,7 +66,7 @@ public class GameActivity extends AndroidApplication {
             return;
         }
 
-        gameListener = new GameListener(UserPreferences.getInstance(getApplicationContext()));
+        gameListener = new GameListener(prefs);
         game = new Game(level, gameListener);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -80,7 +83,7 @@ public class GameActivity extends AndroidApplication {
         View gameView = initializeForView(game, config);
         rootLayout = new RelativeLayout(this);
         rootLayout.addView(gameView);
-        if (!UserPreferences.getInstance(this).isAdFree()) {
+        if (!prefs.isAdFree()) {
             adController = new AdController();
             rootLayout.addView(adController.getAdLayout());
         }
@@ -111,6 +114,7 @@ public class GameActivity extends AndroidApplication {
                 adController.finish();
             isFinished = true;
             levelTable.close();
+            prefs.setHintChangedListener(null);
         }
         if (wentShop || wentTapjoy)
             Resources.preloadResourcesInWorker(null);
@@ -120,18 +124,20 @@ public class GameActivity extends AndroidApplication {
     protected void onResume() {
         super.onResume();
 
-        if (adController != null && UserPreferences.getInstance(this).isAdFree()) {
+        if (adController != null && prefs.isAdFree()) {
             adController.finish();
             rootLayout.removeView(adController.getAdLayout());
             adController = null;
         }
-        ((SnappersApplication) getApplication()).activityResumed(this);
+
 
         if (wentTapjoy) {
             TapjoyConnect.getTapjoyConnectInstance().getTapPoints(new TapjoyPointsListener(getApplicationContext()));
             wentTapjoy = false;
         }
         wentShop = false;
+
+        ((SnappersApplication) getApplication()).activityResumed(this);
     }
 
     @Override
@@ -164,20 +170,16 @@ public class GameActivity extends AndroidApplication {
 
     private boolean checkNetworkType(ConnectivityManager conMgr, int type) {
         NetworkInfo netInfo = conMgr.getNetworkInfo(type);
-        return netInfo != null && netInfo.isAvailable();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     Runnable showPausedDialog = new Runnable() {
         @Override
         public void run() {
-            if (dlg == null){
-                dlg = new GameDialog(GameActivity.this);
-                dlg.setWidth(Math.min(Metrics.menuWidth, Metrics.screenWidth * 9 / 10));
-                dlg.setBtnClickListener(dialogButtonListener);
-                dlg.setItemSpacing(Metrics.screenMargin);
-            }
-
-            dlg.clear();
+            if (dlg == null)
+                initDialog();
+            else
+                dlg.clear();
             dlg.setTitle(R.string.game_paused);
             dlg.addButton(R.drawable.resumelong, R.drawable.resumelong_tap);
             dlg.addButton(R.drawable.restartlong, R.drawable.restartlong_tap);
@@ -187,17 +189,83 @@ public class GameActivity extends AndroidApplication {
         }
     };
 
-    GameDialog.OnButtonClickListener dialogButtonListener = new GameDialog.OnButtonClickListener() {
+    Runnable showHintMenu = new Runnable() {
+        @Override
+        public void run() {
+            if (dlg == null)
+                initDialog();
+            else{
+                if (dlg.isShowing())
+                    dlg.hide();
+                dlg.clear();
+            }
+
+            int hintsLeft = prefs.getHintsRemaining();
+            if (hintsLeft > 0)
+                fillUseHintMenu(hintsLeft);
+            else if (checkNetworkStatus())
+                showBuyHintMenu();
+            else
+                showGetOnlineMenu();
+            dlg.show();
+        }
+
+        void fillUseHintMenu(int hintsLeft){
+            if (hintsLeft == 1)
+                dlg.setMessage(R.string.youHaveOneHint, Metrics.fontSize);
+            else
+                dlg.setMessage(getResources().getString(R.string.youHave_n_Hints, hintsLeft), Metrics.fontSize);
+
+            dlg.addButton(R.drawable.useahintlong, R.drawable.useahintlong_tap);
+            if (prefs.isTapjoyEnabled())
+                dlg.addButton(R.drawable.freehintslong, R.drawable.freehintslong_tap);
+            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
+
+        }
+
+        void showBuyHintMenu(){
+            android.content.res.Resources res = getResources();
+            StringBuilder msg = new StringBuilder();
+            msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.buySome));
+            dlg.setMessage(msg, Metrics.fontSize);
+            dlg.addButton(R.drawable.buy1hint, R.drawable.buy1hint_tap);
+            dlg.addButton(R.drawable.buyhintslong, R.drawable.buyhintslong_tap);
+            if (prefs.isTapjoyEnabled())
+                dlg.addButton(R.drawable.freehintslong, R.drawable.freehintslong_tap);
+            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
+        }
+
+        void showGetOnlineMenu(){
+            android.content.res.Resources res = getResources();
+            StringBuilder msg = new StringBuilder();
+            msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.getOnline));
+            dlg.setMessage(msg, Metrics.fontSize);
+            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
+        }
+    };
+
+    void initDialog(){
+        dlg = new GameDialog(GameActivity.this);
+        dlg.setWidth(Math.min(Metrics.menuWidth, Metrics.screenWidth * 9 / 10));
+        dlg.setBtnClickListener(dialogButtonListener);
+        dlg.setItemSpacing(Metrics.screenMargin);
+        dlg.setTypeface(Resources.getFont(this));
+    }
+
+    GameDialog.OnDialogEventListener dialogButtonListener = new GameDialog.OnDialogEventListener() {
         @Override
         public void onButtonClick(int unpressedDrawableId) {
             switch (unpressedDrawableId){
+                case R.drawable.cancellong:
                 case R.drawable.resumelong:
                     dlg.hide();
                     game.setPaused(false);
+                    game.setStage(Game.Stages.MainStage);
                     break;
 
                 case R.drawable.restartlong:
                     game.setPaused(false);
+                    game.setStage(Game.Stages.MainStage);
                     dlg.hide();
                     game.restartLevel();
                     break;
@@ -209,7 +277,33 @@ public class GameActivity extends AndroidApplication {
                 case R.drawable.storelong:
                     gameListener.launchStore();
                     break;
+
+                case R.drawable.useahintlong:
+                    prefs.useHint();
+                    game.useHint();
+                    dlg.hide();
+                    game.setStage(Game.Stages.MainStage);
+                    break;
+
+                case R.drawable.freehintslong:
+                    wentTapjoy = true;
+                    TapjoyConnect.getTapjoyConnectInstance().showOffers();
+                    break;
+
+                case R.drawable.buy1hint:
+                    gameListener.buy(Goods.HintPack1);
+                    break;
+
+                case R.drawable.buyhintslong:
+                    gameListener.buy(Goods.HintPack10);
+                    break;
             }
+        }
+
+        @Override
+        public void onCancel() {
+            game.setStage(Game.Stages.MainStage);
+            game.setPaused(false);
         }
     };
 
@@ -219,6 +313,11 @@ public class GameActivity extends AndroidApplication {
         @Override
         public void showPaused() {
             runOnUiThread(showPausedDialog);
+        }
+
+        @Override
+        public void showHintMenu() {
+            runOnUiThread(showHintMenu);
         }
 
         GameListener(UserPreferences prefs) {
@@ -325,6 +424,14 @@ public class GameActivity extends AndroidApplication {
                 adController.setGameMargins(0);
         }
     }
+
+    UserPreferences.HintChangedListener hintChangedListener = new UserPreferences.HintChangedListener() {
+        @Override
+        public void onHintsChanged(int old, int current) {
+            if (game.getStage() == Game.Stages.HintMenu)
+                runOnUiThread(showHintMenu);
+        }
+    };
 
     class AdController implements IOnAdShowListener {
         MyAdWhirlLayout adWhirlLayout;
@@ -495,4 +602,6 @@ public class GameActivity extends AndroidApplication {
             }
         };
     }
+
+
 }

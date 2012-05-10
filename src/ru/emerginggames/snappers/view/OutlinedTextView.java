@@ -185,9 +185,6 @@ public class OutlinedTextView extends TextView{
         if (needResize && isSquare && maxLines == 1 && setTextSizeToFit){
             setTextSizeToFit(wSize, hSize);
             setMeasuredDimension(wSize, wSize);
-
-            if (mLayout == null)
-                makeNewLayout();
             return;
         }
 
@@ -195,16 +192,6 @@ public class OutlinedTextView extends TextView{
             setTextSizeToFit(wSize, hSize);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-/*        needResize |=  (lastMeasuredWidth != getMeasuredWidth());
-        if (needResize && setTextSizeToFit){
-            setTextSizeToFit(wSize, hSize);
-            if(!isSquare)
-                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            makeNewLayout();
-        }*/
-        if (mLayout == null)
-            makeNewLayout();
     }
 
     void makeNewLayout(){
@@ -264,6 +251,16 @@ public class OutlinedTextView extends TextView{
         isPaintPrepared = false;
     }
 
+    public void setText2(CharSequence text){
+        setText(text);
+        mLayout = null;
+    }
+
+    public void setText2(int id){
+        setText(id);
+        mLayout = null;
+    }
+
     protected void preparePaint(){
         Typeface typeface = getTypeface();
         ColorStateList colors = getTextColors();
@@ -286,6 +283,9 @@ public class OutlinedTextView extends TextView{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (mLayout == null)
+            makeNewLayout();
+
         if (mLayout.getLineCount() == 1){
             drawBoring(canvas);
             return;

@@ -16,8 +16,8 @@ package com.tapjoy;
 public interface TapjoyEarnedPointsNotifier
 {
 	/**
-	 * Callback whenever virtual currency has been earned.  This can get called on a getTapPoints call.
-	 * @param amount						Amount of virtual currency earned (delta).
-	 */
-	public void earnedTapPoints(int amount);
+ * Callback whenever virtual currency has been earned.  This can get called on a getTapPoints call.
+ * @param amount						Amount of virtual currency earned (delta).
+ */
+public void earnedTapPoints(int amount);
 }

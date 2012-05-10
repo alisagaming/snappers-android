@@ -31,4 +31,5 @@ public interface IAppGameListener {
     public boolean isTapjoyEnabled();
     public void onInitDone();
     public void showPaused();
+    public void showHintMenu();
 }

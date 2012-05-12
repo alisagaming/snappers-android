@@ -243,6 +243,7 @@ public class OutlinedTextView extends TextView{
     public void setTextColor(int color) {
         super.setTextColor(color);
         isPaintPrepared = false;
+        mLayout = null;
     }
 
     @Override

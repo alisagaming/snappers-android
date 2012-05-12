@@ -2,9 +2,11 @@ package ru.emerginggames.snappers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -26,6 +28,7 @@ import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.*;
 import ru.emerginggames.snappers.view.GameDialog;
 import ru.emerginggames.snappers.view.ImageView;
+import ru.emerginggames.snappers.view.OutlinedTextView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,6 +52,8 @@ public class GameActivity extends AndroidApplication {
     GameDialog dlg;
     UserPreferences prefs;
     TopButtonController topButtons;
+    GameOverMessageController gameOverMessageController;
+    LevelInfo levelInfo;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +74,7 @@ public class GameActivity extends AndroidApplication {
             return;
         }
 
-        gameListener = new GameListener(prefs);
+        gameListener = new GameListener();
         game = new Game(level, gameListener);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -87,9 +92,10 @@ public class GameActivity extends AndroidApplication {
         rootLayout = new RelativeLayout(this);
         rootLayout.addView(gameView);
 
-        topButtons = new TopButtonController();
-        topButtons.addToView(rootLayout);
+        levelInfo = new LevelInfo(rootLayout);
+        topButtons = new TopButtonController(rootLayout);
         topButtons.showMainButtons();
+        gameOverMessageController = new GameOverMessageController();
 
         if (!prefs.isAdFree()) {
             adController = new AdController();
@@ -180,6 +186,13 @@ public class GameActivity extends AndroidApplication {
         NetworkInfo netInfo = conMgr.getNetworkInfo(type);
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
+    public void launchStore() {
+        Intent intent = new Intent(GameActivity.this, StoreActivity.class);
+        startActivity(intent);
+    }
+
+
 
     void showHelp(){
         final View v = getLayoutInflater().inflate(R.layout.partial_help, null);
@@ -302,7 +315,7 @@ public class GameActivity extends AndroidApplication {
                     break;
 
                 case R.drawable.storelong:
-                    gameListener.launchStore();
+                    launchStore();
                     break;
 
                 case R.drawable.useahintlong:
@@ -318,11 +331,11 @@ public class GameActivity extends AndroidApplication {
                     break;
 
                 case R.drawable.buy1hint:
-                    gameListener.buy(Goods.HintPack1);
+                    buy(Goods.HintPack1);
                     break;
 
                 case R.drawable.buyhintslong:
-                    gameListener.buy(Goods.HintPack10);
+                    buy(Goods.HintPack10);
                     break;
             }
         }
@@ -332,10 +345,16 @@ public class GameActivity extends AndroidApplication {
             game.setStage(Game.Stages.MainStage);
             game.setPaused(false);
         }
+
+        public void buy(Goods goods) {
+            if (mStore != null) {
+                wentShop = true;
+                mStore.buy(goods);
+            }
+        }
     };
 
     class GameListener implements IAppGameListener {
-        UserPreferences prefs;
 
         @Override
         public void showPaused() {
@@ -347,42 +366,24 @@ public class GameActivity extends AndroidApplication {
             runOnUiThread(showHintMenu);
         }
 
-        GameListener(UserPreferences prefs) {
-            this.prefs = prefs;
-        }
-
-        @Override
-        public void launchStore() {
-            Intent intent = new Intent(GameActivity.this, StoreActivity.class);
-            startActivity(intent);
-        }
-
         @Override
         public void levelPackWon(LevelPack pack) {
-            prefs.unlockNextLevelPack(pack);
             setResult(1);
             finish();
         }
 
         @Override
-        public void useHint() {
-            prefs.useHint();
-        }
-
-        @Override
-        public void buy(Goods goods) {
-            if (mStore != null) {
-                wentShop = true;
-                mStore.buy(goods);
-            }
-        }
-
-        @Override
-        public void levelSolved(Level level) {
+        public void levelSolved(Level level, int score) {
             prefs.unlockNextLevel(level);
             topButtons.showGameWonMenu();
             if (adController != null)
                 adController.showAdTop();
+            prefs.addScore(score);
+            gameOverMessageController.show(true, score);
+            Level next = getNextLevel(level);
+            if (next == null)
+                prefs.unlockNextLevelPack(level.pack);
+            levelInfo.setDim(true);
         }
 
         @Override
@@ -391,10 +392,12 @@ public class GameActivity extends AndroidApplication {
         }
 
         @Override
-        public void showLostMenu() {
+        public void showGameLost(Level level) {
             topButtons.showGameLostMenu();
             if (adController != null)
                 adController.showAdTop();
+            gameOverMessageController.show(false, level.tapsCount);
+
         }
 
         @Override
@@ -402,16 +405,13 @@ public class GameActivity extends AndroidApplication {
             if (adController != null)
                 adController.hideAdTop();
             topButtons.showMainButtons();
+            gameOverMessageController.hide();
+            levelInfo.setDim(false);
         }
 
         @Override
         public boolean isSoundEnabled() {
             return prefs.getSound();
-        }
-
-        @Override
-        public void addScore(int score) {
-            prefs.addScore(score);
         }
 
         @Override
@@ -428,6 +428,16 @@ public class GameActivity extends AndroidApplication {
         public void onInitDone() {
             if (adController != null)
                 adController.setGameMargins(0);
+        }
+
+        @Override
+        public void updateLevelInfo(Level level) {
+            levelInfo.setLevel(level);
+        }
+
+        @Override
+        public void updateTapsLeft(int n) {
+            levelInfo.setTapsLeft(n);
         }
     }
 
@@ -477,10 +487,6 @@ public class GameActivity extends AndroidApplication {
 
         public MyAdWhirlLayout getAdLayout() {
             return adWhirlLayout;
-        }
-
-        public int getAdHeight() {
-            return adWhirlLayout.isAdAvailable() ? adWhirlLayout.getHeight() : 0;
         }
 
         public void finish() {
@@ -614,7 +620,7 @@ public class GameActivity extends AndroidApplication {
         RelativeLayout.LayoutParams rlpTop;
         RelativeLayout.LayoutParams rlpUnderView;
 
-        public TopButtonController(){
+        public TopButtonController(RelativeLayout rootLayour){
             layout = (RelativeLayout)getLayoutInflater().inflate(R.layout.partial_topbuttons, null);
             pauseBtn = (ImageView)layout.findViewById(R.id.pauseBtn);
             hintBtn = (ImageView)layout.findViewById(R.id.hintBtn);
@@ -631,15 +637,13 @@ public class GameActivity extends AndroidApplication {
             restartBtn.setOnClickListener(mainListener);
             menuBtn.setOnClickListener(mainListener);
             helpBtn.setOnClickListener(mainListener);
-        }
 
-        public void addToView(ViewGroup g){
             rlpTop = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, Math.round(Metrics.squareButtonSize * Metrics.squareButtonScale));
             rlpTop.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             rlpTop.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             rlpTop.setMargins(Metrics.screenMargin, Metrics.screenMargin, Metrics.screenMargin, 0);
 
-            g.addView(layout, rlpTop);
+            rootLayour.addView(layout, rlpTop);
         }
 
         public void alignTop(){
@@ -709,14 +713,14 @@ public class GameActivity extends AndroidApplication {
             }
         };
 
-
         View.OnClickListener mainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SoundManager.getInstance(GameActivity.this).playButtonSound();
                 switch (v.getId()){
                     case R.id.pauseBtn:
-                        gameListener.showPaused();
+                        runOnUiThread(showPausedDialog);
+                        game.setPaused(true);
                         break;
                     case R.id.hintBtn:
                         if (game.isHinting())
@@ -725,10 +729,10 @@ public class GameActivity extends AndroidApplication {
                         if (game.isFreeHint())
                             game.useHint();
                         else
-                            gameListener.showHintMenu();
+                            runOnUiThread(showHintMenu);
                         break;
                     case R.id.shopBtn:
-                        gameListener.launchStore();
+                        launchStore();
                         break;
                     case R.id.nextBtn:
                         game.nextLevel();
@@ -745,6 +749,148 @@ public class GameActivity extends AndroidApplication {
                         showHelp();
                         break;
                 }
+            }
+        };
+    }
+
+    class GameOverMessageController {
+        private static final int WIN_TITLES = 7;
+        LinearLayout layout;
+        OutlinedTextView title;
+        OutlinedTextView message;
+        boolean isWon;
+        int msgValue;
+
+
+        public void show(boolean isWon, int msgValue){
+            this.isWon = isWon;
+            this.msgValue = msgValue;
+            runOnUiThread(show);
+        }
+
+        public void hide(){
+            runOnUiThread(hide);
+        }
+
+        int getWinTitleId(){
+            int n = (int)(Math.random()*WIN_TITLES) + 1;
+            String resourceName = String.format("game_won_%d", n);
+            return getResources().getIdentifier(resourceName, "string", getPackageName());
+        }
+
+        int getLostTitleId(){
+            return R.string.game_lost_1;
+        }
+
+        Runnable show = new Runnable() {
+            @Override
+            public void run() {
+                if (layout == null){
+                    layout = (LinearLayout)getLayoutInflater().inflate(R.layout.partial_level_result, null);
+                    title = (OutlinedTextView)layout.findViewById(R.id.title);
+                    title.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.largeFontSize);
+                    title.setTypeface(Resources.getFont(GameActivity.this));
+                    message = (OutlinedTextView)layout.findViewById(R.id.message);
+                    message.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
+                    message.setTypeface(Resources.getFont(GameActivity.this));
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)title.getLayoutParams();
+                    lp.bottomMargin = - Metrics.largeFontSize / 3;
+                    title.setLayoutParams(lp);
+                }
+
+                int titleId = isWon ? getWinTitleId() : getLostTitleId();
+                title.setText2(titleId);
+                String msg;
+                if (isWon)
+                    msg = getResources().getString(R.string.score, msgValue);
+                else if (msgValue == 1)
+                    msg = getResources().getString(R.string.possible_in_1_touch);
+                else
+                    msg = getResources().getString(R.string.possible_in_touches, msgValue);
+                message.setText2(msg);
+
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                lp.addRule(RelativeLayout.ALIGN_LEFT);
+                lp.bottomMargin = Metrics.screenHeight / 2;
+                rootLayout.addView(layout, lp);
+            }
+        };
+
+       Runnable hide = new Runnable() {
+           @Override
+           public void run() {
+               rootLayout.removeView(layout);
+           }
+       };
+
+
+    }
+
+    class LevelInfo{
+        OutlinedTextView levelInfo;
+        OutlinedTextView tapsLeft;
+        Level level;
+        int tapsLeftN;
+        int color;
+
+        LevelInfo(RelativeLayout rootLayout) {
+            LinearLayout layout = (LinearLayout)getLayoutInflater().inflate(R.layout.partial_game_info, null);
+            levelInfo = (OutlinedTextView)layout.findViewById(R.id.levelInfo);
+            tapsLeft = (OutlinedTextView)layout.findViewById(R.id.tapsLeft);
+
+            levelInfo.setTypeface(Resources.getFont(GameActivity.this));
+            tapsLeft.setTypeface(Resources.getFont(GameActivity.this));
+            levelInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
+            tapsLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
+
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)levelInfo.getLayoutParams();
+            levelInfo.setLayoutParams(lp);
+
+
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            rlp.leftMargin = rlp.topMargin = Metrics.screenMargin;
+            rootLayout.addView(layout, rlp);
+        }
+
+        public void setLevel(Level level){
+            this.level = level;
+            runOnUiThread(setLevel);
+        }
+
+        public void setTapsLeft(int n){
+            tapsLeftN = n;
+            runOnUiThread(setTapsLeft);
+        }
+
+        public void setDim(boolean isDim){
+            color = isDim ? Color.rgb(128, 128, 128) : Color.rgb(255, 255, 255);
+            runOnUiThread(setColor);
+
+        }
+
+        Runnable setLevel = new Runnable() {
+            @Override
+            public void run() {
+                levelInfo.setText2(getResources().getString(R.string.level_n, level.pack.id, level.number));
+                level = null;
+            }
+        };
+
+        Runnable setTapsLeft = new Runnable() {
+            @Override
+            public void run() {
+                tapsLeft.setText2(getResources().getString(R.string.taps_left, tapsLeftN));
+            }
+        };
+
+        Runnable setColor = new Runnable() {
+            @Override
+            public void run() {
+                levelInfo.setTextColor(color);
+                tapsLeft.setTextColor(color);
             }
         };
     }

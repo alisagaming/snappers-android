@@ -27,4 +27,21 @@
     <string name="youHaveNoHints">You have no hints.</string>
     <string name="buySome">Buy some!</string>
     <string name="getOnline">Get online to get some.</string>
+
+    <string name="game_won_1">Completed!</string>
+    <string name="game_won_2">Good job!</string>
+    <string name="game_won_3">Bravo!</string>
+    <string name="game_won_4">Cheers!</string>
+    <string name="game_won_5">Huzzah!</string>
+    <string name="game_won_6">Yippee!</string>
+    <string name="game_won_7">Hooray!</string>
+    <string name="score">Score: %d</string>
+
+    <string name="game_lost_1">Level failed</string>
+
+    <string name="possible_in_touches" formatted="false">Possible in %d touches.</string>
+    <string name="possible_in_1_touch">Possible in 1 touch.</string>
+    <string name="level_n" formatted="false">Level: %d-%d</string>
+    <string name="taps_left" formatted="false">Taps left: %d</string>
+
 </resources>

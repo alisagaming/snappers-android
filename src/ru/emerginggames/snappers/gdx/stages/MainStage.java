@@ -35,15 +35,15 @@ public class MainStage extends MyStage {
     protected static final float BANG_FRAME_DURATION = 0.12f;
     protected static final int WAIT_FOR_TUTORIAL = 5000;
     private static final float SNAPPER_WARM_TIME = 0.6f;
-    public static final String LEVEL_D_D = "Level: %d-%d";
-    public static final String TAPS_LEFT_D = "Taps left: %d";
+//    public static final String LEVEL_D_D = "Level: %d-%d";
+//    public static final String TAPS_LEFT_D = "Taps left: %d";
 
     private final GameLogic logic;
 
-    OutlinedTextSprite levelText;
-    OutlinedTextSprite tapLeftText;
+//    OutlinedTextSprite levelText;
+//    OutlinedTextSprite tapLeftText;
     IGameEventListener mGame;
-    protected boolean gameOverFired;
+    protected volatile boolean gameOverFired;
 
     protected Hints hint;
     public boolean isHinting = false;
@@ -68,9 +68,9 @@ public class MainStage extends MyStage {
         blasts = new Blasts();
         sounds = new Sounds();
 
-        OutlinedTextSprite.FontStyle fontStyle = new OutlinedTextSprite.FontStyle(Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
-        levelText = new OutlinedTextSprite(String.format(LEVEL_D_D, 99, 999), fontStyle);
-        tapLeftText = new OutlinedTextSprite(String.format(TAPS_LEFT_D, 99), fontStyle);
+ //       OutlinedTextSprite.FontStyle fontStyle = new OutlinedTextSprite.FontStyle(Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
+ //       levelText = new OutlinedTextSprite(String.format(LEVEL_D_D, 99, 999), fontStyle);
+ //       tapLeftText = new OutlinedTextSprite(String.format(TAPS_LEFT_D, 99), fontStyle);
         if (width != 0)
             setViewport(width, height);
     }
@@ -81,7 +81,9 @@ public class MainStage extends MyStage {
 
         if (width != 0)
             snappers.defineSnapperViews();
-        levelText.setText(String.format(LEVEL_D_D, level.packNumber, level.number));
+
+        mGame.getAppListener().updateLevelInfo(level);
+//        levelText.setText(String.format(LEVEL_D_D, level.packNumber, level.number));
         isHinting = false;
         logicListener.tap();
         isTutorialAvailable = (level.number < 4 && level.packNumber == 1);
@@ -92,8 +94,8 @@ public class MainStage extends MyStage {
         logic.setScreen(width, height, defineGameRect(width, height) );
         snappers.defineSnapperViews();
 
-        levelText.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
-        tapLeftText.positionRelative(0, levelText.getY(), IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
+//        levelText.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
+//        tapLeftText.positionRelative(0, levelText.getY(), IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
     }
 
     protected Rect defineGameRect(int width, int height){
@@ -125,12 +127,15 @@ public class MainStage extends MyStage {
         int acts = logic.advance2(delta);
         super.act(delta);
 
-        if (logic.isGameOver() && !gameOverFired){
+        boolean isGameOver = logic.isGameOver();
+        if (isGameOver && !gameOverFired){
             gameOverFired = true;
             if (logic.isGameLost())
                 mGame.gameLost();
             else
                 mGame.gameWon();
+        } else if (!isGameOver && gameOverFired){
+            gameOverFired = false;
         }
 
         sounds.act(delta, acts);
@@ -161,8 +166,8 @@ public class MainStage extends MyStage {
         blasts.draw();
         bangs.draw();
 
-        levelText.draw(batch);
-        tapLeftText.draw(batch);
+//        levelText.draw(batch);
+//        tapLeftText.draw(batch);
 
         if (isHinting)
             hint.draw(batch);
@@ -224,7 +229,8 @@ public class MainStage extends MyStage {
 
         @Override
         public void tap() {
-            tapLeftText.setText(String.format(TAPS_LEFT_D, logic.tapRemains));
+            mGame.getAppListener().updateTapsLeft(logic.tapRemains);
+//            tapLeftText.setText(String.format(TAPS_LEFT_D, logic.tapRemains));
             if (isHinting){
                 if (logic.tapRemains > 0)
                     hint.updateHint();

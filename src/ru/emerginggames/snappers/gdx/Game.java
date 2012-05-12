@@ -27,7 +27,7 @@ public class Game implements ApplicationListener{
     protected InputProcessor currentInputProcessor;
     protected MyStage currentStage;
     protected MainStage mainStage;
-    protected GameOverStage gameOverStage;
+    protected DimStage gameOverStage;
     protected Sprite bg;
     boolean isPaused;
     public IAppGameListener mGameListener;
@@ -52,7 +52,7 @@ public class Game implements ApplicationListener{
 
         batch = new SpriteBatch();
         mainStage = new MainStage(width, height, gameListener);
-        gameOverStage = new GameOverStage(width,height,gameListener, mainStage.getLogic(), batch);
+        gameOverStage = new DimStage(width, height, batch);
         setStage(Stages.MainStage);
 
         mainStage.setLevel(level);
@@ -187,9 +187,11 @@ public class Game implements ApplicationListener{
             case GameOverStage:
                 setStage(gameOverStage);
                 if (mainStage.getLogic().isGameLost())
-                    mGameListener.showLostMenu();
-                else
-                    mGameListener.levelSolved(mainStage.getLogic().level);
+                    mGameListener.showGameLost(mainStage.getLogic().level);
+                else{
+                    int score = mainStage.getLogic().getScore(mGameListener.isLevelSolved(level));
+                    mGameListener.levelSolved(mainStage.getLogic().level, score);
+                }
                 break;
             case PausedStage:
                 mGameListener.showPaused();
@@ -233,7 +235,7 @@ public class Game implements ApplicationListener{
     }
 
     public boolean isFreeHint(){
-        return level.number < 4 && level.packNumber == 1;
+        return mainStage.getLogic().level.number < 4 && mainStage.getLogic().level.packNumber == 1;
     }
 
     private IGameEventListener gameListener = new IGameEventListener() {
@@ -241,7 +243,7 @@ public class Game implements ApplicationListener{
         @Override
         public void gameWon() {
             setStage(Stages.GameOverStage);
-            gameOverStage.show(true);
+            gameOverStage.show();
             if (isSoundEnabled)
                 Resources.winSound.play(0.6f);
         }
@@ -249,7 +251,7 @@ public class Game implements ApplicationListener{
         @Override
         public void gameLost() {
             setStage(Stages.GameOverStage);
-            gameOverStage.show(false);
+            gameOverStage.show();
         }
 
         @Override

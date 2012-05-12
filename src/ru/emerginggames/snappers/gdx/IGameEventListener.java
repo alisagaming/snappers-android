@@ -7,20 +7,10 @@ package ru.emerginggames.snappers.gdx;
  * Time: 19:05
  */
 public interface IGameEventListener {
-
-    public void onShopBtn();
-    public void onNextBtn();
-    public void onRestartBtn();
-    public void onResumeBtn();
-    public void onMenuBtn();
-    public void onHintBtn();
-    public void onPauseBtn();
     public void gameWon();
     public void gameLost();
     public void levelPackWon();
-    public void useHint();
-    public void onHelp();
-    public void onHelpDone();
+
     public IAppGameListener getAppListener();
 
 }

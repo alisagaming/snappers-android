@@ -43,7 +43,6 @@ public class MainStage extends MyStage {
     OutlinedTextSprite levelText;
     OutlinedTextSprite tapLeftText;
     IGameEventListener mGame;
-    protected MainButtons buttons;
     protected boolean gameOverFired;
 
     protected Hints hint;
@@ -72,8 +71,6 @@ public class MainStage extends MyStage {
         OutlinedTextSprite.FontStyle fontStyle = new OutlinedTextSprite.FontStyle(Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         levelText = new OutlinedTextSprite(String.format(LEVEL_D_D, 99, 999), fontStyle);
         tapLeftText = new OutlinedTextSprite(String.format(TAPS_LEFT_D, 99), fontStyle);
-        buttons = new MainButtons(listener);
-        addActor(buttons);
         if (width != 0)
             setViewport(width, height);
     }
@@ -97,7 +94,6 @@ public class MainStage extends MyStage {
 
         levelText.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
         tapLeftText.positionRelative(0, levelText.getY(), IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
-        buttons.setViewport(width, height);
     }
 
     protected Rect defineGameRect(int width, int height){
@@ -157,18 +153,6 @@ public class MainStage extends MyStage {
     }
 
     @Override
-    public void unfocusAll() {
-        super.unfocusAll();
-        List<Actor> actors = buttons.getActors();
-        Actor actor;
-        for (int i =0; i< actors.size(); i++){
-            actor = actors.get(i);
-            if (actor instanceof SimpleButton)
-                ((SimpleButton)actor).unTouch();
-        }
-    }
-
-    @Override
     public void draw() {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -180,8 +164,6 @@ public class MainStage extends MyStage {
         levelText.draw(batch);
         tapLeftText.draw(batch);
 
-        if (drawButtons)
-            buttons.draw(batch, 1);
         if (isHinting)
             hint.draw(batch);
         batch.end();

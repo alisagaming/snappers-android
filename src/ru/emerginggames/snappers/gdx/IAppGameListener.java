@@ -14,22 +14,17 @@ public interface IAppGameListener {
 
     public void launchStore();
     public void levelPackWon(LevelPack pack);
-    public int getHintsLeft();
     public void useHint();
     public void buy(Goods goods);
-    public boolean isOnline();
     public void levelSolved(Level level);
     public boolean isLevelSolved(Level level);
     public boolean isSoundEnabled();
     public void addScore(int score);
-    public void gameoverStageShown();
-    public void gameoverStageHidden();
-    public int getAdHeight();
     public void gotScreenSize(int width, int height);
-    public void freeHintsPressed();
     public Level getNextLevel(Level currentLevel);
-    public boolean isTapjoyEnabled();
     public void onInitDone();
     public void showPaused();
     public void showHintMenu();
+    public void showLostMenu();
+    public void hideGameOverMenu();
 }

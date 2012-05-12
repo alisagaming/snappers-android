@@ -26,11 +26,6 @@ public class GameOverStage extends DimBackStage{
     private static final String SCORE = "Score: %d";
     protected GameLogic logic;
     protected boolean isWon = false;
-    protected SimpleButton nextButton;
-    protected SimpleButton restartButton;
-    protected SimpleButton shopButton;
-    protected SimpleButton menuButton;
-    protected SimpleButton helpButton;
 
     private OutlinedTextSprite wonText;
     private OutlinedTextSprite lostText;
@@ -43,44 +38,6 @@ public class GameOverStage extends DimBackStage{
         fadeinTime = 0.7f;
         mGame = listener;
 
-        nextButton = new SimpleButton(Resources.squareButtonFrames[4], Resources.squareButtonFrames[5], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
-            @Override
-            public void onEvent() {
-                listener.onNextBtn();
-            }
-        });
-
-        restartButton = new SimpleButton(Resources.squareButtonFrames[6], Resources.squareButtonFrames[7], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
-            @Override
-            public void onEvent() {
-                listener.onRestartBtn();
-            }
-        });
-
-        shopButton = new SimpleButton(Resources.squareButtonFrames[8], Resources.squareButtonFrames[9], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
-            @Override
-            public void onEvent() {
-                listener.onShopBtn();
-            }
-        });
-
-        menuButton = new SimpleButton(Resources.squareButtonFrames[10], Resources.squareButtonFrames[11], Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
-            @Override
-            public void onEvent() {
-                listener.onMenuBtn();
-            }
-        });
-        helpButton = new SimpleButton("help", Metrics.squareButtonScale, Resources.buttonSound, new IOnEventListener() {
-            @Override
-            public void onEvent() {
-                listener.onHelp();
-            }
-        });
-        addActor(nextButton);
-        addActor(restartButton);
-        addActor(shopButton);
-        addActor(menuButton);
-        addActor(helpButton);
         OutlinedTextSprite.FontStyle largeFont = new OutlinedTextSprite.FontStyle(Metrics.largeFontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         wonText = new OutlinedTextSprite(winMessages[0], largeFont);
         lostText = new OutlinedTextSprite(LEVEL_FAILED, largeFont);
@@ -93,18 +50,14 @@ public class GameOverStage extends DimBackStage{
     @Override
     public void setViewport(float width, float height) {
         super.setViewport(width, height);
-        shopButton.positionRelative(width, height, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
-        nextButton.positionRelative(shopButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
-        helpButton.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
 
         int textPos = Math.round(height * 0.55f);
         wonText.positionRelative(width/2, textPos, IPositionable.Dir.UP, 0);
         lostText.setPosition(Math.round((width - lostText.getWidth())/2), textPos);
         scoreText.positionRelative(wonText, IPositionable.Dir.DOWN, 5);
-        setAdHeight(0);
     }
 
-    public void show(boolean isWon, int adHeight){
+    public void show(boolean isWon){
         this.isWon = isWon;
 
         if (isWon){
@@ -115,11 +68,6 @@ public class GameOverStage extends DimBackStage{
         else
             scoreText.setText(String.format(POSSIBLE_IN_TOUCHES, logic.level.tapsCount));
 
-        setAdHeight(adHeight);
-
-        nextButton.visible = nextButton.touchable = shopButton.visible = shopButton.touchable = isWon;
-        helpButton.visible = helpButton.touchable = !isWon;
-
         onShow();
     }
 
@@ -129,19 +77,6 @@ public class GameOverStage extends DimBackStage{
             wonText.setText(winMessages[(int)(Math.random()*winMessages.length)]);
     }
 
-    public void setAdHeight(int adHeight){
-        if (isWon){
-            shopButton.positionRelative(width, height - adHeight, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
-            nextButton.positionRelative(shopButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
-            restartButton.positionRelative(nextButton, IPositionable.Dir.LEFT, Metrics.screenMargin /2);
-        }
-        else{
-            restartButton.positionRelative(width, height - adHeight, IPositionable.Dir.DOWNLEFT, Metrics.screenMargin);
-            helpButton.positionRelative(0, height-adHeight, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
-        }
-
-        menuButton.positionRelative(restartButton, IPositionable.Dir.LEFT, Metrics.screenMargin/2);
-    }
 
     @Override
     public void draw() {

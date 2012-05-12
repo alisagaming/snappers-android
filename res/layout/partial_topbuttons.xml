@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+        >
+    <ru.emerginggames.snappers.view.ImageView
+        android:id="@+id/pauseBtn"
+            android:layout_width="wrap_content" android:layout_height="fill_parent"
+            android:src="@drawable/button_pause" android:scaleType="fitCenter" android:adjustViewBounds="true"
+            android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+            android:visibility="gone"/>
+    <ru.emerginggames.snappers.view.ImageView
+            android:id="@+id/hintBtn"
+            android:layout_width="wrap_content" android:layout_height="fill_parent"
+            android:src="@drawable/button_hint" android:scaleType="fitCenter" android:adjustViewBounds="true"
+            android:layout_toLeftOf="@+id/pauseBtn" android:layout_alignParentTop="true"
+            android:layout_marginRight="2dp"
+            android:visibility="gone"
+            />
+    <ru.emerginggames.snappers.view.ImageView android:id="@+id/shopBtn"
+            android:layout_width="wrap_content" android:layout_height="fill_parent"
+            android:src="@drawable/button_shop" android:scaleType="fitCenter" android:adjustViewBounds="true"
+            android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+            android:visibility="gone"
+            />
+    <ru.emerginggames.snappers.view.ImageView android:id="@+id/nextBtn"
+            android:layout_width="wrap_content" android:layout_height="fill_parent"
+            android:src="@drawable/button_next" android:scaleType="fitCenter" android:adjustViewBounds="true"
+            android:layout_toLeftOf="@+id/shopBtn" android:layout_alignParentTop="true"
+            android:layout_marginRight="2dp"
+            android:visibility="gone"
+            />
+    <ru.emerginggames.snappers.view.ImageView
+            android:id="@+id/restartBtn"
+            android:layout_width="wrap_content" android:layout_height="fill_parent"
+            android:src="@drawable/button_restart" android:scaleType="fitCenter" android:adjustViewBounds="true"
+            android:layout_toLeftOf="@+id/nextBtn" android:layout_alignParentTop="true"
+            android:layout_marginRight="2dp"
+            android:layout_alignWithParentIfMissing="true"
+            android:visibility="gone"
+            />
+    <ru.emerginggames.snappers.view.ImageView
+            android:id="@+id/menuBtn"
+            android:layout_width="wrap_content" android:layout_height="fill_parent"
+            android:src="@drawable/button_menu" android:scaleType="fitCenter" android:adjustViewBounds="true"
+            android:layout_toLeftOf="@+id/restartBtn" android:layout_alignParentTop="true"
+            android:layout_marginRight="2dp"
+            android:visibility="gone"
+            />
+    <ru.emerginggames.snappers.view.ImageView
+            android:id="@+id/helpBtn"
+            android:layout_width="wrap_content" android:layout_height="fill_parent"
+            android:src="@drawable/help" android:scaleType="fitCenter" android:adjustViewBounds="true"
+            android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:visibility="gone"
+            />
+
+
+
+</RelativeLayout>

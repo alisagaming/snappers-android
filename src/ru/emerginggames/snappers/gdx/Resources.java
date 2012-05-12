@@ -30,18 +30,16 @@ import ru.emerginggames.snappers.utils.WorkerThread;
  */
 public class Resources {
     protected static String dir;
-    protected static final Integer syncLock = 0;
+    protected static final Object syncLock = new Object();
 
     protected static class Preload {
         public static TextureData snappers;
         public static TextureData bang;
         public static TextureData blast;
-        public static TextureData dialog;
         public static TextureData bg;
         public static TextureData hint;
         public static boolean isBgLoading;
         public static String bgName;
-        public static PrepareableTextureAtlas.TextureAtlasData buttonAtlas;
     }
 
     public static Context context;
@@ -50,20 +48,15 @@ public class Resources {
 
     public static Texture bangTexture;
     public static Texture blastTexture;
-    public static Texture dialog;
     public static Texture hintTexture;
     public static TextureRegion bg;
-    public static TextureRegion help;
 
     public static TextureRegion[] snapperBack;
     public static TextureRegion[] eyeFrames;
     public static TextureRegion[] blastFrames;
     public static TextureRegion[] bangFrames;
-    public static TextureRegion[] squareButtonFrames;
     public static TextureRegion[] hintFrames;
-    public static NinePatch dialog9;
 
-    public static PrepareableTextureAtlas buttonAtlas;
 
     public static Sound[] popSounds;
     public static Sound winSound;
@@ -88,19 +81,11 @@ public class Resources {
 
     public static void loadTextures(boolean isGold) {
         loadSnapperTextures(isGold);
-        loadButtonTextures();
         loadBmpFonts();
-        help = null;
     }
 
     public static void loadBmpFonts() {
         fnt1 = new BitmapFont(Gdx.files.internal("FontShag.fnt"), Gdx.files.internal("FontShag.png"), false);
-    }
-
-    private static void loadButtonTextures() {
-        fillButtonRegions();
-        dialog = new Texture(Preload.dialog);
-        dialog9 = new NinePatch(dialog, Metrics.menuMargin, Metrics.menuMargin, Metrics.menuMargin, Metrics.menuMargin);
     }
 
     private static void loadSnapperTextures(boolean isGold) {
@@ -251,13 +236,6 @@ public class Resources {
                 Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
             if (Preload.hint == null)
                 Preload.hint = new FileTextureData(Gdx.files.internal(dir + "hint_circle.png"), null, Pixmap.Format.RGBA4444, false);
-            if (Preload.dialog == null)
-                Preload.dialog = new FileTextureData(Gdx.files.internal(dir + "dialog.png"), null, Pixmap.Format.RGBA8888, false);
-
-            if (Preload.buttonAtlas == null) {
-                FileHandle packFile = Gdx.files.internal(dir + "buttons.txt");
-                Preload.buttonAtlas = new PrepareableTextureAtlas.TextureAtlasData(packFile, packFile.parent(), false);
-            }
         }
     }
 
@@ -266,9 +244,7 @@ public class Resources {
             prepareData(Preload.bang);
             prepareData(Preload.blast);
             prepareData(Preload.snappers);
-            prepareData(Preload.dialog);
             prepareData(Preload.hint);
-            prepareData(Preload.buttonAtlas);
         }
     }
 
@@ -326,28 +302,6 @@ public class Resources {
         if (font == null)
             font = Typeface.createFromAsset(context.getAssets(), "shag_lounge.otf");
         return font;
-    }
-
-    public static TextureRegion getHelpTexture() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-        if (help == null) {
-            Texture helpTexture = new Texture(Gdx.files.internal("instructions.png"), Pixmap.Format.RGBA4444, false);
-            helpTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-            helpTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-            help = new TextureRegion(helpTexture, Metrics.instructionsWidth, Metrics.instructionsHeight);
-        }
-        return help;
-    }
-
-    private static void fillButtonRegions() {
-        buttonAtlas = new PrepareableTextureAtlas(Preload.buttonAtlas);
-        squareButtonFrames = new TextureRegion[12];
-        for (int i = 0; i < squareButtonFrames.length; i++)
-            squareButtonFrames[i] = buttonAtlas.findRegion(String.format("b%02d", i));
-    }
-
-    public static TextureRegion getBtnRegion(String name){
-        return buttonAtlas.findRegion(name);
     }
 
     public static void preloadResourcesInWorker(String backName){

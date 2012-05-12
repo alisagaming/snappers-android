@@ -28,7 +28,6 @@ public class Game implements ApplicationListener{
     protected MyStage currentStage;
     protected MainStage mainStage;
     protected GameOverStage gameOverStage;
-    protected HelpStage helpStage;
     protected Sprite bg;
     boolean isPaused;
     public IAppGameListener mGameListener;
@@ -95,10 +94,10 @@ public class Game implements ApplicationListener{
             delta = 0.01f;*/
         if (!isPaused)
             mainStage.act(delta);
-        if (currentStage != helpStage)
+        if (currentStageE != Stages.HelpStage)
             mainStage.draw();
 
-        if (currentStage != mainStage){
+        if (currentStage != mainStage && (currentStageE != Stages.HelpStage)) {
             currentStage.act(delta);
             currentStage.draw();
         }
@@ -115,6 +114,10 @@ public class Game implements ApplicationListener{
 
     public void restartLevel(){
         mainStage.restartLevel();
+    }
+
+    public void nextLevel(){
+        mainStage.nextLevel();
     }
 
     public void useHint() {
@@ -141,8 +144,6 @@ public class Game implements ApplicationListener{
     public void dispose() {
         mainStage.dispose();
         gameOverStage.dispose();
-        if (helpStage != null)
-            helpStage.dispose();
     }
 
     public Level getLevel(){
@@ -152,11 +153,6 @@ public class Game implements ApplicationListener{
     private void setStage(MyStage stage){
         if (stage == currentStage)
             return;
-
-        if (stage == gameOverStage)
-            mGameListener.gameoverStageShown();
-        else if (currentStage == gameOverStage)
-            mGameListener.gameoverStageHidden();
 
         if (stage == mainStage)
             mainStage.setDrawButtons(true);
@@ -174,19 +170,26 @@ public class Game implements ApplicationListener{
     public void setStage(Stages stage){
         if (currentStageE == stage)
             return;
+
+        if (currentStageE == Stages.GameOverStage)
+            mGameListener.hideGameOverMenu();
+
         currentStageE = stage;
         switch (stage){
             case MainStage:
                 setStage(mainStage);
                 break;
             case HelpStage:
-                setStage(helpStage);
                 break;
             case HintMenu:
                 mGameListener.showHintMenu();
                 break;
             case GameOverStage:
                 setStage(gameOverStage);
+                if (mainStage.getLogic().isGameLost())
+                    mGameListener.showLostMenu();
+                else
+                    mGameListener.levelSolved(mainStage.getLogic().level);
                 break;
             case PausedStage:
                 mGameListener.showPaused();
@@ -196,11 +199,6 @@ public class Game implements ApplicationListener{
 
     public Stages getStage() {
         return currentStageE;
-    }
-
-    public void setTopAdHeight(int height){
-        if (currentStage == gameOverStage)
-            gameOverStage.setAdHeight(height);
     }
 
     public int getMarginBottom(){
@@ -234,58 +232,16 @@ public class Game implements ApplicationListener{
         }
     }
 
+    public boolean isFreeHint(){
+        return level.number < 4 && level.packNumber == 1;
+    }
+
     private IGameEventListener gameListener = new IGameEventListener() {
-        @Override
-        public void onShopBtn() {
-            mGameListener.launchStore();
-        }
-
-        @Override
-        public void onNextBtn() {
-            mainStage.nextLevel();
-            setStage(Stages.MainStage);
-        }
-
-        @Override
-        public void onRestartBtn() {
-            mainStage.restartLevel();
-            setStage(Stages.MainStage);
-        }
-
-        @Override
-        public void onResumeBtn() {
-            setStage(Stages.MainStage);
-        }
-
-        @Override
-        public void onMenuBtn() {
-            Gdx.app.exit();
-        }
-
-        @Override
-        public void onHintBtn() {
-            if (isHinting())
-                return;
-
-            Level level = mainStage.getLogic().level;
-            if (level.number < 4 && level.packNumber == 1){
-                mainStage.showHints(true);
-                return;
-            }
-            setStage(Stages.HintMenu);
-        }
-
-        @Override
-        public void onPauseBtn() {
-            isPaused = true;
-            mGameListener.showPaused();
-        }
 
         @Override
         public void gameWon() {
             setStage(Stages.GameOverStage);
-            gameOverStage.show(true, mGameListener.getAdHeight());
-            mGameListener.levelSolved(mainStage.getLogic().level);
+            gameOverStage.show(true);
             if (isSoundEnabled)
                 Resources.winSound.play(0.6f);
         }
@@ -293,31 +249,12 @@ public class Game implements ApplicationListener{
         @Override
         public void gameLost() {
             setStage(Stages.GameOverStage);
-            gameOverStage.show(false, mGameListener.getAdHeight());
+            gameOverStage.show(false);
         }
 
         @Override
         public void levelPackWon() {
             mGameListener.levelPackWon(level.pack);
-        }
-
-        @Override
-        public void useHint() {
-            setStage(Stages.MainStage);
-            mGameListener.useHint();
-            mainStage.showHints(false);
-        }
-
-        @Override
-        public void onHelp() {
-            if (helpStage == null)
-                helpStage = new HelpStage(width, height, batch, this);
-            setStage(Stages.HelpStage);
-        }
-
-        @Override
-        public void onHelpDone() {
-            setStage(Stages.GameOverStage);
         }
 
         @Override

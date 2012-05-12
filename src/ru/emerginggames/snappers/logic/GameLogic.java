@@ -39,7 +39,7 @@ public class GameLogic {
         snapperListener = listener;
     }
 
-    public void setScreen(int width, int height, Rect snappersRect){
+    public void setScreen(int width, int height, Rect snappersRect) {
         this.snappersRect = snappersRect;
         this.width = width;
         this.height = height;
@@ -58,8 +58,8 @@ public class GameLogic {
         startTime = System.currentTimeMillis();
     }
 
-    public void tapSnapper(int i, int j){
-        if (snapperTouchedI>=0 || tapRemains<1)
+    public void tapSnapper(int i, int j) {
+        if (snapperTouchedI >= 0 || tapRemains < 1)
             return;
         tapRemains--;
         snapperListener.tap();
@@ -69,7 +69,7 @@ public class GameLogic {
 
     public boolean hitSnapper(int i, int j) {//return true if consumed touch
         int touchResult = snappers.touchSnapper(i, j);
-        if (touchResult <0)
+        if (touchResult < 0)
             return false;
         snapperListener.snapperHit(i, j);
         if (touchResult == 0) {
@@ -86,29 +86,29 @@ public class GameLogic {
         return snappersRect.bottom + Math.round(ySnapperMargin * (2 * j + 1));
     }
 
-    public int advance2(float deltaTime){
-        int res=0;
+    public int advance2(float deltaTime) {
+        int res = 0;
 
-        if (snapperTouchedI >=0) {
+        if (snapperTouchedI >= 0) {
             hitSnapper(snapperTouchedI, snapperTouchedJ);
             snapperTouchedI = snapperTouchedJ = -1;
-            res=1;
+            res = 1;
         }
 
-        res+= blasts.advanceBlasts(deltaTime);
+        res += blasts.advanceBlasts(deltaTime);
 
         return res;
     }
 
-    public boolean isGameOver(){
-        return (tapRemains<1 && !blasts.hasActive()) || snappers.snappersCount == 0;
+    public boolean isGameOver() {
+        return (tapRemains < 1 && !blasts.hasActive()) || snappers.snappersCount == 0;
     }
 
-    public boolean isGameLost(){
-        return snappers.snappersCount>0;
+    public boolean isGameLost() {
+        return snappers.snappersCount > 0;
     }
 
-    public int getScore(boolean isSolvedBefore){
+    public int getScore(boolean isSolvedBefore) {
         int score = level.tapsCount * 100 + (Snappers.countSnappers(level.zappers) - level.tapsCount) * 90;
         score *= getMult();
         if (hintUsed)
@@ -118,8 +118,8 @@ public class GameLogic {
 
         return score;
     }
-    
-    private int getMult(){
+
+    private int getMult() {
         if (level.complexity > 300)
             return 5;
         else if (level.complexity > 100)
@@ -130,11 +130,11 @@ public class GameLogic {
             return 1;
     }
 
-    public List<Blast> getBlasts(){
+    public List<Blast> getBlasts() {
         return blasts.activeBlasts;
     }
 
-    private class Blasts{
+    private class Blasts {
         private static final int MAX_BLASTS = 90;
         private static final float BLAST_SPEED_MARGIN_PER_SECOND = 6;
         public final List<Blast> blastsToKill;
@@ -149,7 +149,7 @@ public class GameLogic {
         //private float timeToSyncCheck;
         private int SYNC_TIME_INT = 1000000;
 
-        public Blasts(){
+        public Blasts() {
             PoolObjectFactory<Blast> blastFactory = new PoolObjectFactory<Blast>() {
                 @Override
                 public Blast createObject() {
@@ -161,23 +161,24 @@ public class GameLogic {
             blastsToKill = new ArrayList<Blast>(MAX_BLASTS);
             newBlasts = new ArrayList<Blast>(MAX_BLASTS);
 
-            syncTime = 2/ BLAST_SPEED_MARGIN_PER_SECOND;
-            syncTimeInt = (int)(syncTime * SYNC_TIME_INT);
+            syncTime = 2 / BLAST_SPEED_MARGIN_PER_SECOND;
+            syncTimeInt = (int) (syncTime * SYNC_TIME_INT);
         }
 
-        public void setSpeed(){
+        public void setSpeed() {
             grainSpeedX = xSnapperMargin * BLAST_SPEED_MARGIN_PER_SECOND;
             grainSpeedY = ySnapperMargin * BLAST_SPEED_MARGIN_PER_SECOND;
         }
 
-        public void clear(){
-            for (Blast blast : activeBlasts)
-                blastPool.free(blast);
-            activeBlasts.clear();
-            //timeToSyncCheck = 0;
+        public void clear() {
+            synchronized (activeBlasts) {
+                for (Blast blast : activeBlasts)
+                    blastPool.free(blast);
+                activeBlasts.clear();
+            }
         }
 
-        public void launchBlasts(int i, int j){
+        public void launchBlasts(int i, int j) {
             int xPos = getSnapperXPosision(i);
             int yPos = getSnapperYPosision(j);
             launchBlast2(xPos, yPos, Blast.Direction.Down, i, j);
@@ -196,7 +197,7 @@ public class GameLogic {
             setNextBlastDestination(blast);
             newBlasts.add(blast);
             blast.age = blast.checkAge = 0;
-            if (blast.direction == Blast.Direction.Up || blast.direction ==Blast.Direction.Down)
+            if (blast.direction == Blast.Direction.Up || blast.direction == Blast.Direction.Down)
                 blast.source = y;
             else blast.source = x;
             return blast;
@@ -229,16 +230,18 @@ public class GameLogic {
             }
         }
 
-        public int advanceBlasts(float delta){
+        public int advanceBlasts(float delta) {
             int i, size, res = 0;
             Blast blast;
-            int deltaInt = (int)(delta * SYNC_TIME_INT);
-            for (i = 0, size = activeBlasts.size(); i < size; i++) {
-                blast = activeBlasts.get(i);
-                if (advanceBlast(blast, delta, deltaInt) && !Snappers.isValidSnapper(blast.destI, blast.destJ))
-                    blastsToKill.add(blast);
-                if (checkBlastHit(blast))
-                    res++;
+            int deltaInt = (int) (delta * SYNC_TIME_INT);
+            synchronized (activeBlasts) {
+                for (i = 0, size = activeBlasts.size(); i < size; i++) {
+                    blast = activeBlasts.get(i);
+                    if (advanceBlast(blast, delta, deltaInt) && !Snappers.isValidSnapper(blast.destI, blast.destJ))
+                        blastsToKill.add(blast);
+                    if (checkBlastHit(blast))
+                        res++;
+                }
             }
 
             //int res = advanceSync(delta);
@@ -259,14 +262,13 @@ public class GameLogic {
             return res;
         }*/
 
-        public boolean checkBlastHit(Blast blast){
-            if (blast.checkAge > syncTimeInt){
+        public boolean checkBlastHit(Blast blast) {
+            if (blast.checkAge > syncTimeInt) {
                 if (Snappers.isValidSnapper(blast.destI, blast.destJ))
-                    if (hitSnapper(blast.destI, blast.destJ)){
+                    if (hitSnapper(blast.destI, blast.destJ)) {
                         blastsToKill.add(blast);
                         return true;
-                    }
-                    else
+                    } else
                         setNextBlastDestination(blast);
             }
             return false;
@@ -288,16 +290,16 @@ public class GameLogic {
             return blasts;
         }*/
 
-        public void startNewBlasts(){
+        public void startNewBlasts() {
             Blast blast;
-            for (int i=0; i<newBlasts.size(); i++){
+            for (int i = 0; i < newBlasts.size(); i++) {
                 blast = newBlasts.get(i);
                 activeBlasts.add(blast);
             }
             newBlasts.clear();
         }
 
-        private void killBlasts(){
+        private void killBlasts() {
             Blast blast;
             int i, size;
 
@@ -329,7 +331,7 @@ public class GameLogic {
             return false;//should never happen
         }
 
-        public boolean hasActive(){
+        public boolean hasActive() {
             return activeBlasts.size() > 0;
         }
     }

@@ -3,7 +3,7 @@
     <string name="app_name">Snappers</string>
     <string name="your_ad_here">Your Ad Here</string>
     <string name="level_locked_can_unlock" formatted="false">You have to solve all puzzles in Pack %d. Or, you can unlock Pack %d right away.</string>
-    <string name="level_locked" formatted="false">You have to solve all puzzles in Pack %d in order to unlock Pack %d.</string>
+    <string name="level_locked" formatted="false">Please, solve all puzzles in %s first.</string>
     <string name="score">Score: %d</string>
 
 

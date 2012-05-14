@@ -39,8 +39,6 @@ public class Metrics {
     public static int snapperSize;
     public static int blastSize;
     public static int squareButtonSize;
-    public static int menuButtonWidth;
-    public static int menuButtonHeight;
     public static int fontSize;
     public static int largeFontSize;
     public static int screenMargin;
@@ -51,15 +49,14 @@ public class Metrics {
     public static int screenWidth;
     public static int screenHeight;
     public static int menuWidth;
-    public static int menuHeight;
     public static SizeMode sizeMode;
     public static int bangSize;
     public static int hintSize;
-    public static int menuMargin;
-    public static final int instructionsWidth = 480;
-    public static final int instructionsHeight = 640;
     public static int screenSizeMode;
     public static float squareButtonScale = 1;
+    public static int bgSourceWidth;
+    public static int bgSourceHeight;
+
 
 
     public static boolean initDone = false;
@@ -94,39 +91,33 @@ public class Metrics {
                 snapperSize = 48;
                 blastSize = 18;
                 squareButtonSize = 48;
-                menuButtonWidth = 200;
-                menuButtonHeight = 64;
                 fontSize = 24;
                 menuWidth = 240;
-                menuHeight = 353;
                 hintSize=64;
-                menuMargin = 32;
+                bgSourceWidth = 320;
+                bgSourceHeight = 480;
                 break;
             case modeM:
                 snapperSize = 81;
                 bangSize = 72;
                 blastSize = 27;
                 squareButtonSize = 96;
-                menuButtonWidth = 300;
-                menuButtonHeight = 96;
                 fontSize = 38;
                 menuWidth = 360;
-                menuHeight = 512;
                 hintSize=128;
-                menuMargin = 32;
+                bgSourceWidth = 512;
+                bgSourceHeight = 854;
                 break;
             case modeL:
                 snapperSize = 108;
                 bangSize = 96;
                 blastSize = 36;
                 squareButtonSize = 128;
-                menuButtonWidth = 400;
-                menuButtonHeight = 128;
                 menuWidth = 500;
-                menuHeight = 705;
                 fontSize = 48;
                 hintSize=128;
-                menuMargin = 64;
+                bgSourceWidth = 640;
+                bgSourceHeight = 960;
                 break;
         }
         screenMargin = squareButtonSize /12;

@@ -137,28 +137,14 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
     }
 
     protected void showPackLockedMessage(final LevelPack pack){
-        String message = getResources().getString(R.string.level_locked, pack.id-1, pack.id);
-        showMessageDialog(message, new int[]{18, 41}, null, new View.OnClickListener() {
+        LevelPack prevPack = LevelPackTable.get(pack.id-1, this);
+        String message = getResources().getString(R.string.level_locked, prevPack.title);
+        showMessageDialog(message, new int[]{18, 36}, null, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideMessageDialog();
             }
         });
-
-/*        showMessageDialog(message, new int[]{18, 41, 0, 0}, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SoundManager.getInstance(SelectPackActivity.this).playButtonSound();
-                hideMessageDialog();
-                buyLevelPack(pack);
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SoundManager.getInstance(SelectPackActivity.this).playButtonSound();
-                hideMessageDialog();
-            }
-        });*/
     }
 
     void buyLevelPack(LevelPack pack){

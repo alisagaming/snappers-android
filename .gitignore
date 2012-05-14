@@ -7,7 +7,9 @@ out
 proguard_logs
 res/raw/commit.txt
 Snappers.apk
+Snappers_signed.apk
 HockeySDK/bin
 HockeySDK/gen
 TapJoy/bin
 TapJoy/gen
+temp

@@ -21,6 +21,7 @@ import java.io.InputStream;
  */
 public class LevelDbLoader {
     private static final String LEVELS_LOADED_VERSION_TAG = "LEVELS DATABASE VERSION";
+    private static final String PATH = "levels-2/%s.xml";
 
     private Context context;
     private AssetManager assets;
@@ -72,12 +73,12 @@ public class LevelDbLoader {
         loadLevelPack("LevelPack3");
         loadLevelPack("LevelPack4");
         loadLevelPack("LevelPack5");
-        loadLevelPack("LevelPack6");
-        loadLevelPack("LevelPack7");
+        //loadLevelPack("LevelPack6");
+        //loadLevelPack("LevelPack7");
         loadLevelPack("PremiumLevelPack1");
-        loadLevelPack("PremiumLevelPack2");
-        loadLevelPack("PremiumLevelPack3");
-        loadLevelPack("PremiumLevelPack4");
+        //loadLevelPack("PremiumLevelPack2");
+        //loadLevelPack("PremiumLevelPack3");
+        //loadLevelPack("PremiumLevelPack4");
         if (db != null)
             db.close();
         else {
@@ -89,7 +90,7 @@ public class LevelDbLoader {
     public LevelPack loadLevelPack(String filename){
         LevelPack pack = new LevelPack();
         try{
-            InputStream stream = assets.open(String.format("levels/%s.xml", filename));
+            InputStream stream = assets.open(String.format(PATH, filename));
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();

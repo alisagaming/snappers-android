@@ -36,7 +36,7 @@ public class SoundManager {
         try {
             AssetFileDescriptor afd = context.getAssets().openFd("sounds/soundtrack.mp3");
             mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-        } catch (IOException e) {
+        } catch (Exception e) {
         }
     }
 
@@ -66,7 +66,7 @@ public class SoundManager {
             mediaPlayer.setLooping(true);
             mediaPlayer.setVolume(0.6f, 0.6f);
             mediaPlayer.start();
-        } catch (IOException e) {
+        } catch (Exception e) {
         }
     }
 

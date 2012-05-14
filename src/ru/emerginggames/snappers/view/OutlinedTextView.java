@@ -139,11 +139,6 @@ public class OutlinedTextView extends TextView{
         if (mLineEnds == null)
             return;
 
-        if (mLayout == null)
-            makeNewLayout();
-        if (mLayout == null)
-            return;
-        
         float width = 0;
         int lastEnd = 0;
         for (int i=0; i< mLineEnds.length; i++){
@@ -155,13 +150,15 @@ public class OutlinedTextView extends TextView{
 
         float size = getTextSize();
 
-        int desiredWidth = getMeasuredWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight() - strokeWidth * 2;
+        int desiredWidth = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight() - strokeWidth * 2;
         size = size * desiredWidth/width;
         setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         outlinePaint.setTextSize(size);
         textPaint.setTextSize(size);
 
         needResize = false;
+
+        makeNewLayout(measuredWidth);
     }
 
     public void setLineEnds(int[] lineEnds) {
@@ -194,10 +191,10 @@ public class OutlinedTextView extends TextView{
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    void makeNewLayout(){
+    void makeNewLayout(int width){
         Layout.Alignment alignment;
         int gravity = getGravity();
-        int w  = getMeasuredWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight();
+        int w  = width - getCompoundPaddingLeft() - getCompoundPaddingRight();
         switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
             case Gravity.CENTER_HORIZONTAL:
                 alignment = Layout.Alignment.ALIGN_CENTER;
@@ -210,8 +207,8 @@ public class OutlinedTextView extends TextView{
             default:
                 alignment = Layout.Alignment.ALIGN_NORMAL;
         }
-
-        preparePaint();
+        if (!isPaintPrepared || textPaint == null || outlinePaint == null)
+            preparePaint();
         
         CharSequence text = getText();
         mLayout = new StaticLayout(text, textPaint,
@@ -225,18 +222,22 @@ public class OutlinedTextView extends TextView{
     public void setTextSize(float size) {
         super.setTextSize(size);
         needResize = true;
+        mLayout = null;
+        invalidate();
     }
 
     @Override
     public void setTypeface(Typeface tf) {
         super.setTypeface(tf);
         isPaintPrepared = false;
+        mLayout = null;
     }
 
     @Override
     public void setTypeface(Typeface tf, int style) {
         super.setTypeface(tf, style);
         isPaintPrepared = false;
+        mLayout = null;
     }
 
     @Override
@@ -250,6 +251,7 @@ public class OutlinedTextView extends TextView{
     public void setTextColor(ColorStateList colors) {
         super.setTextColor(colors);
         isPaintPrepared = false;
+        mLayout = null;
     }
 
     public void setText2(CharSequence text){
@@ -285,7 +287,7 @@ public class OutlinedTextView extends TextView{
     @Override
     protected void onDraw(Canvas canvas) {
         if (mLayout == null)
-            makeNewLayout();
+            makeNewLayout(getMeasuredWidth());
 
         if (mLayout.getLineCount() == 1){
             drawBoring(canvas);

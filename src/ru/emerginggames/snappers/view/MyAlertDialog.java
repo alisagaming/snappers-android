@@ -32,7 +32,7 @@ public class MyAlertDialog extends Dialog {
 
     public void setMessage(String msg, int[] lineEnds) {
         OutlinedTextView msgText = (OutlinedTextView) findViewById(R.id.message);
-        msgText.setText(msg);
+        msgText.setText2(msg);
         if (lineEnds != null) {
             msgText.setMaxLines2(lineEnds.length);
             msgText.setLineEnds(lineEnds);

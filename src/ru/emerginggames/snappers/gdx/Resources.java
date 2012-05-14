@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import ru.emerginggames.snappers.Metrics;
+import ru.emerginggames.snappers.Settings;
 import ru.emerginggames.snappers.gdx.core.BitmapPixmap;
 import ru.emerginggames.snappers.gdx.core.PrepareableTextureAtlas;
 import ru.emerginggames.snappers.gdx.core.ResizedFileTextureData;
@@ -85,7 +86,8 @@ public class Resources {
     }
 
     public static void loadBmpFonts() {
-        fnt1 = new BitmapFont(Gdx.files.internal("FontShag.fnt"), Gdx.files.internal("FontShag.png"), false);
+        fnt1 = new BitmapFont();
+        fnt1.setScale(2);
     }
 
     private static void loadSnapperTextures(boolean isGold) {
@@ -190,8 +192,11 @@ public class Resources {
         preloadBg(name);
         if (Preload.bg == null)
             return false;
-
-        bg = new TextureRegion(new Texture(Preload.bg), 0, 0, Metrics.screenWidth, Metrics.screenHeight);
+        int bgWidth = Math.min(Metrics.screenWidth, Metrics.bgSourceWidth);
+        int bgHeight = Math.min(Metrics.screenHeight, Metrics.bgSourceHeight);
+        int bgStartX = (Metrics.screenWidth - bgWidth) / 2;
+        int bgStartY = Metrics.screenHeight - bgHeight;
+        bg = new TextureRegion(new Texture(Preload.bg), bgStartX, bgStartY, bgWidth, bgHeight);
         return true;
     }
 
@@ -229,9 +234,9 @@ public class Resources {
             return;
         synchronized (syncLock) {
             if (Preload.bang == null && Metrics.sizeMode != Metrics.SizeMode.modeS)
-                Preload.bang = new ResizedFileTextureData(Gdx.files.internal(dir + "bang.png"), Pixmap.Format.RGBA4444);
+                Preload.bang = new FileTextureData(Gdx.files.internal(dir + "bang.png"), null,  Pixmap.Format.RGBA4444, false);
             if (Preload.blast == null)
-                Preload.blast = new ResizedFileTextureData(Gdx.files.internal(dir + "blast.png"), Pixmap.Format.RGBA4444);
+                Preload.blast = new FileTextureData(Gdx.files.internal(dir + "blast.png"), null, Pixmap.Format.RGBA4444, false);
             if (Preload.snappers == null)
                 Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
             if (Preload.hint == null)
@@ -284,8 +289,8 @@ public class Resources {
         utilizeBg();
         if (Gdx.files == null)
             return;
-        Preload.bg = new ResizedFileTextureData(Gdx.files.internal("bg/" + name),
-                Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
+        /*Preload.bg = new ResizedFileTextureData(Gdx.files.internal("bg/" + name), Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);*/
+        Preload.bg = new FileTextureData(Gdx.files.internal("bg/" +dir + name), null,  Pixmap.Format.RGB888, false);
         Preload.bgName = name;
     }
 
@@ -300,7 +305,7 @@ public class Resources {
 
     public static Typeface getFont(Context context) {
         if (font == null)
-            font = Typeface.createFromAsset(context.getAssets(), "shag_lounge.otf");
+            font = Typeface.createFromAsset(context.getAssets(), Settings.FONT);
         return font;
     }
 

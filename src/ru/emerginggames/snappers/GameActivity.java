@@ -638,7 +638,7 @@ public class GameActivity extends AndroidApplication {
             menuBtn.setOnClickListener(mainListener);
             helpBtn.setOnClickListener(mainListener);
 
-            rlpTop = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, Math.round(Metrics.squareButtonSize * Metrics.squareButtonScale));
+            rlpTop = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, Math.round(Metrics.squareButtonSize * Metrics.squareButtonScale));
             rlpTop.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             rlpTop.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             rlpTop.setMargins(Metrics.screenMargin, Metrics.screenMargin, Metrics.screenMargin, 0);
@@ -652,7 +652,7 @@ public class GameActivity extends AndroidApplication {
 
         public void alignUnderView(View v){
             if (rlpUnderView == null){
-                rlpUnderView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (Metrics.squareButtonSize * Metrics.squareButtonScale));
+                rlpUnderView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, (int) (Metrics.squareButtonSize * Metrics.squareButtonScale));
                 rlpUnderView.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 rlpUnderView.setMargins(Metrics.screenMargin, Metrics.screenMargin, Metrics.screenMargin, 0);
             }

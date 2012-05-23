@@ -203,6 +203,7 @@ public class GameActivity extends AndroidApplication {
             public void onClick(View v) {
                 rootLayout.removeView(v);
                 game.setStage(Game.Stages.GameOverStage);
+                levelInfo.show();
             }
         });
 
@@ -212,6 +213,7 @@ public class GameActivity extends AndroidApplication {
         rootLayout.addView(v, lp);
         game.setStage(Game.Stages.HelpStage);
         topButtons.hideAll();
+        levelInfo.hide();
     }
 
     Runnable showPausedDialog = new Runnable() {
@@ -385,7 +387,7 @@ public class GameActivity extends AndroidApplication {
             Level next = getNextLevel(level);
             if (next == null)
                 prefs.unlockNextLevelPack(level.pack);
-            levelInfo.setDim(true);
+            levelInfo.hide();
         }
 
         @Override
@@ -399,7 +401,7 @@ public class GameActivity extends AndroidApplication {
             if (adController != null)
                 adController.showAdTop();
             gameOverMessageController.show(false, level.tapsCount);
-
+            levelInfo.hide();
         }
 
         @Override
@@ -408,7 +410,7 @@ public class GameActivity extends AndroidApplication {
                 adController.hideAdTop();
             topButtons.showMainButtons();
             gameOverMessageController.hide();
-            levelInfo.setDim(false);
+            levelInfo.show();
         }
 
         @Override
@@ -845,9 +847,10 @@ public class GameActivity extends AndroidApplication {
         Level level;
         int tapsLeftN;
         int color;
+        LinearLayout layout;
 
         LevelInfo(RelativeLayout rootLayout) {
-            LinearLayout layout = (LinearLayout)getLayoutInflater().inflate(R.layout.partial_game_info, null);
+             layout = (LinearLayout)getLayoutInflater().inflate(R.layout.partial_game_info, null);
             levelInfo = (OutlinedTextView)layout.findViewById(R.id.levelInfo);
             tapsLeft = (OutlinedTextView)layout.findViewById(R.id.tapsLeft);
 
@@ -880,7 +883,14 @@ public class GameActivity extends AndroidApplication {
         public void setDim(boolean isDim){
             color = isDim ? Color.rgb(128, 128, 128) : Color.rgb(255, 255, 255);
             runOnUiThread(setColor);
+        }
 
+        public void show(){
+            runOnUiThread(show);
+        }
+
+        public void hide(){
+            runOnUiThread(hide);
         }
 
         Runnable setLevel = new Runnable() {
@@ -905,5 +915,23 @@ public class GameActivity extends AndroidApplication {
                 tapsLeft.setTextColor(color);
             }
         };
+
+        Runnable hide = new Runnable() {
+            @Override
+            public void run() {
+                layout.setVisibility(View.GONE);
+            }
+        };
+
+        Runnable show = new Runnable() {
+            @Override
+            public void run() {
+                layout.setVisibility(View.VISIBLE);
+            }
+        };
+
+
+
+
     }
 }

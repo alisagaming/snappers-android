@@ -129,6 +129,8 @@ public class GameActivity extends AndroidApplication {
             isFinished = true;
             levelTable.close();
             prefs.setHintChangedListener(null);
+            if (dlg != null)
+                dlg.dismiss();
         }
         if (wentShop || wentTapjoy)
             Resources.preloadResourcesInWorker(null);
@@ -446,6 +448,7 @@ public class GameActivity extends AndroidApplication {
         public void onHintsChanged(int old, int current) {
             if (game.getStage() == Game.Stages.HintMenu)
                 runOnUiThread(showHintMenu);
+            topButtons.updateHints();
         }
     };
 
@@ -611,8 +614,8 @@ public class GameActivity extends AndroidApplication {
     class TopButtonController {
         RelativeLayout layout;
         ImageView pauseBtn;
-        ImageView hintBtn;
-        ImageView shopBtn;
+        OutlinedTextView hintBtn;
+
         ImageView nextBtn;
         ImageView restartBtn;
         ImageView menuBtn;
@@ -623,8 +626,7 @@ public class GameActivity extends AndroidApplication {
         public TopButtonController(RelativeLayout rootLayour){
             layout = (RelativeLayout)getLayoutInflater().inflate(R.layout.partial_topbuttons, null);
             pauseBtn = (ImageView)layout.findViewById(R.id.pauseBtn);
-            hintBtn = (ImageView)layout.findViewById(R.id.hintBtn);
-            shopBtn = (ImageView)layout.findViewById(R.id.shopBtn);
+            hintBtn = (OutlinedTextView)layout.findViewById(R.id.hintBtn);
             nextBtn = (ImageView)layout.findViewById(R.id.nextBtn);
             restartBtn = (ImageView)layout.findViewById(R.id.restartBtn);
             menuBtn = (ImageView)layout.findViewById(R.id.menuBtn);
@@ -632,7 +634,6 @@ public class GameActivity extends AndroidApplication {
 
             pauseBtn.setOnClickListener(mainListener);
             hintBtn.setOnClickListener(mainListener);
-            shopBtn.setOnClickListener(mainListener);
             nextBtn.setOnClickListener(mainListener);
             restartBtn.setOnClickListener(mainListener);
             menuBtn.setOnClickListener(mainListener);
@@ -642,9 +643,18 @@ public class GameActivity extends AndroidApplication {
             rlpTop.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             rlpTop.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             rlpTop.setMargins(Metrics.screenMargin, Metrics.screenMargin, Metrics.screenMargin, 0);
+            hintBtn.setTypeface(Resources.getFont(getApplicationContext()));
+            hintBtn.setMaxLines2(1);
+            updateHints();
 
             rootLayour.addView(layout, rlpTop);
         }
+
+        public void updateHints(){
+            runOnUiThread(updateHints);
+        }
+
+
 
         public void alignTop(){
             layout.setLayoutParams(rlpTop);
@@ -676,12 +686,18 @@ public class GameActivity extends AndroidApplication {
         void hideAll(){
             pauseBtn.setVisibility(View.GONE);
             hintBtn.setVisibility(View.GONE);
-            shopBtn.setVisibility(View.GONE);
             nextBtn.setVisibility(View.GONE);
             restartBtn.setVisibility(View.GONE);
             menuBtn.setVisibility(View.GONE);
             helpBtn.setVisibility(View.GONE);
         }
+
+        Runnable updateHints = new Runnable() {
+            @Override
+            public void run() {
+                hintBtn.setText2(Integer.toString(prefs.getHintsRemaining()));
+            }
+        };
 
         Runnable showMainButtons = new Runnable() {
             @Override
@@ -696,9 +712,8 @@ public class GameActivity extends AndroidApplication {
             @Override
             public void run() {
                 hideAll();
-                shopBtn.setVisibility(View.VISIBLE);
                 nextBtn.setVisibility(View.VISIBLE);
-                restartBtn.setVisibility(View.VISIBLE);
+                //restartBtn.setVisibility(View.VISIBLE);
                 menuBtn.setVisibility(View.VISIBLE);
             }
         };
@@ -731,10 +746,7 @@ public class GameActivity extends AndroidApplication {
                         else
                             runOnUiThread(showHintMenu);
                         break;
-                    case R.id.shopBtn:
-                        launchStore();
-                        break;
-                    case R.id.nextBtn:
+                     case R.id.nextBtn:
                         game.nextLevel();
                         game.setStage(Game.Stages.MainStage);
                         break;

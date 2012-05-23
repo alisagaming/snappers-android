@@ -78,11 +78,13 @@ public class OutlinedTextView extends TextView{
         int posy = getPaddingTop() + strokeWidth;
         int gravity = getGravity();
         Rect rect = new Rect();
+        int width = getWidth() - getPaddingLeft() - getPaddingRight();
+        int height = getHeight() - getPaddingBottom() - getPaddingTop();
         textPaint.getTextBounds(text.toString(), 0, text.length(), rect);
         if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL)
-            posx = (getWidth() - rect.width())/2 - rect.left;
+            posx = (width - rect.width())/2 - rect.left + getPaddingLeft();
         if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL)
-            posy = (getHeight() -rect.top)/2;
+            posy = (height -rect.top)/2 + getPaddingTop();
         if ((gravity & Gravity.RIGHT) == Gravity.RIGHT)
             posx = getWidth() - rect.right - strokeWidth - getPaddingRight();
         if ((gravity & Gravity.TOP) == Gravity.TOP)
@@ -122,16 +124,16 @@ public class OutlinedTextView extends TextView{
             float size = getTextSize();
 
             float textWidth = outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2;
-            if (isSquare){
+            float textHeight = getLineHeight();
 
-                float textHeight = getLineHeight();
+            if (isSquare){
                 textWidth = Math.max(textWidth, textHeight);
                 size = (float)Math.ceil(size * width/ textWidth);
                 setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
                 return;
             }
 
-            size = (float)Math.ceil(size * width/ textWidth);
+            size = (float)Math.ceil(size * Math.min(width/ textWidth, height / textHeight));
             setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
             return;
         }
@@ -178,7 +180,7 @@ public class OutlinedTextView extends TextView{
             return;
         }
 
-        needResize |=  (lastMeasuredWidth != wSize);
+        needResize |=  (lastMeasuredWidth != wSize || getMeasuredHeight() != hSize);
         if (needResize && isSquare && maxLines == 1 && setTextSizeToFit){
             setTextSizeToFit(wSize, hSize);
             setMeasuredDimension(wSize, wSize);

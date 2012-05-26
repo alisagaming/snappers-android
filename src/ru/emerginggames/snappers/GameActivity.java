@@ -251,7 +251,19 @@ public class GameActivity extends AndroidApplication {
     Runnable showFreeHintsMenu = new Runnable() {
         @Override
         public void run() {
+            if (dlg == null)
+                initDialog();
+            else
+                dlg.clear();
+            dlg.setTwoButtonsARow(true);
+            dlg.setItemSpacing(Metrics.screenMargin);
+            dlg.setTitle(R.string.free_hints);
+            dlg.addButton(R.drawable.button_invite);
+            dlg.addButton(R.drawable.button_like);
+            dlg.addButton(R.drawable.button_promo);
+            dlg.addButton(R.drawable.button_rate);
 
+            dlg.show();
         }
     };
 
@@ -294,8 +306,8 @@ public class GameActivity extends AndroidApplication {
             StringBuilder msg = new StringBuilder();
             msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.buySome));
             dlg.setMessage(msg, Metrics.fontSize);
-            dlg.addButton(R.drawable.button_buyhints_long);
             dlg.addButton(R.drawable.button_freehints_long);
+            dlg.addButton(R.drawable.button_buyhints_long);
         }
 
         void showGetOnlineMenu(){
@@ -345,9 +357,8 @@ public class GameActivity extends AndroidApplication {
                     break;
 
                 case R.drawable.button_freehints_long:
-                    //wentTapjoy = true;
-                    //TapjoyConnect.getTapjoyConnectInstance().showOffers();
-                    //TODO: do;
+                    dlg.hide();
+                    showFreeHintsMenu.run();
                     break;
 
 

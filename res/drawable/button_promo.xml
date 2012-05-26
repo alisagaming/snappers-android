@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false" android:drawable="@drawable/promo_btn"/>
+    <item android:state_pressed="true">
+        <layer-list>
+            <item android:drawable="@drawable/promo_btn"/>
+            <item android:drawable="@drawable/sq_btn_tap"/>
+        </layer-list>
+    </item>
+</selector>

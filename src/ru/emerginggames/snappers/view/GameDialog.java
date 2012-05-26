@@ -141,17 +141,20 @@ public class GameDialog extends Dialog {
             btnClickListener.onCancel();
     }
 
-    public interface OnDialogEventListener {
-        void onButtonClick(int unpressedDrawableId);
-        void onCancel();
-    }
-
     View.OnClickListener closeBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            SoundManager.PlayButtonSoundIfPossible();
             cancel();
             if (btnClickListener!= null)
                 btnClickListener.onCancel();
         }
     };
+
+    public interface OnDialogEventListener {
+        void onButtonClick(int unpressedDrawableId);
+        void onCancel();
+    }
+
+
 }

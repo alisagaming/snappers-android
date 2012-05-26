@@ -21,6 +21,7 @@
 
 
     <string name="game_paused">Game paused</string>
+    <string name="hints">Hints</string>
 
     <string name="youHaveOneHint">You have 1 hint.\nUse it?</string>
     <string name="youHave_n_Hints" formatted="false">You have %d hints.\nUse it?</string>

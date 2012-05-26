@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:orientation="vertical"
         >
-    <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/title" android:layout_width="fill_parent"
-                                                     android:layout_height="wrap_content"
-                                                     app:strokeWidth="1dp" app:strokeColor="#000"
-                                                     app:setTextSizeToFit="true"
-                                                     android:textColor="#fff"
-                                                     android:textStyle="bold"
-                                                     android:layout_gravity="center"
-                                                     android:layout_marginTop="3dp"
-                                                     android:visibility="gone"
-            />
-    <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/message" android:layout_width="wrap_content"
-                                                     android:layout_height="wrap_content"
-                                                     app:strokeWidth="1dp" app:strokeColor="#000"
-                                                     android:textColor="#fff"
-                                                     android:textStyle="bold"
-                                                     android:layout_marginTop="3dp"
-                                                     android:visibility="gone"
-            />
 
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:layout_gravity="center" android:id="@+id/buttonCont" android:orientation="vertical"
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_centerHorizontal="true"
+                  android:background="@drawable/dialog"
+            >
+
+        <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/title" android:layout_width="fill_parent"
+                                                         android:layout_height="wrap_content"
+                                                         app:strokeWidth="1dp" app:strokeColor="#000"
+                                                         app:setTextSizeToFit="true"
+                                                         android:textColor="#dd0"
+                                                         android:textStyle="bold"
+                                                         android:layout_gravity="center"
+                                                         android:gravity="center"
+                                                         android:paddingTop="-4dp"
+                />
+
+        <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/message" android:layout_width="wrap_content"
+                                                         android:layout_height="wrap_content"
+                                                         app:strokeWidth="1dp" app:strokeColor="#000"
+                                                         android:textColor="#fff"
+                                                         android:textStyle="bold"
+                                                         android:visibility="gone"
+                                                         android:gravity="center"
+                />
+
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:layout_gravity="center" android:id="@+id/buttonCont" android:orientation="vertical"
+                />
+
+    </LinearLayout>
+
+    <ru.emerginggames.snappers.view.ImageView android:id="@+id/close_btn"
+                                              android:layout_width="wrap_content"
+                                              android:layout_height="wrap_content"
+                                              android:src="@drawable/button_close"
+                                              android:layout_alignParentTop="true"
+                                              android:layout_alignParentRight="true"
             />
-</LinearLayout>
+</RelativeLayout>

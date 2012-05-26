@@ -16,6 +16,9 @@ public class GInAppStore extends Store {
 
     private static final String ID_ONE_HINT = "onehintpack";
     private static final String ID_TEN_HINTS = "tenhintspack";
+    private static final String ID_HINTS_3 = "hintspack3";
+    private static final String ID_HINTS_25 = "hintspack25";
+    private static final String ID_HINTS_75 = "hintspack75";
     private static final String ID_AD_FREE = "adfree";
     private static final String ID_PREMIUM_PACK1 = "premiumpack1";
     private static final String ID_PREMIUM_PACK2 = "premiumpack2";
@@ -56,6 +59,12 @@ public class GInAppStore extends Store {
             return Goods.HintPack1;
         else if (ID_TEN_HINTS.equals(itemId))
             return Goods.HintPack10;
+        else if (ID_HINTS_3.equals(itemId))
+            return Goods.HintPack3;
+        else if (ID_HINTS_25.equals(itemId))
+            return Goods.HintPack25;
+        else if (ID_HINTS_75.equals(itemId))
+            return Goods.HintPack75;
         else if (ID_AD_FREE.equals(itemId))
             return Goods.AdFree;
         else if (ID_PREMIUM_PACK1.equals(itemId))
@@ -78,6 +87,12 @@ public class GInAppStore extends Store {
                 return ID_ONE_HINT;
             case HintPack10:
                 return ID_TEN_HINTS;
+            case HintPack3:
+                return ID_HINTS_3;
+            case HintPack25:
+                return ID_HINTS_25;
+            case HintPack75:
+                return ID_HINTS_75;
             case PremiumLevelPack1:
                 return ID_PREMIUM_PACK1;
             case PremiumLevelPack2:

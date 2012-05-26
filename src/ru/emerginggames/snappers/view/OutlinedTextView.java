@@ -74,21 +74,27 @@ public class OutlinedTextView extends TextView{
         if (text.length() == 0)
             return;
 
-        int posx = getPaddingLeft() + strokeWidth;
-        int posy = getPaddingTop() + strokeWidth;
+        int posx = 0;
+        int posy = 0;
         int gravity = getGravity();
         Rect rect = new Rect();
         int width = getWidth() - getPaddingLeft() - getPaddingRight();
         int height = getHeight() - getPaddingBottom() - getPaddingTop();
         textPaint.getTextBounds(text.toString(), 0, text.length(), rect);
-        if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL)
-            posx = (width - rect.width())/2 - rect.left + getPaddingLeft();
-        if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL)
-            posy = (height -rect.top)/2 + getPaddingTop();
-        if ((gravity & Gravity.RIGHT) == Gravity.RIGHT)
-            posx = getWidth() - rect.right - strokeWidth - getPaddingRight();
+
         if ((gravity & Gravity.TOP) == Gravity.TOP)
             posy = getPaddingTop() + strokeWidth - Math.round(fontMetrics.ascent);
+        else if ((gravity & Gravity.BOTTOM) == Gravity.BOTTOM)
+            posy = getHeight() - strokeWidth - getPaddingBottom();
+        else if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL)
+            posy = (height -rect.top)/2 + getPaddingTop();
+
+        if ((gravity & Gravity.LEFT) == Gravity.LEFT)
+            posx = getPaddingLeft() + strokeWidth;
+        else if ((gravity & Gravity.RIGHT) == Gravity.RIGHT)
+            posx = getWidth() - rect.right - strokeWidth - getPaddingRight();
+        else if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL)
+            posx = (width - rect.width())/2 - rect.left + getPaddingLeft();
 
         canvas.translate(posx, posy);
 

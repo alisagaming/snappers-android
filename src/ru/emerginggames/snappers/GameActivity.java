@@ -26,6 +26,7 @@ import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.*;
+import ru.emerginggames.snappers.view.BuyHintsDialog;
 import ru.emerginggames.snappers.view.GameDialog;
 import ru.emerginggames.snappers.view.ImageView;
 import ru.emerginggames.snappers.view.OutlinedTextView;
@@ -54,6 +55,7 @@ public class GameActivity extends AndroidApplication {
     TopButtonController topButtons;
     GameOverMessageController gameOverMessageController;
     LevelInfo levelInfo;
+    BuyHintsDialog buyHintsDlg;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,12 +225,33 @@ public class GameActivity extends AndroidApplication {
                 initDialog();
             else
                 dlg.clear();
+            dlg.setTwoButtonsARow(false);
+            dlg.setItemSpacing(Metrics.screenMargin * 2);
             dlg.setTitle(R.string.game_paused);
-            dlg.addButton(R.drawable.resumelong, R.drawable.resumelong_tap);
-            dlg.addButton(R.drawable.restartlong, R.drawable.restartlong_tap);
-            dlg.addButton(R.drawable.menulong, R.drawable.menulong_tap);
-            dlg.addButton(R.drawable.storelong, R.drawable.storelong_tap);
+            dlg.addButton(R.drawable.button_resume_long);
+            dlg.addButton(R.drawable.button_restart_long);
+            dlg.addButton(R.drawable.button_menu_long);
             dlg.show();
+        }
+    };
+
+    Runnable showBuyHintsMenu = new Runnable() {
+        @Override
+        public void run() {
+            if (buyHintsDlg== null){
+                buyHintsDlg = new BuyHintsDialog(GameActivity.this, Metrics.screenWidth * 95 / 100);
+            }
+
+            buyHintsDlg.setTitle(R.string.hints);
+
+            buyHintsDlg.show();
+        }
+    };
+
+    Runnable showFreeHintsMenu = new Runnable() {
+        @Override
+        public void run() {
+
         }
     };
 
@@ -242,6 +265,8 @@ public class GameActivity extends AndroidApplication {
                     dlg.hide();
                 dlg.clear();
             }
+            dlg.setTwoButtonsARow(false);
+            dlg.setItemSpacing(Metrics.screenMargin * 2);
 
             int hintsLeft = prefs.getHintsRemaining();
             if (hintsLeft > 0)
@@ -259,11 +284,9 @@ public class GameActivity extends AndroidApplication {
             else
                 dlg.setMessage(getResources().getString(R.string.youHave_n_Hints, hintsLeft), Metrics.fontSize);
 
-            dlg.addButton(R.drawable.useahintlong, R.drawable.useahintlong_tap);
-            if (prefs.isTapjoyEnabled())
-                dlg.addButton(R.drawable.freehintslong, R.drawable.freehintslong_tap);
-            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
-
+            dlg.addButton(R.drawable.button_usehint_long);
+            dlg.addButton(R.drawable.button_freehints_long);
+            dlg.addButton(R.drawable.button_buyhints_long);
         }
 
         void showBuyHintMenu(){
@@ -271,11 +294,8 @@ public class GameActivity extends AndroidApplication {
             StringBuilder msg = new StringBuilder();
             msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.buySome));
             dlg.setMessage(msg, Metrics.fontSize);
-            dlg.addButton(R.drawable.buy1hint, R.drawable.buy1hint_tap);
-            dlg.addButton(R.drawable.buyhintslong, R.drawable.buyhintslong_tap);
-            if (prefs.isTapjoyEnabled())
-                dlg.addButton(R.drawable.freehintslong, R.drawable.freehintslong_tap);
-            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
+            dlg.addButton(R.drawable.button_buyhints_long);
+            dlg.addButton(R.drawable.button_freehints_long);
         }
 
         void showGetOnlineMenu(){
@@ -283,15 +303,15 @@ public class GameActivity extends AndroidApplication {
             StringBuilder msg = new StringBuilder();
             msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.getOnline));
             dlg.setMessage(msg, Metrics.fontSize);
-            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
+            //TODO: add button if needed
         }
     };
 
     void initDialog(){
         dlg = new GameDialog(GameActivity.this);
-        dlg.setWidth(Math.min(Metrics.menuWidth, Metrics.screenWidth * 9 / 10));
+        dlg.setWidth(Metrics.screenWidth * 95 / 100);
         dlg.setBtnClickListener(dialogButtonListener);
-        dlg.setItemSpacing(Metrics.screenMargin);
+        dlg.setItemSpacing(Metrics.screenMargin * 2);
         dlg.setTypeface(Resources.getFont(this));
     }
 
@@ -299,47 +319,41 @@ public class GameActivity extends AndroidApplication {
         @Override
         public void onButtonClick(int unpressedDrawableId) {
             switch (unpressedDrawableId){
-                case R.drawable.cancellong:
-                case R.drawable.resumelong:
+                case R.drawable.button_resume_long:
                     dlg.hide();
                     game.setPaused(false);
                     game.setStage(Game.Stages.MainStage);
                     break;
 
-                case R.drawable.restartlong:
+                case R.drawable.button_restart_long:
                     game.setPaused(false);
                     game.setStage(Game.Stages.MainStage);
                     dlg.hide();
                     game.restartLevel();
                     break;
 
-                case R.drawable.menulong:
+                case R.drawable.button_menu_long:
                     dlg.hide();
                     finish();
                     break;
 
-                case R.drawable.storelong:
-                    launchStore();
-                    break;
-
-                case R.drawable.useahintlong:
+                case R.drawable.button_usehint_long:
                     prefs.useHint();
                     game.useHint();
                     dlg.hide();
                     game.setStage(Game.Stages.MainStage);
                     break;
 
-                case R.drawable.freehintslong:
-                    wentTapjoy = true;
-                    TapjoyConnect.getTapjoyConnectInstance().showOffers();
+                case R.drawable.button_freehints_long:
+                    //wentTapjoy = true;
+                    //TapjoyConnect.getTapjoyConnectInstance().showOffers();
+                    //TODO: do;
                     break;
 
-                case R.drawable.buy1hint:
-                    buy(Goods.HintPack1);
-                    break;
 
-                case R.drawable.buyhintslong:
-                    buy(Goods.HintPack10);
+                case R.drawable.button_buyhints_long:
+                    dlg.hide();
+                    showBuyHintsMenu.run();
                     break;
             }
         }

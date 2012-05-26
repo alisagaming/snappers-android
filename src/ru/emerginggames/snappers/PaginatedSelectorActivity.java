@@ -75,7 +75,7 @@ public class PaginatedSelectorActivity extends FragmentActivity {
     public void showMessageDialog(String message, int[] lineEnds, View.OnClickListener leftListener, View.OnClickListener rightListener){
         if (dlg == null)
             dlg = new MyAlertDialog(this);
-        dlg.setLeftButton(R.drawable.unlock_button, leftListener);
+        //dlg.setLeftButton(R.drawable.unlock_button, leftListener);
         dlg.setRightButton(R.drawable.ok_button, rightListener);
         dlg.setMessage(message, lineEnds);
         dlg.show();

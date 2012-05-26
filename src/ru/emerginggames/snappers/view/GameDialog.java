@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.R;
 import ru.emerginggames.snappers.SoundManager;
 
@@ -22,11 +22,15 @@ import ru.emerginggames.snappers.SoundManager;
 public class GameDialog extends Dialog {
     OnDialogEventListener btnClickListener;
     int itemSpacing;
+    boolean isTwoButtonsARow;
+    int buttons = 0;
+    LinearLayout lastRow;
 
     public GameDialog(Context context) {
         super(context, R.style.GameDialog);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_game);
+        findViewById(R.id.close_btn).setOnClickListener(closeBtnListener);
     }
 
     public void setBtnClickListener(OnDialogEventListener btnClickListener) {
@@ -35,6 +39,10 @@ public class GameDialog extends Dialog {
 
     public void setItemSpacing(int itemSpacing) {
         this.itemSpacing = itemSpacing;
+    }
+
+    public void setTwoButtonsARow(boolean twoButtonsARow) {
+        isTwoButtonsARow = twoButtonsARow;
     }
 
     public void setTypeface(Typeface typeface){
@@ -46,17 +54,48 @@ public class GameDialog extends Dialog {
         ((LinearLayout)findViewById(R.id.buttonCont)).removeAllViews();
         findViewById(R.id.title).setVisibility(View.GONE);
         findViewById(R.id.message).setVisibility(View.GONE);
+        buttons = 0;
     }
 
     public void addButton(int idUnpressed, int idPressed){
         TwoStateButton btn = new TwoStateButton(getContext());
         btn.setup(idUnpressed, idPressed, clickListener);
         btn.setAdjustViewBounds(true);
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, itemSpacing, 0, 0);
         btn.setTag(idUnpressed);
-        ((LinearLayout)findViewById(R.id.buttonCont)).addView(btn, lp);
+
+        addButton(btn);
+    }
+
+    public void addButton(int drawable_id){
+        ImageView btn = new ImageView(getContext());
+        btn.setImageResource(drawable_id);
+        btn.setOnClickListener(clickListener);
+        btn.setAdjustViewBounds(true);
+        btn.setTag(drawable_id);
+
+        addButton(btn);
+    }
+
+    void addButton(View btn){
+        if (isTwoButtonsARow){
+            if (buttons %2 == 0 ){
+                lastRow = new LinearLayout(getContext());
+                lastRow.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                ((LinearLayout)findViewById(R.id.buttonCont)).addView(lastRow, llp);
+            }
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, itemSpacing, itemSpacing, 0);
+            lp.weight = 1;
+            lastRow.addView(btn, lp);
+        }
+        else{
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, itemSpacing, 0, 0);
+            ((LinearLayout)findViewById(R.id.buttonCont)).addView(btn, lp);
+        }
+        buttons ++;
+
     }
 
     public void setWidth(int width){
@@ -68,7 +107,8 @@ public class GameDialog extends Dialog {
         OutlinedTextView t = (OutlinedTextView)findViewById(R.id.title);
         t.setText2(msg);
         t.setVisibility(View.VISIBLE);
-        t.setMaxLines2(1);
+        //t.setMaxLines2(1);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.largeFontSize);
     }
 
     public void setMessage(int messageId, int size){
@@ -105,4 +145,13 @@ public class GameDialog extends Dialog {
         void onButtonClick(int unpressedDrawableId);
         void onCancel();
     }
+
+    View.OnClickListener closeBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            cancel();
+            if (btnClickListener!= null)
+                btnClickListener.onCancel();
+        }
+    };
 }

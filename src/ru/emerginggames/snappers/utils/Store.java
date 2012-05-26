@@ -60,6 +60,15 @@ public abstract class Store {
                     case HintPack10:
                         UserPreferences.getInstance(context).addHints(10 * amount);
                         break;
+                    case HintPack3:
+                        UserPreferences.getInstance(context).addHints(3 * amount);
+                        break;
+                    case HintPack25:
+                        UserPreferences.getInstance(context).addHints(25 * amount);
+                        break;
+                    case HintPack75:
+                        UserPreferences.getInstance(context).addHints(75 * amount);
+                        break;
                     default:
                         throw new RuntimeException("cant process item: " + item);
                 }

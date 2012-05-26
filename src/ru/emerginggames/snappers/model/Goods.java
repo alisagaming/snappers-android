@@ -7,7 +7,7 @@ package ru.emerginggames.snappers.model;
  * Time: 14:33
  */
 public enum Goods {
-    HintPack1, HintPack10,
+    HintPack1, HintPack10, HintPack3, HintPack25, HintPack75,
     LevelPack2, LevelPack3, LevelPack4, LevelPack5, LevelPack6, LevelPack7,
     PremiumLevelPack1, PremiumLevelPack2, PremiumLevelPack3, PremiumLevelPack4,
     AdFree, AdFree6hours;
@@ -101,6 +101,9 @@ public enum Goods {
                 return Type.adFree;
             case HintPack1:
             case HintPack10:
+            case HintPack3:
+            case HintPack25:
+            case HintPack75:
                 return Type.Hint;
             case LevelPack2:
             case LevelPack3:

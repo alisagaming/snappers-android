@@ -15,7 +15,7 @@
                   android:layout_height="wrap_content" android:weightSum="100" android:gravity="center">
         <ru.emerginggames.snappers.view.ImageView android:id="@+id/leftButton" android:layout_width="0dp"
                                                   android:layout_weight="45" android:layout_height="wrap_content"
-                                                  android:src="@drawable/unlock_button" android:scaleType="fitCenter"
+                                                  android:scaleType="fitCenter"
                                                   android:visibility="gone"
                                                   android:adjustViewBounds="true"
                                                   android:layout_gravity="bottom|center_vertical"/>

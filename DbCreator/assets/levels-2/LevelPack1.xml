@@ -1,4 +1,4 @@
-<LevelPack background="bg1.jpg" title="Stage: 1" name="level-pack-1">
+<LevelPack background="bg1.jpg" title="Stage: 1" name="level-pack-1" levelIcon = "level1">
 
 
 <level number="1" complexity="0" zappers="000000000000000001000000000000" solutions="17;" tapsCount="1" />

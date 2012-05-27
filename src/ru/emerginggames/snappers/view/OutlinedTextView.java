@@ -13,6 +13,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import ru.emerginggames.snappers.R;
 
@@ -119,6 +120,7 @@ public class OutlinedTextView extends TextView{
     public void setMaxLines2(int maxlines) {
         maxLines = maxlines;
         needResize = true;
+        mLayout = null;
     }
 
     protected void setTextSizeToFit(int measuredWidth, int measuredHeight){
@@ -187,6 +189,12 @@ public class OutlinedTextView extends TextView{
         int hSize = MeasureSpec.getSize(heightMeasureSpec);
         int hMode = MeasureSpec.getMode(widthMeasureSpec);
 
+        ViewGroup.LayoutParams lp = getLayoutParams();
+        if (lp.width > 0)
+            wSize = Math.min(wSize, lp.width);
+        if (lp.height > 0)
+            hSize = Math.min(hSize, lp.height);
+
         if (wMode == MeasureSpec.UNSPECIFIED || hMode == MeasureSpec.UNSPECIFIED){
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
@@ -203,6 +211,7 @@ public class OutlinedTextView extends TextView{
             setTextSizeToFit(wSize, hSize);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        needResize = false;
     }
 
     void makeNewLayout(int width){

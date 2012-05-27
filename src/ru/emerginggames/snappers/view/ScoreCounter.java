@@ -62,7 +62,7 @@ public class ScoreCounter {
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams)bar.getLayoutParams();
         rlp.leftMargin = height * 12 / 20;
         rlp.width = barWidth = width - rlp.leftMargin;
-        rlp.height = height * 12 / 20;
+        rlp.height = height * 27 / 40;
         rlp.addRule(RelativeLayout.CENTER_VERTICAL);
         bar.setLayoutParams(rlp);
 

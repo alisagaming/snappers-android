@@ -93,16 +93,6 @@ public class GameActivity extends AndroidApplication {
         rootLayout = new RelativeLayout(this);
         rootLayout.addView(gameView);
 
-        levelInfo = new LevelInfo(rootLayout);
-        topButtons = new TopButtonController(rootLayout);
-        topButtons.showMainButtons();
-        gameOverMessageController = new GameOverMessageController();
-
-        if (!prefs.isAdFree()) {
-            adController = new AdController();
-            rootLayout.addView(adController.getAdLayout());
-        }
-
         setContentView(rootLayout);
 
         levelTable = new LevelTable(this);
@@ -110,8 +100,24 @@ public class GameActivity extends AndroidApplication {
 
         if (Settings.GoogleInAppEnabled)
             mStore = GInAppStore.getInstance(getApplicationContext());
+    }
 
+    public void initViews(){
+        if (topButtons == null)
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    levelInfo = new LevelInfo(rootLayout);
+                    topButtons = new TopButtonController(rootLayout);
+                    topButtons.showMainButtons();
+                    gameOverMessageController = new GameOverMessageController();
 
+                    if (!prefs.isAdFree()) {
+                        adController = new AdController();
+                        rootLayout.addView(adController.getAdLayout());
+                    }
+                }
+            });
     }
 
     @Override
@@ -191,13 +197,6 @@ public class GameActivity extends AndroidApplication {
         NetworkInfo netInfo = conMgr.getNetworkInfo(type);
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
-
-    public void launchStore() {
-        Intent intent = new Intent(GameActivity.this, StoreActivity.class);
-        startActivity(intent);
-    }
-
-
 
     void showHelp(){
         final View v = getLayoutInflater().inflate(R.layout.partial_help, null);
@@ -456,6 +455,7 @@ public class GameActivity extends AndroidApplication {
         @Override
         public void gotScreenSize(int width, int height) {
             Metrics.setSize(width, height, GameActivity.this);
+            initViews();
         }
 
         @Override

@@ -1,4 +1,4 @@
-<LevelPack background="bg3.jpg" shadows="YES" title="Stage: 3" name="level-pack-3">
+<LevelPack background="bg3.jpg" shadows="YES" title="Stage: 3" name="level-pack-3" levelIcon = "level3">
     
 
     <level number="1" complexity="80" zappers="123130202202011112032030401103" solutions="29,13;" tapsCount="2" />

@@ -136,6 +136,8 @@ public class LevelDbLoader {
                 pack.isPremium = xpp.getAttributeValue(i).equalsIgnoreCase("yes");
             else if (xpp.getAttributeName(i).equalsIgnoreCase("name"))
                 pack.name = xpp.getAttributeValue(i);
+            else if (xpp.getAttributeName(i).equalsIgnoreCase("levelIcon"))
+                pack.levelIcon = xpp.getAttributeValue(i);
         }
 
         pack.id = (int) levelPackTable.insert(pack);

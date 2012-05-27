@@ -1,78 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:and="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/background"
-                android:id="@+id/root"
-        >
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
-        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
-                      android:layout_height="wrap_content">
-            <LinearLayout android:id="@+id/resLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
-                          android:background="#80FF0000" android:visibility="gone"
-                    />
+                and:layout_width="fill_parent" and:layout_height="fill_parent"
+                and:id="@+id/root">
 
-            <LinearLayout android:id="@+id/bgLoadIndicator" android:layout_height="5dp" android:layout_width="5dp"
-                          android:background="#80FF0000" android:visibility="gone"
-                    />
+    <ru.emerginggames.snappers.view.ImageView and:id="@+id/bgImage"
+            and:layout_width="fill_parent" and:layout_height="fill_parent" and:layout_centerInParent="true"
+            and:src="@drawable/bg1" and:scaleType="matrix"/>
 
-            <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/score"
-                         android:layout_height="wrap_content" android:layout_width="fill_parent"
-                         android:gravity="top|right" android:textColor="#FFFFFFFF" android:textSize="30dp"
-                         android:paddingRight="5dp" android:paddingTop="5dp" android:layout_weight="1"
-                                                             app:strokeWidth="1dp" app:strokeColor="#000"
-                                                             android:text="Score:"/>
+    <LinearLayout and:layout_width="fill_parent" and:layout_height="fill_parent" and:orientation="vertical"
+                  and:layout_centerHorizontal="true" and:layout_below="@+id/hintBtn">
 
+        <LinearLayout and:orientation="horizontal" and:layout_width="fill_parent" and:layout_height="wrap_content">
+            <LinearLayout and:id="@+id/resLoadIndicator" and:layout_height="5dp" and:layout_width="5dp"
+                          and:background="#80FF0000" and:visibility="gone"/>
+            <LinearLayout and:id="@+id/bgLoadIndicator" and:layout_height="5dp" and:layout_width="5dp"
+                          and:background="#80FF0000" and:visibility="gone"/>
         </LinearLayout>
 
-        <ru.emerginggames.snappers.view.FixedRatioPager android:id="@+id/pager"
-                                                        android:layout_height="0dp" android:layout_width="fill_parent"
-                                                        android:layout_weight="1"
+        <ru.emerginggames.snappers.view.FixedRatioPager and:id="@+id/pager"
+                    and:layout_height="0dp" and:layout_width="fill_parent" and:layout_weight="1"/>
+
+        <com.viewpagerindicator.CirclePageIndicator and:id="@+id/indicator"
+                and:layout_height="wrap_content" and:layout_width="fill_parent"
+                app:radius="5dp" app:fillColor="#FFFFFF" app:pageColor="#a5a5a5" app:strokeWidth="1dp"
+                app:strokeColor="#909090" app:snap="true"
                 />
 
-        <com.viewpagerindicator.CirclePageIndicator
-                android:id="@+id/indicator"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                app:radius="5dp"
-                app:fillColor="#FFFFFF"
-                app:pageColor="#444444"
-                app:strokeWidth="0dp"
-                app:snap="true"
-                />
+        <LinearLayout and:id="@+id/footer"
+                      and:layout_width="fill_parent" and:layout_height="wrap_content"
+                      and:orientation="horizontal" and:layout_gravity="bottom" and:weightSum="100">
 
-        <LinearLayout android:id="@+id/footer"
-                      android:layout_width="fill_parent" android:layout_height="wrap_content"
-
-                      android:orientation="horizontal"
-                      android:layout_gravity="bottom"
-                      android:weightSum="100"
-                >
-            <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
-
-            <ImageView android:id="@+id/backButton" android:layout_width="0dp" android:layout_height="wrap_content"
-                       android:src="@drawable/arrow_back_btn" android:layout_weight="19"
-                       android:layout_gravity="bottom"
-                       android:scaleType="fitCenter"
-                       android:clickable="true"
-                       android:onClick="onBackButtonClick"
+            <ImageView and:id="@+id/backButton"
+                       and:layout_width="0dp" and:layout_height="wrap_content" and:layout_gravity="bottom"
+                       and:layout_weight="23"
+                       and:src="@drawable/arrow_back_btn" and:scaleType="fitCenter" and:adjustViewBounds="true"
+                       and:onClick="onBackButtonClick"
                     />
-
-            <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
-
-
-            <ImageView android:id="@+id/shopButton" android:layout_width="0dp" android:layout_height="wrap_content"
-                       android:src="@drawable/store_button" android:layout_weight="60"
-                       android:layout_gravity="bottom"
-                       android:scaleType="fitCenter"
-                       android:clickable="true"
-                       android:onClick="onStoreButtonClick"
-                    />
-
-            <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
         </LinearLayout>
 
     </LinearLayout>
+    <ru.emerginggames.snappers.view.OutlinedTextView and:id="@+id/hintBtn"
+         and:layout_width="wrap_content" and:layout_height="wrap_content"
+         and:layout_alignParentTop="true" and:layout_alignParentRight="true"
+         and:background="@drawable/button_hint" and:scaleType="fitCenter" and:adjustViewBounds="true"
+         and:textColor="@android:color/white" and:gravity="center"
+         app:strokeColor="#000" app:strokeWidth="1dp" app:setTextSizeToFit="true"/>
+
 </RelativeLayout>

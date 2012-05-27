@@ -1,14 +1,21 @@
 package ru.emerginggames.snappers;
 
 import android.content.Intent;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import com.viewpagerindicator.CirclePageIndicator;
 import ru.emerginggames.snappers.data.LevelPackTable;
+import ru.emerginggames.snappers.model.ImageDrawInfo;
 import ru.emerginggames.snappers.model.ImagePaginatorParam;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.FixedRatioPager;
+import ru.emerginggames.snappers.view.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +117,6 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
             for (int i=0; i<levelPacks.length; i++)
                 if (!levelPackStatus[i] && settings.isPackUnlocked(levelPacks[i].id))
                     updatePackCover(i);
-
         }
     }
 

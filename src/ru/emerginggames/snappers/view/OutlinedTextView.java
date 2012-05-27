@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -67,6 +70,9 @@ public class OutlinedTextView extends TextView{
     }
 
     public void drawBoring(Canvas canvas){
+        Drawable back = getBackground();
+        if (back != null && back instanceof BitmapDrawable)
+            ((BitmapDrawable)back).setAntiAlias(true);
         if (getBackground() != null)
             getBackground().draw(canvas);
 

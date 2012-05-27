@@ -24,7 +24,7 @@
 
         <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/price"
                  android:layout_width="fill_parent" android:layout_height="0px" android:gravity="center"
-                 app:strokeColor="#000" app:strokeWidth="1dp" android:textColor="#d0b800" android:layout_weight="10"/>
+                 app:strokeColor="#000" app:strokeWidth="1dp" android:textColor="#feb506" android:layout_weight="10"/>
 
     </LinearLayout>
 

@@ -3,6 +3,7 @@ package ru.emerginggames.snappers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -26,10 +27,7 @@ import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.*;
-import ru.emerginggames.snappers.view.BuyHintsDialog;
-import ru.emerginggames.snappers.view.GameDialog;
-import ru.emerginggames.snappers.view.ImageView;
-import ru.emerginggames.snappers.view.OutlinedTextView;
+import ru.emerginggames.snappers.view.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,6 +54,7 @@ public class GameActivity extends AndroidApplication {
     GameOverMessageController gameOverMessageController;
     LevelInfo levelInfo;
     BuyHintsDialog buyHintsDlg;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +110,8 @@ public class GameActivity extends AndroidApplication {
 
         if (Settings.GoogleInAppEnabled)
             mStore = GInAppStore.getInstance(getApplicationContext());
+
+
     }
 
     @Override
@@ -366,6 +367,12 @@ public class GameActivity extends AndroidApplication {
                     dlg.hide();
                     showBuyHintsMenu.run();
                     break;
+
+                case R.drawable.button_promo:
+                    wentTapjoy = true;
+                    TapjoyConnect.getTapjoyConnectInstance().showOffers();
+                    break;
+
             }
         }
 
@@ -402,7 +409,7 @@ public class GameActivity extends AndroidApplication {
         }
 
         @Override
-        public void levelSolved(Level level, int score) {
+        public void levelSolved(Level level, final int score) {
             prefs.unlockNextLevel(level);
             topButtons.showGameWonMenu();
             if (adController != null)
@@ -413,6 +420,8 @@ public class GameActivity extends AndroidApplication {
             if (next == null)
                 prefs.unlockNextLevelPack(level.pack);
             levelInfo.hide();
+
+            topButtons.showScore();
         }
 
         @Override
@@ -436,6 +445,7 @@ public class GameActivity extends AndroidApplication {
             topButtons.showMainButtons();
             gameOverMessageController.hide();
             levelInfo.show();
+            topButtons.hideScore();
         }
 
         @Override
@@ -649,6 +659,7 @@ public class GameActivity extends AndroidApplication {
         ImageView helpBtn;
         RelativeLayout.LayoutParams rlpTop;
         RelativeLayout.LayoutParams rlpUnderView;
+        ScoreCounter scoreCounter;
 
         public TopButtonController(RelativeLayout rootLayour){
             layout = (RelativeLayout)getLayoutInflater().inflate(R.layout.partial_topbuttons, null);
@@ -670,10 +681,21 @@ public class GameActivity extends AndroidApplication {
             rlpTop.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             rlpTop.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             rlpTop.setMargins(Metrics.screenMargin, Metrics.screenMargin, Metrics.screenMargin, 0);
+
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)hintBtn.getLayoutParams();
+            int bgWidth = hintBtn.getBackground().getIntrinsicWidth();
+            int bgHeight = hintBtn.getBackground().getIntrinsicHeight();
+            float scale = ((float)rlpTop.height / bgHeight );
+            lp.width = Math.round(bgWidth * scale);
+            lp.height = rlpTop.height;
+            int[] iPaddings = {27, 23, 94, 23};
+            hintBtn.setPadding((int)(iPaddings[0] * scale), (int)(iPaddings[1] * scale), (int)(iPaddings[2] * scale), (int)(iPaddings[3] * scale));
+            hintBtn.setLayoutParams(lp);
             hintBtn.setTypeface(Resources.getFont(getApplicationContext()));
             hintBtn.setMaxLines2(1);
             updateHints();
 
+            addScoreCounter();
             rootLayour.addView(layout, rlpTop);
         }
 
@@ -681,7 +703,14 @@ public class GameActivity extends AndroidApplication {
             runOnUiThread(updateHints);
         }
 
-
+        void addScoreCounter(){
+            scoreCounter = new ScoreCounter(GameActivity.this, Metrics.squareButtonSize * 32 / 10, Metrics.squareButtonSize);
+            scoreCounter.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            layout.addView(scoreCounter.getView(), lp);
+        }
 
         public void alignTop(){
             layout.setLayoutParams(rlpTop);
@@ -708,6 +737,14 @@ public class GameActivity extends AndroidApplication {
 
         public void showGameLostMenu(){
             runOnUiThread(showLostMenu);
+        }
+
+        public void showScore(){
+            runOnUiThread(showScore);
+        }
+
+        public void hideScore(){
+            runOnUiThread(hideScore);
         }
 
         void hideAll(){
@@ -752,6 +789,22 @@ public class GameActivity extends AndroidApplication {
                 restartBtn.setVisibility(View.VISIBLE);
                 menuBtn.setVisibility(View.VISIBLE);
                 helpBtn.setVisibility(View.VISIBLE);
+            }
+        };
+
+        Runnable showScore = new Runnable() {
+            @Override
+            public void run() {
+                scoreCounter.setLevel(88, 200000, 300000);
+                scoreCounter.setScore(prefs.getScore());
+                scoreCounter.setVisibility(View.VISIBLE);
+            }
+        };
+
+        Runnable hideScore = new Runnable() {
+            @Override
+            public void run() {
+                scoreCounter.setVisibility(View.GONE);
             }
         };
 

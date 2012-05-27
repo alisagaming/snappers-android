@@ -90,8 +90,8 @@ public class Metrics {
                 bangSize = 48;
                 snapperSize = 48;
                 blastSize = 18;
-                squareButtonSize = 48;
-                fontSize = 24;
+                squareButtonSize = 40;
+                fontSize = 22;
                 menuWidth = 240;
                 hintSize=64;
                 bgSourceWidth = 320;
@@ -101,8 +101,8 @@ public class Metrics {
                 snapperSize = 81;
                 bangSize = 72;
                 blastSize = 27;
-                squareButtonSize = 96;
-                fontSize = 38;
+                squareButtonSize = 80;
+                fontSize = 34;
                 menuWidth = 360;
                 hintSize=128;
                 bgSourceWidth = 512;
@@ -112,7 +112,7 @@ public class Metrics {
                 snapperSize = 108;
                 bangSize = 96;
                 blastSize = 36;
-                squareButtonSize = 128;
+                squareButtonSize = 106;
                 menuWidth = 500;
                 fontSize = 48;
                 hintSize=128;

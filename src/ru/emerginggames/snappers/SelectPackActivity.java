@@ -32,17 +32,17 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
     private static final int VISIBLE_PACK_UNLOCKED = -2;
 
     LevelPack[] levelPacks;
-    RotatedImagePagerAdapter adapter;
+    ImagePagerAdapter adapter;
     boolean[] levelPackStatus;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int overlap = getWindowManager().getDefaultDisplay().getWidth()/4;
+        int overlap = getWindowManager().getDefaultDisplay().getWidth()/3;
 
         setPagerAdapter();
         FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
-        pager.setPageMargin(- overlap);
+        pager.setPageMargin(-overlap);
         pager.setOffscreenPageLimit(3);
         pager.setCurrentChildOnTop(true);
 
@@ -73,7 +73,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
     List<ImagePaginatorParam> getPaginatorParamList(){
         levelPacks = LevelPackTable.getAll(this);
-        List<ImagePaginatorParam> params = new ArrayList<ImagePaginatorParam>(8);
+        List<ImagePaginatorParam> params = new ArrayList<ImagePaginatorParam>(7);
         UserPreferences settings = UserPreferences.getInstance(this);
         levelPackStatus = new boolean[levelPacks.length];
 
@@ -138,7 +138,9 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
     void setPagerAdapter(){
         FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
-        adapter = new RotatedImagePagerAdapter(this, getPaginatorParamList(), this);
+        int width = Math.round(getWindowManager().getDefaultDisplay().getWidth() * 0.55f);
+        adapter = new ImagePagerAdapter(this, getPaginatorParamList(), this);
+        adapter.setImageWidth(width);
         pager.setAdapter(adapter);
     }
 

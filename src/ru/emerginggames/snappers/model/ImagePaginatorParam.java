@@ -30,62 +30,34 @@ public class ImagePaginatorParam {
         switch (id){
             case LOCKED:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.locked, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
+                        new ImageDrawInfo(R.drawable.pack_locked, false, false)};
             case COMING_SOON:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.coming, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case HINT_PACK:
+                        new ImageDrawInfo(R.drawable.coming, false, false)};
+/*            case HINT_PACK:
                 return new ImageDrawInfo[]{
                         new ImageDrawInfo(R.drawable.hints_cover, true, true)};
             case ADFREE:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.adfree_cover, true, true)};
+                        new ImageDrawInfo(R.drawable.adfree_cover, true, true)};*/
             case 1:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack1, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
+                        new ImageDrawInfo(R.drawable.pack1, false, false)};
             case 2:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack2, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
+                        new ImageDrawInfo(R.drawable.pack2, false, false)};
             case 3:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack3, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
+                        new ImageDrawInfo(R.drawable.pack3, false, false)};
             case 4:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack4, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
+                        new ImageDrawInfo(R.drawable.pack4, false, false)};
             case 5:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack5, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
+                        new ImageDrawInfo(R.drawable.pack5, false, false)};
             case 6:
                 return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack6, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 7:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.pack7, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 8:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack1, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 9:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack2, true, true)
-                };
-            case 10:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack3, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
-            case 11:
-                return new ImageDrawInfo[]{
-                        new ImageDrawInfo(R.drawable.premium_pack4, false, false),
-                        new ImageDrawInfo(R.drawable.shadow_pack, true, true)};
+                        new ImageDrawInfo(R.drawable.pack_p1, false, false)};
         }
 
         return null;

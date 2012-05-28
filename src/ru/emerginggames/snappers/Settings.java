@@ -19,7 +19,7 @@ public class Settings {
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = true;
     public static final boolean DEBUG_BUY = true & DEBUG;
-    public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
+    public static final boolean ENABLE_ALL_LEVELS = true & DEBUG;
     public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
     public static boolean GoogleInAppEnabled = true;
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";

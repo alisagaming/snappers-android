@@ -12,6 +12,7 @@ import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.view.FixedRatioPager;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
+import ru.emerginggames.snappers.view.ImageView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,6 +53,13 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) footer.getLayoutParams();
         lp.weight = 1;
         footer.setLayoutParams(lp);
+
+        int dotposition= pack.background.lastIndexOf(".");
+        String res  = pack.background.substring(0,dotposition);
+
+        int id = getResources().getIdentifier(res, "drawable", getPackageName());
+        if (id > 0)
+            ((ImageView)findViewById(R.id.bgImage)).setImageResource(id);
     }
 
     @Override

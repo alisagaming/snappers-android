@@ -41,7 +41,7 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         pager.setAdapter(adapter);
         pager.setPageMargin(20);
         pager.setRatio(1);
-        int padV = getWindowManager().getDefaultDisplay().getWidth() / 10;
+        int padV = getWindowManager().getDefaultDisplay().getWidth() / 20;
         pager.setInnerPaddings(padV, padV / 3, padV, padV / 3);
         adapter.setInnerPaddings(padV, padV / 3, padV, padV / 3);
 

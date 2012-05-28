@@ -22,6 +22,7 @@ import ru.emerginggames.snappers.model.LevelPack;
  * Time: 2:09
  */
 public class LevelListFragment extends Fragment implements View.OnClickListener {
+    private static final int[] bgPaddings = {16,16,16,23};
     private int startFromLevel;
     private IOnItemSelectedListener itemSelectedListener;
     private int maxAvailableLevel;
@@ -32,6 +33,8 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
     int innerPaddingTop = 0;
     int innerPaddingRight = 0;
     int innerPaddingBottom = 0;
+
+    int backId;
 
     public LevelListFragment() {
     }
@@ -80,6 +83,10 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        backId = getResources().getIdentifier(pack.levelIcon, "drawable", getActivity().getPackageName());
+        if (backId == 0)
+            backId = R.drawable.level1;
+
 
         LinearLayout layout = new LinearLayout(getActivity());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
@@ -91,11 +98,17 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         int num = startFromLevel;
 
         LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT, 1f);
-        if (Metrics.sizeMode == Metrics.SizeMode.modeS)
-            itemParams.setMargins(2,2,2,2);
-        else
-            itemParams.setMargins(6,6,6,6);
-
+        switch (Metrics.sizeMode){
+            case modeS:
+                itemParams.setMargins(2,2,2,2);
+                break;
+            case modeM:
+                itemParams.setMargins(4,4,4,4);
+                break;
+            case modeL:
+                itemParams.setMargins(6,6,6,6);
+                break;
+        }
 
         for (int i=0; i<5; i++){
             LinearLayout layoutRow = new LinearLayout(getActivity());
@@ -106,6 +119,7 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
                 OutlinedTextView text = new OutlinedTextView(getActivity());
                 text.setLayoutParams(itemParams);
                 //text.setPadding(4, 4, 4, 4);
+                text.setBackgroundPaddings(bgPaddings);
                 text.setGravity(Gravity.CENTER);
                 setItemState(text, num);
                 text.setOnClickListener(this);
@@ -129,13 +143,13 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
     private void setItemState(OutlinedTextView text, int num){
         text.setText(Integer.toString(num));
         if (num <= maxAvailableLevel){
-            text.setBackgroundResource(R.drawable.level);
+            text.setBackgroundResource(backId);
             text.setTextColor(Color.WHITE);
             text.setStroke(Color.BLACK, 2);
             text.setTag(num);
         }
         else {
-            text.setBackgroundResource(R.drawable.level_lock);
+            text.setBackgroundResource(R.drawable.level_locked);
             text.setTextColor(Color.TRANSPARENT);
             text.setStroke(Color.TRANSPARENT, 2);
         }

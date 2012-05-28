@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.NinePatchDrawable;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -46,9 +45,7 @@ public class OutlinedTextView extends TextView{
     
     int[] mLineEnds;
     
-    int mLayoutPaddingLeft;
-    int mLayoutPaddingTop;
-
+    int[] bgPad;
 
 
     public OutlinedTextView(Context context) {
@@ -115,6 +112,10 @@ public class OutlinedTextView extends TextView{
 
     public void setSquare(boolean square) {
         isSquare = square;
+    }
+
+    public void setBackgroundPaddings(int[] backgroundPaddings) {
+        this.bgPad = backgroundPaddings;
     }
 
     public void setMaxLines2(int maxlines) {
@@ -201,6 +202,12 @@ public class OutlinedTextView extends TextView{
         }
 
         needResize |=  (lastMeasuredWidth != wSize || getMeasuredHeight() != hSize);
+
+        if (needResize && wMode == MeasureSpec.EXACTLY && hMode == MeasureSpec.EXACTLY && bgPad != null){
+            float scale =  (float)hSize / getBackground().getIntrinsicHeight();
+            setPadding((int)(bgPad[0] * scale), (int)(bgPad[1] * scale), (int)(bgPad[2] * scale), (int)(bgPad[3] * scale));
+        }
+
         if (needResize && isSquare && maxLines == 1 && setTextSizeToFit){
             setTextSizeToFit(wSize, hSize);
             setMeasuredDimension(wSize, wSize);
@@ -211,6 +218,13 @@ public class OutlinedTextView extends TextView{
             setTextSizeToFit(wSize, hSize);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int measuredWidth = getMeasuredWidth();
+        int measuredHeight = getMeasuredHeight();
+        if (measuredWidth + 2 * strokeWidth <= wSize)
+            measuredWidth += 2 * strokeWidth;
+        if (measuredHeight + 2 * strokeWidth <= hSize)
+            measuredHeight += 2 * strokeWidth;
+        setMeasuredDimension(measuredWidth, measuredHeight);
         needResize = false;
     }
 

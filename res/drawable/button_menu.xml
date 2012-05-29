@@ -2,5 +2,10 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="false" android:drawable="@drawable/menu"/>
-    <item android:state_pressed="true" android:drawable="@drawable/menu_tap"/>
+    <item android:state_pressed="true">
+        <layer-list>
+            <item android:drawable="@drawable/menu"/>
+            <item android:drawable="@drawable/circle_btn_tap"/>
+        </layer-list>
+    </item>
 </selector>

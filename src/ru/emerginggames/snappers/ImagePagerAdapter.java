@@ -1,20 +1,16 @@
 package ru.emerginggames.snappers;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import ru.emerginggames.snappers.model.ImageDrawInfo;
 import ru.emerginggames.snappers.model.ImagePaginatorParam;
-import ru.emerginggames.snappers.view.ICurrentItemSelector;
 import ru.emerginggames.snappers.view.IOnItemSelectedListener;
 import ru.emerginggames.snappers.view.ImageView;
-import ru.emerginggames.snappers.view.RotatedImageView;
 
 import java.util.List;
 

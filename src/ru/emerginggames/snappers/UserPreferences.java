@@ -11,8 +11,6 @@ import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.DeviceUuidFactory;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Created by IntelliJ IDEA.
  * User: babay

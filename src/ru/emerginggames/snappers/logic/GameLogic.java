@@ -116,6 +116,8 @@ public class GameLogic {
         if (isSolvedBefore)
             score = Math.round(score * Settings.REPEAT_MULT);
 
+
+        //score *= 10;
         return score;
     }
 

@@ -19,7 +19,7 @@ public class Settings {
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = true;
     public static final boolean DEBUG_BUY = true & DEBUG;
-    public static final boolean ENABLE_ALL_LEVELS = true & DEBUG;
+    public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
     public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
     public static boolean GoogleInAppEnabled = true;
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
@@ -158,6 +158,60 @@ public class Settings {
     }
 
 
+    static int xpOfLevel[] = {
+            0,          // 1
+            2000,       // 2
+            6000,       // 3
+            12000,      // 4
+            20000,      // 5
+            30000,      // 6
+            45000,      // 7
+            65000,      // 8
+            90000,      // 9
+            120000,     // 10
+            160000,     // 11
+            210000,     // 12
+            270000,     // 13
+            340000,     // 14
+            420000,     // 15
+            505000,     // 16
+            595000,     // 17
+            695000,     // 18
+            800000,     // 19
+            900000,     // 20
+            1000000,    // 21
+            1105000,    // 22
+            1210000,    // 23
+            1315000,    // 24
+            1425000,    // 25
+            1535000,    // 26
+            1645000,    // 27
+            1760000,    // 28
+            1880000,    // 29
+            2000000,    // 30
+            2125000,    // 31
+            2250000,    // 32
+            2375000,    // 33
+            2500000,    // 34
+            2625000,    // 35
+            2750000,    // 36
+            2875000,    // 37
+            3000000,    // 38
+            3150000,    // 39
+            3300000,    // 40
+    };
 
+    public static int getLevel(int score){
+        for (int i=1; i<xpOfLevel.length; i++){
+            if (xpOfLevel[i]> score)
+                return i;
+        }
+        return xpOfLevel.length;
+    }
 
+    public static int getLevelXp(int level){
+        if (level < xpOfLevel.length)
+            return xpOfLevel[level - 1];
+        return Integer.MAX_VALUE;
+    }
 }

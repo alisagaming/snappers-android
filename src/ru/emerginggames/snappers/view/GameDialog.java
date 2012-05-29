@@ -25,12 +25,18 @@ public class GameDialog extends Dialog {
     boolean isTwoButtonsARow;
     int buttons = 0;
     LinearLayout lastRow;
+    int width;
 
     public GameDialog(Context context) {
         super(context, R.style.GameDialog);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_game);
         findViewById(R.id.close_btn).setOnClickListener(closeBtnListener);
+    }
+
+    public GameDialog(Context context, int width) {
+        this(context);
+        this.width = width;
     }
 
     public void setBtnClickListener(OnDialogEventListener btnClickListener) {
@@ -43,6 +49,13 @@ public class GameDialog extends Dialog {
 
     public void setTwoButtonsARow(boolean twoButtonsARow) {
         isTwoButtonsARow = twoButtonsARow;
+    }
+
+    public void addOkButton(){
+        addButton(R.drawable.button_ok, 0.4f);
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)findViewById(R.id.buttonCont).getLayoutParams();
+        lp.topMargin = width / 20;
+        findViewById(R.id.buttonCont).setLayoutParams(lp);
     }
 
     public void setTypeface(Typeface typeface){
@@ -76,6 +89,19 @@ public class GameDialog extends Dialog {
         addButton(btn);
     }
 
+    public void addButton(int drawable_id, float widthShare){
+        ImageView btn = new ImageView(getContext());
+        btn.setImageResource(drawable_id);
+        btn.setOnClickListener(clickListener);
+        btn.setAdjustViewBounds(true);
+        btn.setTag(drawable_id);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(widthShare * width), ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, itemSpacing, 0, 0);
+        ((LinearLayout)findViewById(R.id.buttonCont)).addView(btn, lp);
+
+    }
+
     void addButton(View btn){
         if (isTwoButtonsARow){
             if (buttons %2 == 0 ){
@@ -99,6 +125,7 @@ public class GameDialog extends Dialog {
     }
 
     public void setWidth(int width){
+        this.width = width;
         getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
     }
 
@@ -125,7 +152,19 @@ public class GameDialog extends Dialog {
         t.setVisibility(View.VISIBLE);
     }
 
-    final View.OnClickListener clickListener = new View.OnClickListener(){
+    public void setMessage(CharSequence message, int[] lineEnds){
+        OutlinedTextView t = (OutlinedTextView)findViewById(R.id.message);
+        t.setText2(message);
+        t.setVisibility(View.VISIBLE);
+
+        if (lineEnds != null) {
+            t.setMaxLines2(lineEnds.length);
+            t.setLineEnds(lineEnds);
+        }
+        t.setTextSizeToFit(true);
+    }
+
+    protected View.OnClickListener clickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             if (btnClickListener!= null)

@@ -1,12 +1,9 @@
 package ru.emerginggames.snappers.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.Button;
 
 /**
  * Created by IntelliJ IDEA.

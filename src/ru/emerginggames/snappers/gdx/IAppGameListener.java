@@ -1,6 +1,5 @@
 package ru.emerginggames.snappers.gdx;
 
-import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 

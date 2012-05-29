@@ -5,12 +5,10 @@ import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.R;
-import ru.emerginggames.snappers.SoundManager;
 import ru.emerginggames.snappers.gdx.Resources;
 import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.utils.GInAppStore;
@@ -22,7 +20,6 @@ import ru.emerginggames.snappers.utils.GInAppStore;
  * Time: 19:27
  */
 public class BuyHintsDialog extends GameDialog {
-    //private static final int[] amounts = {3, 10, 25, 75};
     private static final String[] amounts = {"x 3", "x 10", "x 25", "x 75"};
     private static final String[] prices = {"$1.99", "$4.99", "$9.99", "$24.99"};
     private int bestBuy = 2;

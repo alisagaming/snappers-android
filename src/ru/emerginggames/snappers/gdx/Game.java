@@ -189,7 +189,7 @@ public class Game implements ApplicationListener{
                 if (mainStage.getLogic().isGameLost())
                     mGameListener.showGameLost(mainStage.getLogic().level);
                 else{
-                    int score = mainStage.getLogic().getScore(mGameListener.isLevelSolved(level));
+                    int score = mainStage.getLogic().getScore(mGameListener.isLevelSolved(mainStage.getLogic().level));
                     mGameListener.levelSolved(mainStage.getLogic().level, score);
                 }
                 break;

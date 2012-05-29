@@ -3,7 +3,6 @@ package ru.emerginggames.snappers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.IAppGameListener;
 import ru.emerginggames.snappers.gdx.Resources;
-import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.*;
@@ -54,6 +52,8 @@ public class GameActivity extends AndroidApplication {
     GameOverMessageController gameOverMessageController;
     LevelInfo levelInfo;
     BuyHintsDialog buyHintsDlg;
+    NewLevelDialog newLevelDialog;
+    int currentLevel;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +100,7 @@ public class GameActivity extends AndroidApplication {
 
         if (Settings.GoogleInAppEnabled)
             mStore = GInAppStore.getInstance(getApplicationContext());
+        currentLevel = Settings.getLevel(prefs.getScore());
     }
 
     public void initViews(){
@@ -327,6 +328,28 @@ public class GameActivity extends AndroidApplication {
         dlg.setTypeface(Resources.getFont(this));
     }
 
+    Runnable showNewLevelDialog = new Runnable() {
+        @Override
+        public void run() {
+            if (newLevelDialog == null){
+                newLevelDialog = new NewLevelDialog(GameActivity.this, Metrics.screenWidth * 95 / 100);
+            }
+            newLevelDialog.setLevel(currentLevel);
+            newLevelDialog.show();
+            newLevelDialog.setBtnClickListener(new GameDialog.OnDialogEventListener() {
+                @Override
+                public void onButtonClick(int unpressedDrawableId) {
+                    newLevelDialog.hide();
+                }
+
+                @Override
+                public void onCancel() {
+                    newLevelDialog.hide();
+                }
+            });
+        }
+    };
+
     GameDialog.OnDialogEventListener dialogButtonListener = new GameDialog.OnDialogEventListener() {
         @Override
         public void onButtonClick(int unpressedDrawableId) {
@@ -371,7 +394,6 @@ public class GameActivity extends AndroidApplication {
                     wentTapjoy = true;
                     TapjoyConnect.getTapjoyConnectInstance().showOffers();
                     break;
-
             }
         }
 
@@ -379,13 +401,6 @@ public class GameActivity extends AndroidApplication {
         public void onCancel() {
             game.setStage(Game.Stages.MainStage);
             game.setPaused(false);
-        }
-
-        public void buy(Goods goods) {
-            if (mStore != null) {
-                wentShop = true;
-                mStore.buy(goods);
-            }
         }
     };
 
@@ -421,6 +436,12 @@ public class GameActivity extends AndroidApplication {
             levelInfo.hide();
 
             topButtons.showScore();
+
+            int newLevel = Settings.getLevel(prefs.getScore());
+            if (newLevel > currentLevel){
+                currentLevel = newLevel;
+                runOnUiThread(showNewLevelDialog);
+            }
         }
 
         @Override
@@ -606,11 +627,6 @@ public class GameActivity extends AndroidApplication {
                     return;
 
                 adWhirlLayout.setVisibility(View.VISIBLE);
-/*                if (adWhirlLayout.getChildCount() > 0) {
-                    View v = adWhirlLayout.getChildAt(0);
-                    adWhirlLayout.removeView(v);
-                    adWhirlLayout.addView(v);
-                }*/
                 rootLayout.removeView(adWhirlLayout);
                 rootLayout.addView(adWhirlLayout);
                 isShowingAd = true;
@@ -777,7 +793,6 @@ public class GameActivity extends AndroidApplication {
             public void run() {
                 hideAll();
                 nextBtn.setVisibility(View.VISIBLE);
-                //restartBtn.setVisibility(View.VISIBLE);
                 menuBtn.setVisibility(View.VISIBLE);
             }
         };
@@ -795,7 +810,6 @@ public class GameActivity extends AndroidApplication {
         Runnable showScore = new Runnable() {
             @Override
             public void run() {
-                scoreCounter.setLevel(88, 200000, 300000);
                 scoreCounter.setScore(prefs.getScore());
                 scoreCounter.setVisibility(View.VISIBLE);
             }
@@ -915,8 +929,6 @@ public class GameActivity extends AndroidApplication {
                rootLayout.removeView(layout);
            }
        };
-
-
     }
 
     class LevelInfo{
@@ -1007,9 +1019,5 @@ public class GameActivity extends AndroidApplication {
                 layout.setVisibility(View.VISIBLE);
             }
         };
-
-
-
-
     }
 }

@@ -1,6 +1,5 @@
 package ru.emerginggames.snappers;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;

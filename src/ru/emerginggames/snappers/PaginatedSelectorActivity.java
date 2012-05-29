@@ -1,7 +1,6 @@
 package ru.emerginggames.snappers;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,7 +22,7 @@ import ru.emerginggames.snappers.view.*;
  * Time: 15:01
  */
 public class PaginatedSelectorActivity extends FragmentActivity {
-    MyAlertDialog dlg;
+    GameDialog dlg;
     ScoreCounter scoreCounter;
     BuyHintsDialog buyHintsDialog;
 
@@ -108,7 +107,6 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         OutlinedTextView hintBtn = (OutlinedTextView)findViewById(R.id.hintBtn);
         hintBtn.setText2(Integer.toString(UserPreferences.getInstance(this).getHintsRemaining()));
 
-        scoreCounter.setLevel(88, 100000, 400000);
         scoreCounter.setScore(UserPreferences.getInstance(this).getScore());
     }
 
@@ -131,22 +129,26 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         startActivity(new Intent(this, StoreActivity.class));
     }
     
-    public void showMessageDialog(String message, int[] lineEnds, View.OnClickListener leftListener, View.OnClickListener rightListener){
-        if (dlg == null)
-            dlg = new MyAlertDialog(this);
-        //dlg.setLeftButton(R.drawable.unlock_button, leftListener);
-        dlg.setRightButton(R.drawable.ok_button, rightListener);
-        dlg.setMessage(message, lineEnds);
+    public void showMessageDialog(String message, int[] lineEnds){
+        if (dlg == null){
+            dlg = new GameDialog(this, Metrics.screenWidth * 95 / 100);
+            dlg.addOkButton();
+            dlg.setBtnClickListener(new GameDialog.OnDialogEventListener() {
+                @Override
+                public void onButtonClick(int unpressedDrawableId) {
+                    dlg.hide();
+                }
+                @Override
+                public void onCancel() {}
+            });
+        }
+
+        dlg.setMessage(message, Metrics.fontSize);
         dlg.show();
     }
     
     public void showMessage(String msg){
-        showMessageDialog(msg, null, null, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideMessageDialog();
-            }
-        });
+        showMessageDialog(msg, null);
     }
 
     public void hideMessageDialog(){

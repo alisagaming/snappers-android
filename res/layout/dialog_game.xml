@@ -4,12 +4,14 @@
               xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+              android:id="@+id/root"
         >
 
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
                   android:orientation="vertical"
                   android:layout_centerHorizontal="true"
                   android:background="@drawable/dialog"
+                  android:id="@+id/dialog"
             >
 
         <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/title" android:layout_width="fill_parent"

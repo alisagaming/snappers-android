@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import org.w3c.dom.Text;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.R;
+import ru.emerginggames.snappers.Settings;
 import ru.emerginggames.snappers.gdx.Resources;
 
 /**
@@ -81,6 +81,10 @@ public class ScoreCounter {
     }
 
     public void setScore(int score){
+        int newLevel = Settings.getLevel(score);
+        if (newLevel != level)
+            setLevel(newLevel, Settings.getLevelXp(newLevel), Settings.getLevelXp(newLevel+1));
+
         float progress = Math.min(((float)score - levelScore) / (nextLevelScore - levelScore), 1);
         int filledWidth = Math.round(progress * barWidth);
 

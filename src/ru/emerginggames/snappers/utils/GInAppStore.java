@@ -1,7 +1,6 @@
 package ru.emerginggames.snappers.utils;
 
 import android.content.Context;
-import android.os.Handler;
 import ru.emerginggames.snappers.Consts;
 import ru.emerginggames.snappers.UserPreferences;
 import ru.emerginggames.snappers.model.Goods;

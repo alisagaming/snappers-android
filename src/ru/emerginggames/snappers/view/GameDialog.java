@@ -169,7 +169,9 @@ public class GameDialog extends Dialog {
         public void onClick(View v) {
             if (btnClickListener!= null)
                 btnClickListener.onButtonClick((Integer)v.getTag());
-            SoundManager.PlayButtonSoundIfPossible();
+            SoundManager.playButtonSoundIfPossible();
+            if ((Integer)v.getTag() == R.drawable.button_ok)
+                hide();
         }
     };
 
@@ -183,7 +185,7 @@ public class GameDialog extends Dialog {
     View.OnClickListener closeBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            SoundManager.PlayButtonSoundIfPossible();
+            SoundManager.playButtonSoundIfPossible();
             cancel();
             if (btnClickListener!= null)
                 btnClickListener.onCancel();

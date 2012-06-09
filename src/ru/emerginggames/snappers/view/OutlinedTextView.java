@@ -91,7 +91,7 @@ public class OutlinedTextView extends TextView{
         else if ((gravity & Gravity.BOTTOM) == Gravity.BOTTOM)
             posy = getHeight() - strokeWidth - getPaddingBottom();
         else if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL)
-            posy = (height -rect.top)/2 + getPaddingTop();
+            posy = (height + rect.height())/2 + getPaddingTop();
 
         if ((gravity & Gravity.LEFT) == Gravity.LEFT)
             posx = getPaddingLeft() + strokeWidth;
@@ -188,7 +188,7 @@ public class OutlinedTextView extends TextView{
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
         int wMode = MeasureSpec.getMode(widthMeasureSpec);
         int hSize = MeasureSpec.getSize(heightMeasureSpec);
-        int hMode = MeasureSpec.getMode(widthMeasureSpec);
+        int hMode = MeasureSpec.getMode(heightMeasureSpec);
 
         ViewGroup.LayoutParams lp = getLayoutParams();
         if (lp.width > 0)
@@ -202,10 +202,15 @@ public class OutlinedTextView extends TextView{
         }
 
         needResize |=  (lastMeasuredWidth != wSize || getMeasuredHeight() != hSize);
+        float scale = 0;
 
-        if (needResize && wMode == MeasureSpec.EXACTLY && hMode == MeasureSpec.EXACTLY && bgPad != null){
-            float scale =  (float)hSize / getBackground().getIntrinsicHeight();
-            setPadding((int)(bgPad[0] * scale), (int)(bgPad[1] * scale), (int)(bgPad[2] * scale), (int)(bgPad[3] * scale));
+        if (needResize && bgPad != null){
+            if (hMode == MeasureSpec.EXACTLY)
+                scale =  (float)hSize / getBackground().getIntrinsicHeight();
+            else if (wMode == MeasureSpec.EXACTLY)
+                scale =  (float)wSize / getBackground().getIntrinsicWidth();
+            if (scale != 0)
+                setPadding((int)(bgPad[0] * scale), (int)(bgPad[1] * scale), (int)(bgPad[2] * scale), (int)(bgPad[3] * scale));
         }
 
         if (needResize && isSquare && maxLines == 1 && setTextSizeToFit){
@@ -250,6 +255,7 @@ public class OutlinedTextView extends TextView{
         CharSequence text = getText();
         mLayout = new StaticLayout(text, textPaint,
                 w, alignment, mLineMult, mLineMult, true);
+
         
         mStrokeLayout = new StaticLayout(text, outlinePaint,
                 w, alignment, mLineMult, mLineMult, true);
@@ -326,7 +332,7 @@ public class OutlinedTextView extends TextView{
         if (mLayout == null)
             makeNewLayout(getMeasuredWidth());
 
-        if (mLayout.getLineCount() == 1){
+        if (mLayout.getLineCount() == 1 || maxLines == 1){
             drawBoring(canvas);
             return;
         }

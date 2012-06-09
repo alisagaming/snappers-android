@@ -46,5 +46,14 @@
     <string name="level_n" formatted="false">Level: %d-%d</string>
     <string name="taps_left" formatted="false">Taps left: %d</string>
     <string name="new_level" formatted="false">You\'ve reached level %d!</string>
+    <string name="settings">Settins</string>
+    <string name="loginToFb">Login to FB</string>
+    <string name="login">Login</string>
+    <string name="shareToFb">Share on FB</string>
+    <string name="sound">Sound</string>
+    <string name="music">Music</string>
+    <string name="collect_now">Collect now!</string>
+    <string name="received_bonus_hint">You\'ve received one bonus hint!</string>
+    <string name="received_bonus_hints" formatted="false">You\'ve received %d bonus hints!</string>
 
 </resources>

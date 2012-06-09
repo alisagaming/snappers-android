@@ -1,68 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/root"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/background"
-                android:padding="10dp"
+<RelativeLayout xmlns:and="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
+                and:id="@+id/root"
+                and:layout_width="fill_parent"
+                and:layout_height="fill_parent"
+                and:background="@drawable/gradient_blue"
         >
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/logoCont"
-                  android:orientation="horizontal">
-        <LinearLayout android:layout_height="0dp" android:layout_width="0dp" android:layout_weight="10"/>
-        <ru.emerginggames.snappers.view.ImageView android:id="@+id/logo" android:layout_width="0dp"
-                                                  android:layout_weight="80"
-                                                  android:layout_height="wrap_content"
-                                                  android:src="@drawable/logo"
-                                                  android:scaleType="fitCenter" android:adjustViewBounds="true"
-                                                  android:layout_gravity="center"
-                />
-        <LinearLayout android:layout_height="0dp" android:layout_width="dp" android:layout_weight="10"/>
-    </LinearLayout>
-
-    <ru.emerginggames.snappers.view.ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                              android:layout_centerInParent="true" android:id="@+id/playButton"
-                                              android:src="@drawable/play_button" android:onClick="onPlayButtonClick"/>
-
-    <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true">
-        <LinearLayout android:id="@+id/options" android:layout_width="85dp" android:layout_height="wrap_content"
-                      android:background="@drawable/settings_back"
-                      android:layout_marginBottom="-56dp" android:layout_above="@+id/settingsBtn"
-                      android:gravity="center_horizontal"
-                      android:paddingBottom="60dp"
-                      android:paddingTop="8dp"
-                      android:orientation="vertical">
-            <CheckBox android:layout_width="64dp" android:layout_height="64dp"
-                      android:id="@+id/musicCheck" android:layout_marginBottom="4dp"
-                      android:gravity="center"
-                      android:button="@drawable/music_check"
-                      android:onClick="onMusicButtonClick"
-                    />
-            <CheckBox android:layout_width="64dp" android:layout_height="64dp"
-                      android:id="@+id/soundCheck"
-                      android:button="@drawable/sound_check"
-                      android:onClick="onSoundButtonClick"
-                    />
-        </LinearLayout>
-
-
-        <ru.emerginggames.snappers.view.ImageView android:id="@+id/settingsBtn" android:layout_width="wrap_content"
-                                                  android:layout_height="wrap_content"
-                                                  android:src="@drawable/settings"
-                                                  android:layout_alignParentBottom="true"
-                                                  android:scaleType="fitCenter" android:adjustViewBounds="true"
-                                                  android:onClick="settingsButtonClick"
-                />
-    </RelativeLayout>
-
-    <ImageView android:id="@+id/shopButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
-               android:src="@drawable/store_button"
-               android:layout_alignParentBottom="true"
-               android:layout_alignParentRight="true"
-               android:scaleType="fitCenter"
-               android:onClick="onStoreButtonClick"
+    <ru.emerginggames.snappers.view.ImageView and:src="@drawable/main_screen" and:layout_width="fill_parent"
+                  and:layout_height="wrap_content"
+                  and:layout_alignParentBottom="true" and:scaleType="centerInside" and:adjustViewBounds="true"
             />
 
+    <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content" and:id="@+id/logoCont"
+                  and:orientation="horizontal">
+        <LinearLayout and:layout_height="0dp" and:layout_width="0dp" and:layout_weight="10"/>
+        <ru.emerginggames.snappers.view.ImageView and:id="@+id/logo" and:layout_width="0dp"
+                                                  and:layout_weight="80"
+                                                  and:layout_height="wrap_content"
+                                                  and:src="@drawable/logo"
+                                                  and:scaleType="fitCenter" and:adjustViewBounds="true"
+                                                  and:layout_gravity="center"
+                />
+        <LinearLayout and:layout_height="0dp" and:layout_width="dp" and:layout_weight="10"/>
+    </LinearLayout>
+
+    <ru.emerginggames.snappers.view.ImageView and:layout_width="wrap_content" and:layout_height="wrap_content"
+            and:layout_centerVertical="true" and:layout_alignParentRight="true" and:layout_marginRight="20dp"
+            and:id="@+id/playButtonOnline" and:src="@drawable/button_play" and:onClick="onPlayButtonClick"/>
+
+    <ru.emerginggames.snappers.view.ImageView and:layout_width="wrap_content" and:layout_height="wrap_content"
+            and:layout_above="@+id/dailyBonus" and:layout_alignParentRight="true" and:id="@+id/playButtonOffline"
+            and:src="@drawable/button_play_offline" and:onClick="onPlayButtonOfflineClick" and:layout_marginRight="20dp"
+            and:layout_marginBottom="10dp"/>
+
+    <ru.emerginggames.snappers.view.OutlinedTextView and:layout_width="wrap_content" and:layout_height="wrap_content"
+            and:layout_alignParentRight="true" and:layout_alignParentBottom="true" and:id="@+id/dailyBonus"
+            and:background="@drawable/button_daily_bonus" and:onClick="onDailyBonus" and:text="@string/collect_now"
+            and:clickable="true"
+            and:layout_marginBottom="20dp" and:layout_marginRight="20dp"
+            and:textColor="#fff" app:strokeColor="#000" app:strokeWidth="1dp"
+            and:textSize="20dp"
+            and:gravity="center"/>
+
+        <ru.emerginggames.snappers.view.ImageView and:id="@+id/settingsBtn"
+            and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_margin="20dp"
+            and:layout_alignParentBottom="true" and:layout_alignParentLeft="true"
+            and:src="@drawable/button_settings" and:scaleType="fitCenter" and:adjustViewBounds="true"
+            and:onClick="settingsButtonClick"
+
+        />
 </RelativeLayout>

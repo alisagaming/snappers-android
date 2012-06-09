@@ -123,24 +123,10 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         finish();
     }
 
-    public void onStoreButtonClick(View v){
-        ((SnappersApplication)getApplication()).setSwitchingActivities();
-        SoundManager.getInstance(this).playButtonSound();
-        startActivity(new Intent(this, StoreActivity.class));
-    }
-    
     public void showMessageDialog(String message, int[] lineEnds){
         if (dlg == null){
             dlg = new GameDialog(this, Metrics.screenWidth * 95 / 100);
             dlg.addOkButton();
-            dlg.setBtnClickListener(new GameDialog.OnDialogEventListener() {
-                @Override
-                public void onButtonClick(int unpressedDrawableId) {
-                    dlg.hide();
-                }
-                @Override
-                public void onCancel() {}
-            });
         }
 
         dlg.setMessage(message, Metrics.fontSize);

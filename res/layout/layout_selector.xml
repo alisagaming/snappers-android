@@ -34,7 +34,7 @@
 
             <ImageView and:id="@+id/backButton"
                        and:layout_width="0dp" and:layout_height="wrap_content" and:layout_gravity="bottom"
-                       and:layout_weight="23"
+                       and:layout_weight="25"
                        and:src="@drawable/arrow_back_btn" and:scaleType="fitCenter" and:adjustViewBounds="true"
                        and:onClick="onBackButtonClick"
                     />

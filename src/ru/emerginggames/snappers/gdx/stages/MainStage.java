@@ -32,13 +32,8 @@ public class MainStage extends MyStage {
     protected static final float BANG_FRAME_DURATION = 0.12f;
     protected static final int WAIT_FOR_TUTORIAL = 5000;
     private static final float SNAPPER_WARM_TIME = 0.6f;
-//    public static final String LEVEL_D_D = "Level: %d-%d";
-//    public static final String TAPS_LEFT_D = "Taps left: %d";
-
     private final GameLogic logic;
 
-//    OutlinedTextSprite levelText;
-//    OutlinedTextSprite tapLeftText;
     IGameEventListener mGame;
     protected volatile boolean gameOverFired;
 
@@ -65,9 +60,6 @@ public class MainStage extends MyStage {
         blasts = new Blasts();
         sounds = new Sounds();
 
- //       OutlinedTextSprite.FontStyle fontStyle = new OutlinedTextSprite.FontStyle(Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
- //       levelText = new OutlinedTextSprite(String.format(LEVEL_D_D, 99, 999), fontStyle);
- //       tapLeftText = new OutlinedTextSprite(String.format(TAPS_LEFT_D, 99), fontStyle);
         if (width != 0)
             setViewport(width, height);
     }
@@ -80,7 +72,6 @@ public class MainStage extends MyStage {
             snappers.defineSnapperViews();
 
         mGame.getAppListener().updateLevelInfo(level);
-//        levelText.setText(String.format(LEVEL_D_D, level.packNumber, level.number));
         isHinting = false;
         logicListener.tap();
         isTutorialAvailable = (level.number < 4 && level.packNumber == 1);
@@ -90,9 +81,6 @@ public class MainStage extends MyStage {
         super.setViewport(width, height, true);
         logic.setScreen(width, height, defineGameRect(width, height) );
         snappers.defineSnapperViews();
-
-//        levelText.positionRelative(0, height, IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
-//        tapLeftText.positionRelative(0, levelText.getY(), IPositionable.Dir.DOWNRIGHT, Metrics.screenMargin);
     }
 
     protected Rect defineGameRect(int width, int height){
@@ -163,9 +151,6 @@ public class MainStage extends MyStage {
         blasts.draw();
         bangs.draw();
 
-//        levelText.draw(batch);
-//        tapLeftText.draw(batch);
-
         if (isHinting)
             hint.draw(batch);
         batch.end();
@@ -227,7 +212,6 @@ public class MainStage extends MyStage {
         @Override
         public void tap() {
             mGame.getAppListener().updateTapsLeft(logic.tapRemains);
-//            tapLeftText.setText(String.format(TAPS_LEFT_D, logic.tapRemains));
             if (isHinting){
                 if (logic.tapRemains > 0)
                     hint.updateHint();
@@ -310,7 +294,7 @@ public class MainStage extends MyStage {
     }
 
     private class Snappers_{
-        private Array<SnapperView> activeSnappers ;
+        final private Array<SnapperView> activeSnappers ;
         private Pool<SnapperView> snapperViewPool;
         IAnimationFunction snapperAnimFn = new PowEasingAnim(1.5f);
 
@@ -336,8 +320,10 @@ public class MainStage extends MyStage {
         }
 
         public void updatePositions(){
-            for (int i=0; i< activeSnappers.size; i++)
-                activeSnappers.get(i).setPosition();
+            synchronized (activeSnappers){
+                for (int i=0; i< activeSnappers.size; i++)
+                    activeSnappers.get(i).setPosition();
+            }
         }
 
         public void defineSnapperViews(){
@@ -346,7 +332,7 @@ public class MainStage extends MyStage {
             SnapperView view;
             int i; int j;
             int state;
-
+            synchronized (activeSnappers){
             for (i=0; i<activeSnappers.size; i++)
                 removeActor(activeSnappers.get(i));
             snapperViewPool.free(activeSnappers);
@@ -365,32 +351,40 @@ public class MainStage extends MyStage {
                         view.setAnimFn(snapperAnimFn);
 
                     }
+            }
         }
 
         public void draw(){
             int i;
             Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
 
-            for (i=0; i< activeSnappers.size; i++)
-                activeSnappers.get(i).snapper.draw(batch);
+            synchronized (activeSnappers){
+                for (i=0; i< activeSnappers.size; i++)
+                    activeSnappers.get(i).snapper.draw(batch);
 
-            for (i=0; i< activeSnappers.size; i++)
-                activeSnappers.get(i).eyes.draw(batch);
+
+                for (i=0; i< activeSnappers.size; i++)
+                    activeSnappers.get(i).eyes.draw(batch);
+            }
         }
 
         public SnapperView find(int i, int j){
             SnapperView v;
-            for (int k=0; k< activeSnappers.size; k++){
-                v = activeSnappers.get(k);
-                if (v.i == i && v.j == j)
-                    return v;
+            synchronized (activeSnappers){
+                for (int k=0; k< activeSnappers.size; k++){
+                    v = activeSnappers.get(k);
+                    if (v.i == i && v.j == j)
+                        return v;
+                }
             }
             return null;
         }
 
         public void free(SnapperView view){
-            activeSnappers.removeValue(view, true);
-            snapperViewPool.free(view);
+            synchronized (activeSnappers){
+                activeSnappers.removeValue(view, true);
+                snapperViewPool.free(view);
+            }
         }
 
         IPositionAnimationListener snapperAnimationListener = new IPositionAnimationListener() {

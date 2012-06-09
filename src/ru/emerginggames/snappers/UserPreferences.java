@@ -30,6 +30,7 @@ public class UserPreferences {
     private static final String INGAMEADS = "INGAMEADS";
     private static final String HINTS_TOUCHED = "HINTS_TOUCHED";
     private static final String G_IN_APP_INIT_DONE = "IN_APP_INIT_DONE";
+    private static final String LAST_USED_DAILY_BONUS = "LAST_USED_DAILY_BONUS";
     public static String Key1;
     public static String Key11;
     public static String Key21;
@@ -72,6 +73,14 @@ public class UserPreferences {
             instance = new UserPreferences(context);
         else if (context!= null)
             instance.context = context;
+    }
+
+    public void setLastUsedDailyBonus(long time){
+        putLong(LAST_USED_DAILY_BONUS, time, LAST_USED_DAILY_BONUS);
+    }
+
+    public long getLastUsedDailyBonus(){
+        return getLong(LAST_USED_DAILY_BONUS, 0, LAST_USED_DAILY_BONUS);
     }
 
     public void setTapjoyEnabled(boolean enabled){
@@ -281,6 +290,20 @@ public class UserPreferences {
     private void putInt(String key, int val, String salt){
         Editor editor = prefs.edit();
         editor.putString(_S(key), _S(Integer.toString(val), salt));
+        editor.commit();
+    }
+
+    private long getLong(String key, int def, String salt){
+        try {
+            return Long.parseLong(deS(prefs.getString(_S(key), null), salt));
+        }catch (Exception e){
+            return def;
+        }
+    }
+
+    private void putLong(String key, long val, String salt){
+        Editor editor = prefs.edit();
+        editor.putString(_S(key), _S(Long.toString(val), salt));
         editor.commit();
     }
 

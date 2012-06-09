@@ -87,6 +87,16 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         super.onResume();
         ((SnappersApplication)getApplication()).activityResumed(this);
 
+
+        OutlinedTextView hintBtn = (OutlinedTextView)findViewById(R.id.hintBtn);
+        hintBtn.setText2(Integer.toString(UserPreferences.getInstance(this).getHintsRemaining()));
+
+        scoreCounter.setScore(UserPreferences.getInstance(this).getScore());
+
+        setupBackPosition();
+    }
+
+    void setupBackPosition(){
         ImageView back = (ImageView)findViewById(R.id.bgImage);
         Drawable bgImage = back.getDrawable();
         Rect r = new Rect();
@@ -103,11 +113,6 @@ public class PaginatedSelectorActivity extends FragmentActivity {
             m.postTranslate(-(imgW * scale - r.width())/2, 0);
             back.setImageMatrix(m);
         }
-
-        OutlinedTextView hintBtn = (OutlinedTextView)findViewById(R.id.hintBtn);
-        hintBtn.setText2(Integer.toString(UserPreferences.getInstance(this).getHintsRemaining()));
-
-        scoreCounter.setScore(UserPreferences.getInstance(this).getScore());
     }
 
     @Override

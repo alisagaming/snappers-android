@@ -1,6 +1,10 @@
 package ru.emerginggames.snappers;
 
 import android.content.Intent;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +22,7 @@ import ru.emerginggames.snappers.gdx.Splash;
 import net.hockeyapp.android.UpdateManager;
 import ru.emerginggames.snappers.utils.GInAppStore;
 import ru.emerginggames.snappers.utils.OnlineSettings;
+import ru.emerginggames.snappers.view.ImageView;
 import ru.emerginggames.snappers.view.OutlinedTextView;
 
 /**
@@ -60,6 +65,26 @@ public class SplashGdxActivity extends AndroidApplication {
         OnlineSettings.update(getApplicationContext());
     }
 
+
+    void setupBackPosition(){
+        ImageView back = (ImageView)findViewById(R.id.bgImage);
+        Drawable bgImage = back.getDrawable();
+        Rect r = new Rect();
+        back.getWindowVisibleDisplayFrame(r);
+        if (bgImage instanceof BitmapDrawable)
+        {
+            int imgW, imgH;
+            imgW = bgImage.getIntrinsicWidth();
+            imgH = bgImage.getIntrinsicHeight();
+            float scale = (float)r.height()/imgH ;
+
+            Matrix m = new Matrix();
+            m.setScale(scale, scale);
+            m.postTranslate(-(imgW * scale - r.width())/2, 0);
+            back.setImageMatrix(m);
+        }
+    }
+
     public void gotSize(int width, int height) {
         if (width > height){
             int scrWidth = getWindowManager().getDefaultDisplay().getWidth();
@@ -75,6 +100,7 @@ public class SplashGdxActivity extends AndroidApplication {
     @Override
     protected void onResume() {
         super.onResume();
+        setupBackPosition();
 
         if (loadTask != null)
             return;

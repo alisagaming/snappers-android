@@ -55,8 +55,6 @@ public class MainScreenActivity extends Activity {
 
 
         prefs = UserPreferences.getInstance(this);
-/*        findViewById(R.id.options).setVisibility(View.GONE);*/
-
 
         SoundManager.getInstance(this).setUp();
 
@@ -149,6 +147,8 @@ public class MainScreenActivity extends Activity {
         isActive = true;
         if (Settings.IS_PREMIUM)
             handler.post(updateDailyBonusCounter);
+        else
+            findViewById(R.id.dailyBonus).setVisibility(View.GONE);
     }
 
     @Override

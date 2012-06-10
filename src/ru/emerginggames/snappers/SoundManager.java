@@ -5,6 +5,7 @@ import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public class SoundManager {
     SoundPool soundPool;
     int buttonSoundId = 0;
     MediaPlayer mediaPlayer;
+    String currentSoundtrack;
     //boolean continuePlayingFlag;
 
     public SoundManager(Activity context) {
@@ -33,11 +35,7 @@ public class SoundManager {
             throw new RuntimeException(e);
         }
 
-        try {
-            AssetFileDescriptor afd = context.getAssets().openFd("sounds/soundtrack.mp3");
-            mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-        } catch (Exception e) {
-        }
+        setGameMusic();
     }
 
     public static SoundManager getInstance(Activity context) {
@@ -68,6 +66,26 @@ public class SoundManager {
             mediaPlayer.start();
         } catch (Exception e) {
         }
+    }
+
+    public void setLevelMusic(String fileName){
+        String soundtrack = "sounds/" + fileName;
+        if (soundtrack.equals(currentSoundtrack))
+            return;
+        try {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            AssetFileDescriptor afd = context.getAssets().openFd(soundtrack);
+            currentSoundtrack = soundtrack;
+            mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+        } catch (Exception e) {
+            Log.e("SNAPPERS", e.getMessage(), e);
+            return;
+        }
+    }
+
+    public void setGameMusic(){
+        setLevelMusic("song.mp3");
     }
 
     public void stopMusic() {

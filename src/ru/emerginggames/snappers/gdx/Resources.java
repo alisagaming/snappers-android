@@ -61,6 +61,7 @@ public class Resources {
 
     public static Sound[] popSounds;
     public static Sound winSound;
+    public static Sound fanfareSound;
     public static Sound buttonSound;
 
     public static BitmapFont fnt1;
@@ -213,13 +214,13 @@ public class Resources {
 
     public static void loadSounds() {
         popSounds = new Sound[5];
-        popSounds[0] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop1.mp3"));
-        popSounds[1] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop2.mp3"));
-        popSounds[2] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop3.mp3"));
-        popSounds[3] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop4.mp3"));
-        popSounds[4] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop5.mp3"));
-        //popSounds[5] = Gdx.audio.newSound(Gdx.files.internal("sounds/pop6.mp3"));
-        winSound = Gdx.audio.newSound(Gdx.files.internal("sounds/win1.mp3"));
+        popSounds[0] = Gdx.audio.newSound(Gdx.files.internal("sounds/p1.mp3"));
+        popSounds[1] = Gdx.audio.newSound(Gdx.files.internal("sounds/p2.mp3"));
+        popSounds[2] = Gdx.audio.newSound(Gdx.files.internal("sounds/p3.mp3"));
+        popSounds[3] = Gdx.audio.newSound(Gdx.files.internal("sounds/p4.mp3"));
+        popSounds[4] = Gdx.audio.newSound(Gdx.files.internal("sounds/p5.mp3"));
+        winSound = Gdx.audio.newSound(Gdx.files.internal("sounds/winsound.mp3"));
+        fanfareSound = Gdx.audio.newSound(Gdx.files.internal("sounds/winsound.mp3"));
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button2g.mp3"));
     }
 

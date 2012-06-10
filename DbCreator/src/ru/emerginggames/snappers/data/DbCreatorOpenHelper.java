@@ -67,7 +67,8 @@ public class DbCreatorOpenHelper extends SQLiteOpenHelper {
                 LevelPackTable.KEY_TITLE + " TEXT, " +
                 LevelPackTable.KEY_IS_GOLD + " INTEGER, " +
                 LevelPackTable.KEY_IS_PREMIUM + " INTEGER, " +
-                LevelPackTable.KEY_LEVEL_ICON + " TEXT " +
+                LevelPackTable.KEY_LEVEL_ICON + " TEXT, " +
+                LevelPackTable.KEY_SOUNDTRACK + " TEXT " +
                 " );";
 
         db.execSQL(TABLE_CREATE);

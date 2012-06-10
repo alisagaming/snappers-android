@@ -1,4 +1,4 @@
-<LevelPack background="bg5.jpg" shadows="YES" title="Stage: 5" name="level-pack-5" levelIcon = "level5">
+<LevelPack background="bg5.jpg" shadows="YES" title="Stage: 5" name="level-pack-5" levelIcon = "level5" sound = "soundtrack5.mp3">
     
     <level number="1" complexity="90" zappers="112110121032123100014010401010" solutions="19,12;" tapsCount="2" />
     <level number="2" complexity="101" zappers="240013200202210100012320131410" solutions="12,22,12;12,22,15;" tapsCount="3" />

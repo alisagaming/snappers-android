@@ -73,12 +73,7 @@ public class LevelDbLoader {
         loadLevelPack("LevelPack3");
         loadLevelPack("LevelPack4");
         loadLevelPack("LevelPack5");
-        //loadLevelPack("LevelPack6");
-        //loadLevelPack("LevelPack7");
         loadLevelPack("PremiumLevelPack1");
-        //loadLevelPack("PremiumLevelPack2");
-        //loadLevelPack("PremiumLevelPack3");
-        //loadLevelPack("PremiumLevelPack4");
         if (db != null)
             db.close();
         else {
@@ -138,6 +133,8 @@ public class LevelDbLoader {
                 pack.name = xpp.getAttributeValue(i);
             else if (xpp.getAttributeName(i).equalsIgnoreCase("levelIcon"))
                 pack.levelIcon = xpp.getAttributeValue(i);
+            else if (xpp.getAttributeName(i).equalsIgnoreCase("sound"))
+                pack.soundtrack = xpp.getAttributeValue(i);
         }
 
         pack.id = (int) levelPackTable.insert(pack);

@@ -1,4 +1,4 @@
-<LevelPack background="bg_p1.jpg" title="Extra" isPremium="YES" name="premium-level-pack-1"  levelIcon = "level5">
+<LevelPack background="bg_p1.jpg" title="Extra" isPremium="YES" name="premium-level-pack-1"  levelIcon = "level5" sound = "soundtrack1.mp3">
 
 
     <level number="1" complexity="82" zappers="322224222101020122011024010120" solutions="27,11;" tapsCount="2" />

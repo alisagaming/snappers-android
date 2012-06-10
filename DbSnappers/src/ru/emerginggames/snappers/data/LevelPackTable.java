@@ -27,8 +27,9 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     protected static final String KEY_LEVEL_ICON = "level_icon";
     protected static final String KEY_IS_GOLD = "is_gold";
     protected static final String KEY_IS_PREMIUM = "is_premium";
+    protected static final String KEY_SOUNDTRACK = "soundtrack";
 
-    protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_NAME, KEY_BACKGROUND, KEY_SHADOWS, KEY_TITLE, KEY_IS_GOLD, KEY_IS_PREMIUM, KEY_LEVEL_ICON};
+    protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_NAME, KEY_BACKGROUND, KEY_SHADOWS, KEY_TITLE, KEY_IS_GOLD, KEY_IS_PREMIUM, KEY_LEVEL_ICON, KEY_SOUNDTRACK};
 
     public LevelPackTable(SQLiteDatabase db) {
         super(db);
@@ -100,7 +101,8 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
                 KEY_TITLE + ", " +
                 KEY_IS_GOLD + ", " +
                 KEY_IS_PREMIUM +  ", " +
-                KEY_LEVEL_ICON +  ") values (?, ?, ?, ?, ?, ?, ?)";
+                KEY_LEVEL_ICON +  ", " +
+                KEY_SOUNDTRACK +  ") values (?, ?, ?, ?, ?, ?, ?, ?)";
 
         return db.compileStatement(queryStr);
     }
@@ -115,6 +117,7 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         insertStmt.bindLong(5, pack.isGold ? 1 : 0);
         insertStmt.bindLong(6, pack.isPremium ? 1 : 0);
         bindNullable(insertStmt, 7, pack.levelIcon);
+        bindNullable(insertStmt, 8, pack.soundtrack);
         return insertStmt;
     }
 
@@ -130,6 +133,7 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         pack.isGold = cursor.getInt(5)>0;
         pack.isPremium = cursor.getInt(6)>0;
         pack.levelIcon= cursor.getString(7);
+        pack.soundtrack= cursor.getString(8);
 
         return pack;
     }

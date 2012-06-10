@@ -61,7 +61,7 @@ public class SnappersApplication extends Application {
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             filter.addAction(Intent.ACTION_USER_PRESENT);
             getApplicationContext().registerReceiver(screenReceiver, filter);
-            startMusicifShould();
+            startMusicifShould(null);
         } else{
             if (screenReceiver != null)
                 unregisterReceiver(screenReceiver);
@@ -81,16 +81,30 @@ public class SnappersApplication extends Application {
         currentActivity = activity;
         isActivityActive = true;
         isSwitchingActivity = false;
-        startMusicifShould();
+        startMusicifShould(null);
+    }
+
+    public void activityResumed(Activity activity, String soundtrack) {
+        if (currentActivity == null)
+            musicStatusChanged();
+        currentActivity = activity;
+        isActivityActive = true;
+        isSwitchingActivity = false;
+        startMusicifShould(soundtrack);
     }
 
     public void setSwitchingActivities() {
         isSwitchingActivity = true;
     }
 
-    private void startMusicifShould(){
-        if (isMusicEnabled && currentActivity != null && isScreenOn && isUnlocked && isActivityActive)
+    private void startMusicifShould(String soundtrack){
+        if (isMusicEnabled && currentActivity != null && isScreenOn && isUnlocked && isActivityActive){
+            if (soundtrack == null)
+                SoundManager.getInstance(currentActivity).setGameMusic();
+            else
+                SoundManager.getInstance(currentActivity).setLevelMusic(soundtrack);
             SoundManager.getInstance(currentActivity).startMusic();
+        }
     }
 
     private void stopMusic(){
@@ -110,7 +124,7 @@ public class SnappersApplication extends Application {
             }
             else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
                 isUnlocked = true;
-                startMusicifShould();
+                startMusicifShould(null);
             }
 
         }

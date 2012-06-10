@@ -52,6 +52,7 @@ public class GameActivity extends AndroidApplication {
     BuyHintsDialog buyHintsDlg;
     NewLevelDialog newLevelDialog;
     int currentLevel;
+    LevelPack pack;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,8 @@ public class GameActivity extends AndroidApplication {
             finish();
             return;
         }
+
+        pack = level.pack;
 
         gameListener = new GameListener();
         game = new Game(level, gameListener);
@@ -99,6 +102,8 @@ public class GameActivity extends AndroidApplication {
         if (Settings.GoogleInAppEnabled)
             mStore = GInAppStore.getInstance(getApplicationContext());
         currentLevel = Settings.getLevel(prefs.getScore());
+
+
     }
 
     public void initViews(){
@@ -161,7 +166,7 @@ public class GameActivity extends AndroidApplication {
         }
         wentShop = false;
 
-        ((SnappersApplication) getApplication()).activityResumed(this);
+        ((SnappersApplication) getApplication()).activityResumed(this, pack.soundtrack);
     }
 
     @Override
@@ -348,7 +353,8 @@ public class GameActivity extends AndroidApplication {
                 }
             });
 
-
+            if (prefs.getSound())
+                Resources.fanfareSound.play();
         }
     };
 

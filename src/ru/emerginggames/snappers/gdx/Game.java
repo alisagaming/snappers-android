@@ -240,7 +240,7 @@ public class Game implements ApplicationListener{
         public void gameWon() {
             setStage(Stages.GameOverStage);
             if (isSoundEnabled)
-                Resources.winSound.play(0.6f);
+                Resources.winSound.play();
         }
 
         @Override

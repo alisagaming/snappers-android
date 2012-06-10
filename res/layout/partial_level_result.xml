@@ -6,6 +6,7 @@
                 and:layout_height="fill_parent"
                 and:background="#80000000"
         >
+    <RelativeLayout and:id="@+id/backCont" and:layout_width="fill_parent" and:layout_height="fill_parent" and:layout_centerInParent="true"/>
     <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content" and:orientation="vertical"
             and:layout_centerInParent="true">
         <ru.emerginggames.snappers.view.OutlinedTextView and:id="@+id/title"

@@ -2,6 +2,7 @@ package ru.emerginggames.snappers.view;
 
 import android.content.Context;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import ru.emerginggames.snappers.Metrics;
 import ru.emerginggames.snappers.R;
@@ -16,10 +17,11 @@ public class NewLevelDialog extends GameDialog {
 
     public NewLevelDialog(Context context, int width) {
         super(context);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         setWidth(width);
 
-        int imgWidth = width * 8 / 10;
-        int imgHeight = width * 17/100;
+        int imgWidth = width * 8 / 11;
+        int imgHeight = width * 17/110;
 
         findViewById(R.id.close_btn).setVisibility(View.GONE);
 
@@ -32,6 +34,9 @@ public class NewLevelDialog extends GameDialog {
         ((RelativeLayout)findViewById(R.id.root)).addView(title, lp);
 
         addOkButton();
+
+        lp = (RelativeLayout.LayoutParams)findViewById(R.id.dialog).getLayoutParams();
+        lp.topMargin = imgHeight / 2 - 30;
     }
 
     public void setLevel(int level){

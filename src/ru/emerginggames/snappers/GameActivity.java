@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.*;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.*;
 import com.adwhirl.AdWhirlTargeting;
 import com.adwhirl.adapters.AdWhirlAdapter;
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -29,13 +28,9 @@ import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.*;
 import ru.emerginggames.snappers.view.*;
+import ru.emerginggames.snappers.view.ImageView;
 
-/**
- * Created by IntelliJ IDEA.
- * User: babay
- * Date: 25.03.12
- * Time: 16:23
- */
+
 public class GameActivity extends AndroidApplication {
     public static final String LEVEL_PARAM_TAG = "Level";
 
@@ -343,13 +338,17 @@ public class GameActivity extends AndroidApplication {
                 @Override
                 public void onButtonClick(int unpressedDrawableId) {
                     newLevelDialog.hide();
+                    gameOverMessageController.hideRays();
                 }
 
                 @Override
                 public void onCancel() {
                     newLevelDialog.hide();
+                    gameOverMessageController.hideRays();
                 }
             });
+
+
         }
     };
 
@@ -443,6 +442,7 @@ public class GameActivity extends AndroidApplication {
             int newLevel = Settings.getLevel(prefs.getScore());
             if (newLevel > currentLevel){
                 currentLevel = newLevel;
+                gameOverMessageController.showRays();
                 runOnUiThread(showNewLevelDialog);
             }
         }
@@ -905,6 +905,14 @@ public class GameActivity extends AndroidApplication {
             stars = new StarsController();
         }
 
+        public void showRays(){
+            runOnUiThread(showRays);
+        }
+
+        public void hideRays(){
+            runOnUiThread(hideRays);
+        }
+
         public void show(boolean isWon, int msgValue){
             this.isWon = isWon;
             this.msgValue = msgValue;
@@ -952,6 +960,52 @@ public class GameActivity extends AndroidApplication {
            @Override
            public void run() {
                layout.setVisibility(View.GONE);
+           }
+       };
+
+       Runnable hideRays = new Runnable() {
+           @Override
+           public void run() {
+               layout.findViewById(R.id.backCont).setVisibility(View.GONE);
+           }
+       };
+
+       Runnable showRays = new Runnable() {
+           @Override
+           public void run() {
+               if (((RelativeLayout)layout.findViewById(R.id.backCont)).getChildCount() == 0){
+                   int width = Metrics.screenWidth;
+                   int height = Metrics.screenHeight;
+                   int diagonal = (int)(Math.sqrt(width * width + height * height));
+                   float scale = (float)diagonal/width;
+
+                   ImageView rays = new ImageView(GameActivity.this);
+                   rays.setImageResource(R.drawable.rays);
+                   rays.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
+
+                   RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, width);
+                   lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+                   ((RelativeLayout)layout.findViewById(R.id.backCont)).addView(rays, lp);
+                   lp = (RelativeLayout.LayoutParams)layout.findViewById(R.id.backCont).getLayoutParams();
+                   lp.width = lp.height = diagonal;
+
+                   RotateAnimation animation = new RotateAnimation(0, 359, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                   animation.setDuration(600);
+                   animation.setRepeatMode(Animation.RESTART);
+                   animation.setRepeatCount(Integer.MAX_VALUE);
+
+                   ScaleAnimation scaleAnim = new ScaleAnimation(scale, scale, scale, scale, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+                   AnimationSet set = new AnimationSet(true);
+                   set.addAnimation(animation);
+                   set.addAnimation(scaleAnim);
+                   set.setInterpolator(new LinearInterpolator());
+                   set.setFillAfter(true);
+
+                   rays.setAnimation(set);
+               }
+
+               layout.findViewById(R.id.backCont).setVisibility(View.VISIBLE);
            }
        };
     }

@@ -2,6 +2,7 @@ package ru.emerginggames.snappers.view;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,11 @@ public class ScoreCounter {
     int levelScore;
     int nextLevelScore;
     int barWidth;
+    int barCoveredWidth;
     Context context;
+    Handler handler;
+    int scoreStep;
+    int scoreDest;
 
     public ScoreCounter(Context context, int width, int height) {
         this.context = context;
@@ -42,9 +47,8 @@ public class ScoreCounter {
 
         TextView levelText = (TextView)root.findViewById(R.id.level);
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams)levelText.getLayoutParams();
-        mlp.width = height;
+        barCoveredWidth = mlp.width = height;
         mlp.height = height;
-        levelText.setLayoutParams(mlp);
         levelText.setTypeface(font);
         levelText.setTextSize(TypedValue.COMPLEX_UNIT_PX, height / 3);
 
@@ -64,12 +68,13 @@ public class ScoreCounter {
         rlp.width = barWidth = width - rlp.leftMargin;
         rlp.height = height * 27 / 40;
         rlp.addRule(RelativeLayout.CENTER_VERTICAL);
-        bar.setLayoutParams(rlp);
+        barCoveredWidth -= rlp.leftMargin;
+        barCoveredWidth = Math.round(barCoveredWidth * 0.9f);
 
         View barFill = root.findViewById(R.id.bar_fill);
         mlp = (ViewGroup.MarginLayoutParams)barFill.getLayoutParams();
         mlp.width = barWidth;
-        barFill.setLayoutParams(mlp);
+        handler = new Handler();
     }
 
     public void setLevel(int level, int currentLevelScore, int nextLevelScore){
@@ -80,13 +85,19 @@ public class ScoreCounter {
         levelText.setText(Integer.toString(level));
     }
 
+    public void setScoreProlonged(int score){
+        scoreStep = Math.max(1, (score - currentScore) / 10);
+        scoreDest = score;
+        updateScore.run();
+    }
+
     public void setScore(int score){
         int newLevel = Settings.getLevel(score);
         if (newLevel != level)
             setLevel(newLevel, Settings.getLevelXp(newLevel), Settings.getLevelXp(newLevel+1));
 
         float progress = Math.min(((float)score - levelScore) / (nextLevelScore - levelScore), 1);
-        int filledWidth = Math.round(progress * barWidth);
+        int filledWidth = Math.round(progress * (barWidth - barCoveredWidth)) + barCoveredWidth;
 
         View v = root.findViewById(R.id.inner);
         ViewGroup.LayoutParams lp = v.getLayoutParams();
@@ -94,6 +105,7 @@ public class ScoreCounter {
         v.setLayoutParams(lp);
 
         ((OutlinedTextView)root.findViewById(R.id.score)).setText(Integer.toString(score));
+        currentScore = score;
     }
 
     public View getView(){
@@ -103,4 +115,17 @@ public class ScoreCounter {
     public void setVisibility(int visibility){
         root.setVisibility(visibility);
     }
+
+    Runnable updateScore = new Runnable() {
+        @Override
+        public void run() {
+            currentScore += scoreStep;
+            if (currentScore > scoreDest)
+                currentScore = scoreDest;
+            setScore(currentScore);
+            if (currentScore < scoreDest)
+                handler.postDelayed(updateScore, 70);
+
+        }
+    };
 }

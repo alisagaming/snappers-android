@@ -736,6 +736,7 @@ public class GameActivity extends AndroidApplication {
             int size = (int)(Metrics.squareButtonSize * Metrics.squareButtonScale);
             scoreCounter = new ScoreCounter(GameActivity.this, size * 32 / 10, size);
             scoreCounter.setVisibility(View.GONE);
+            scoreCounter.setScore(prefs.getScore());
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -824,7 +825,7 @@ public class GameActivity extends AndroidApplication {
         Runnable showScore = new Runnable() {
             @Override
             public void run() {
-                scoreCounter.setScore(prefs.getScore());
+                scoreCounter.setScoreProlonged(prefs.getScore());
                 scoreCounter.setVisibility(View.VISIBLE);
             }
         };

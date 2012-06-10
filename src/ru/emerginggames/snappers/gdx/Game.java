@@ -27,7 +27,6 @@ public class Game implements ApplicationListener{
     protected InputProcessor currentInputProcessor;
     protected MyStage currentStage;
     protected MainStage mainStage;
-    protected DimStage gameOverStage;
     protected Sprite bg;
     boolean isPaused;
     public IAppGameListener mGameListener;
@@ -52,7 +51,6 @@ public class Game implements ApplicationListener{
 
         batch = new SpriteBatch();
         mainStage = new MainStage(width, height, gameListener);
-        gameOverStage = new DimStage(width, height, batch);
         setStage(Stages.MainStage);
 
         mainStage.setLevel(level);
@@ -143,7 +141,6 @@ public class Game implements ApplicationListener{
     @Override
     public void dispose() {
         mainStage.dispose();
-        gameOverStage.dispose();
     }
 
     public Level getLevel(){
@@ -185,7 +182,6 @@ public class Game implements ApplicationListener{
                 mGameListener.showHintMenu();
                 break;
             case GameOverStage:
-                setStage(gameOverStage);
                 if (mainStage.getLogic().isGameLost())
                     mGameListener.showGameLost(mainStage.getLogic().level);
                 else{
@@ -243,7 +239,6 @@ public class Game implements ApplicationListener{
         @Override
         public void gameWon() {
             setStage(Stages.GameOverStage);
-            gameOverStage.show();
             if (isSoundEnabled)
                 Resources.winSound.play(0.6f);
         }
@@ -251,7 +246,6 @@ public class Game implements ApplicationListener{
         @Override
         public void gameLost() {
             setStage(Stages.GameOverStage);
-            gameOverStage.show();
         }
 
         @Override

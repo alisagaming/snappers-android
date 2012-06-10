@@ -256,7 +256,6 @@ public class OutlinedTextView extends TextView{
         mLayout = new StaticLayout(text, textPaint,
                 w, alignment, mLineMult, mLineMult, true);
 
-        
         mStrokeLayout = new StaticLayout(text, outlinePaint,
                 w, alignment, mLineMult, mLineMult, true);
     }

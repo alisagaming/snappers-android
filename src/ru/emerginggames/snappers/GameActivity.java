@@ -11,12 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.*;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.adwhirl.AdWhirlTargeting;
 import com.adwhirl.adapters.AdWhirlAdapter;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.tapjoy.TapjoyConnect;
 import ru.emerginggames.snappers.data.LevelTable;
 import ru.emerginggames.snappers.gdx.Game;
@@ -108,10 +111,10 @@ public class GameActivity extends AndroidApplication {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    gameOverMessageController = new GameOverMessageController();
                     levelInfo = new LevelInfo(rootLayout);
                     topButtons = new TopButtonController(rootLayout);
                     topButtons.showMainButtons();
-                    gameOverMessageController = new GameOverMessageController();
 
                     if (!prefs.isAdFree()) {
                         adController = new AdController();
@@ -511,7 +514,7 @@ public class GameActivity extends AndroidApplication {
     };
 
     class AdController implements IOnAdShowListener {
-        MyAdWhirlLayout adWhirlLayout;
+        public MyAdWhirlLayout adWhirlLayout;
         public RelativeLayout.LayoutParams lpUp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         public RelativeLayout.LayoutParams lpDown = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         boolean isShowingAd = false;
@@ -520,6 +523,7 @@ public class GameActivity extends AndroidApplication {
         boolean shouldShowIngameAd;
         boolean canShowIngameAd = true;
         UserPreferences prefs;
+        int adHeight;
 
         public AdController() {
             prefs = UserPreferences.getInstance(getApplicationContext());
@@ -554,6 +558,10 @@ public class GameActivity extends AndroidApplication {
             adWhirlLayout.setAdShowListener(null);
             MyAdWhirlLayout.setEnforceUpdate(false);
             adWhirlLayout.setVisibility(View.GONE);
+        }
+
+        public int getAdHeight(){
+            return adWhirlLayout.isAdAvailable() ? adHeight : 0;
         }
 
         public void showAdTop() {
@@ -609,6 +617,8 @@ public class GameActivity extends AndroidApplication {
         public void onAdSizeChanged(int width, int height) {
             if (game.initDone && ! isFinished)
                 setGameMargins(height);
+            adHeight = height;
+            gameOverMessageController.setAdVisible(shouldShowAdTop & isShowingAd);
         }
 
         @Override
@@ -630,6 +640,7 @@ public class GameActivity extends AndroidApplication {
                 rootLayout.removeView(adWhirlLayout);
                 rootLayout.addView(adWhirlLayout);
                 isShowingAd = true;
+
             }
         };
 
@@ -642,6 +653,7 @@ public class GameActivity extends AndroidApplication {
                 adWhirlLayout.setVisibility(View.INVISIBLE);
                 isShowingAd = false;
                 MyAdWhirlLayout.setEnforceUpdate(true);
+                gameOverMessageController.setAdVisible(false);
             }
         };
 
@@ -651,6 +663,7 @@ public class GameActivity extends AndroidApplication {
                 adWhirlLayout.setLayoutParams(lpDown);
                 AdWhirlAdapter.setGoogleAdSenseExpandDirection("UP");
                 topButtons.alignTop();
+                gameOverMessageController.setAdVisible(false);
             }
         };
 
@@ -720,7 +733,8 @@ public class GameActivity extends AndroidApplication {
         }
 
         void addScoreCounter(){
-            scoreCounter = new ScoreCounter(GameActivity.this, Metrics.squareButtonSize * 32 / 10, Metrics.squareButtonSize);
+            int size = (int)(Metrics.squareButtonSize * Metrics.squareButtonScale);
+            scoreCounter = new ScoreCounter(GameActivity.this, size * 32 / 10, size);
             scoreCounter.setVisibility(View.GONE);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -830,6 +844,7 @@ public class GameActivity extends AndroidApplication {
                     case R.id.pauseBtn:
                         runOnUiThread(showPausedDialog);
                         game.setPaused(true);
+
                         break;
                     case R.id.hintBtn:
                         if (game.isHinting())
@@ -861,12 +876,34 @@ public class GameActivity extends AndroidApplication {
 
     class GameOverMessageController {
         private static final int WIN_TITLES = 7;
-        LinearLayout layout;
+        RelativeLayout layout;
         OutlinedTextView title;
         OutlinedTextView message;
         boolean isWon;
         int msgValue;
+        StarsController stars;
 
+
+        GameOverMessageController() {
+            if (layout == null){
+                layout = (RelativeLayout)getLayoutInflater().inflate(R.layout.partial_level_result, null);
+                title = (OutlinedTextView)layout.findViewById(R.id.title);
+                title.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.largeFontSize);
+                title.setTypeface(Resources.getFont(GameActivity.this));
+                message = (OutlinedTextView)layout.findViewById(R.id.message);
+                message.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
+                message.setTypeface(Resources.getFont(GameActivity.this));
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)title.getLayoutParams();
+                lp.bottomMargin = - Metrics.largeFontSize / 3;
+                title.setLayoutParams(lp);
+            }
+
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+            rootLayout.addView(layout, lp);
+            layout.setVisibility(View.GONE);
+
+            stars = new StarsController();
+        }
 
         public void show(boolean isWon, int msgValue){
             this.isWon = isWon;
@@ -876,6 +913,10 @@ public class GameActivity extends AndroidApplication {
 
         public void hide(){
             runOnUiThread(hide);
+        }
+
+        public void setAdVisible(boolean visible){
+            stars.onAdVisibilityChanged(visible);
         }
 
         int getWinTitleId(){
@@ -891,44 +932,133 @@ public class GameActivity extends AndroidApplication {
         Runnable show = new Runnable() {
             @Override
             public void run() {
-                if (layout == null){
-                    layout = (LinearLayout)getLayoutInflater().inflate(R.layout.partial_level_result, null);
-                    title = (OutlinedTextView)layout.findViewById(R.id.title);
-                    title.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.largeFontSize);
-                    title.setTypeface(Resources.getFont(GameActivity.this));
-                    message = (OutlinedTextView)layout.findViewById(R.id.message);
-                    message.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
-                    message.setTypeface(Resources.getFont(GameActivity.this));
-                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)title.getLayoutParams();
-                    lp.bottomMargin = - Metrics.largeFontSize / 3;
-                    title.setLayoutParams(lp);
-                }
-
                 int titleId = isWon ? getWinTitleId() : getLostTitleId();
                 title.setText2(titleId);
                 String msg;
-                if (isWon)
+                if (isWon){
                     msg = getResources().getString(R.string.score, msgValue);
+                    stars.showScoreStars(msgValue);
+                }
                 else if (msgValue == 1)
                     msg = getResources().getString(R.string.possible_in_1_touch);
                 else
                     msg = getResources().getString(R.string.possible_in_touches, msgValue);
                 message.setText2(msg);
-
-                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                lp.addRule(RelativeLayout.ALIGN_LEFT);
-                lp.bottomMargin = Metrics.screenHeight / 2;
-                rootLayout.addView(layout, lp);
+                layout.setVisibility(View.VISIBLE);
             }
         };
 
        Runnable hide = new Runnable() {
            @Override
            public void run() {
-               rootLayout.removeView(layout);
+               layout.setVisibility(View.GONE);
            }
        };
+    }
+
+    class StarsController{
+        RelativeLayout.LayoutParams starLP;
+        private Array<ImageView> activeStars ;
+        private Pool<ImageView> starsPool;
+        int activeStarsCount;
+        Interpolator interpolatorIn = new AccelerateInterpolator();
+        Interpolator interpolatorOut = new LinearInterpolator();
+
+        StarsController() {
+            int size = (int)(Metrics.squareButtonSize * Metrics.squareButtonScale);
+            starLP = new RelativeLayout.LayoutParams(size, size);
+
+            starsPool = new Pool<ImageView>(5, 10){
+                @Override
+                protected ImageView newObject() {
+                    ImageView img = new ImageView(GameActivity.this);
+                    img.setImageResource(R.drawable.star);
+                    img.setLayoutParams(starLP);
+                    return img;
+                }
+            };
+            activeStars = new Array<ImageView>(10);
+        }
+
+        Runnable freeStars = new Runnable() {
+            @Override
+            public void run() {
+                for (int i=0; i< activeStars.size; i++)
+                    rootLayout.removeView(activeStars.get(i));
+                starsPool.free(activeStars);
+            }
+        };
+
+        Animation.AnimationListener animListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                        activeStarsCount--;
+                        if (activeStarsCount == 0)
+                            runOnUiThread(freeStars);
+                    }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+            @Override
+            public void onAnimationStart(Animation animation) {}
+        };
+
+        public void onAdVisibilityChanged(boolean visible){
+            starLP.topMargin = visible ? adController.getAdHeight() : 0;
+        }
+
+        public void showScoreStars(int score){
+            float size = Metrics.squareButtonSize * Metrics.squareButtonScale;
+            int amount = 3 + score / 1500;
+            starLP.topMargin = adController.getAdHeight();
+
+            for (int i=0; i< amount; i++){
+                ImageView img = starsPool.obtain();
+                float endScale = (float)(Math.random() *0.3 + 0.7);
+                int endX = (int)(Math.random() * size * (1.2 - endScale));
+                int endY = (int)(Math.random() * size * (1.2 - endScale));
+                float startX = (float)(Math.random() *0.5 + 0.5);
+                float startY = (float)(Math.random() *0.5 + 0.5);
+                int timeDev = (int)(Math.random() * 400);
+                img.setAnimation(getAnimation(startX, startY, endX, endY, endScale, timeDev));
+                rootLayout.addView(img);
+                activeStarsCount++;
+            }
+        }
+
+        Animation getAnimation(float startX, float startY, int endX, int endY, float endScale, int timeDeviation){
+
+            TranslateAnimation moveInAnim = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, startX, Animation.ABSOLUTE, endX,
+                    Animation.RELATIVE_TO_PARENT, startY, Animation.ABSOLUTE, endY);
+            moveInAnim.setDuration(600 + timeDeviation);
+            moveInAnim.setStartOffset(0);
+            moveInAnim.setInterpolator(interpolatorIn);
+
+            ScaleAnimation scaleInAnim = new ScaleAnimation(0, endScale, 0, endScale);
+            scaleInAnim.setDuration(600 + timeDeviation);
+            scaleInAnim.setInterpolator(interpolatorIn);
+
+            ScaleAnimation scaleOutAnim = new ScaleAnimation(endScale, 0, endScale, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f  );
+            scaleOutAnim.setDuration(500);
+            scaleOutAnim.setStartOffset(1300 + timeDeviation);
+            scaleOutAnim.setInterpolator(interpolatorOut);
+
+            AlphaAnimation fadeOutAnimation = new AlphaAnimation(1, 0);
+            fadeOutAnimation.setDuration(500);
+            fadeOutAnimation.setStartOffset(1300 + timeDeviation);
+            fadeOutAnimation.setInterpolator(interpolatorOut);
+
+            AnimationSet animSet = new AnimationSet(true);
+            animSet.addAnimation(scaleInAnim);
+            animSet.addAnimation(moveInAnim);
+            animSet.addAnimation(scaleOutAnim);
+            animSet.addAnimation(fadeOutAnimation);
+
+            animSet.setAnimationListener(animListener);
+            animSet.setFillAfter(true);
+
+            return animSet;
+        }
     }
 
     class LevelInfo{

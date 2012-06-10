@@ -44,7 +44,7 @@ public class MainScreenActivity extends Activity {
         int height = getWindowManager().getDefaultDisplay().getHeight();
 
         LayoutParams lp = findViewById(R.id.playButtonOnline).getLayoutParams();
-        int playSize = lp.width = lp.height = Math.round(width * 0.4f);
+        int playSize = lp.width = Math.round(width * 0.5f);
         findViewById(R.id.playButtonOnline).setLayoutParams(lp);
 
         lp = findViewById(R.id.logoCont).getLayoutParams();
@@ -52,7 +52,8 @@ public class MainScreenActivity extends Activity {
         lp.height = Math.round(lp.height * 0.8f);
         findViewById(R.id.logoCont).setLayoutParams(lp);
 
-
+        lp = findViewById(R.id.playButtonOffline).getLayoutParams();
+        lp.width = (int)(width * 0.4f);
 
         prefs = UserPreferences.getInstance(this);
 

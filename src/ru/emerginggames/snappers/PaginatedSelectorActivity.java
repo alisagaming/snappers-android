@@ -74,7 +74,8 @@ public class PaginatedSelectorActivity extends FragmentActivity {
 
     void setupScore(){
         RelativeLayout root = (RelativeLayout)findViewById(R.id.root);
-        scoreCounter = new ScoreCounter(this, Metrics.squareButtonSize * 32 / 10, Metrics.squareButtonSize);
+        int size = (int)(Metrics.squareButtonSize * Metrics.squareButtonScale);
+        scoreCounter = new ScoreCounter(this, size * 32 / 10, size);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);

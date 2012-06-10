@@ -109,7 +109,7 @@ public class GameLogic {
     }
 
     public int getScore(boolean isSolvedBefore) {
-        int score = level.tapsCount * 100 + (Snappers.countSnappers(level.zappers) - level.tapsCount) * 90;
+        int score = level.tapsCount * 10 + Snappers.countSnappers(level.zappers)  * 90;
         score *= getMult();
         if (hintUsed)
             score = Math.round(score * Settings.HINTED_MULT);

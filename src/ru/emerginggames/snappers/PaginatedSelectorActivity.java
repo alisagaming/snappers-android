@@ -45,6 +45,9 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         if (wndRect.width()>0)
             Metrics.setSize(wndRect.width(), wndRect.height(), this);
 
+        /*RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)findViewById(R.id.backButton).getLayoutParams();
+        lp.width = lp.height = width / 5;*/
+
         setupScore();
         setupHints();
 

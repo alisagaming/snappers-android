@@ -193,11 +193,18 @@ public class Resources {
         preloadBg(name);
         if (Preload.bg == null)
             return false;
-        int bgWidth = Math.min(Metrics.screenWidth, Metrics.bgSourceWidth);
+        float scale = (float)Metrics.bgSourceHeight / Metrics.screenHeight;
+        int width = (int)(scale * Metrics.screenWidth);
+        if (width > Metrics.bgSourceWidth)
+            width = Metrics.bgSourceWidth;
+        int bgStartX = (Metrics.bgSourceWidth - width)/2;
+
+
+/*        int bgWidth = Math.min(Metrics.screenWidth, Metrics.bgSourceWidth);
         int bgHeight = Math.min(Metrics.screenHeight, Metrics.bgSourceHeight);
         int bgStartX = (Metrics.screenWidth - bgWidth) / 2;
-        int bgStartY = Metrics.screenHeight - bgHeight;
-        bg = new TextureRegion(new Texture(Preload.bg), bgStartX, bgStartY, bgWidth, bgHeight);
+        int bgStartY = Metrics.screenHeight - bgHeight;*/
+        bg = new TextureRegion(new Texture(Preload.bg), bgStartX, 0, width, Metrics.bgSourceHeight);
         return true;
     }
 

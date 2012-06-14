@@ -9,7 +9,7 @@
         >
     <ru.emerginggames.snappers.view.ImageView and:src="@drawable/main_screen" and:layout_width="fill_parent"
                   and:layout_height="wrap_content"
-                  and:layout_alignParentBottom="true" and:scaleType="centerInside" and:adjustViewBounds="true"
+                  and:layout_alignParentBottom="true" and:scaleType="fitCenter" and:adjustViewBounds="true"
             />
 
     <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content" and:id="@+id/logoCont"

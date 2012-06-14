@@ -4,54 +4,100 @@
               xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
               and:layout_width="fill_parent" and:layout_height="fill_parent"
         >
-    <LinearLayout
-            and:layout_width="fill_parent" and:layout_height="wrap_content" and:orientation="vertical"
-            and:layout_centerInParent="true"
-            and:id="@+id/root" and:background="@drawable/settings_wnd">
-        <ru.emerginggames.snappers.view.OutlinedTextView and:id="@+id/title"
-                and:layout_width="fill_parent" and:layout_height="44dp" and:gravity="center"
-                and:textColor="#fff" and:textSize="30dp"
-                app:strokeColor="#000" app:strokeWidth="1dp"
-                and:text="@string/settings"
-                />
 
-        <TableLayout and:id="@+id/table" and:layout_width="fill_parent" and:layout_height="fill_parent" and:stretchColumns="1">
-            <TableRow and:background="#cdecf7">
-                <ImageView and:id="@+id/iconUser" and:src="@drawable/icon_user" and:scaleType="center" and:adjustViewBounds="true"
-                           and:layout_gravity="center_vertical"
-                        />
-                <TextView and:id="@+id/loginFbText" and:textColor="#1f5897"
-                          and:text="@string/loginToFb" and:gravity="center" and:layout_gravity="center"/>
-                <ru.emerginggames.snappers.view.OutlinedTextView and:id="@+id/loginFbBtn" and:layout_gravity="center"
+    <RelativeLayout
+            and:layout_width="fill_parent" and:layout_height="wrap_content" and:layout_centerInParent="true"
+            and:id="@+id/root">
+        <LinearLayout and:layout_width="fill_parent" and:layout_height="50dp" and:background="@drawable/settings_wnd_top"
+                      and:layout_alignParentTop="true" and:id="@+id/titleCont">
+            <ru.emerginggames.snappers.view.OutlinedTextView and:id="@+id/title"
+                 and:layout_width="fill_parent" and:layout_height="wrap_content" and:gravity="center"
+                 and:textColor="#fff" and:textSize="30dp"
+                 app:strokeColor="#000" app:strokeWidth="1dp"
+                 and:text="@string/settings"
+            />
+        </LinearLayout>
+
+        <LinearLayout and:id="@+id/table" and:layout_width="fill_parent" and:layout_height="wrap_content"
+                and:background="@drawable/settings_wnd_mid" and:layout_below="@+id/titleCont" and:orientation="vertical">
+
+            <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
+                          and:background="#cdecf7">
+                <ru.emerginggames.snappers.view.ImageView and:id="@+id/iconUser"
+                      and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
+                      and:src="@drawable/icon_user" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
+                <TextView and:id="@+id/loginFbText"
+                          and:layout_width="0dp" and:layout_height="wrap_content" and:gravity="center" and:layout_gravity="center"
+                          and:layout_weight="1" and:textColor="#1f5897" and:text="@string/loginToFb" />
+                <ru.emerginggames.snappers.view.OutlinedTextView and:id="@+id/loginFbBtn"
+                         and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_gravity="center"
                          and:gravity="center" and:textColor="#fff" and:text="@string/login" and:textSize="30px"
                          app:strokeColor="#000" app:strokeWidth="1dp" and:background="@drawable/button_blue"
                          and:padding="10dp"/>
-            </TableRow>
+            </LinearLayout>
+
+            <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
+                          and:background="#e9fbff">
+                <ru.emerginggames.snappers.view.ImageView and:id="@+id/iconFb"
+                          and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
+                          and:src="@drawable/icon_fb" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
+                <TextView and:id="@+id/shareFbText" and:layout_width="0dp" and:layout_height="wrap_content"
+                          and:layout_weight="1"
+                          and:textColor="#1f5897" and:text="@string/shareToFb" and:gravity="center"
+                          and:layout_gravity="center"/>
+                <CheckBox and:id="@+id/shareToFbCheckbox"
+                          and:layout_width="74dp" and:layout_height="40dp" and:layout_gravity="center_vertical"
+                          and:background="@drawable/check_on_off" and:button="@drawable/transparent"/>
+            </LinearLayout>
+
+            <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
+                          and:background="#e9fbff">
+                <ru.emerginggames.snappers.view.ImageView and:id="@+id/iconSound"
+                          and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
+                          and:src="@drawable/icon_sound" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
+                <TextView and:id="@+id/soundText" and:layout_width="0dp" and:layout_height="wrap_content"
+                          and:layout_weight="1"
+                          and:textColor="#1f5897" and:text="@string/sound" and:gravity="center"
+                          and:layout_gravity="center"/>
+                <CheckBox and:id="@+id/soundCheckbox"
+                          and:layout_width="74dp" and:layout_height="40dp" and:layout_gravity="center_vertical"
+                          and:background="@drawable/check_on_off" and:button="@drawable/transparent"/>
+            </LinearLayout>
+
+            <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
+                          and:background="#e9fbff">
+                <ru.emerginggames.snappers.view.ImageView and:id="@+id/iconMusic"
+                          and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
+                          and:src="@drawable/icon_music" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
+                <TextView and:id="@+id/musicText" and:layout_width="0dp" and:layout_height="wrap_content"
+                          and:layout_weight="1"
+                          and:textColor="#1f5897" and:text="@string/music" and:gravity="center"
+                          and:layout_gravity="center"/>
+                <CheckBox and:id="@+id/musicCheckbox"
+                          and:layout_width="74dp" and:layout_height="40dp" and:layout_gravity="center_vertical"
+                          and:background="@drawable/check_on_off" and:button="@drawable/transparent"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+<!--
+
 
             <TableRow and:background="#e9fbff">
-                <ImageView and:id="@+id/iconFb" and:src="@drawable/icon_fb" and:layout_gravity="center_vertical"/>
-                <TextView and:id="@+id/shareFbText" and:textColor="#1f5897" and:text="@string/shareToFb" and:gravity="center"
-                          and:layout_gravity="center"/>
-                <CheckBox and:id="@+id/shareToFbCheckbox" and:button="@drawable/check_on_off" and:layout_gravity="center_vertical"/>
-            </TableRow>
-
-            <TableRow and:background="#cdecf7">
-                <ImageView and:id="@+id/iconSound" and:src="@drawable/icon_sound" and:layout_gravity="center_vertical"/>
-                <TextView and:id="@+id/soundText" and:textColor="#1f5897" and:text="@string/sound" and:gravity="center"
-                          and:layout_gravity="center"/>
-                <CheckBox and:id="@+id/soundCheckbox" and:button="@drawable/check_on_off" and:layout_gravity="center_vertical"/>
-            </TableRow>
-
-            <TableRow and:background="#e9fbff">
-                <ImageView and:id="@+id/iconMusic" and:src="@drawable/icon_music" and:layout_gravity="center_vertical"/>
+                <ru.emerginggames.snappers.view.ImageView and:id="@+id/iconMusic" and:src="@drawable/icon_music" and:layout_gravity="center_vertical"/>
                 <TextView and:id="@+id/musicText" and:textColor="#1f5897" and:text="@string/music" and:gravity="center"
                           and:layout_gravity="center"/>
                 <CheckBox and:id="@+id/musicCheckbox" and:button="@drawable/check_on_off" and:layout_gravity="center_vertical"/>
             </TableRow>
+-->
 
-        </TableLayout>
+        <LinearLayout and:layout_width="fill_parent" and:layout_height="50dp" and:background="@drawable/settings_wnd_bottom"
+              and:layout_below="@+id/table" and:id="@+id/footerCont"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ImageView and:id="@+id/backButton"
             and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_margin="20dp"

@@ -33,6 +33,8 @@ public class MainScreenActivity extends Activity {
     UserPreferences prefs;
     boolean isActive;
     private static final int[] BONUS_CHANCES = {60, 20, 10, 5, 5};
+    int scrWidth;
+    int scrHeight;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,48 +42,41 @@ public class MainScreenActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_main);
 
-        int width = getWindowManager().getDefaultDisplay().getWidth();
-        int height = getWindowManager().getDefaultDisplay().getHeight();
+        scrWidth = getWindowManager().getDefaultDisplay().getWidth();
+        scrHeight = getWindowManager().getDefaultDisplay().getHeight();
+        prefs = UserPreferences.getInstance(this);
 
         LayoutParams lp = findViewById(R.id.playButtonOnline).getLayoutParams();
-        int playSize = lp.width = Math.round(width * 0.5f);
+        int playSize = lp.width = Math.round(scrWidth * 0.5f);
         findViewById(R.id.playButtonOnline).setLayoutParams(lp);
 
         lp = findViewById(R.id.logoCont).getLayoutParams();
-        lp.height = (height - playSize)/2;
+        lp.height = (scrHeight - playSize)/2;
         lp.height = Math.round(lp.height * 0.8f);
         findViewById(R.id.logoCont).setLayoutParams(lp);
 
         lp = findViewById(R.id.playButtonOffline).getLayoutParams();
-        lp.width = (int)(width * 0.4f);
+        lp.width = (int)(scrWidth * 0.4f);
 
-        prefs = UserPreferences.getInstance(this);
+        lp = findViewById(R.id.settingsBtn).getLayoutParams();
+        lp.width = lp.height = scrWidth / 5;
 
+        setupDailyBonusCounter();
         SoundManager.getInstance(this).setUp();
+    }
 
+    void setupDailyBonusCounter(){
         OutlinedTextView dailyBonus = (OutlinedTextView)findViewById(R.id.dailyBonus);
         dailyBonus.setMaxLines2(1);
         dailyBonus.setBackgroundPaddings(DAILY_BONUS_PADDINGS);
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams)dailyBonus.getLayoutParams();
-        mlp.width = width/2;
+        mlp.width = scrWidth/2;
         mlp.height = LayoutParams.WRAP_CONTENT;
         dailyBonus.setLayoutParams(mlp);
         float scale = (float)mlp.width / dailyBonus.getBackground().getIntrinsicWidth();
         mlp.height = (int)(dailyBonus.getBackground().getIntrinsicHeight() * scale);
         dailyBonus.setTypeface(Resources.getFont(this));
         dailyBonus.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
-    }
-
-    public void onMusicButtonClick(View v){
-        UserPreferences.getInstance(this).setMusic(((CheckBox)v).isChecked());
-        ((SnappersApplication)getApplication()).musicStatusChanged();
-
-        SoundManager.getInstance(this).playButtonSound();
-    }
-
-    public void onSoundButtonClick(View v){
-        UserPreferences.getInstance(this).setSound(((CheckBox) v).isChecked());
-        SoundManager.getInstance(this).playButtonSound();
     }
 
     public void settingsButtonClick(View v){

@@ -22,6 +22,7 @@ import ru.emerginggames.snappers.gdx.Splash;
 import net.hockeyapp.android.UpdateManager;
 import ru.emerginggames.snappers.utils.GInAppStore;
 import ru.emerginggames.snappers.utils.OnlineSettings;
+import ru.emerginggames.snappers.utils.WorkerThread;
 import ru.emerginggames.snappers.view.ImageView;
 import ru.emerginggames.snappers.view.OutlinedTextView;
 
@@ -33,7 +34,8 @@ import ru.emerginggames.snappers.view.OutlinedTextView;
  */
 public class SplashGdxActivity extends AndroidApplication {
     private static final int SPLASH_TIME = 2000;
-    AsyncTask<Integer, Integer, Integer> loadTask;
+    //AsyncTask<Integer, Integer, Integer> loadTask;
+    volatile boolean initTaskRan;
 
     public void onCreate(Bundle savedInstanceState) {
         DbSettings.ENABLE_ALL_LEVELS = Settings.ENABLE_ALL_LEVELS;
@@ -61,8 +63,7 @@ public class SplashGdxActivity extends AndroidApplication {
 
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
             checkForUpdates();
-
-        OnlineSettings.update(getApplicationContext());
+        initTaskRan = false;
     }
 
 
@@ -102,56 +103,59 @@ public class SplashGdxActivity extends AndroidApplication {
         super.onResume();
         setupBackPosition();
 
-        if (loadTask != null)
+        if (initTaskRan)
             return;
 
-        loadTask = new AsyncTask<Integer, Integer, Integer>(){
-            @Override
-            protected Integer doInBackground(Integer... params) {
-                long startTime = System.currentTimeMillis();
-                new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
-                TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
-
-                UserPreferences.getInstance(SplashGdxActivity.this);
-                GInAppStore.getInstance(getApplicationContext());
-
-                long now = System.currentTimeMillis();
-                if (now - startTime < SPLASH_TIME)
-                    try{
-                        synchronized (this){
-                            wait(SPLASH_TIME - (now - startTime));
-                        }
-                    }
-                    catch (InterruptedException ex){}
-
-                while (!Metrics.initDone)
-                    try{
-                        synchronized (this){
-                            wait(100);
-                        }
-                    }
-                    catch (InterruptedException ex){}
-
-                this.publishProgress(1);
-                Resources.preload();
-                return null;
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                finish();
-                startActivity(new Intent(SplashGdxActivity.this, MainScreenActivity.class));
-            }
-
-            @Override
-            protected void onPostExecute(Integer integer) {
-                SplashGdxActivity.this.loadTask = null;
-            }
-        };
-        loadTask.execute();
+        WorkerThread.getInstance().post(init);
     }
 
     private void checkForUpdates() {
         UpdateManager.register(this, Settings.APP_ID);
     }
+
+    Runnable init = new Runnable() {
+        @Override
+        public void run() {
+            initTaskRan = true;
+            long startTime = System.currentTimeMillis();
+            new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
+
+            OnlineSettings.update(getApplicationContext());
+
+            String tjSecretKey = Settings.getTapJoyAppId(getApplicationContext());
+
+            TapjoyConnect.requestTapjoyConnect(getApplicationContext(), tjSecretKey, tjSecretKey);
+
+            UserPreferences.getInstance(SplashGdxActivity.this);
+            GInAppStore.getInstance(getApplicationContext());
+
+            long now = System.currentTimeMillis();
+            if (now - startTime < SPLASH_TIME)
+                try{
+                    synchronized (this){
+                        wait(SPLASH_TIME - (now - startTime));
+                    }
+                }
+                catch (InterruptedException ex){}
+
+            while (!Metrics.initDone)
+                try{
+                    synchronized (this){
+                        wait(100);
+                    }
+                }
+                catch (InterruptedException ex){}
+
+            runOnUiThread(finish);
+            Resources.preload();
+        }
+    };
+
+    Runnable finish = new Runnable() {
+        @Override
+        public void run() {
+            finish();
+            startActivity(new Intent(SplashGdxActivity.this, MainScreenActivity.class));
+        }
+    };
 }

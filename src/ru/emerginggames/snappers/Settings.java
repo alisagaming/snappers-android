@@ -1,6 +1,7 @@
 package ru.emerginggames.snappers;
 
 import android.content.Context;
+import android.util.Log;
 import ru.emerginggames.snappers.data.CryptHelperDES;
 
 import java.io.DataInputStream;
@@ -19,7 +20,7 @@ public class Settings {
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = true;
     public static final boolean DEBUG_BUY = true & DEBUG;
-    public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
+    public static final boolean ENABLE_ALL_LEVELS = true & DEBUG;
     public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
     public static boolean GoogleInAppEnabled = true;
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
@@ -88,17 +89,17 @@ public class Settings {
     public static String getTapJoyAppId(Context context){
         UserPreferences prefs = UserPreferences.getInstance(context);
 
-/*        try{
+        try{
             prefs.getKey1();
             prefs.getKey2();
-            Log.e("ENCODED - TjAppKey!!!", CryptHelperDES.encrypt(prefs.getKey12(), "6ac99625"));
-            Log.e("ENCODED - TjAppKey!!!", CryptHelperDES.encrypt(prefs.getKey12(), "6d02"));
-            Log.e("ENCODED - TjAppKey!!!", CryptHelperDES.encrypt(prefs.getKey12(), "4326"));
-            Log.e("ENCODED - TjAppKey!!!", CryptHelperDES.encrypt(prefs.getKey12(), "becd"));
-            Log.e("ENCODED - TjAppKey!!!", CryptHelperDES.encrypt(prefs.getKey12(), "213a233c511a"));
+            Log.e("ENCODED - TjAppKey1!!!", CryptHelperDES.encrypt(prefs.getKey12(), "6ac99625"));
+            Log.e("ENCODED - TjAppKey2!!!", CryptHelperDES.encrypt(prefs.getKey12(), "6d02"));
+            Log.e("ENCODED - TjAppKey3!!!", CryptHelperDES.encrypt(prefs.getKey12(), "4326"));
+            Log.e("ENCODED - TjAppKey4!!!", CryptHelperDES.encrypt(prefs.getKey12(), "becd"));
+            Log.e("ENCODED - TjAppKey5!!!", CryptHelperDES.encrypt(prefs.getKey12(), "213a233c511a"));
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }*/
+        }
 
         String key = prefs.getKey1() + prefs.getKey2();
         try{

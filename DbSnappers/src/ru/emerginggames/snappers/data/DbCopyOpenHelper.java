@@ -33,7 +33,7 @@ public class DbCopyOpenHelper extends SQLiteOpenHelper {
      */
     public DbCopyOpenHelper(Context context) {
         super(context, DB_NAME, null, context.getResources().getInteger(
-                R.string.databaseVersion));
+                R.string.dbVersion));
         myContext = context;
         // Get the path of the database that is based on the context.
         DB_PATH = myContext.getDatabasePath(DB_NAME).getAbsolutePath();

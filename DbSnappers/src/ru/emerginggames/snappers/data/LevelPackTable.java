@@ -44,31 +44,47 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     }
     
     public static LevelPack get(int num, Context context){
-        LevelPackTable table = new LevelPackTable(context, false);
-        LevelPack result = table.getByWhereStr(String.format("%s = %d", KEY_ID, num));
-        table.close();
-        return result;
+        LevelPackTable table = new LevelPackTable(context);
+        try{
+            table.open(false);
+            return table.getByWhereStr(String.format("%s = %d", KEY_ID, num));
+        }
+        finally {
+            table.close();
+        }
     }
 
     public static LevelPack get(String name, Context context){
-        LevelPackTable table = new LevelPackTable(context, false);
-        LevelPack result = table.getByWhereStr(String.format("%s = '%s'", KEY_NAME, name));
-        table.close();
-        return result;
+        LevelPackTable table = new LevelPackTable(context);
+        try{
+            table.open(false);
+            return table.getByWhereStr(String.format("%s = '%s'", KEY_NAME, name));
+        }
+        finally {
+            table.close();
+        }
     }
 
     public static LevelPack[] getAll(Context context){
-        LevelPackTable table = new LevelPackTable(context, false);
-        LevelPack[] result = table.getAll();
-        table.close();
-        return result;
+        LevelPackTable table = new LevelPackTable(context);
+        try{
+            table.open(false);
+            return table.getAll();
+        }
+        finally {
+            table.close();
+        }
     }
 
     public static LevelPack[] getAllByPremium(Context context, boolean isPremium){
-        LevelPackTable table = new LevelPackTable(context, false);
-        LevelPack[] result = table.getAll(LevelPack.class, String.format("%s %s = 1", isPremium ? "" : "NOT", KEY_IS_PREMIUM ));
-        table.close();
-        return result;
+        LevelPackTable table = new LevelPackTable(context);
+        try{
+            table.open(false);
+            return table.getAll(LevelPack.class, String.format("%s %s = 1", isPremium ? "" : "NOT", KEY_IS_PREMIUM ));
+        }
+        finally {
+            table.close();
+        }
     }
 
     public LevelPackTable(Context context, boolean isWriteable) {
@@ -112,7 +128,7 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
 
         bindNullable(insertStmt, 1, pack.name);
         bindNullable(insertStmt, 2, pack.background);
-        insertStmt.bindLong(3, pack.shadows? 1 : 0);
+        insertStmt.bindLong(3, pack.shadows ? 1 : 0);
         bindNullable(insertStmt, 4, pack.title);
         insertStmt.bindLong(5, pack.isGold ? 1 : 0);
         insertStmt.bindLong(6, pack.isPremium ? 1 : 0);

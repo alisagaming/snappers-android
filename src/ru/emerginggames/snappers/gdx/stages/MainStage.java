@@ -315,9 +315,11 @@ public class MainStage extends MyStage {
             if (delta < 1)
                 animDelta += delta;
             if (animDelta >= 0.05f){
-                for (int i=0; i< activeSnappers.size; i++)
-                    activeSnappers.get(i).moveAct(animDelta);
-                animDelta = 0;
+                synchronized (activeSnappers){
+                    for (int i=0; i< activeSnappers.size; i++)
+                        activeSnappers.get(i).moveAct(animDelta);
+                    animDelta = 0;
+                }
             }
         }
 
@@ -335,24 +337,24 @@ public class MainStage extends MyStage {
             int i; int j;
             int state;
             synchronized (activeSnappers){
-            for (i=0; i<activeSnappers.size; i++)
-                removeActor(activeSnappers.get(i));
-            snapperViewPool.free(activeSnappers);
-            activeSnappers.clear();
-            int w = logic.width;
-            int h = logic.height;
-            for (i=0; i< Snappers.WIDTH; i++)
-                for (j=0; j< Snappers.HEIGHT; j++)
-                    if ((state = logic.snappers.getSnapper(i, j)) > 0){
-                        view = snapperViewPool.obtain();
-                        view.set(i, j, state);
-                        view.setRandomStart(0, 0, w, h, SNAPPER_WARM_TIME);
-                        activeSnappers.add(view);
-                        addActor(view);
-                        view.setListener(snapperAnimationListener);
-                        view.setAnimFn(snapperAnimFn);
+                for (i=0; i<activeSnappers.size; i++)
+                    removeActor(activeSnappers.get(i));
+                snapperViewPool.free(activeSnappers);
+                activeSnappers.clear();
+                int w = logic.width;
+                int h = logic.height;
+                for (i=0; i< Snappers.WIDTH; i++)
+                    for (j=0; j< Snappers.HEIGHT; j++)
+                        if ((state = logic.snappers.getSnapper(i, j)) > 0){
+                            view = snapperViewPool.obtain();
+                            view.set(i, j, state);
+                            view.setRandomStart(0, 0, w, h, SNAPPER_WARM_TIME);
+                            activeSnappers.add(view);
+                            addActor(view);
+                            view.setListener(snapperAnimationListener);
+                            view.setAnimFn(snapperAnimFn);
 
-                    }
+                        }
             }
         }
 

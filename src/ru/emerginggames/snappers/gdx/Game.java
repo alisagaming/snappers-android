@@ -17,7 +17,7 @@ import ru.emerginggames.snappers.model.Level;
  * Time: 16:25
  */
 public class Game implements ApplicationListener{
-    public enum Stages{MainStage, GameOverStage, HelpStage, PausedStage, HintMenu}
+    public enum Stages{MainStage, GameOverStage, HelpStage, HintMenu}
     public Stages currentStageE;
 
     int width;
@@ -189,9 +189,6 @@ public class Game implements ApplicationListener{
                     mGameListener.levelSolved(mainStage.getLogic().level, score);
                 }
                 break;
-            case PausedStage:
-                mGameListener.showPaused();
-                break;
         }
     }
 
@@ -215,9 +212,8 @@ public class Game implements ApplicationListener{
     public void backButtonPressed(){
         switch (currentStageE){
             case MainStage:
-                setStage(Stages.PausedStage);
+                mGameListener.showPaused();
                 break;
-            case PausedStage:
             case GameOverStage:
                 Gdx.app.exit();
                 break;

@@ -411,7 +411,7 @@ public class GameActivity extends AndroidApplication {
         Runnable setLevel = new Runnable() {
             @Override
             public void run() {
-                levelInfo.setText2(getResources().getString(R.string.level_n, level.pack.id, level.number));
+                levelInfo.setText2(getString(R.string.level_n, level.pack.id, level.number));
                 level = null;
             }
         };
@@ -419,7 +419,7 @@ public class GameActivity extends AndroidApplication {
         Runnable setTapsLeft = new Runnable() {
             @Override
             public void run() {
-                tapsLeft.setText2(getResources().getString(R.string.taps_left, tapsLeftN));
+                tapsLeft.setText2(getString(R.string.taps_left, tapsLeftN));
             }
         };
 

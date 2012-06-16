@@ -79,7 +79,7 @@ public class GameDialog extends Dialog {
         addButton(btn);
     }
 
-    public void addButton(int drawable_id){
+    public ImageView addButton(int drawable_id){
         ImageView btn = new ImageView(getContext());
         btn.setImageResource(drawable_id);
         btn.setOnClickListener(clickListener);
@@ -87,7 +87,16 @@ public class GameDialog extends Dialog {
         btn.setTag(drawable_id);
 
         addButton(btn);
+        return btn;
     }
+
+    public ImageView addButton(int drawableId, boolean enabled){
+        ImageView btn = addButton(drawableId);
+        btn.setEnabled(enabled);
+        return btn;
+    }
+
+
 
     public void addButton(int drawable_id, float widthShare){
         ImageView btn = new ImageView(getContext());

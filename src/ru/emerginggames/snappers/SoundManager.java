@@ -62,7 +62,7 @@ public class SoundManager {
         try {
             mediaPlayer.prepare();
             mediaPlayer.setLooping(true);
-            mediaPlayer.setVolume(0.6f, 0.6f);
+            mediaPlayer.setVolume(0.4f, 0.4f);
             mediaPlayer.start();
         } catch (Exception e) {
         }

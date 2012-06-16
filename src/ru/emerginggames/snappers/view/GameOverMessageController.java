@@ -91,13 +91,13 @@ public     class GameOverMessageController {
             title.setText2(titleId);
             String msg;
             if (isWon){
-                msg = mActivity.getResources().getString(R.string.score, msgValue);
+                msg = mActivity.getString(R.string.score, msgValue);
                 stars.showScoreStars(msgValue);
             }
             else if (msgValue == 1)
-                msg = mActivity.getResources().getString(R.string.possible_in_1_touch);
+                msg = mActivity.getString(R.string.possible_in_1_touch);
             else
-                msg = mActivity.getResources().getString(R.string.possible_in_touches, msgValue);
+                msg = mActivity.getString(R.string.possible_in_touches, msgValue);
             message.setText2(msg);
             layout.setVisibility(View.VISIBLE);
         }

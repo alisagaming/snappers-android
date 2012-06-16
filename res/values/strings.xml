@@ -55,5 +55,7 @@
     <string name="collect_now">Collect now!</string>
     <string name="received_bonus_hint">You\'ve received one bonus hint!</string>
     <string name="received_bonus_hints" formatted="false">You\'ve received %d bonus hints!</string>
+    <string name="likeUrl" >http://www.facebook.com/SnappersApp</string>
+    <string name="marketUrl" >market://details?id=ru.emerginggames.snappers</string>
 
 </resources>

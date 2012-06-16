@@ -1,10 +1,9 @@
 package ru.emerginggames.snappers.view;
 
+import android.content.Intent;
+import android.net.Uri;
 import com.tapjoy.TapjoyConnect;
-import ru.emerginggames.snappers.GameActivity;
-import ru.emerginggames.snappers.Metrics;
-import ru.emerginggames.snappers.R;
-import ru.emerginggames.snappers.UserPreferences;
+import ru.emerginggames.snappers.*;
 import ru.emerginggames.snappers.gdx.Game;
 import ru.emerginggames.snappers.gdx.Resources;
 
@@ -84,13 +83,14 @@ public class GameDialogsController{
                 initDialog();
             else
                 dlg.clear();
+
             dlg.setTwoButtonsARow(true);
             dlg.setItemSpacing(Metrics.screenMargin);
             dlg.setTitle(R.string.free_hints);
             dlg.addButton(R.drawable.button_invite);
-            dlg.addButton(R.drawable.button_like);
+            dlg.addButton(R.drawable.button_like, !prefs.isLiked());
             dlg.addButton(R.drawable.button_promo);
-            dlg.addButton(R.drawable.button_rate);
+            dlg.addButton(R.drawable.button_rate, !prefs.isRated());
 
             dlg.show();
         }
@@ -123,7 +123,7 @@ public class GameDialogsController{
             if (hintsLeft == 1)
                 dlg.setMessage(R.string.youHaveOneHint, Metrics.fontSize);
             else
-                dlg.setMessage(mActivity.getResources().getString(R.string.youHave_n_Hints, hintsLeft), Metrics.fontSize);
+                dlg.setMessage(mActivity.getString(R.string.youHave_n_Hints, hintsLeft), Metrics.fontSize);
 
             dlg.addButton(R.drawable.button_usehint_long);
             dlg.addButton(R.drawable.button_freehints_long);
@@ -131,18 +131,16 @@ public class GameDialogsController{
         }
 
         void showBuyHintMenu(){
-            android.content.res.Resources res = mActivity.getResources();
             StringBuilder msg = new StringBuilder();
-            msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.buySome));
+            msg.append(mActivity.getString(R.string.youHaveNoHints)).append("\n").append(mActivity.getString(R.string.buySome));
             dlg.setMessage(msg, Metrics.fontSize);
             dlg.addButton(R.drawable.button_freehints_long);
             dlg.addButton(R.drawable.button_buyhints_long);
         }
 
         void showGetOnlineMenu(){
-            android.content.res.Resources res = mActivity.getResources();
             StringBuilder msg = new StringBuilder();
-            msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.getOnline));
+            msg.append(mActivity.getString(R.string.youHaveNoHints)).append("\n").append(mActivity.getString(R.string.getOnline));
             dlg.setMessage(msg, Metrics.fontSize);
             //TODO: add button if needed
         }
@@ -227,6 +225,21 @@ public class GameDialogsController{
                 case R.drawable.button_promo:
                     mActivity.wentTapjoy = true;
                     TapjoyConnect.getTapjoyConnectInstance().showOffers();
+                    break;
+
+                case R.drawable.button_like:
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.likeUrl)));
+                    mActivity.startActivity(browserIntent);
+                    prefs.addHints(Settings.BONUS_FOR_LIKE);
+                    prefs.setLiked(true);
+                    dlg.hide();
+                    break;
+
+                case R.drawable.button_rate:
+                    mActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.marketUrl))));
+                    prefs.addHints(Settings.BONUS_FOR_RATE);
+                    prefs.setRated(true);
+                    dlg.hide();
                     break;
             }
         }

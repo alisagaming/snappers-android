@@ -138,7 +138,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
     protected void showPackLockedMessage(final LevelPack pack){
         LevelPack prevPack = LevelPackTable.get(pack.id-1, this);
-        String message = getResources().getString(R.string.level_locked, prevPack.title);
+        String message = getString(R.string.level_locked, prevPack.title);
         showMessageDialog(message, new int[]{18, 38});
     }
 

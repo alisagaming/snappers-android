@@ -31,6 +31,10 @@ public class UserPreferences {
     private static final String HINTS_TOUCHED = "HINTS_TOUCHED";
     private static final String G_IN_APP_INIT_DONE = "IN_APP_INIT_DONE";
     private static final String LAST_USED_DAILY_BONUS = "LAST_USED_DAILY_BONUS";
+    private static final String USER_LIKED = "LIKED";
+    private static final String USER_RATED = "RATED";
+    private static final String LAST_RATE_RECOMMENDED = "LAST_RATE_RECOMMENDED";
+    private static final String LAST_LIKE_RECOMMENDED = "LAST_LIKE_RECOMMENDED";
     public static String Key1;
     public static String Key11;
     public static String Key21;
@@ -49,8 +53,6 @@ public class UserPreferences {
     public static UserPreferences getInstance(Context context){
         if (instance == null)
             return instance = new UserPreferences(context);
-        //else if (context != null)
-        //    instance.context = context;
         return instance;
     }
 
@@ -241,6 +243,48 @@ public class UserPreferences {
         return getBoolean(SOUND, true, SOUND);
     }
 
+    public boolean isLiked(){
+        return getBoolean(USER_LIKED, false, USER_LIKED);
+    }
+
+    public void setLiked(boolean liked){
+        putBoolean(USER_LIKED, liked, USER_LIKED);
+    }
+
+    public boolean isRated(){
+        return getBoolean(USER_RATED, false, USER_RATED);
+    }
+
+    public void setRated(boolean rated){
+        putBoolean(USER_RATED, rated, USER_RATED);
+    }
+
+    public long getLastLikeRecommeded(){
+        return getLong(LAST_LIKE_RECOMMENDED, 0, LAST_LIKE_RECOMMENDED);
+    }
+
+    public void setLastLikeRecommended(long time){
+        putLong(LAST_LIKE_RECOMMENDED, time, LAST_LIKE_RECOMMENDED);
+    }
+
+    public long getLastRateRecommeded(){
+        return getLong(LAST_RATE_RECOMMENDED, 0, LAST_RATE_RECOMMENDED);
+    }
+
+    public void setLastRateRecommended(long time){
+        putLong(LAST_RATE_RECOMMENDED, time, LAST_RATE_RECOMMENDED);
+    }
+
+
+
+
+
+
+
+
+
+
+
     private String _S(String s){
         try{
             if (Settings.NO_PREF_ENCRYPT)
@@ -326,7 +370,7 @@ public class UserPreferences {
 
     public String getKey1(){
         if (Key1 == null)
-            Key1 = context.getResources().getString(R.string.app_name) + LevelPackTable.MAIL;
+            Key1 = context.getString(R.string.app_name) + LevelPackTable.MAIL;
         Key11 = Key1;
         return Key1;
     }

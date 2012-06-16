@@ -16,6 +16,8 @@ import java.io.IOException;
 public class Settings {
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
     public static final String FONT = "Berlin Sans FB.ttf";
+    public static final int BONUS_FOR_RATE = 1;
+    public static final int BONUS_FOR_LIKE = 1;
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = true;

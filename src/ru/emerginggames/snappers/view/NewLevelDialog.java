@@ -40,7 +40,7 @@ public class NewLevelDialog extends GameDialog {
     }
 
     public void setLevel(int level){
-        setMessage(getContext().getResources().getString(R.string.new_level, level), Metrics.fontSize);
+        setMessage(getContext().getString(R.string.new_level, level), Metrics.fontSize);
     }
 
 

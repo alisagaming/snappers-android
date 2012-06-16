@@ -112,7 +112,7 @@ public class MainScreenActivity extends Activity {
                     if (i == 0)
                         messageDialog.setMessage(R.string.received_bonus_hint, Metrics.fontSize);
                     else
-                        messageDialog.setMessage(getResources().getString(R.string.received_bonus_hints, i+1), Metrics.fontSize);
+                        messageDialog.setMessage(getString(R.string.received_bonus_hints, i+1), Metrics.fontSize);
 
                     messageDialog.show();
                     break;

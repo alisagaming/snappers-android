@@ -7,10 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.view.animation.*;
 import android.widget.*;
 import com.adwhirl.AdWhirlTargeting;
@@ -116,7 +113,7 @@ public class GameActivity extends AndroidApplication {
                     topButtons = new TopButtonController(rootLayout);
                     topButtons.showMainButtons();
 
-                    if (!prefs.isAdFree()) {
+                    if (!Settings.IS_PREMIUM && !prefs.isAdFree()) {
                         adController = new AdController();
                         rootLayout.addView(adController.getAdLayout());
                     }
@@ -175,6 +172,14 @@ public class GameActivity extends AndroidApplication {
             game.backButtonPressed();
     }
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU & game.initDone)
+                game.setStage(Game.Stages.PausedStage);
+
+        return super.onKeyUp(keyCode, event);
+    }
+
     protected boolean checkNetworkStatus() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (checkNetworkType(conMgr, ConnectivityManager.TYPE_MOBILE))
@@ -225,6 +230,7 @@ public class GameActivity extends AndroidApplication {
     Runnable showPausedDialog = new Runnable() {
         @Override
         public void run() {
+            game.setPaused(true);
             if (dlg == null)
                 initDialog();
             else
@@ -850,7 +856,7 @@ public class GameActivity extends AndroidApplication {
                 switch (v.getId()){
                     case R.id.pauseBtn:
                         runOnUiThread(showPausedDialog);
-                        game.setPaused(true);
+
 
                         break;
                     case R.id.hintBtn:
@@ -1071,7 +1077,8 @@ public class GameActivity extends AndroidApplication {
         public void showScoreStars(int score){
             float size = Metrics.squareButtonSize * Metrics.squareButtonScale;
             int amount = 3 + score / 1500;
-            starLP.topMargin = adController.getAdHeight();
+            if (adController!= null)
+                starLP.topMargin = adController.getAdHeight();
 
             for (int i=0; i< amount; i++){
                 ImageView img = starsPool.obtain();

@@ -37,7 +37,6 @@ public class Metrics {
     }
 
     public static int snapperSize;
-    public static int blastSize;
     public static int squareButtonSize;
     public static int fontSize;
     public static int largeFontSize;
@@ -48,16 +47,12 @@ public class Metrics {
     public static float snapperMult4;
     public static int screenWidth;
     public static int screenHeight;
-    public static int menuWidth;
     public static SizeMode sizeMode;
-    public static int bangSize;
     public static int hintSize;
     public static int screenSizeMode;
     public static float squareButtonScale = 1;
     public static int bgSourceWidth;
     public static int bgSourceHeight;
-
-
 
     public static boolean initDone = false;
     
@@ -87,33 +82,24 @@ public class Metrics {
     static void setMetrics(){
         switch (sizeMode){
             case modeS:
-                bangSize = 48;
                 snapperSize = 48;
-                blastSize = 18;
                 squareButtonSize = 40;
                 fontSize = 22;
-                menuWidth = 240;
                 hintSize=64;
                 bgSourceWidth = 320;
                 bgSourceHeight = 480;
                 break;
             case modeM:
-                snapperSize = 81;
-                bangSize = 72;
-                blastSize = 27;
+                snapperSize = 80;
                 squareButtonSize = 80;
                 fontSize = 34;
-                menuWidth = 360;
                 hintSize=128;
                 bgSourceWidth = 512;
                 bgSourceHeight = 854;
                 break;
             case modeL:
                 snapperSize = 108;
-                bangSize = 96;
-                blastSize = 36;
                 squareButtonSize = 106;
-                menuWidth = 500;
                 fontSize = 48;
                 hintSize=128;
                 bgSourceWidth = 640;

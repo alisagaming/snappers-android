@@ -150,6 +150,9 @@ public class UserPreferences {
             return 0;
         if (Settings.ENABLE_ALL_LEVELS)
             return 1000;
+        if (Settings.IS_PREMIUM && pack.title.equals("Extra"))
+            return Math.max(1, getInt(String.format(LEVEL_UNLOCK, pack.name), 0, pack.name));
+
         return getInt(String.format(LEVEL_UNLOCK, pack.name), 0, pack.name);
     }
     

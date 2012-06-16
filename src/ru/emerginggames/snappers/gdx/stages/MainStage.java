@@ -272,7 +272,7 @@ public class MainStage extends MyStage {
 
         protected void draw(){
             Blast b;
-            int blSize = Metrics.blastSize;
+            int blSize = Resources.blastFrames[0].originalWidth;
             int blShift = blSize/2;
             List<Blast> blasts = logic.getBlasts();
             for (int i=0; i<blasts.size(); i++){

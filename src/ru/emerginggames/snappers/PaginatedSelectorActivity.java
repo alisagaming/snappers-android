@@ -35,15 +35,14 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         int width = getWindowManager().getDefaultDisplay().getWidth();
         int defPadding = width/40;
 
-        findViewById(R.id.backButton).setPadding(defPadding * 2, 0, 0, defPadding * 2);
-        
-        findViewById(R.id.indicator).setPadding(defPadding, defPadding, defPadding, 0);
-
         Rect wndRect = new Rect();
         findViewById(R.id.root).getWindowVisibleDisplayFrame(wndRect);
 
         if (wndRect.width()>0)
             Metrics.setSize(wndRect.width(), wndRect.height(), this);
+
+        findViewById(R.id.backButton).setPadding(defPadding * 2, 0, 0, defPadding * 2);
+        findViewById(R.id.indicator).setPadding(defPadding, defPadding, defPadding, 0);
 
         /*RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)findViewById(R.id.backButton).getLayoutParams();
         lp.width = lp.height = width / 5;*/

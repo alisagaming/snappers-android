@@ -35,9 +35,8 @@ public class SnapperView extends MovableActor{
         snapper = new Sprite(Resources.snapperBack[1]);
         float frameTime = EYE_FRAME_TIME * ( 1 + (float)Math.random() * EYE_FRAME_TIME_DEVIATION * 2 - EYE_FRAME_TIME_DEVIATION);
         eyes = new AnimatedSprite(Resources.eyeFrames, frameTime, true);
-        width = Metrics.snapperSize;
-        height = Metrics.snapperSize;
-        halfSize = Metrics.snapperSize/2;
+        height = width = Resources.eyeFrames[0].originalWidth;
+        halfSize = Resources.eyeFrames[0].originalWidth /2;
 
     }
 
@@ -78,7 +77,7 @@ public class SnapperView extends MovableActor{
         snapper.setRegion(Resources.snapperBack[state-1]);
         snapper.setScale(scale);
         eyes.setScale(scale);
-        yEyeShift = Metrics.snapperSize/25f * scale;
+        //yEyeShift = Metrics.snapperSize/25f * scale;
     }
 
     private float getScale(){

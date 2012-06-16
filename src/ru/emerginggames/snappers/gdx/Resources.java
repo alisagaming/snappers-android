@@ -32,32 +32,24 @@ import ru.emerginggames.snappers.utils.WorkerThread;
 public class Resources {
     protected static String dir;
     protected static final Object syncLock = new Object();
-
-    protected static class Preload {
-        public static TextureData snappers;
-        public static TextureData bang;
-        public static TextureData blast;
-        public static TextureData bg;
-        public static TextureData hint;
-        public static boolean isBgLoading;
-        public static String bgName;
-    }
-
     public static Context context;
 
-    public static Texture snapperTexture;
+    protected static class Preload {
+        public static TextureData bg;
+        public static boolean isBgLoading;
+        public static String bgName;
+        public static PrepareableTextureAtlas.TextureAtlasData mainTextures;
+    }
 
-    public static Texture bangTexture;
-    public static Texture blastTexture;
-    public static Texture hintTexture;
     public static TextureRegion bg;
+    public static PrepareableTextureAtlas mainTextures;
+    public static TextureRegion hintCircle;
 
-    public static TextureRegion[] snapperBack;
-    public static TextureRegion[] eyeFrames;
-    public static TextureRegion[] blastFrames;
-    public static TextureRegion[] bangFrames;
-    public static TextureRegion[] hintFrames;
-
+    public static PrepareableTextureAtlas.AtlasRegion[] snapperBack;
+    public static PrepareableTextureAtlas.AtlasRegion[] eyeFrames;
+    public static PrepareableTextureAtlas.AtlasRegion[] blastFrames;
+    public static PrepareableTextureAtlas.AtlasRegion[] bangFrames;
+    public static PrepareableTextureAtlas.AtlasRegion[] hintFrames;
 
     public static Sound[] popSounds;
     public static Sound winSound;
@@ -93,100 +85,35 @@ public class Resources {
 
     private static void loadSnapperTextures(boolean isGold) {
         preload();
-        int snapperSize = Metrics.snapperSize;
 
-        int snappersStart = isGold ? 25 + 4 : 25;
-        snapperTexture = new Texture(Preload.snappers);
-        snapperTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        snapperTexture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
+        mainTextures = new PrepareableTextureAtlas(Preload.mainTextures);
 
-        eyeFrames = makeAnimationFrames(snapperTexture, snapperSize, snapperSize, true, 0, 25);
-        snapperBack = makeAnimationFrames(snapperTexture, snapperSize, snapperSize, false, snappersStart, 4);
+        eyeFrames = new PrepareableTextureAtlas.AtlasRegion[28];
+        for (int i = 0; i < 14; i++)
+            eyeFrames[i] = mainTextures.findRegion(String.format("e%d", i+1));
+        for (int i=14; i<28; i++)
+            eyeFrames[i] = eyeFrames[27-i];
 
-        blastTexture = new Texture(Preload.blast);
-        blastFrames = makeAnimationFrames(blastTexture, Metrics.blastSize, Metrics.blastSize, false, 0, 3);
+        snapperBack = new PrepareableTextureAtlas.AtlasRegion[4];
+        snapperBack[0] = mainTextures.findRegion(String.format("red"));
+        snapperBack[1] = mainTextures.findRegion(String.format("green"));
+        snapperBack[2] = mainTextures.findRegion(String.format("yellow"));
+        snapperBack[3] = mainTextures.findRegion(String.format("blue"));
 
-        if (Metrics.sizeMode == Metrics.SizeMode.modeS) {
-            bangFrames = makeAnimationFrames(snapperTexture, Metrics.bangSize, Metrics.bangSize, false, 33, 5);
-        } else {
-            bangTexture = new Texture(Preload.bang);
-            bangFrames = makeAnimationFrames(bangTexture, Metrics.bangSize, Metrics.bangSize, false);
-        }
+        blastFrames = new PrepareableTextureAtlas.AtlasRegion[1];
+        blastFrames[0] = mainTextures.findRegion(String.format("blast"));
 
-        hintTexture = new Texture(Preload.hint);
-        hintFrames = makeAnimationFrames(hintTexture, Metrics.hintSize, Metrics.hintSize, false, 0, 11);
-    }
+        bangFrames  = new PrepareableTextureAtlas.AtlasRegion[9];
+        for (int i = 0; i < 9; i++)
+            bangFrames[i] = mainTextures.findRegion(String.format("b%d", i+1));
 
-    private static TextureRegion getTextureRegion(Texture texture, int tileWidth, int tileHeight, int i, int j) {
-        return new TextureRegion(texture, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
-    }
+        hintFrames  = new PrepareableTextureAtlas.AtlasRegion[18];
+        for (int i = 0; i < 10; i++)
+            hintFrames[i] = mainTextures.findRegion(String.format("h%d", i+1));
+        for (int i=10; i<18; i++)
+            hintFrames[i] = hintFrames[18-i];
 
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack) {
-        TextureRegion[][] frames2 = TextureRegion.split(texture, tileWidth, tileHeight);
-        if (frames2.length == 1)
-            return null;
-
-        int height = frames2.length;
-        int width = frames2[1].length;
-
-        int size = width * height;
-        TextureRegion[] frames = new TextureRegion[goBack ? size * 2 - 2 : size];
-
-        int i;
-        int j;
-        for (i = 0; i < height; i++)
-            for (j = 0; j < width; j++)
-                frames[i * width + j] = frames2[i][j];
-
-        if (goBack)
-            for (i = 0; i < size - 2; i++)
-                frames[size + i] = frames[size - i - 2];
-
-        return frames;
-    }
-
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int start, int size) {
-        int cols = texture.getWidth() / tileWidth;
-
-        TextureRegion[] frames = new TextureRegion[goBack ? size * 2 - 2 : size];
-
-        for (int i = 0; i < size; i++)
-            frames[i] = new TextureRegion(texture, tileWidth * ((i + start) % cols), tileHeight * ((i + start) / cols), tileWidth, tileHeight);
-
-
-        if (goBack)
-            for (int i = 0; i < size - 2; i++)
-                frames[size + i] = frames[size - i - 2];
-
-        return frames;
-    }
-
-    private static TextureRegion[] makeAnimationFrames(Texture texture, int tileWidth, int tileHeight, boolean goBack, int startX, int startY, int max) {
-        int width = texture.getWidth();
-
-        int size = max;
-        TextureRegion[] frames = new TextureRegion[goBack ? size * 2 - 2 : size];
-        int posx = startX;
-        int posy = startY;
-        if (posx > width) {
-            posy += (tileHeight * (posx / width));
-            posx = posx % width;
-        }
-
-        for (int i = 0; i < max; i++) {
-            frames[i] = new TextureRegion(texture, posx, posy, tileWidth, tileHeight);
-            posx += tileWidth;
-            if (posx + tileWidth > width) {
-                posx = 0;
-                posy += tileHeight;
-            }
-        }
-
-        if (goBack)
-            for (int i = 0; i < size - 2; i++)
-                frames[size + i] = frames[size - i - 2];
-
-        return frames;
+        hintCircle = mainTextures.findRegion(String.format("round"));
     }
 
     public static boolean loadBg(String name) {
@@ -199,24 +126,8 @@ public class Resources {
             width = Metrics.bgSourceWidth;
         int bgStartX = (Metrics.bgSourceWidth - width)/2;
 
-
-/*        int bgWidth = Math.min(Metrics.screenWidth, Metrics.bgSourceWidth);
-        int bgHeight = Math.min(Metrics.screenHeight, Metrics.bgSourceHeight);
-        int bgStartX = (Metrics.screenWidth - bgWidth) / 2;
-        int bgStartY = Metrics.screenHeight - bgHeight;*/
         bg = new TextureRegion(new Texture(Preload.bg), bgStartX, 0, width, Metrics.bgSourceHeight);
         return true;
-    }
-
-    public static TextureRegion normLoadTexture(String name, Pixmap.Format format) {
-        try {
-            Bitmap bgSource = BitmapFactory.decodeStream(context.getAssets().open(name));
-            TextureRegion reg = BitmapPixmap.bitmapToTexture(bgSource, format);
-            bgSource.recycle();
-            return reg;
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     public static void loadSounds() {
@@ -241,28 +152,20 @@ public class Resources {
         if (Gdx.files == null)
             return;
         synchronized (syncLock) {
-            if (Preload.bang == null && Metrics.sizeMode != Metrics.SizeMode.modeS)
-                Preload.bang = new FileTextureData(Gdx.files.internal(dir + "bang.png"), null,  Pixmap.Format.RGBA4444, false);
-            if (Preload.blast == null)
-                Preload.blast = new FileTextureData(Gdx.files.internal(dir + "blast.png"), null, Pixmap.Format.RGBA4444, false);
-            if (Preload.snappers == null)
-                Preload.snappers = new FileTextureData(Gdx.files.internal(dir + "snappers.png"), null, Pixmap.Format.RGBA4444, false);
-            if (Preload.hint == null)
-                Preload.hint = new FileTextureData(Gdx.files.internal(dir + "hint_circle.png"), null, Pixmap.Format.RGBA4444, false);
+            if (Preload.mainTextures == null){
+                FileHandle packFile = Gdx.files.internal(dir + "mainTexture.txt");
+                Preload.mainTextures = new PrepareableTextureAtlas.TextureAtlasData(packFile, packFile.parent(), false);
+            }
         }
     }
 
     public static void preparePreload() {
         synchronized (syncLock) {
-            prepareData(Preload.bang);
-            prepareData(Preload.blast);
-            prepareData(Preload.snappers);
-            prepareData(Preload.hint);
+            prepareData(Preload.mainTextures);
         }
     }
 
     protected static void prepareData(TextureData data) {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (data != null && !data.isPrepared())
             data.prepare();
     }
@@ -297,13 +200,11 @@ public class Resources {
         utilizeBg();
         if (Gdx.files == null)
             return;
-        /*Preload.bg = new ResizedFileTextureData(Gdx.files.internal("bg/" + name), Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);*/
         Preload.bg = new FileTextureData(Gdx.files.internal("bg/" +dir + name), null,  Pixmap.Format.RGB888, false);
         Preload.bgName = name;
     }
 
     protected static void utilizeBg() {
-        //Log.v(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
         if (Preload.bg == null)
             return;
         if (Preload.bg.isPrepared())
@@ -335,7 +236,4 @@ public class Resources {
         }
     }
     private static PreloadRunnable preloadRunnable = new PreloadRunnable();
-
-
-
 }

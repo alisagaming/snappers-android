@@ -488,15 +488,15 @@ public class PrepareableTextureAtlas implements Disposable {
     /** A sprite that, if whitespace was stripped from the region when it was packed, is automatically positioned as if whitespace
      * had not been stripped. */
     static public class AtlasSprite extends Sprite {
-        final AtlasRegion region;
+        AtlasRegion region;
         float originalOffsetX, originalOffsetY;
 
         public AtlasSprite (AtlasRegion region) {
             this.region = new AtlasRegion(region);
             originalOffsetX = region.offsetX;
             originalOffsetY = region.offsetY;
-            setRegion(region);
-            //setOrigin(region.originalWidth / 2f, region.originalHeight / 2f);
+            super.setRegion(region);
+            setOrigin(region.originalWidth / 2f, region.originalHeight / 2f);
             int width = Math.abs(region.getRegionWidth());
             int height = Math.abs(region.getRegionHeight());
             if (region.rotate) {
@@ -571,6 +571,22 @@ public class PrepareableTextureAtlas implements Disposable {
 
         public AtlasRegion getAtlasRegion () {
             return region;
+        }
+
+        public void setRegion (AtlasRegion region) {
+            this.region = region;
+            originalOffsetX = region.offsetX;
+            originalOffsetY = region.offsetY;
+            super.setRegion(region);
+            setOrigin(region.originalWidth / 2f, region.originalHeight / 2f);
+            int width = Math.abs(region.getRegionWidth());
+            int height = Math.abs(region.getRegionHeight());
+            if (region.rotate) {
+                rotate90(true);
+                super.setBounds(region.offsetX, region.offsetY, height, width);
+            } else
+                super.setBounds(region.offsetX, region.offsetY, width, height);
+            setColor(1, 1, 1, 1);
         }
     }
 }

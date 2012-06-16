@@ -96,7 +96,7 @@ public class MainStage extends MyStage {
             }
         }
         this.marginBottom = marginBottom;
-        maxMarginBottom = height - marginTop - Math.min(width, (int)(Metrics.snapperSize * Metrics.snapperMult1 * 6));
+        maxMarginBottom = height - marginTop - Math.min(width, (int)(Resources.eyeFrames[0].originalWidth * Metrics.snapperMult1 * 6));
         return new Rect(0, height - marginTop, width, marginBottom);
     }
 
@@ -147,6 +147,8 @@ public class MainStage extends MyStage {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        if (isHinting)
+            hint.drawBack(batch);
         snappers.draw();
         blasts.draw();
         bangs.draw();
@@ -164,9 +166,9 @@ public class MainStage extends MyStage {
             restartLevel();
 
         if (hint == null)
-            hint = new Hints(logic, showText);
+            hint =  new Hints(logic);
         else
-            hint.updateLevel(showText);
+            hint.updateLevel();
         logic.hintUsed = true;
         isHinting = true;
     }

@@ -54,7 +54,8 @@ public class AnimatedSprite extends Sprite implements IPositionable {
         setRegion(animation.getKeyFrame(animationTime, looping));
         if (loopTime>0 && animationTime>loopTime){
             loopTime = 0;
-            animationEndListener.onAnimationEnd(this);
+            if (animationEndListener != null)
+                animationEndListener.onAnimationEnd(this);
         }
     }
 

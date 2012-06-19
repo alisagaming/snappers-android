@@ -37,12 +37,14 @@
             <CheckBox android:layout_width="64dp" android:layout_height="64dp"
                       android:id="@+id/musicCheck" android:layout_marginBottom="4dp"
                       android:gravity="center"
-                      android:button="@drawable/music_check"
+                      android:background="@drawable/music_check"
+                      android:button="@drawable/transparent"
                       android:onClick="onMusicButtonClick"
                     />
             <CheckBox android:layout_width="64dp" android:layout_height="64dp"
                       android:id="@+id/soundCheck"
-                      android:button="@drawable/sound_check"
+                      android:background="@drawable/sound_check"
+                      android:button="@drawable/transparent"
                       android:onClick="onSoundButtonClick"
                     />
         </LinearLayout>
@@ -57,11 +59,12 @@
                 />
     </RelativeLayout>
 
-    <ImageView android:id="@+id/shopButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <ru.emerginggames.snappers.view.ImageView android:id="@+id/shopButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
                android:src="@drawable/store_button"
                android:layout_alignParentBottom="true"
                android:layout_alignParentRight="true"
                android:scaleType="fitCenter"
+               android:adjustViewBounds="true"
                android:onClick="onStoreButtonClick"
             />
 

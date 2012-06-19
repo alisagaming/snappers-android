@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,6 +42,19 @@ public class MainScreenActivity extends Activity {
         findViewById(R.id.logoCont).setLayoutParams(lp);
 
         findViewById(R.id.options).setVisibility(View.GONE);
+        lp = findViewById(R.id.options).getLayoutParams();
+        lp.width = width * 19 /100;
+
+        lp = findViewById(R.id.settingsBtn).getLayoutParams();
+        lp.width = width * 19 /100;
+
+        lp = findViewById(R.id.musicCheck).getLayoutParams();
+        lp.width = lp.height = width * 19 /100 * 64/85;
+
+        lp = findViewById(R.id.soundCheck).getLayoutParams();
+        lp.width = lp.height = width * 19 /100 * 64/85;
+
+
 
         UserPreferences prefs = UserPreferences.getInstance(this);
         ((CheckBox)findViewById(R.id.soundCheck)).setChecked(prefs.getSound());

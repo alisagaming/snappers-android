@@ -93,6 +93,8 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT, 1f);
         if (Metrics.sizeMode == Metrics.SizeMode.modeS)
             itemParams.setMargins(2,2,2,2);
+        else if (Metrics.sizeMode == Metrics.SizeMode.modeM)
+            itemParams.setMargins(4,4,4,4);
         else
             itemParams.setMargins(6,6,6,6);
 

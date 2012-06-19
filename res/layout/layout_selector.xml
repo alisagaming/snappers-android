@@ -58,7 +58,7 @@
 
             <ImageView android:id="@+id/backButton" android:layout_width="0dp" android:layout_height="wrap_content"
                        android:src="@drawable/arrow_back_btn" android:layout_weight="19"
-                       android:layout_gravity="bottom"
+                       android:layout_gravity="center"
                        android:scaleType="fitCenter"
                        android:clickable="true"
                        android:onClick="onBackButtonClick"
@@ -69,7 +69,7 @@
 
             <ImageView android:id="@+id/shopButton" android:layout_width="0dp" android:layout_height="wrap_content"
                        android:src="@drawable/store_button" android:layout_weight="60"
-                       android:layout_gravity="bottom"
+                       android:layout_gravity="center"
                        android:scaleType="fitCenter"
                        android:clickable="true"
                        android:onClick="onStoreButtonClick"

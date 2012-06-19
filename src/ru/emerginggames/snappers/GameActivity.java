@@ -54,6 +54,7 @@ public class GameActivity extends AndroidApplication {
     TopButtonController topButtons;
     GameOverMessageController gameOverMessageController;
     LevelInfo levelInfo;
+    View helpView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,22 +193,21 @@ public class GameActivity extends AndroidApplication {
         startActivity(intent);
     }
 
-
-
     void showHelp(){
-        final View v = getLayoutInflater().inflate(R.layout.partial_help, null);
-        v.setOnClickListener(new View.OnClickListener() {
+        helpView = getLayoutInflater().inflate(R.layout.partial_help, null);
+        helpView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rootLayout.removeView(v);
                 game.setStage(Game.Stages.GameOverStage);
+                helpView = null;
             }
         });
 
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        rootLayout.addView(v, lp);
+        rootLayout.addView(helpView, lp);
         game.setStage(Game.Stages.HelpStage);
         topButtons.hideAll();
         levelInfo.hideText();
@@ -386,6 +386,10 @@ public class GameActivity extends AndroidApplication {
                 prefs.unlockNextLevelPack(level.pack);
             levelInfo.setDim(true);
             levelInfo.hideText();
+            if (helpView != null){
+                rootLayout.removeView(helpView);
+                helpView = null;
+            }
         }
 
         @Override
@@ -400,6 +404,10 @@ public class GameActivity extends AndroidApplication {
                 adController.showAdTop();
             gameOverMessageController.show(false, level.tapsCount);
             levelInfo.hideText();
+            if (helpView != null){
+                rootLayout.removeView(helpView);
+                helpView = null;
+            }
         }
 
         @Override

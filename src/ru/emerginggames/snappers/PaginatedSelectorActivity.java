@@ -37,7 +37,7 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         scoreView.setText(scoreStr);
 
         findViewById(R.id.root).setPadding(0, 0 , 0, defPadding);
-        findViewById(R.id.footer).setPadding(0, 0, 0, 0);
+        //findViewById(R.id.footer).setPadding(0, 0, 0, 0);
         
         findViewById(R.id.indicator).setPadding(defPadding, defPadding, defPadding, defPadding);
 

@@ -210,6 +210,7 @@ public class GameActivity extends AndroidApplication {
         rootLayout.addView(v, lp);
         game.setStage(Game.Stages.HelpStage);
         topButtons.hideAll();
+        levelInfo.hideText();
     }
 
     Runnable showPausedDialog = new Runnable() {
@@ -384,6 +385,7 @@ public class GameActivity extends AndroidApplication {
             if (next == null)
                 prefs.unlockNextLevelPack(level.pack);
             levelInfo.setDim(true);
+            levelInfo.hideText();
         }
 
         @Override
@@ -397,7 +399,7 @@ public class GameActivity extends AndroidApplication {
             if (adController != null)
                 adController.showAdTop();
             gameOverMessageController.show(false, level.tapsCount);
-
+            levelInfo.hideText();
         }
 
         @Override
@@ -407,6 +409,7 @@ public class GameActivity extends AndroidApplication {
             topButtons.showMainButtons();
             gameOverMessageController.hide();
             levelInfo.setDim(false);
+            levelInfo.showText();
         }
 
         @Override
@@ -868,7 +871,14 @@ public class GameActivity extends AndroidApplication {
         public void setDim(boolean isDim){
             color = isDim ? Color.rgb(128, 128, 128) : Color.rgb(255, 255, 255);
             runOnUiThread(setColor);
+        }
 
+        public void showText(){
+            runOnUiThread(showText);
+        }
+
+        public void hideText(){
+            runOnUiThread(hideText);
         }
 
         Runnable setLevel = new Runnable() {
@@ -891,6 +901,22 @@ public class GameActivity extends AndroidApplication {
             public void run() {
                 levelInfo.setTextColor(color);
                 tapsLeft.setTextColor(color);
+            }
+        };
+
+        Runnable hideText = new Runnable() {
+            @Override
+            public void run() {
+                levelInfo.setVisibility(View.INVISIBLE);
+                tapsLeft.setVisibility(View.INVISIBLE);
+            }
+        };
+
+        Runnable showText = new Runnable() {
+            @Override
+            public void run() {
+                levelInfo.setVisibility(View.VISIBLE);
+                tapsLeft.setVisibility(View.VISIBLE);
             }
         };
     }

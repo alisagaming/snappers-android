@@ -59,7 +59,7 @@ public class SplashGdxActivity extends AndroidApplication {
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
             checkForUpdates();
 
-        OnlineSettings.update(getApplicationContext());
+
     }
 
     public void gotSize(int width, int height) {
@@ -89,6 +89,7 @@ public class SplashGdxActivity extends AndroidApplication {
                 TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
 
                 UserPreferences.getInstance(SplashGdxActivity.this);
+                OnlineSettings.update(getApplicationContext());
                 GInAppStore.getInstance(getApplicationContext());
 
                 long now = System.currentTimeMillis();

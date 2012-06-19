@@ -74,6 +74,8 @@ public abstract class MovableActor extends Actor {
     }
 
     private void animatePosition(){
+        if (animFn == null)
+            return;
         float mult = animFn.getMult(getAnimationTimeNorm());
 
         float x = sourceX + dx * mult;

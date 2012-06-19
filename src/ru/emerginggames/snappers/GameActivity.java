@@ -13,8 +13,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.adwhirl.AdWhirlTargeting;
-import com.adwhirl.adapters.AdWhirlAdapter;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.tapjoy.TapjoyConnect;
@@ -26,6 +24,7 @@ import ru.emerginggames.snappers.model.Goods;
 import ru.emerginggames.snappers.model.Level;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.utils.*;
+import ru.emerginggames.snappers.view.AdController;
 import ru.emerginggames.snappers.view.GameDialog;
 import ru.emerginggames.snappers.view.ImageView;
 import ru.emerginggames.snappers.view.OutlinedTextView;
@@ -41,7 +40,7 @@ public class GameActivity extends AndroidApplication {
 
     RelativeLayout rootLayout;
 
-    boolean isFinished = false;
+    public boolean isFinished = false;
     boolean wentTapjoy = false;
     boolean wentShop = false;
     LevelTable levelTable;
@@ -98,10 +97,8 @@ public class GameActivity extends AndroidApplication {
         topButtons.showMainButtons();
         gameOverMessageController = new GameOverMessageController();
 
-        if (!prefs.isAdFree()) {
-            adController = new AdController();
-            rootLayout.addView(adController.getAdLayout());
-        }
+        if (!prefs.isAdFree())
+            adController = new AdController(this, game, rootLayout);
 
         setContentView(rootLayout);
 
@@ -125,9 +122,10 @@ public class GameActivity extends AndroidApplication {
             ((SnappersApplication) getApplication()).setSwitchingActivities();
         ((SnappersApplication) getApplication()).activityPaused();
         if (isFinishing()) {
+            isFinished = true;
             if (adController != null)
                 adController.finish();
-            isFinished = true;
+
             levelTable.close();
             prefs.setHintChangedListener(null);
         }
@@ -136,12 +134,19 @@ public class GameActivity extends AndroidApplication {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (adController!= null)
+            adController.destroy();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
         if (adController != null && prefs.isAdFree()) {
             adController.finish();
-            rootLayout.removeView(adController.getAdLayout());
+            adController.destroy();
             adController = null;
         }
 
@@ -181,6 +186,10 @@ public class GameActivity extends AndroidApplication {
         }
 
         return false;
+    }
+
+    public TopButtonController getTopButtons(){
+        return topButtons;
     }
 
     private boolean checkNetworkType(ConnectivityManager conMgr, int type) {
@@ -461,168 +470,7 @@ public class GameActivity extends AndroidApplication {
         }
     };
 
-    class AdController implements IOnAdShowListener {
-        MyAdWhirlLayout adWhirlLayout;
-        public RelativeLayout.LayoutParams lpUp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        public RelativeLayout.LayoutParams lpDown = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        boolean isShowingAd = false;
-        boolean shouldShowAdTop = false;
-        boolean canShowAd = false;
-        boolean shouldShowIngameAd;
-        boolean canShowIngameAd = true;
-        UserPreferences prefs;
-
-        public AdController() {
-            prefs = UserPreferences.getInstance(getApplicationContext());
-            lpUp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            lpUp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            lpDown.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            lpDown.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-            shouldShowIngameAd = prefs.getIngameAds();
-
-            AdWhirlTargeting.setKeywords("game puzzle");
-            AdWhirlAdapter.setGoogleAdSenseExpandDirection("UP");
-            if (Settings.DEBUG)
-                AdWhirlTargeting.setTestMode(true);
-
-            adWhirlLayout = new MyAdWhirlLayout(GameActivity.this, Settings.getAdwhirlKey(GameActivity.this));
-            adWhirlLayout.setLayoutParams(shouldShowIngameAd ? lpDown : lpUp);
-
-            if (!shouldShowIngameAd) {
-                adWhirlLayout.setVisibility(View.INVISIBLE);
-                MyAdWhirlLayout.setEnforceUpdate(true);
-            }
-            adWhirlLayout.setAdShowListener(this);
-            adWhirlLayout.setId(R.id.adCont);
-        }
-
-        public MyAdWhirlLayout getAdLayout() {
-            return adWhirlLayout;
-        }
-
-        public void finish() {
-            adWhirlLayout.setAdShowListener(null);
-            MyAdWhirlLayout.setEnforceUpdate(false);
-            adWhirlLayout.setVisibility(View.GONE);
-        }
-
-        public void showAdTop() {
-            shouldShowAdTop = true;
-
-            if (!canShowAd)
-                return;
-            if (shouldShowIngameAd)
-                runOnUiThread(moveAdTop);
-            if (!isShowingAd)
-                runOnUiThread(showAD);
-        }
-
-        public void hideAdTop() {
-            shouldShowAdTop = false;
-            if (shouldShowIngameAd)
-                runOnUiThread(moveAdBottom);
-            else
-                runOnUiThread(hideAD);
-        }
-
-        public void setGameMargins(int height){
-            if (height == 0)
-                height = adWhirlLayout.getHeight();
-
-            if (shouldShowIngameAd) {
-                if (height < game.getMarginBottom())
-                    canShowIngameAd = true;
-                else if (height < game.getMaxMarginBottom()) {
-                    canShowIngameAd = true;
-                    game.resizeMarginBottom(height);
-                }
-                else canShowIngameAd = false;
-                if (!canShowIngameAd)
-                    runOnUiThread(hideAD);
-            }
-        }
-
-        @Override
-        public void onAdShow() {
-            if (isFinished)
-                return;
-            canShowAd = true;
-            if (shouldShowAdTop) {
-                showAdTop();
-            } else if (shouldShowIngameAd && canShowIngameAd) {
-                runOnUiThread(moveAdBottom);
-                runOnUiThread(showAD);
-            }
-        }
-
-        @Override
-        public void onAdSizeChanged(int width, int height) {
-            if (game.initDone && ! isFinished)
-                setGameMargins(height);
-        }
-
-        @Override
-        public void onAdFail() {
-            if (isFinished)
-                return;
-            canShowAd = false;
-            if (isShowingAd)
-                runOnUiThread(hideAD);
-        }
-
-        Runnable showAD = new Runnable() {
-            @Override
-            public void run() {
-                if (isShowingAd)
-                    return;
-
-                adWhirlLayout.setVisibility(View.VISIBLE);
-/*                if (adWhirlLayout.getChildCount() > 0) {
-                    View v = adWhirlLayout.getChildAt(0);
-                    adWhirlLayout.removeView(v);
-                    adWhirlLayout.addView(v);
-                }*/
-                rootLayout.removeView(adWhirlLayout);
-                rootLayout.addView(adWhirlLayout);
-                isShowingAd = true;
-                topButtons.alignUnderView(adWhirlLayout);
-            }
-        };
-
-        Runnable hideAD = new Runnable() {
-            @Override
-            public void run() {
-                if (!isShowingAd)
-                    return;
-
-                adWhirlLayout.setVisibility(View.INVISIBLE);
-                isShowingAd = false;
-                MyAdWhirlLayout.setEnforceUpdate(true);
-                topButtons.alignTop();
-            }
-        };
-
-        Runnable moveAdBottom = new Runnable() {
-            @Override
-            public void run() {
-                adWhirlLayout.setLayoutParams(lpDown);
-                AdWhirlAdapter.setGoogleAdSenseExpandDirection("UP");
-                topButtons.alignTop();
-            }
-        };
-
-        Runnable moveAdTop = new Runnable() {
-            @Override
-            public void run() {
-                adWhirlLayout.setLayoutParams(lpUp);
-                AdWhirlAdapter.setGoogleAdSenseExpandDirection("BOTTOM");
-                topButtons.alignUnderView(adWhirlLayout);
-            }
-        };
-    }
-
-    class TopButtonController {
+    public class TopButtonController {
         RelativeLayout layout;
         ImageView pauseBtn;
         ImageView hintBtn;

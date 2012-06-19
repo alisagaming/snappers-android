@@ -201,6 +201,7 @@ public class GameActivity extends AndroidApplication {
                 rootLayout.removeView(v);
                 game.setStage(Game.Stages.GameOverStage);
                 helpView = null;
+                SoundManager.getInstance(GameActivity.this).playButtonSound();
             }
         });
 

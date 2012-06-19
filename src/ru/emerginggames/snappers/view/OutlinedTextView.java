@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import ru.emerginggames.snappers.R;
 
@@ -42,9 +45,7 @@ public class OutlinedTextView extends TextView{
     
     int[] mLineEnds;
     
-    int mLayoutPaddingLeft;
-    int mLayoutPaddingTop;
-
+    int[] bgPad;
 
 
     public OutlinedTextView(Context context) {
@@ -67,6 +68,9 @@ public class OutlinedTextView extends TextView{
     }
 
     public void drawBoring(Canvas canvas){
+        Drawable back = getBackground();
+        if (back != null && back instanceof BitmapDrawable)
+            ((BitmapDrawable)back).setAntiAlias(true);
         if (getBackground() != null)
             getBackground().draw(canvas);
 
@@ -74,19 +78,27 @@ public class OutlinedTextView extends TextView{
         if (text.length() == 0)
             return;
 
-        int posx = getPaddingLeft() + strokeWidth;
-        int posy = getPaddingTop() + strokeWidth;
+        int posx = 0;
+        int posy = 0;
         int gravity = getGravity();
         Rect rect = new Rect();
+        int width = getWidth() - getPaddingLeft() - getPaddingRight();
+        int height = getHeight() - getPaddingBottom() - getPaddingTop();
         textPaint.getTextBounds(text.toString(), 0, text.length(), rect);
-        if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL)
-            posx = (getWidth() - rect.width())/2 - rect.left;
-        if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL)
-            posy = (getHeight() -rect.top)/2;
-        if ((gravity & Gravity.RIGHT) == Gravity.RIGHT)
-            posx = getWidth() - rect.right - strokeWidth - getPaddingRight();
+
         if ((gravity & Gravity.TOP) == Gravity.TOP)
             posy = getPaddingTop() + strokeWidth - Math.round(fontMetrics.ascent);
+        else if ((gravity & Gravity.BOTTOM) == Gravity.BOTTOM)
+            posy = getHeight() - strokeWidth - getPaddingBottom();
+        else if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL)
+            posy = (height + rect.height())/2 + getPaddingTop();
+
+        if ((gravity & Gravity.LEFT) == Gravity.LEFT)
+            posx = getPaddingLeft() + strokeWidth;
+        else if ((gravity & Gravity.RIGHT) == Gravity.RIGHT)
+            posx = getWidth() - rect.right - strokeWidth - getPaddingRight();
+        else if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL)
+            posx = (width - rect.width())/2 - rect.left + getPaddingLeft();
 
         canvas.translate(posx, posy);
 
@@ -102,9 +114,14 @@ public class OutlinedTextView extends TextView{
         isSquare = square;
     }
 
+    public void setBackgroundPaddings(int[] backgroundPaddings) {
+        this.bgPad = backgroundPaddings;
+    }
+
     public void setMaxLines2(int maxlines) {
         maxLines = maxlines;
         needResize = true;
+        mLayout = null;
     }
 
     protected void setTextSizeToFit(int measuredWidth, int measuredHeight){
@@ -122,16 +139,16 @@ public class OutlinedTextView extends TextView{
             float size = getTextSize();
 
             float textWidth = outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2;
-            if (isSquare){
+            float textHeight = getLineHeight();
 
-                float textHeight = getLineHeight();
+            if (isSquare){
                 textWidth = Math.max(textWidth, textHeight);
                 size = (float)Math.ceil(size * width/ textWidth);
                 setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
                 return;
             }
 
-            size = (float)Math.ceil(size * width/ textWidth);
+            size = (float)Math.ceil(size * Math.min(width/ textWidth, height / textHeight));
             setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
             return;
         }
@@ -139,11 +156,6 @@ public class OutlinedTextView extends TextView{
         if (mLineEnds == null)
             return;
 
-        if (mLayout == null)
-            makeNewLayout();
-        if (mLayout == null)
-            return;
-        
         float width = 0;
         int lastEnd = 0;
         for (int i=0; i< mLineEnds.length; i++){
@@ -155,13 +167,15 @@ public class OutlinedTextView extends TextView{
 
         float size = getTextSize();
 
-        int desiredWidth = getMeasuredWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight() - strokeWidth * 2;
+        int desiredWidth = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight() - strokeWidth * 2;
         size = size * desiredWidth/width;
         setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         outlinePaint.setTextSize(size);
         textPaint.setTextSize(size);
 
         needResize = false;
+
+        makeNewLayout(measuredWidth);
     }
 
     public void setLineEnds(int[] lineEnds) {
@@ -174,14 +188,31 @@ public class OutlinedTextView extends TextView{
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
         int wMode = MeasureSpec.getMode(widthMeasureSpec);
         int hSize = MeasureSpec.getSize(heightMeasureSpec);
-        int hMode = MeasureSpec.getMode(widthMeasureSpec);
+        int hMode = MeasureSpec.getMode(heightMeasureSpec);
+
+        ViewGroup.LayoutParams lp = getLayoutParams();
+        if (lp.width > 0)
+            wSize = Math.min(wSize, lp.width);
+        if (lp.height > 0)
+            hSize = Math.min(hSize, lp.height);
 
         if (wMode == MeasureSpec.UNSPECIFIED || hMode == MeasureSpec.UNSPECIFIED){
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }
 
-        needResize |=  (lastMeasuredWidth != wSize);
+        needResize |=  (lastMeasuredWidth != wSize || getMeasuredHeight() != hSize);
+        float scale = 0;
+
+        if (needResize && bgPad != null){
+            if (hMode == MeasureSpec.EXACTLY)
+                scale =  (float)hSize / getBackground().getIntrinsicHeight();
+            else if (wMode == MeasureSpec.EXACTLY)
+                scale =  (float)wSize / getBackground().getIntrinsicWidth();
+            if (scale != 0)
+                setPadding((int)(bgPad[0] * scale), (int)(bgPad[1] * scale), (int)(bgPad[2] * scale), (int)(bgPad[3] * scale));
+        }
+
         if (needResize && isSquare && maxLines == 1 && setTextSizeToFit){
             setTextSizeToFit(wSize, hSize);
             setMeasuredDimension(wSize, wSize);
@@ -192,12 +223,20 @@ public class OutlinedTextView extends TextView{
             setTextSizeToFit(wSize, hSize);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int measuredWidth = getMeasuredWidth();
+        int measuredHeight = getMeasuredHeight();
+        if (measuredWidth + 2 * strokeWidth <= wSize)
+            measuredWidth += 2 * strokeWidth;
+        if (measuredHeight + 2 * strokeWidth <= hSize)
+            measuredHeight += 2 * strokeWidth;
+        setMeasuredDimension(measuredWidth, measuredHeight);
+        needResize = false;
     }
 
-    void makeNewLayout(){
+    void makeNewLayout(int width){
         Layout.Alignment alignment;
         int gravity = getGravity();
-        int w  = getMeasuredWidth() - getCompoundPaddingLeft() - getCompoundPaddingRight();
+        int w  = width - getCompoundPaddingLeft() - getCompoundPaddingRight();
         switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
             case Gravity.CENTER_HORIZONTAL:
                 alignment = Layout.Alignment.ALIGN_CENTER;
@@ -210,13 +249,13 @@ public class OutlinedTextView extends TextView{
             default:
                 alignment = Layout.Alignment.ALIGN_NORMAL;
         }
-
-        preparePaint();
+        if (!isPaintPrepared || textPaint == null || outlinePaint == null)
+            preparePaint();
         
         CharSequence text = getText();
         mLayout = new StaticLayout(text, textPaint,
                 w, alignment, mLineMult, mLineMult, true);
-        
+
         mStrokeLayout = new StaticLayout(text, outlinePaint,
                 w, alignment, mLineMult, mLineMult, true);
     }
@@ -225,18 +264,22 @@ public class OutlinedTextView extends TextView{
     public void setTextSize(float size) {
         super.setTextSize(size);
         needResize = true;
+        mLayout = null;
+        invalidate();
     }
 
     @Override
     public void setTypeface(Typeface tf) {
         super.setTypeface(tf);
         isPaintPrepared = false;
+        mLayout = null;
     }
 
     @Override
     public void setTypeface(Typeface tf, int style) {
         super.setTypeface(tf, style);
         isPaintPrepared = false;
+        mLayout = null;
     }
 
     @Override
@@ -250,6 +293,7 @@ public class OutlinedTextView extends TextView{
     public void setTextColor(ColorStateList colors) {
         super.setTextColor(colors);
         isPaintPrepared = false;
+        mLayout = null;
     }
 
     public void setText2(CharSequence text){
@@ -285,9 +329,9 @@ public class OutlinedTextView extends TextView{
     @Override
     protected void onDraw(Canvas canvas) {
         if (mLayout == null)
-            makeNewLayout();
+            makeNewLayout(getMeasuredWidth());
 
-        if (mLayout.getLineCount() == 1){
+        if (mLayout.getLineCount() == 1 || maxLines == 1){
             drawBoring(canvas);
             return;
         }

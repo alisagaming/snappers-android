@@ -89,7 +89,7 @@ public class MainScreenActivity extends Activity {
     }
 
     public void onPlayButtonClick(View v){
-
+        startActivity(new Intent(this, FacebookActivity.class));
     }
 
     public void onDailyBonus(View v){

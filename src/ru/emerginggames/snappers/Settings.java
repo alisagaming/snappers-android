@@ -18,6 +18,7 @@ public class Settings {
     public static final String FONT = "Berlin Sans FB.ttf";
     public static final int BONUS_FOR_RATE = 1;
     public static final int BONUS_FOR_LIKE = 1;
+    public static final int LEVEL_TO_RECOMMEND = 10;
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
     public static boolean DEBUG = true;
@@ -91,7 +92,7 @@ public class Settings {
     public static String getTapJoyAppId(Context context){
         UserPreferences prefs = UserPreferences.getInstance(context);
 
-        try{
+/*        try{
             prefs.getKey1();
             prefs.getKey2();
             Log.e("ENCODED - TjAppKey1!!!", CryptHelperDES.encrypt(prefs.getKey12(), "6ac99625"));
@@ -101,7 +102,7 @@ public class Settings {
             Log.e("ENCODED - TjAppKey5!!!", CryptHelperDES.encrypt(prefs.getKey12(), "213a233c511a"));
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         String key = prefs.getKey1() + prefs.getKey2();
         try{

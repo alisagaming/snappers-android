@@ -187,6 +187,12 @@ public class UserPreferences {
         return prefs.getInt(SCORE, 0);
     }
 
+    public void setScore(int addScore){
+        Editor editor = prefs.edit();
+        editor.putInt(SCORE, addScore);
+        editor.commit();
+    }
+
     public void addScore(int addScore){
         addScore += getScore();
         Editor editor = prefs.edit();
@@ -201,7 +207,11 @@ public class UserPreferences {
         if (unlocked> currentLevel.number)
             return;
 
-        putInt(String.format(LEVEL_UNLOCK, currentLevel.pack.name), currentLevel.number + 1, currentLevel.pack.name);
+        unlockLevel(currentLevel.pack.name, currentLevel.number + 1);
+    }
+
+    public void unlockLevel(String name, int level){
+        putInt(String.format(LEVEL_UNLOCK, name), level, name);
     }
 
     public boolean isLevelSolved(Level level){

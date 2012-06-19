@@ -16,34 +16,28 @@
         <option name="USE_CUSTOM_COMPILER_MANIFEST" value="false" />
         <option name="CUSTOM_COMPILER_MANIFEST" value="" />
         <option name="APK_PATH" value="" />
-        <option name="LIBRARY_PROJECT" value="false" />
+        <option name="LIBRARY_PROJECT" value="true" />
         <option name="RUN_PROCESS_RESOURCES_MAVEN_TASK" value="true" />
         <option name="GENERATE_UNSIGNED_APK" value="false" />
-        <option name="CUSTOM_DEBUG_KEYSTORE_PATH" value="file://$MODULE_DIR$/../.keystores/snappers-d.keystore" />
+        <option name="CUSTOM_DEBUG_KEYSTORE_PATH" value="" />
         <option name="PACK_TEST_CODE" value="false" />
         <option name="RUN_PROGUARD" value="false" />
-        <option name="PROGUARD_CFG_PATH" value="/proguard.cfg" />
-        <resOverlayFolders />
-        <includeSystemProguardFile>false</includeSystemProguardFile>
+        <option name="PROGUARD_CFG_PATH" value="/proguard-project.txt" />
+        <resOverlayFolders>
+          <path>/res-overlay</path>
+        </resOverlayFolders>
+        <includeSystemProguardFile>true</includeSystemProguardFile>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Android 1.5 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="android-support-v4" level="project" />
-    <orderEntry type="library" name="gdx-backend-android" level="project" />
-    <orderEntry type="module" module-name="Facebook" />
-    <orderEntry type="module" module-name="DbSnappers" />
-    <orderEntry type="library" name="ADS" level="project" />
-    <orderEntry type="module" module-name="Hockey" />
-    <orderEntry type="library" name="ACRA" level="project" />
-    <orderEntry type="module" module-name="TapJoy" />
   </component>
 </module>
 

@@ -35,6 +35,7 @@ public class UserPreferences {
     private static final String USER_RATED = "RATED";
     private static final String LAST_RATE_RECOMMENDED = "LAST_RATE_RECOMMENDED";
     private static final String LAST_LIKE_RECOMMENDED = "LAST_LIKE_RECOMMENDED";
+    private static final String PROMO_CODE = "PROMO_CODE";
     public static String Key1;
     public static String Key11;
     public static String Key21;
@@ -285,6 +286,15 @@ public class UserPreferences {
         putLong(LAST_RATE_RECOMMENDED, time, LAST_RATE_RECOMMENDED);
     }
 
+    public void setPromoCode(String code){
+        putString(PROMO_CODE, code);
+    }
+
+    public String getPromoCode(){
+        return getString(PROMO_CODE);
+    }
+
+
 
 
 
@@ -362,6 +372,20 @@ public class UserPreferences {
         Editor editor = prefs.edit();
         editor.putString(_S(key), _S(Long.toString(val), salt));
         editor.commit();
+    }
+
+    private void putString(String key, String val){
+        Editor editor = prefs.edit();
+        editor.putString(_S(key), _S(val, key));
+        editor.commit();
+    }
+
+    private String getString(String key){
+        try {
+            return deS(prefs.getString(_S(key), null), key);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     private boolean getBoolean(String key, boolean def, String salt){

@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
 import ru.emerginggames.snappers.data.LevelPackTable;
+import ru.emerginggames.snappers.model.FacebookFriend;
 import ru.emerginggames.snappers.model.LevelPack;
 import ru.emerginggames.snappers.model.SyncData;
 import ru.emerginggames.snappers.transport.JsonResponseHandler;
@@ -62,7 +64,8 @@ public class FacebookActivity extends Activity {
                     editor.putLong("access_expires", facebook.getAccessExpires());
                     editor.commit();
 
-                    doSync("");
+                    getFriends();
+                    doSync();
                 }
 
                 @Override
@@ -82,7 +85,8 @@ public class FacebookActivity extends Activity {
             });
         }
         else {
-            doSync("");
+            getFriends();
+            //doSync();
             facebook.extendAccessTokenIfNeeded(this, null);
         }
     }
@@ -94,50 +98,43 @@ public class FacebookActivity extends Activity {
         facebook.authorizeCallback(requestCode, resultCode, data);
     }
 
-    void doSync(String code){
-        JsonTransport.sync(mPrefs.getString("access_token", null), "", getSyncDataFromPrefs(), new JsonResponseHandler(){
+    void doSync(){
+        JsonTransport.sync(mPrefs.getString("access_token", null), SyncData.load(this), new JsonResponseHandler(){
             @Override
             public void onError(Exception error) {
+                Log.e("Snappers", error.getMessage(), error);
+                play();
             }
 
             @Override
             public void onOk(Object responce) {
-                saveSyncDataToPrefs((SyncData)responce);
+                ((SyncData)responce).save(FacebookActivity.this);
             }
         });
     }
 
     public void getFriends(){
+        JsonTransport.getFriends(mPrefs.getString("access_token", null), new JsonResponseHandler() {
+            @Override
+            public void onOk(Object responce) {
+                showFriendsList((FacebookFriend[])responce);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.e("Snappers", error.getMessage(), error);
+                play();
+            }
+        });
+    }
+
+    void showFriendsList(FacebookFriend[] friends){
 
     }
 
-    public SyncData getSyncDataFromPrefs(){
-        SyncData syncData = new SyncData();
-        UserPreferences prefs = UserPreferences.getInstance(this);
-        syncData.hint_count = prefs.getHintsRemaining();
-        syncData.xp_count = prefs.getScore();
-        syncData.xp_level = Settings.getLevel(syncData.xp_count);
-
-        for (LevelPack pack: LevelPackTable.getAll(this)){
-            int n = prefs.getLevelUnlocked(pack);
-            if (n > 0)
-                syncData.addLevelUnlock(pack, n);
-        }
-
-        return syncData;
+    void play(){
+        startActivity(new Intent(this, SelectPackActivity.class));
     }
 
-    public void saveSyncDataToPrefs(SyncData data){
-        UserPreferences prefs = UserPreferences.getInstance(this);
-        prefs.setHints(data.hint_count);
-        prefs.setScore(data.xp_count);
 
-        for (Map.Entry<String, Integer> pairs : data.levelUnlocks.entrySet()) {
-            String key = pairs.getKey();
-            Integer value = pairs.getValue();
-
-            prefs.unlockLevel(key, value);
-        }
-
-    }
 }

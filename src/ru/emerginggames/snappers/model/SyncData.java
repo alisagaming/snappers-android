@@ -3,11 +3,11 @@ package ru.emerginggames.snappers.model;
 import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.emerginggames.snappers.Settings;
 import ru.emerginggames.snappers.UserPreferences;
 import ru.emerginggames.snappers.data.LevelPackTable;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -22,34 +22,69 @@ public class SyncData {
     public int xp_level;
     public String gifts;
     public int dollars_spent;
+    public String promoCode;
     public Map<String, Integer> levelUnlocks;
 
-    public static SyncData fromJson(JSONObject object) {
-        SyncData result = new SyncData();
-        try {
-            result.hint_count = object.getInt("hint_count");
-            result.xp_count = object.getInt("xp_count");
-            result.gifts = object.getString("gifts");
-            result.dollars_spent = object.getInt("dollars_spent");
+    public SyncData() {
+    }
 
-            result.levelUnlocks = new HashMap<String, Integer>();
-            if (!object.isNull("max_unlocked_level_for_pack1"))
-                result.levelUnlocks.put("level-pack-1", object.getInt("max_unlocked_level_for_pack1"));
-            if (!object.isNull("max_unlocked_level_for_pack2"))
-                result.levelUnlocks.put("level-pack-2", object.getInt("max_unlocked_level_for_pack2"));
-            if (!object.isNull("max_unlocked_level_for_pack3"))
-                result.levelUnlocks.put("level-pack-3", object.getInt("max_unlocked_level_for_pack3"));
-            if (!object.isNull("max_unlocked_level_for_pack4"))
-                result.levelUnlocks.put("level-pack-4", object.getInt("max_unlocked_level_for_pack4"));
-            if (!object.isNull("max_unlocked_level_for_pack5"))
-                result.levelUnlocks.put("level-pack-5", object.getInt("max_unlocked_level_for_pack5"));
-            if (!object.isNull("max_unlocked_level_for_packP1"))
-                result.levelUnlocks.put("premium-level-pack-1", object.getInt("max_unlocked_level_for_packP1"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public SyncData(JSONObject data) throws JSONException {
+        hint_count = data.optInt("hint_count");
+        xp_count = data.optInt("xp_count");
+        gifts = data.optString("gifts");
+        dollars_spent = data.optInt("dollars_spent");
+        promoCode = data.getString("code");
+
+        levelUnlocks = new HashMap<String, Integer>();
+        if (!data.isNull("max_unlocked_level_for_pack1"))
+            levelUnlocks.put("level-pack-1", data.getInt("max_unlocked_level_for_pack1"));
+        if (!data.isNull("max_unlocked_level_for_pack2"))
+            levelUnlocks.put("level-pack-2", data.getInt("max_unlocked_level_for_pack2"));
+        if (!data.isNull("max_unlocked_level_for_pack3"))
+            levelUnlocks.put("level-pack-3", data.getInt("max_unlocked_level_for_pack3"));
+        if (!data.isNull("max_unlocked_level_for_pack4"))
+            levelUnlocks.put("level-pack-4", data.getInt("max_unlocked_level_for_pack4"));
+        if (!data.isNull("max_unlocked_level_for_pack5"))
+            levelUnlocks.put("level-pack-5", data.getInt("max_unlocked_level_for_pack5"));
+        if (!data.isNull("max_unlocked_level_for_packP1"))
+            levelUnlocks.put("premium-level-pack-1", data.getInt("max_unlocked_level_for_packP1"));
+    }
+
+    SyncData(Context context){
+        UserPreferences prefs = UserPreferences.getInstance(context);
+        hint_count = prefs.getHintsRemaining();
+        xp_count = prefs.getScore();
+        xp_level = Settings.getLevel(xp_count);
+        promoCode = prefs.getPromoCode();
+
+        for (LevelPack pack: LevelPackTable.getAll(context)){
+            int n = prefs.getLevelUnlocked(pack);
+            if (n > 0)
+                addLevelUnlock(pack, n);
         }
+    }
 
-        return result;
+    public static SyncData load(Context context){
+        return new SyncData(context);
+    }
+
+    public void save(Context context){
+        UserPreferences prefs = UserPreferences.getInstance(context);
+        int currentScore = prefs.getScore();
+        if (currentScore >= xp_count)
+            return;
+
+        prefs.setHints(hint_count);
+        prefs.setScore(xp_count);
+        if(!promoCode.equals(prefs.getPromoCode()))
+            prefs.setPromoCode(promoCode);
+
+        for (Map.Entry<String, Integer> pairs : levelUnlocks.entrySet()) {
+            String key = pairs.getKey();
+            Integer value = pairs.getValue();
+
+            prefs.unlockLevel(key, value);
+        }
     }
 
     public JSONObject toJson() {
@@ -59,12 +94,13 @@ public class SyncData {
             obj.put("xp_level", Integer.toString(xp_level));
             obj.put("hint_count", Integer.toString(hint_count));
             obj.put("dollars_spent", Integer.toString(dollars_spent));
+            obj.put("code", promoCode);
 
             for (Map.Entry<String, Integer> pairs : levelUnlocks.entrySet()) {
                 String key = pairs.getKey();
                 Integer value = pairs.getValue();
 
-                obj.put(key, value.toString());
+                obj.put(getPackJsonId(key), value.toString());
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -76,41 +112,23 @@ public class SyncData {
         if (levelUnlocks == null)
             levelUnlocks = new HashMap<String, Integer>();
 
-        levelUnlocks.put(getPackShortId(pack), levels);
+        levelUnlocks.put(pack.name, levels);
     }
 
-    String getPackShortId(LevelPack pack) {
-        if (pack.name.equals("level-pack-1"))
+    String getPackJsonId(String name) {
+        if (name.equals("level-pack-1"))
             return "max_unlocked_level_for_pack1";
-        else if (pack.name.equals("level-pack-2"))
+        else if (name.equals("level-pack-2"))
             return "max_unlocked_level_for_pack2";
-        else if (pack.name.equals("level-pack-3"))
+        else if (name.equals("level-pack-3"))
             return "max_unlocked_level_for_pack3";
-        else if (pack.name.equals("level-pack-4"))
+        else if (name.equals("level-pack-4"))
             return "max_unlocked_level_for_pack4";
-        else if (pack.name.equals("level-pack-5"))
+        else if (name.equals("level-pack-5"))
             return "max_unlocked_level_for_pack5";
-        else if (pack.name.equals("premium-level-pack-1"))
+        else if (name.equals("premium-level-pack-1"))
             return "max_unlocked_level_for_packP1";
 
         return "";
-    }
-
-    public LevelPack getLevelPack(String jsonId, Context context) {
-        if (jsonId.equals("max_unlocked_level_for_pack1"))
-            return LevelPackTable.get("level-pack-1", context);
-        else if (jsonId.equals("max_unlocked_level_for_pack2"))
-            return LevelPackTable.get("level-pack-2", context);
-        else if (jsonId.equals("max_unlocked_level_for_pack3"))
-            return LevelPackTable.get("level-pack-3", context);
-        else if (jsonId.equals("max_unlocked_level_for_pack4"))
-            return LevelPackTable.get("level-pack-4", context);
-        else if (jsonId.equals("max_unlocked_level_for_pack5"))
-            return LevelPackTable.get("level-pack-5", context);
-        else if (jsonId.equals("max_unlocked_level_for_packP1"))
-            return LevelPackTable.get("premium-level-pack-1", context);
-
-        return null;
-
     }
 }

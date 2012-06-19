@@ -1,9 +1,9 @@
 package ru.emerginggames.snappers.transport;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.emerginggames.snappers.model.FacebookFriend;
 import ru.emerginggames.snappers.model.SyncData;
 import ru.emerginggames.snappers.utils.WorkerThreads;
 
@@ -21,41 +21,72 @@ public class JsonTransport {
     static final String METHOD_FRIENDS = "friends";
     static final String KEY_ACCESS_TOKEN = "access_token";
 
-    public static void sync(String token, String code, SyncData data, JsonResponseHandler handler) {
+    public static void sync(String token, SyncData data, JsonResponseHandler handler) {
         JSONObject obj = data.toJson();
         try {
             obj.put(KEY_ACCESS_TOKEN, token);
-            obj.put("code", code);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
-        SyncRequest syncRequest = new SyncRequest();
-        syncRequest.setParams(obj);
-        syncRequest.setHandler(handler);
+        SyncRequest syncRequest = new SyncRequest(obj, handler);
         WorkerThreads.run(syncRequest);
+    }
 
+    public static void getFriends(String token, JsonResponseHandler handler){
+        Map<String, String> data = new HashMap<String, String>();
+        data.put(KEY_ACCESS_TOKEN, token);
+
+        FriendsRequest request = new FriendsRequest(data, handler);
+        WorkerThreads.run(request);
     }
 
     static class SyncRequest extends MyJsonRequest {
-        SyncRequest() {
+        SyncRequest(JSONObject params, JsonResponseHandler handler) {
             super(METHOD_SYNC, true);
+            setParams(params);
+            setHandler(handler);
         }
 
         @Override
-        void onSuccess(JSONObject object) {
-            handler.onOk(SyncData.fromJson(object));
+        void onSuccess(Object object) {
+            try {
+                handler.onOk( new SyncData((JSONObject)object));
+            } catch (JSONException e) {
+                handler.onError(e);
+            }
+        }
+
+        @Override
+        boolean isResponceOk(JSONObject object) throws JSONException {
+            return object.getString("type").equalsIgnoreCase("SyncOkMessage");
         }
     }
 
     static class FriendsRequest extends MyJsonRequest {
-        FriendsRequest() {
+        FriendsRequest(Map params, JsonResponseHandler handler) {
             super(METHOD_FRIENDS, false);
+            setParams(params);
+            setHandler(handler);
         }
 
         @Override
-        void onSuccess(JSONObject object) {
-            handler.onOk(SyncData.fromJson(object));
+        void onSuccess(Object object) {
+            try {
+                JSONArray data = (JSONArray)object;
+                FacebookFriend[] friends = new FacebookFriend[data.length()];
+                for (int i=0; i< data.length(); i++)
+                    friends[i] = new FacebookFriend(data.getJSONObject(i));
+
+                handler.onOk( friends);
+            } catch (JSONException e) {
+                handler.onError(e);
+            }
+        }
+
+        @Override
+        boolean isResponceOk(JSONObject object) throws JSONException {
+            return object.getString("type").equalsIgnoreCase("FriendsOkMessage");
         }
     }
 

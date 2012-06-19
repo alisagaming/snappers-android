@@ -1,8 +1,8 @@
 package ru.emerginggames.snappers.transport;
 
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -11,13 +11,15 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URI;
-import java.security.KeyStore;
-import java.util.Iterator;
-import java.util.List;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.util.Map;
 
 public abstract class MyJsonRequest implements Runnable {
@@ -26,6 +28,7 @@ public abstract class MyJsonRequest implements Runnable {
     Map params;
     protected JsonResponseHandler handler;
     String methodName;
+    private static final int SOCKET_TIMEOUT = 15000;
 
     protected MyJsonRequest(String methodName, boolean post) {
         this.methodName = methodName;
@@ -34,7 +37,9 @@ public abstract class MyJsonRequest implements Runnable {
         this.handler = handler;
     }
 
-    abstract void onSuccess(JSONObject object);
+    abstract void onSuccess(Object object);
+
+    abstract boolean isResponceOk(JSONObject object) throws JSONException;
 
     public void setHandler(JsonResponseHandler handler) {
         this.handler = handler;
@@ -52,26 +57,30 @@ public abstract class MyJsonRequest implements Runnable {
     public void run() {
         JSONObject responce;
         try {
-            //if (isPost)
-            responce = postMessage(JsonTransport.SERVER + methodName, params);
-            //else
-            //    responce = getMessage(JsonTransport.SERVER + methodName, params);
-            if (responce.getString("type").equalsIgnoreCase("SyncOkMessage"))
-                onSuccess(responce.getJSONObject("data"));
+            if (isPost)
+                responce = postMessage(JsonTransport.SERVER + methodName);
+            else
+                responce = getMessage(JsonTransport.SERVER + methodName);
+            if (isResponceOk(responce))
+                onSuccess(responce.get("data"));
+
+
             else throw new Exception(responce.getString("data"));
         } catch (Exception e) {
             handler.onError(e);
         }
     }
 
-/*    JSONObject getMessage(String path, List<NameValuePair> params) throws IOException, JSONException {
-        HttpClient client = getClient(true);
+    JSONObject getMessage(String path) throws Exception {
         HttpGet httpGet = new HttpGet(path + mapToString(params));
+        HttpClient client = getClient(httpGet.getParams());
+
+        httpGet.setHeader("Accept", "application/json");
 
         ResponseHandler responseHandler = new BasicResponseHandler();
         String responce = (String) client.execute(httpGet, responseHandler);
         return new JSONObject(responce);
-    }  */
+    }
 
     void enableLoging() {
         java.util.logging.Logger.getLogger("org.apache.http.wire").setLevel(java.util.logging.Level.FINEST);
@@ -84,23 +93,14 @@ public abstract class MyJsonRequest implements Runnable {
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http.headers", "debug");
     }
 
-    public JSONObject postMessage(String path, Map params) throws Exception {
+    public JSONObject postMessage(String path) throws Exception {
         enableLoging();
         HttpPost post = new HttpPost(new URI(path));
         if (jsonParam == null)
             jsonParam = mapToJson(params);
         post.setEntity(new StringEntity(jsonParam.toString()));
 
-        KeyStore trusted = KeyStore.getInstance("BKS");
-        trusted.load(null, null);
-        SSLSocketFactory sslf = new TrustAllSSLSocketFactory();
-
-        SchemeRegistry schemeRegistry = new SchemeRegistry();
-        schemeRegistry.register(new Scheme("https", sslf, 443));
-        schemeRegistry.register(new Scheme("https", sslf, 8080));
-        SingleClientConnManager cm = new SingleClientConnManager(post.getParams(), schemeRegistry);
-
-        HttpClient client = new DefaultHttpClient(cm, post.getParams());
+        HttpClient client = getClient(post.getParams());
 
         post.setHeader("Accept", "application/json");
         post.setHeader("Content-type", "application/json");
@@ -108,6 +108,19 @@ public abstract class MyJsonRequest implements Runnable {
         ResponseHandler responseHandler = new BasicResponseHandler();
         String responce = (String) client.execute(post, responseHandler);
         return new JSONObject(responce);
+    }
+
+    HttpClient getClient(HttpParams params) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, KeyManagementException, UnrecoverableKeyException {
+        KeyStore trusted = KeyStore.getInstance("BKS");
+        trusted.load(null, null);
+        SSLSocketFactory sslf = new TrustAllSSLSocketFactory();
+
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
+        schemeRegistry.register(new Scheme("https", sslf, 443));
+        schemeRegistry.register(new Scheme("https", sslf, 8080));
+        HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
+        SingleClientConnManager cm = new SingleClientConnManager(params, schemeRegistry);
+        return new DefaultHttpClient(cm, params);
     }
 
     JSONObject mapToJson(Map params) throws JSONException {

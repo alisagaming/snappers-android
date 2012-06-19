@@ -585,6 +585,7 @@ public class GameActivity extends AndroidApplication {
                 rootLayout.removeView(adWhirlLayout);
                 rootLayout.addView(adWhirlLayout);
                 isShowingAd = true;
+                topButtons.alignUnderView(adWhirlLayout);
             }
         };
 
@@ -597,6 +598,7 @@ public class GameActivity extends AndroidApplication {
                 adWhirlLayout.setVisibility(View.INVISIBLE);
                 isShowingAd = false;
                 MyAdWhirlLayout.setEnforceUpdate(true);
+                topButtons.alignTop();
             }
         };
 
@@ -834,8 +836,6 @@ public class GameActivity extends AndroidApplication {
                rootLayout.removeView(layout);
            }
        };
-
-
     }
 
     class LevelInfo{

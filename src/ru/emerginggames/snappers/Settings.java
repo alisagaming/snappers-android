@@ -1,6 +1,7 @@
 package ru.emerginggames.snappers;
 
 import android.content.Context;
+import android.util.Log;
 import ru.emerginggames.snappers.data.CryptHelperDES;
 
 import java.io.DataInputStream;
@@ -16,7 +17,7 @@ public class Settings {
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     public static final boolean DEBUG_BUY = true & DEBUG;
     public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
     public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
@@ -36,8 +37,41 @@ public class Settings {
 
     private static final String gInAPPKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgWK5eC6WW8fiRuvVfxaSaqUyMnpthTtV8abNUYLbS4pRcjbolfQJTFqZg+rzIADeBV1VZ0Iw/ZHO6i7n3iqFSDqKdBHwkteoEgynBJy+9THP7X8kN+C+h1V25cJforTyZiaXaY0Nz2Vq+mphnmGl9tettg/ZUiyqPm3Tt6SSJFdhdk1y5SO8LtTB+2VLHYe8e+XiEI2YGXm4NJ2G79pXooDSrmYV0CZ0uT6w3w7F9vmPEF0fvxtEN5D9SMhRfWlJ6rV/Mhnf46JmZTC5nGXhCwMG/uhWQbywhgLtQyMGzehsKxZyW5SSGq80RwHhmpYMN9F6Ekq8I6UTC/KHqt1UhQIDAQAB";
 
+    //37FDED5609B0932F 67E17937D7A51DC7 589E501DD5C05FB8 A1D3454BF7B738D9
+    private static final String mediationKey = "37FDED5609B0932FO67E17937D7A51DC7O589E501DD5C05FB8OA1D3454BF7B738D9";
+    //
 
 
+
+
+    public static String getAdMobKey(Context context) {
+        UserPreferences prefs = UserPreferences.getInstance(context);
+
+/*        try{
+            prefs.getKey1();
+            prefs.getKey2();
+            //df03 8f9a c585 4e20
+            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "df03"));
+            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "8f9a"));
+            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "c585"));
+            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "4e20"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }*/
+        String key = prefs.getKey1() + prefs.getKey2();
+        try{
+            String[] chunks = mediationKey.split("O");
+            StringBuilder b = new StringBuilder();
+            for (String c: chunks)
+                b.append(CryptHelperDES.decrypt(prefs.getKey12(), c));
+
+            //Log.e("DECODED - adwirl!!!", b.toString());
+            return b.toString();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public static String getAdwhirlKey(Context context) {

@@ -89,8 +89,7 @@ public class UserPreferences {
     }
 
     public boolean getIngameAds(){
-        return true;
-        //return getBoolean(INGAMEADS, false, INGAMEADS);
+        return getBoolean(INGAMEADS, false, INGAMEADS);
     }
 
     public void touchHints(){

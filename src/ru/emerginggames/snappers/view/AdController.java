@@ -26,10 +26,8 @@ import java.util.Set;
  * Date: 19.06.12
  * Time: 20:03
  */
-public class AdController implements AdListener, MyAdView.OnMeasuredListener /*implements IOnAdShowListener*/ {
-    //MyAdWhirlLayout adWhirlLayout;
-    private static String MY_AD_UNIT_ID = "df038f9ac5854e20";
-    //private static String MY_AD_UNIT_ID = "a14f8ac25498cda";
+public class AdController implements AdListener, MyAdView.OnMeasuredListener {
+    //private static String MY_AD_UNIT_ID = "df038f9ac5854e20";
     public RelativeLayout.LayoutParams lpUp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     public RelativeLayout.LayoutParams lpDown = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     boolean isShowingAd = false;
@@ -58,7 +56,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener /*i
 
         shouldShowIngameAd = prefs.getIngameAds();
 
-        adView = new MyAdView(activity, AdSize.BANNER, MY_AD_UNIT_ID);
+        adView = new MyAdView(activity, AdSize.BANNER, Settings.getAdMobKey(activity));
 
         adView.setLayoutParams(shouldShowIngameAd ? lpDown : lpUp);
 

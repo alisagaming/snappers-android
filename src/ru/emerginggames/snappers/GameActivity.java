@@ -3,6 +3,7 @@ package ru.emerginggames.snappers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -92,6 +93,10 @@ public class GameActivity extends AndroidApplication {
         rootLayout = new RelativeLayout(this);
         rootLayout.addView(gameView);
 
+        Rect rect = new Rect();
+        rootLayout.getWindowVisibleDisplayFrame(rect);
+        Metrics.setSize(rect.width(), rect.height(), getApplicationContext());
+
         levelInfo = new LevelInfo(rootLayout);
         topButtons = new TopButtonController(rootLayout);
         topButtons.showMainButtons();
@@ -107,6 +112,9 @@ public class GameActivity extends AndroidApplication {
 
         if (Settings.GoogleInAppEnabled)
             mStore = GInAppStore.getInstance(getApplicationContext());
+
+        if (TapjoyConnect.getTapjoyConnectInstance() == null)
+            TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
     }
 
     @Override

@@ -40,6 +40,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
     Game game;
     RelativeLayout rootLayout;
     private MyAdView adView;
+//    private AdView adView;
     int width;
     int height;
 
@@ -57,6 +58,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         shouldShowIngameAd = prefs.getIngameAds();
 
         adView = new MyAdView(activity, AdSize.BANNER, Settings.getAdMobKey(activity));
+        //adView = new AdView(activity, AdSize.BANNER, Settings.getAdMobKey(activity));
 
         adView.setLayoutParams(shouldShowIngameAd ? lpDown : lpUp);
 
@@ -67,10 +69,10 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
 
         rootLayout.addView(adView);
         AdRequest adRequest= new AdRequest();
-        Set<String> keyWords = new HashSet<String>();
+/*        Set<String> keyWords = new HashSet<String>();
         keyWords.add("game");
         keyWords.add("puzzle");
-        adRequest.setKeywords(keyWords);
+        adRequest.setKeywords(keyWords);*/
 
         if (Settings.DEBUG){
             adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
@@ -81,6 +83,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
 
         adView.loadAd(adRequest);
         adView.setAdListener(this);
+        adView.setOnMeasuredListener(this);
     }
 
     public void destroy() {

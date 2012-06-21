@@ -57,6 +57,7 @@ public class GameActivity extends AndroidApplication {
     View helpView;
     TextView pleaseWaitText;
     View gameView;
+    Level startLevel;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,20 +66,20 @@ public class GameActivity extends AndroidApplication {
         prefs = UserPreferences.getInstance(getApplicationContext());
         prefs.setHintChangedListener(hintChangedListener);
 
-        Level level = null;
+        startLevel = null;
         if (savedInstanceState != null && savedInstanceState.containsKey(LEVEL_PARAM_TAG))
-            level = (Level) savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
+            startLevel = (Level) savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
         Intent intent = getIntent();
         if (intent.hasExtra(LEVEL_PARAM_TAG))
-            level = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
+            startLevel = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
 
-        if (level == null || level.pack == null) {
+        if (startLevel == null || startLevel.pack == null) {
             finish();
             return;
         }
 
         gameListener = new GameListener();
-        game = new Game(level, gameListener);
+        game = new Game(startLevel, gameListener);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -135,7 +136,7 @@ public class GameActivity extends AndroidApplication {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(LEVEL_PARAM_TAG, game.getLevel());
+        outState.putSerializable(LEVEL_PARAM_TAG, game == null ? startLevel : game.getLevel());
     }
 
     @Override

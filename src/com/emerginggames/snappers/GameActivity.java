@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class GameActivity extends AndroidApplication {
         if (savedInstanceState != null && savedInstanceState.containsKey(LEVEL_PARAM_TAG))
             startLevel = (Level) savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
         Intent intent = getIntent();
-        if (intent.hasExtra(LEVEL_PARAM_TAG))
+        if (startLevel == null && intent.hasExtra(LEVEL_PARAM_TAG))
             startLevel = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
 
         if (startLevel == null || startLevel.pack == null) {

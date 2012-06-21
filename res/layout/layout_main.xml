@@ -9,18 +9,16 @@
         >
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/logoCont"
                   android:orientation="horizontal">
-        <LinearLayout android:layout_height="0dp" android:layout_width="0dp" android:layout_weight="10"/>
-        <ru.emerginggames.snappers.view.ImageView android:id="@+id/logo" android:layout_width="0dp"
+        <com.emerginggames.snappers.view.ImageView android:id="@+id/logo" android:layout_width="0dp"
                                                   android:layout_weight="80"
                                                   android:layout_height="wrap_content"
                                                   android:src="@drawable/logo"
                                                   android:scaleType="fitCenter" android:adjustViewBounds="true"
                                                   android:layout_gravity="center"
                 />
-        <LinearLayout android:layout_height="0dp" android:layout_width="dp" android:layout_weight="10"/>
     </LinearLayout>
 
-    <ru.emerginggames.snappers.view.ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <com.emerginggames.snappers.view.ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
                                               android:layout_centerInParent="true" android:id="@+id/playButton"
                                               android:src="@drawable/play_button" android:onClick="onPlayButtonClick"/>
 
@@ -50,7 +48,7 @@
         </LinearLayout>
 
 
-        <ru.emerginggames.snappers.view.ImageView android:id="@+id/settingsBtn" android:layout_width="wrap_content"
+        <com.emerginggames.snappers.view.ImageView android:id="@+id/settingsBtn" android:layout_width="wrap_content"
                                                   android:layout_height="wrap_content"
                                                   android:src="@drawable/settings"
                                                   android:layout_alignParentBottom="true"
@@ -59,7 +57,7 @@
                 />
     </RelativeLayout>
 
-    <ru.emerginggames.snappers.view.ImageView android:id="@+id/shopButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <com.emerginggames.snappers.view.ImageView android:id="@+id/shopButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
                android:src="@drawable/store_button"
                android:layout_alignParentBottom="true"
                android:layout_alignParentRight="true"

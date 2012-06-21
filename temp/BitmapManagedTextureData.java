@@ -1,4 +1,4 @@
-package ru.emerginggames.snappers.gdx.core;
+package com.emerginggames.snappers.gdx.core;
 
 import android.graphics.Bitmap;
 import com.badlogic.gdx.Gdx;

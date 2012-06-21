@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
+              xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical"
         >
-    <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/title" android:layout_width="fill_parent"
+    <com.emerginggames.snappers.view.OutlinedTextView android:id="@+id/title" android:layout_width="fill_parent"
                                                      android:layout_height="wrap_content"
                                                      app:strokeWidth="1dp" app:strokeColor="#000"
                                                      app:setTextSizeToFit="true"
@@ -16,7 +16,7 @@
                                                      android:layout_marginTop="3dp"
                                                      android:visibility="gone"
             />
-    <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/message" android:layout_width="wrap_content"
+    <com.emerginggames.snappers.view.OutlinedTextView android:id="@+id/message" android:layout_width="wrap_content"
                                                      android:layout_height="wrap_content"
                                                      app:strokeWidth="1dp" app:strokeColor="#000"
                                                      android:textColor="#fff"

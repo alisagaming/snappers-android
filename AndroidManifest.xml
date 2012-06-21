@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="ru.emerginggames.snappers"
+      package="com.emerginggames.snappers"
       android:versionCode="11"
       android:versionName="1.0"
       android:installLocation="auto"
@@ -18,20 +18,20 @@
     <!--<uses-permission android:name="android.permission.READ_LOGS"/>-->
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="13"/>
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".SnappersApplication">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="com.emerginggames.snappers.SnappersApplication">
 
-        <activity android:name=".SplashGdxActivity" android:screenOrientation="portrait">
+        <activity android:name="com.emerginggames.snappers.SplashGdxActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectLevelActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".GameActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".StoreActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".SelectPackActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".PaginatedSelectorActivity"/>
-        <activity android:name=".MainScreenActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.emerginggames.snappers.SelectLevelActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.emerginggames.snappers.GameActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.emerginggames.snappers.StoreActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.emerginggames.snappers.SelectPackActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.emerginggames.snappers.PaginatedSelectorActivity"/>
+        <activity android:name="com.emerginggames.snappers.MainScreenActivity" android:screenOrientation="portrait"/>
         <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
@@ -48,9 +48,9 @@
         <activity android:name="com.tapjoy.TapjoyFeaturedAppWebView" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="com.tapjoy.TapjoyVideoView" android:configChanges="keyboardHidden|orientation" />
 
-        <service android:name=".utils.BillingService" />
+        <service android:name="com.emerginggames.snappers.utils.BillingService" />
 
-        <receiver android:name=".utils.BillingReceiver">
+        <receiver android:name="com.emerginggames.snappers.utils.BillingReceiver">
             <intent-filter>
                 <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
                 <action android:name="com.android.vending.billing.RESPONSE_CODE" />

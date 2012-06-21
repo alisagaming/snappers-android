@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
+              xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:background="@drawable/background"
@@ -19,7 +19,7 @@
                       android:background="#80FF0000" android:visibility="gone"
                 />
 
-        <ru.emerginggames.snappers.view.OutlinedTextView android:id="@+id/score"
+        <com.emerginggames.snappers.view.OutlinedTextView android:id="@+id/score"
                                                          android:layout_height="wrap_content"
                                                          android:layout_width="fill_parent"
                                                          android:gravity="top|right"
@@ -32,7 +32,7 @@
 
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent" android:layout_height="0dp" android:layout_weight="1">
-        <ru.emerginggames.snappers.view.FixedRatioPager android:id="@+id/pager"
+        <com.emerginggames.snappers.view.FixedRatioPager android:id="@+id/pager"
                                                         android:layout_height="fill_parent" android:layout_width="fill_parent"
                                                         android:layout_gravity="center"
                 />

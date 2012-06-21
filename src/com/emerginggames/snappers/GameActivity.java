@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.emerginggames.snappers.model.Goods;
@@ -54,6 +55,8 @@ public class GameActivity extends AndroidApplication {
     GameOverMessageController gameOverMessageController;
     LevelInfo levelInfo;
     View helpView;
+    TextView pleaseWaitText;
+    View gameView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,19 +85,21 @@ public class GameActivity extends AndroidApplication {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
-        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-
-        config.useAccelerometer = false;
-        config.useCompass = false;
-        config.useWakelock = false;
-
-        View gameView = initializeForView(game, config);
         rootLayout = new RelativeLayout(this);
-        rootLayout.addView(gameView);
 
         Rect rect = new Rect();
         rootLayout.getWindowVisibleDisplayFrame(rect);
         Metrics.setSize(rect.width(), rect.height(), getApplicationContext());
+
+
+        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        config.useAccelerometer = false;
+        config.useCompass = false;
+        config.useWakelock = false;
+        gameView = initializeForView(game, config);
+        rootLayout.addView(gameView);
+
+        addPleaseWait();
 
         levelInfo = new LevelInfo(rootLayout);
         topButtons = new TopButtonController(rootLayout);
@@ -114,6 +119,17 @@ public class GameActivity extends AndroidApplication {
 
         if (TapjoyConnect.getTapjoyConnectInstance() == null)
             TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
+    }
+
+    void addPleaseWait(){
+        pleaseWaitText = new TextView(this);
+        pleaseWaitText.setText(R.string.pleaseWait);
+        pleaseWaitText.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.largeFontSize);
+        pleaseWaitText.setTextColor(Color.WHITE);
+        pleaseWaitText.setTypeface(Resources.getFont(this));
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        rootLayout.addView(pleaseWaitText, lp);
     }
 
     @Override
@@ -464,6 +480,12 @@ public class GameActivity extends AndroidApplication {
         public void onInitDone() {
             if (adController != null)
                 adController.setGameMargins(0);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    pleaseWaitText.setVisibility(View.GONE);
+                }
+            });
         }
 
         @Override
@@ -593,6 +615,8 @@ public class GameActivity extends AndroidApplication {
         View.OnClickListener mainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!game.initDone)
+                    return;
                 SoundManager.getInstance(GameActivity.this).playButtonSound();
                 switch (v.getId()){
                     case R.id.pauseBtn:

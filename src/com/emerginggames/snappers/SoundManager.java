@@ -33,11 +33,15 @@ public class SoundManager {
             throw new RuntimeException(e);
         }
 
+        setMediaPlayerSource();
+
+    }
+
+    void setMediaPlayerSource(){
         try {
             AssetFileDescriptor afd = context.getAssets().openFd("sounds/soundtrack.mp3");
             mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-        } catch (IOException e) {
-        }
+        } catch (Exception e) {}
     }
 
     public static SoundManager getInstance(Activity context) {
@@ -66,7 +70,18 @@ public class SoundManager {
             mediaPlayer.setLooping(true);
             mediaPlayer.setVolume(0.6f, 0.6f);
             mediaPlayer.start();
-        } catch (IOException e) {
+        }
+        catch (IllegalStateException e){
+            try {
+                mediaPlayer.reset();
+                setMediaPlayerSource();
+                mediaPlayer.prepare();
+                mediaPlayer.setLooping(true);
+                mediaPlayer.setVolume(0.6f, 0.6f);
+                mediaPlayer.start();
+            }catch (Exception e1){}
+        }
+        catch (Exception e) {
         }
     }
 

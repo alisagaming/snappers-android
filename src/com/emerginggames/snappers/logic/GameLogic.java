@@ -136,7 +136,7 @@ public class GameLogic {
 
     private class Blasts {
         private static final int MAX_BLASTS = 90;
-        private static final float BLAST_SPEED_MARGIN_PER_SECOND = 6;
+        private static final float BLAST_SPEED_MARGIN_PER_SECOND = 7f;
         public final List<Blast> blastsToKill;
         public final Pool<Blast> blastPool;
         public final List<Blast> activeBlasts;

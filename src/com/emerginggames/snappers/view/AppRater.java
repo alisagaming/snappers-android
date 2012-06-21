@@ -58,6 +58,7 @@ public class AppRater {
 
         LinearLayout ll = new LinearLayout(mContext);
         ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setPadding(20, 20, 20, 20);
 
         TextView tv = new TextView(mContext);
         tv.setText("If you enjoy using " + APP_TITLE + ", please take a moment to rate it. Thanks for your support!");

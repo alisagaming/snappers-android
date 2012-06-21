@@ -43,5 +43,6 @@
     <string name="possible_in_1_touch">Possible in 1 touch.</string>
     <string name="level_n" formatted="false">Level: %d-%d</string>
     <string name="taps_left" formatted="false">Taps left: %d</string>
+    <string name="pleaseWait" formatted="false">Please wait</string>
 
 </resources>

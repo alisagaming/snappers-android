@@ -15,6 +15,7 @@ import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.data.DbCopyOpenHelper;
 import com.emerginggames.snappers.gdx.Splash;
 
+import com.tapjoy.TapjoyConnect;
 import net.hockeyapp.android.UpdateManager;
 import com.emerginggames.snappers.utils.OnlineSettings;
 import com.emerginggames.snappers.view.OutlinedTextView;
@@ -83,7 +84,7 @@ public class SplashGdxActivity extends AndroidApplication {
             protected Integer doInBackground(Integer... params) {
                 long startTime = System.currentTimeMillis();
                 new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
-                //TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
+                TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
 
                 UserPreferences.getInstance(SplashGdxActivity.this);
                 OnlineSettings.update(getApplicationContext());

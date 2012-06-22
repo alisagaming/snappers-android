@@ -36,7 +36,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         setPagerAdapter();
         FixedRatioPager pager = (FixedRatioPager)findViewById(R.id.pager);
         pager.setPageMargin(- overlap);
-        pager.setOffscreenPageLimit(3);
+        pager.setOffscreenPageLimit(2);
         pager.setCurrentChildOnTop(true);
 
         CirclePageIndicator mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);

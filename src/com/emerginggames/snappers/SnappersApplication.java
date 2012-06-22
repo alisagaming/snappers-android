@@ -49,6 +49,8 @@ public class SnappersApplication extends Application {
         super.onCreate();
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.ACRA)
             ErrorReporter.getInstance().putCustomData("git_commit", Settings.getGitCommitString(getApplicationContext()));
+
+
     }
 
     public void musicStatusChanged(){

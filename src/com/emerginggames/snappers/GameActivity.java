@@ -91,7 +91,8 @@ public class GameActivity extends AndroidApplication {
 
         Rect rect = new Rect();
         rootLayout.getWindowVisibleDisplayFrame(rect);
-        Metrics.setSize(rect.width(), rect.height(), getApplicationContext());
+        if (rect.width() > 0)
+            Metrics.setSize(rect.width(), rect.height(), getApplicationContext());
 
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
@@ -716,6 +717,8 @@ public class GameActivity extends AndroidApplication {
                 lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 lp.addRule(RelativeLayout.ALIGN_LEFT);
                 lp.bottomMargin = Metrics.screenHeight / 2;
+                if (rootLayout.indexOfChild(layout) >= 0)
+                    rootLayout.removeView(layout);
                 rootLayout.addView(layout, lp);
             }
         };

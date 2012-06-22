@@ -69,7 +69,7 @@ public class MainStage extends MyStage {
         //       OutlinedTextSprite.FontStyle fontStyle = new OutlinedTextSprite.FontStyle(Metrics.fontSize, Color.WHITE, Color.BLACK, Color.TRANSPARENT, 2, Resources.font);
         //       levelText = new OutlinedTextSprite(String.format(LEVEL_D_D, 99, 999), fontStyle);
         //       tapLeftText = new OutlinedTextSprite(String.format(TAPS_LEFT_D, 99), fontStyle);
-        if (width != 0){
+        if (width != 0) {
             if (snappers == null)
                 snappers = new Snappers_();
             if (bangs == null)
@@ -132,23 +132,25 @@ public class MainStage extends MyStage {
 
     @Override
     public void act(float delta) {
-        int acts = logic.advance2(delta);
-        super.act(delta);
+        synchronized (snappers.activeSnappers) {
+            int acts = logic.advance2(delta);
+            super.act(delta);
 
-        boolean isGameOver = logic.isGameOver();
-        if (isGameOver && !gameOverFired) {
-            gameOverFired = true;
-            if (logic.isGameLost())
-                mGame.gameLost();
-            else
-                mGame.gameWon();
-        } else if (!isGameOver && gameOverFired) {
-            gameOverFired = false;
+            boolean isGameOver = logic.isGameOver();
+            if (isGameOver && !gameOverFired) {
+                gameOverFired = true;
+                if (logic.isGameLost())
+                    mGame.gameLost();
+                else
+                    mGame.gameWon();
+            } else if (!isGameOver && gameOverFired) {
+                gameOverFired = false;
+            }
+
+            sounds.act(delta, acts);
+            bangs.act(delta);
+            snappers.act(delta);
         }
-
-        sounds.act(delta, acts);
-        bangs.act(delta);
-        snappers.act(delta);
 
         if (isHinting)
             hint.act(delta);
@@ -338,12 +340,10 @@ public class MainStage extends MyStage {
         public void act(float delta) {
             if (delta < 1)
                 animDelta += delta;
-            synchronized (activeSnappers) {
-                if (animDelta >= 0.05f) {
-                    for (int i = 0; i < activeSnappers.size; i++)
-                        activeSnappers.get(i).moveAct(animDelta);
-                    animDelta = 0;
-                }
+            if (animDelta >= 0.05f) {
+                for (int i = 0; i < activeSnappers.size; i++)
+                    activeSnappers.get(i).moveAct(animDelta);
+                animDelta = 0;
             }
         }
 
@@ -409,7 +409,7 @@ public class MainStage extends MyStage {
         }
 
         public void free(SnapperView view) {
-            synchronized (activeSnappers){
+            synchronized (activeSnappers) {
                 activeSnappers.removeValue(view, true);
                 snapperViewPool.free(view);
             }

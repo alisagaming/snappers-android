@@ -282,8 +282,10 @@ public class Resources {
         utilizeBg();
         if (Gdx.files == null)
             return;
-        Preload.bg = new ResizedFileTextureData(Gdx.files.internal("bg/" + name),
-                Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
+        if (Metrics.sizeMode == Metrics.SizeMode.modeS)
+            Preload.bg = new ResizedFileTextureData(Gdx.files.internal("bg-lo/" + name), Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
+        else
+            Preload.bg = new ResizedFileTextureData(Gdx.files.internal("bg/" + name), Pixmap.Format.RGB565, Metrics.screenWidth, Metrics.screenHeight);
         Preload.bgName = name;
     }
 

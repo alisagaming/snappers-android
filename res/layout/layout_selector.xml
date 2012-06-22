@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:and="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
+                xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
                 and:layout_width="fill_parent" and:layout_height="fill_parent"
                 and:id="@+id/root">
 
-    <ru.emerginggames.snappers.view.ImageView and:id="@+id/bgImage"
+    <com.emerginggames.snappers.view.ImageView and:id="@+id/bgImage"
             and:layout_width="fill_parent" and:layout_height="fill_parent" and:layout_centerInParent="true"
             and:src="@drawable/bg1" and:scaleType="matrix"/>
 
@@ -32,7 +32,7 @@
                       and:layout_width="fill_parent" and:layout_height="wrap_content"
                       and:orientation="horizontal" and:layout_gravity="bottom" and:weightSum="100">
 
-            <ru.emerginggames.snappers.view.ImageView and:id="@+id/backButton"
+            <com.emerginggames.snappers.view.ImageView and:id="@+id/backButton"
                        and:layout_width="0dp" and:layout_height="wrap_content" and:layout_gravity="bottom"
                        and:layout_weight="25"
                        and:src="@drawable/arrow_back_btn" and:scaleType="fitCenter" and:adjustViewBounds="true"
@@ -41,7 +41,7 @@
         </LinearLayout>
 
     </LinearLayout>
-    <ru.emerginggames.snappers.view.OutlinedTextView and:id="@+id/hintBtn"
+    <com.emerginggames.snappers.view.OutlinedTextView and:id="@+id/hintBtn"
          and:layout_width="wrap_content" and:layout_height="wrap_content"
          and:layout_alignParentTop="true" and:layout_alignParentRight="true"
          and:background="@drawable/button_hint" and:scaleType="fitCenter" and:adjustViewBounds="true"

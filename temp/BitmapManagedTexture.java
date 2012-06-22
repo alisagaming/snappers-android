@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
+import com.emerginggames.snappers.gdx.core.BitmapManagedTextureData;
 
 /**
  * Created by IntelliJ IDEA.

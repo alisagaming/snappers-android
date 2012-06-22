@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:and="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res/ru.emerginggames.snappers"
+                xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
                 and:id="@+id/root"
                 and:layout_width="fill_parent"
                 and:layout_height="fill_parent"
                 and:background="@drawable/gradient_blue"
         >
-    <ru.emerginggames.snappers.view.ImageView and:src="@drawable/main_screen" and:layout_width="fill_parent"
+    <com.emerginggames.snappers.view.ImageView and:src="@drawable/main_screen" and:layout_width="fill_parent"
                   and:layout_height="wrap_content"
                   and:layout_alignParentBottom="true" and:scaleType="fitCenter" and:adjustViewBounds="true"
             />
@@ -15,7 +15,7 @@
     <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content" and:id="@+id/logoCont"
                   and:orientation="horizontal">
         <LinearLayout and:layout_height="0dp" and:layout_width="0dp" and:layout_weight="10"/>
-        <ru.emerginggames.snappers.view.ImageView and:id="@+id/logo" and:layout_width="0dp"
+        <com.emerginggames.snappers.view.ImageView and:id="@+id/logo" and:layout_width="0dp"
                                                   and:layout_weight="80"
                                                   and:layout_height="wrap_content"
                                                   and:src="@drawable/logo"
@@ -25,16 +25,16 @@
         <LinearLayout and:layout_height="0dp" and:layout_width="dp" and:layout_weight="10"/>
     </LinearLayout>
 
-    <ru.emerginggames.snappers.view.ImageView and:layout_width="wrap_content" and:layout_height="wrap_content"
+    <com.emerginggames.snappers.view.ImageView and:layout_width="wrap_content" and:layout_height="wrap_content"
             and:layout_centerVertical="true" and:layout_alignParentRight="true" and:layout_marginRight="20dp"
             and:id="@+id/playButtonOnline" and:src="@drawable/button_play" and:onClick="onPlayButtonClick"/>
 
-    <ru.emerginggames.snappers.view.ImageView and:layout_width="wrap_content" and:layout_height="wrap_content"
+    <com.emerginggames.snappers.view.ImageView and:layout_width="wrap_content" and:layout_height="wrap_content"
             and:layout_above="@+id/dailyBonus" and:layout_alignParentRight="true" and:id="@+id/playButtonOffline"
             and:src="@drawable/button_play_offline" and:onClick="onPlayButtonOfflineClick" and:layout_marginRight="20dp"
             and:layout_marginBottom="10dp"/>
 
-    <ru.emerginggames.snappers.view.OutlinedTextView and:layout_width="wrap_content" and:layout_height="wrap_content"
+    <com.emerginggames.snappers.view.OutlinedTextView and:layout_width="wrap_content" and:layout_height="wrap_content"
             and:layout_alignParentRight="true" and:layout_alignParentBottom="true" and:id="@+id/dailyBonus"
             and:background="@drawable/button_daily_bonus" and:onClick="onDailyBonus" and:text="@string/collect_now"
             and:clickable="true"
@@ -43,7 +43,7 @@
             and:textSize="20dp"
             and:gravity="center"/>
 
-        <ru.emerginggames.snappers.view.ImageView and:id="@+id/settingsBtn"
+        <com.emerginggames.snappers.view.ImageView and:id="@+id/settingsBtn"
             and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_margin="20dp"
             and:layout_alignParentBottom="true" and:layout_alignParentLeft="true"
             and:src="@drawable/button_settings" and:scaleType="fitCenter" and:adjustViewBounds="true"

@@ -30,7 +30,7 @@ public class Settings {
     public static final String BUGSENSE_API_KEY = "8a555912";
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
     public static final boolean SEND_EXTENDED_AD_INFO = false;
-    public static final boolean IS_PREMIUM = true;
+    public static final boolean IS_PREMIUM = false;
     //1543619c1de44e80af13f861b204b778
     private static String adwhirlKey = "5D43298AD9AB6642H81E3D3F20BA02E8FHAAD7E50F0B01C4B6H13863AC093001CC1H16B7733B6AFA5528H39DA19D96F7DF7F3HAD9A87096A80397FHDF9A4393DB6D4F33";
     //App ID ? 6ac99625-6d02-4326-becd-213a233c511a
@@ -42,8 +42,38 @@ public class Settings {
 
     private static final String gInAPPKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgWK5eC6WW8fiRuvVfxaSaqUyMnpthTtV8abNUYLbS4pRcjbolfQJTFqZg+rzIADeBV1VZ0Iw/ZHO6i7n3iqFSDqKdBHwkteoEgynBJy+9THP7X8kN+C+h1V25cJforTyZiaXaY0Nz2Vq+mphnmGl9tettg/ZUiyqPm3Tt6SSJFdhdk1y5SO8LtTB+2VLHYe8e+XiEI2YGXm4NJ2G79pXooDSrmYV0CZ0uT6w3w7F9vmPEF0fvxtEN5D9SMhRfWlJ6rV/Mhnf46JmZTC5nGXhCwMG/uhWQbywhgLtQyMGzehsKxZyW5SSGq80RwHhmpYMN9F6Ekq8I6UTC/KHqt1UhQIDAQAB";
 
+    private static final String mediationKey = "37FDED5609B0932FO67E17937D7A51DC7O589E501DD5C05FB8OA1D3454BF7B738D9";
 
 
+
+    public static String getAdMobKey(Context context) {
+        UserPreferences prefs = UserPreferences.getInstance(context);
+
+/*        try{
+            prefs.getKey1();
+            prefs.getKey2();
+            //df03 8f9a c585 4e20
+            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "df03"));
+            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "8f9a"));
+            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "c585"));
+            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "4e20"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }*/
+        String key = prefs.getKey1() + prefs.getKey2();
+        try{
+            String[] chunks = mediationKey.split("O");
+            StringBuilder b = new StringBuilder();
+            for (String c: chunks)
+                b.append(CryptHelperDES.decrypt(prefs.getKey12(), c));
+
+            //Log.e("DECODED - adwirl!!!", b.toString());
+            return b.toString();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public static String getAdwhirlKey(Context context) {

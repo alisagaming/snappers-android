@@ -15,7 +15,7 @@ import java.io.*;
  */
 public class DbCopyOpenHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
-    private static String DB_DIR = "/data/data/ru.emerginggames.snappers/databases/";
+    private static String DB_DIR = "/data/data/com.emerginggames.snappers/databases/";
     private static final String DB_NAME = "snappers_data";
     private static String DB_PATH = DB_DIR + DB_NAME;
     private static String OLD_DB_PATH = DB_DIR + "old_" + DB_NAME;

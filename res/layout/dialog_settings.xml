@@ -78,21 +78,7 @@
                           and:background="@drawable/check_on_off" and:button="@drawable/transparent"/>
             </LinearLayout>
 
-
-
         </LinearLayout>
-
-
-<!--
-
-
-            <TableRow and:background="#e9fbff">
-                <ru.emerginggames.snappers.view.ImageView and:id="@+id/iconMusic" and:src="@drawable/icon_music" and:layout_gravity="center_vertical"/>
-                <TextView and:id="@+id/musicText" and:textColor="#1f5897" and:text="@string/music" and:gravity="center"
-                          and:layout_gravity="center"/>
-                <CheckBox and:id="@+id/musicCheckbox" and:button="@drawable/check_on_off" and:layout_gravity="center_vertical"/>
-            </TableRow>
--->
 
         <LinearLayout and:layout_width="fill_parent" and:layout_height="50dp" and:background="@drawable/settings_wnd_bottom"
               and:layout_below="@+id/table" and:id="@+id/footerCont"/>

@@ -38,7 +38,7 @@ public class GameActivity extends AndroidApplication {
     LevelTable levelTable;
     Store mStore;
     GameListener gameListener;
-    GameAdController adController;
+    AdController adController;
     Game game;
 
     UserPreferences prefs;
@@ -49,6 +49,7 @@ public class GameActivity extends AndroidApplication {
     int currentLevel;
     LevelPack pack;
     GameDialogsController gameDialogsController;
+    View helpView;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -113,8 +114,7 @@ public class GameActivity extends AndroidApplication {
                     topButtons.showMainButtons();
 
                     if (!Settings.IS_PREMIUM && !prefs.isAdFree()) {
-                        adController = new GameAdController(rootLayout, GameActivity.this);
-                        rootLayout.addView(adController.getAdLayout());
+                        adController = new AdController(GameActivity.this, rootLayout);
                     }
                 }
             });
@@ -150,7 +150,6 @@ public class GameActivity extends AndroidApplication {
 
         if (adController != null && prefs.isAdFree()) {
             adController.finish();
-            rootLayout.removeView(adController.getAdLayout());
             adController = null;
         }
 
@@ -176,6 +175,13 @@ public class GameActivity extends AndroidApplication {
             pauseGame();
 
         return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (adController != null)
+            adController.destroy();
     }
 
     public boolean checkNetworkStatus() {
@@ -215,20 +221,21 @@ public class GameActivity extends AndroidApplication {
     }
 
     public void showHelp(){
-        final View v = getLayoutInflater().inflate(R.layout.partial_help, null);
-        v.setOnClickListener(new View.OnClickListener() {
+        helpView = getLayoutInflater().inflate(R.layout.partial_help, null);
+        helpView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rootLayout.removeView(v);
                 game.setStage(Game.Stages.GameOverStage);
                 levelInfo.show();
+                SoundManager.getInstance(GameActivity.this).playButtonSound();
             }
         });
 
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        rootLayout.addView(v, lp);
+        rootLayout.addView(helpView, lp);
         game.setStage(Game.Stages.HelpStage);
         topButtons.hideAll();
         levelInfo.hide();
@@ -274,6 +281,10 @@ public class GameActivity extends AndroidApplication {
                 currentLevel = newLevel;
                 gameDialogsController.showNewLevelDialog(newLevel);
             }
+            if (helpView != null){
+                    rootLayout.removeView(helpView);
+                    helpView = null;
+            }
         }
 
         @Override
@@ -288,6 +299,10 @@ public class GameActivity extends AndroidApplication {
                 adController.showAdTop();
             gameOverMessageController.show(false, level.tapsCount);
             levelInfo.hide();
+            if (helpView != null){
+                rootLayout.removeView(helpView);
+                helpView = null;
+            }
         }
 
         @Override
@@ -342,7 +357,7 @@ public class GameActivity extends AndroidApplication {
         }
     };
 
-    public GameAdController getAdController(){
+    public AdController getAdController(){
         return adController;
     }
 

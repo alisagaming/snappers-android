@@ -145,7 +145,10 @@ public class Game implements ApplicationListener{
     }
 
     public Level getLevel(){
-        return mainStage.getLogic().level;
+        if (mainStage == null)
+            return level;
+        else
+            return mainStage.getLogic().level;
     }
 
     private void setStage(MyStage stage){

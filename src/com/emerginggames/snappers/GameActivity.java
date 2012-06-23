@@ -3,6 +3,7 @@ package com.emerginggames.snappers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class GameActivity extends AndroidApplication {
     LevelPack pack;
     GameDialogsController gameDialogsController;
     View helpView;
+    Level startLevel;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -59,27 +61,34 @@ public class GameActivity extends AndroidApplication {
         prefs = UserPreferences.getInstance(getApplicationContext());
         prefs.setHintChangedListener(hintChangedListener);
 
-        Level level = null;
-        if (savedInstanceState != null && savedInstanceState.containsKey(LEVEL_PARAM_TAG))
-            level = (Level) savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
+        startLevel = null;
+
         Intent intent = getIntent();
         if (intent.hasExtra(LEVEL_PARAM_TAG))
-            level = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
+            startLevel = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
 
-        if (level == null || level.pack == null) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(LEVEL_PARAM_TAG))
+            startLevel = (Level) savedInstanceState.getSerializable(LEVEL_PARAM_TAG);
+
+        if (startLevel == null || startLevel.pack == null) {
             finish();
             return;
         }
 
-        pack = level.pack;
+        pack = startLevel.pack;
 
         gameListener = new GameListener();
-        game = new Game(level, gameListener);
+        game = new Game(startLevel, gameListener);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+
+        rootLayout = new RelativeLayout(this);
+        Rect rect = new Rect();
+        rootLayout.getWindowVisibleDisplayFrame(rect);
+        Metrics.setSize(rect.width(), rect.height(), getApplicationContext());
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
@@ -88,7 +97,6 @@ public class GameActivity extends AndroidApplication {
         config.useWakelock = false;
 
         View gameView = initializeForView(game, config);
-        rootLayout = new RelativeLayout(this);
         rootLayout.addView(gameView);
 
         setContentView(rootLayout);
@@ -101,6 +109,9 @@ public class GameActivity extends AndroidApplication {
         currentLevel = Settings.getLevel(prefs.getScore());
 
         gameDialogsController = new GameDialogsController(this);
+
+        if (TapjoyConnect.getTapjoyConnectInstance() == null)
+            TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
     }
 
     public void initViews(){
@@ -123,7 +134,7 @@ public class GameActivity extends AndroidApplication {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(LEVEL_PARAM_TAG, game.getLevel());
+        outState.putSerializable(LEVEL_PARAM_TAG, game == null || !game.initDone ? startLevel : game.getLevel());
     }
 
     @Override

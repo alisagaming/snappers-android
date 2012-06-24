@@ -62,9 +62,16 @@ public class FixedRatioPager extends ViewPager{
 
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
+        int hSize = MeasureSpec.getSize(heightMeasureSpec);
         int innerWidth = wSize - innerPaddingLeft - innerPaddingRight;
         int innerHeight = Math.round(innerWidth * mRatio);
         int newHeight = innerHeight + innerPaddingTop + innerPaddingBottom;
+        if (newHeight > hSize){
+            int overSize = newHeight - hSize;
+            innerPaddingLeft += overSize/2;
+            innerPaddingRight += overSize/2;
+            newHeight = hSize;
+        }
         super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(newHeight, hMode));
     }
 

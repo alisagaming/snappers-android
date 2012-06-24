@@ -19,8 +19,12 @@
                           and:background="#80FF0000" and:visibility="gone"/>
         </LinearLayout>
 
-        <com.emerginggames.snappers.view.FixedRatioPager and:id="@+id/pager"
-                    and:layout_height="0dp" and:layout_width="fill_parent" and:layout_weight="1"/>
+        <LinearLayout and:layout_width="fill_parent" and:layout_height="0px" and:layout_weight="1" and:orientation="vertical">
+            <com.emerginggames.snappers.view.FixedRatioPager and:id="@+id/pager"
+                     and:layout_height="wrap_content" and:layout_width="fill_parent" and:layout_gravity="center"/>
+        </LinearLayout>
+
+
 
         <com.viewpagerindicator.CirclePageIndicator and:id="@+id/indicator"
                 and:layout_height="wrap_content" and:layout_width="fill_parent"
@@ -30,7 +34,8 @@
 
         <LinearLayout and:id="@+id/footer"
                       and:layout_width="fill_parent" and:layout_height="wrap_content"
-                      and:orientation="horizontal" and:layout_gravity="bottom" and:weightSum="100">
+                      and:orientation="horizontal" and:layout_gravity="bottom" and:weightSum="100"
+                >
 
             <com.emerginggames.snappers.view.ImageView and:id="@+id/backButton"
                        and:layout_width="0dp" and:layout_height="wrap_content" and:layout_gravity="bottom"

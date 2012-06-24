@@ -12,29 +12,26 @@
                   and:layout_alignParentBottom="true" and:scaleType="fitCenter" and:adjustViewBounds="true"
             />
 
-    <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content" and:id="@+id/logoCont"
-                  and:orientation="horizontal">
-        <LinearLayout and:layout_height="0dp" and:layout_width="0dp" and:layout_weight="10"/>
-        <com.emerginggames.snappers.view.ImageView and:id="@+id/logo" and:layout_width="0dp"
-                                                  and:layout_weight="80"
-                                                  and:layout_height="wrap_content"
-                                                  and:src="@drawable/logo"
-                                                  and:scaleType="fitCenter" and:adjustViewBounds="true"
-                                                  and:layout_gravity="center"
-                />
-        <LinearLayout and:layout_height="0dp" and:layout_width="dp" and:layout_weight="10"/>
-    </LinearLayout>
+    <com.emerginggames.snappers.view.ImageView and:id="@+id/logo"
+              and:layout_height="wrap_content" and:layout_width="wrap_content"
+              and:src="@drawable/logo" and:scaleType="fitCenter" and:adjustViewBounds="true"
+              and:layout_alignParentTop="true" and:layout_centerHorizontal="true"/>
 
-    <com.emerginggames.snappers.view.ImageView and:layout_width="wrap_content" and:layout_height="wrap_content"
-            and:layout_centerVertical="true" and:layout_alignParentRight="true" and:layout_marginRight="20dp"
-            and:id="@+id/playButtonOnline" and:src="@drawable/button_play" and:onClick="onPlayButtonClick"/>
+    <com.emerginggames.snappers.view.ImageView and:id="@+id/playButtonOnline"
+            and:layout_width="wrap_content" and:layout_height="wrap_content"
+            and:layout_above="@+id/playButtonOffline"
+            and:layout_alignParentRight="true" and:layout_marginRight="20dp"
+            and:adjustViewBounds="true"
+            and:src="@drawable/button_play" and:onClick="onPlayButtonClick"/>
 
-    <com.emerginggames.snappers.view.ImageView and:layout_width="wrap_content" and:layout_height="wrap_content"
-            and:layout_above="@+id/dailyBonus" and:layout_alignParentRight="true" and:id="@+id/playButtonOffline"
-            and:src="@drawable/button_play_offline" and:onClick="onPlayButtonOfflineClick" and:layout_marginRight="20dp"
-            and:layout_marginBottom="10dp"/>
+    <com.emerginggames.snappers.view.ImageView and:id="@+id/playButtonOffline"
+            and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_above="@+id/dailyBonus"
+            and:layout_alignParentRight="true"
+            and:adjustViewBounds="true"
+            and:src="@drawable/button_play_offline" and:onClick="onPlayButtonOfflineClick" and:layout_marginRight="20dp"/>
 
-    <com.emerginggames.snappers.view.OutlinedTextView and:layout_width="wrap_content" and:layout_height="wrap_content"
+    <com.emerginggames.snappers.view.OutlinedTextView
+            and:layout_width="wrap_content" and:layout_height="wrap_content"
             and:layout_alignParentRight="true" and:layout_alignParentBottom="true" and:id="@+id/dailyBonus"
             and:background="@drawable/button_daily_bonus" and:onClick="onDailyBonus" and:text="@string/collect_now"
             and:clickable="true"

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import com.emerginggames.snappers.view.FixedRatioPager;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.emerginggames.snappers.data.LevelTable;
@@ -13,6 +12,7 @@ import com.emerginggames.snappers.model.Level;
 import com.emerginggames.snappers.model.LevelPack;
 import com.emerginggames.snappers.view.IOnItemSelectedListener;
 import com.emerginggames.snappers.view.ImageView;
+import com.viewpagerindicator.CirclePageIndicator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,14 +45,8 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         pager.setInnerPaddings(padV, padV / 3, padV, padV / 3);
         adapter.setInnerPaddings(padV, padV / 3, padV, padV / 3);
 
-        com.viewpagerindicator.CirclePageIndicator
-                mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
+        CirclePageIndicator mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
-
-        View footer = findViewById(R.id.footer);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) footer.getLayoutParams();
-        lp.weight = 1;
-        footer.setLayoutParams(lp);
 
         int dotposition= pack.background.lastIndexOf(".");
         String res  = pack.background.substring(0,dotposition);

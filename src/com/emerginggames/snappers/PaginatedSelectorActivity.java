@@ -114,8 +114,13 @@ public class PaginatedSelectorActivity extends FragmentActivity {
             float scale = (float)r.height()/imgH ;
 
             Matrix m = new Matrix();
-            m.setScale(scale, scale);
-            m.postTranslate(-(imgW * scale - r.width())/2, 0);
+            float xShift = -(imgW * scale - r.width())/2;
+            if (xShift > 0)
+                m.setScale((float)r.width()/imgW, scale);
+            else {
+                m.setScale(scale, scale);
+                m.postTranslate(xShift, 0);
+            }
             back.setImageMatrix(m);
         }
     }

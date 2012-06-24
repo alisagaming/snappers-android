@@ -12,9 +12,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 
+import android.widget.RelativeLayout;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.view.GameDialog;
 import com.emerginggames.snappers.view.OutlinedTextView;
+import com.facebook.android.AsyncFacebookRunner;
 import net.hockeyapp.android.CrashManager;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.view.GameDialog;
@@ -49,19 +51,20 @@ public class MainScreenActivity extends Activity {
         scrHeight = getWindowManager().getDefaultDisplay().getHeight();
         prefs = UserPreferences.getInstance(this);
 
-        LayoutParams lp = findViewById(R.id.playButtonOnline).getLayoutParams();
-        int playSize = lp.width = Math.round(scrWidth * 0.5f);
-        findViewById(R.id.playButtonOnline).setLayoutParams(lp);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)findViewById(R.id.logo).getLayoutParams();
+        lp.width = Math.round(scrWidth * 0.8f);
+        lp.topMargin = scrWidth /20;
 
-        lp = findViewById(R.id.logoCont).getLayoutParams();
-        lp.height = (scrHeight - playSize)/2;
-        lp.height = Math.round(lp.height * 0.8f);
-        findViewById(R.id.logoCont).setLayoutParams(lp);
+        lp = (RelativeLayout.LayoutParams)findViewById(R.id.playButtonOnline).getLayoutParams();
+        lp.width = Math.round(scrWidth * 0.45f);
+        lp.rightMargin = scrWidth /20;
 
-        lp = findViewById(R.id.playButtonOffline).getLayoutParams();
-        lp.width = (int)(scrWidth * 0.4f);
+        lp = (RelativeLayout.LayoutParams)findViewById(R.id.playButtonOffline).getLayoutParams();
+        lp.width = (int)(scrWidth * 0.35f);
+        lp.rightMargin = scrWidth /20;
+        lp.topMargin = lp.bottomMargin = scrHeight /20;
 
-        lp = findViewById(R.id.settingsBtn).getLayoutParams();
+        lp = (RelativeLayout.LayoutParams)findViewById(R.id.settingsBtn).getLayoutParams();
         lp.width = lp.height = scrWidth / 5;
 
         setupDailyBonusCounter();
@@ -73,8 +76,9 @@ public class MainScreenActivity extends Activity {
         dailyBonus.setMaxLines2(1);
         dailyBonus.setBackgroundPaddings(DAILY_BONUS_PADDINGS);
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams)dailyBonus.getLayoutParams();
-        mlp.width = scrWidth/2;
+        mlp.width = Math.round(scrWidth * 0.45f);
         mlp.height = LayoutParams.WRAP_CONTENT;
+        mlp.rightMargin = scrWidth /20;
         dailyBonus.setLayoutParams(mlp);
         float scale = (float)mlp.width / dailyBonus.getBackground().getIntrinsicWidth();
         mlp.height = (int)(dailyBonus.getBackground().getIntrinsicHeight() * scale);
@@ -147,7 +151,7 @@ public class MainScreenActivity extends Activity {
         if (Settings.IS_PREMIUM)
             handler.post(updateDailyBonusCounter);
         else
-            findViewById(R.id.dailyBonus).setVisibility(View.GONE);
+            findViewById(R.id.dailyBonus).setVisibility(View.INVISIBLE);
     }
 
     @Override

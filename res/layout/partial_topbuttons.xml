@@ -5,14 +5,14 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
         >
-    <com.emerginggames.snappers.view.ImageView
+    <com.emrg.view.ImageView
         android:id="@+id/pauseBtn"
             android:layout_width="wrap_content" android:layout_height="fill_parent"
             android:src="@drawable/button_pause" android:scaleType="fitCenter" android:adjustViewBounds="true"
             android:layout_alignParentTop="true" android:layout_alignParentRight="true"
 
             />
-    <com.emerginggames.snappers.view.OutlinedTextView
+    <com.emrg.view.OutlinedTextView
             android:id="@+id/hintBtn"
             android:layout_width="wrap_content" android:layout_height="fill_parent"
             android:background="@drawable/button_hint" android:scaleType="fitCenter" android:adjustViewBounds="true"
@@ -25,13 +25,13 @@
             app:setTextSizeToFit="true"
             android:text="0"
             />
-    <com.emerginggames.snappers.view.ImageView android:id="@+id/nextBtn"
+    <com.emrg.view.ImageView android:id="@+id/nextBtn"
             android:layout_width="wrap_content" android:layout_height="fill_parent"
             android:src="@drawable/button_next" android:scaleType="fitCenter" android:adjustViewBounds="true"
             android:layout_alignParentTop="true" android:layout_alignParentRight="true"
             android:visibility="gone"
             />
-    <com.emerginggames.snappers.view.ImageView
+    <com.emrg.view.ImageView
             android:id="@+id/restartBtn"
             android:layout_width="wrap_content" android:layout_height="fill_parent"
             android:src="@drawable/button_restart" android:scaleType="fitCenter" android:adjustViewBounds="true"
@@ -40,7 +40,7 @@
             android:layout_alignWithParentIfMissing="true"
             android:visibility="gone"
             />
-    <com.emerginggames.snappers.view.ImageView
+    <com.emrg.view.ImageView
             android:id="@+id/menuBtn"
             android:layout_width="wrap_content" android:layout_height="fill_parent"
             android:src="@drawable/button_menu" android:scaleType="fitCenter" android:adjustViewBounds="true"
@@ -48,7 +48,7 @@
             android:layout_marginRight="2dp"
             android:visibility="gone"
             />
-    <com.emerginggames.snappers.view.ImageView
+    <com.emrg.view.ImageView
             android:id="@+id/helpBtn"
             android:layout_width="wrap_content" android:layout_height="fill_parent"
             android:src="@drawable/button_help" android:scaleType="fitCenter" android:adjustViewBounds="true"

@@ -1,4 +1,4 @@
-package com.emerginggames.snappers.view;
+package com.emrg.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -332,6 +332,8 @@ public class OutlinedTextView extends TextView{
         if (mLayout == null)
             makeNewLayout(getMeasuredWidth());
 
+        canvas.save();
+
         if (mLayout.getLineCount() == 1 || maxLines == 1){
             drawBoring(canvas);
             return;
@@ -345,6 +347,8 @@ public class OutlinedTextView extends TextView{
 
         mStrokeLayout.draw(canvas);
         mLayout.draw(canvas);
+
+        canvas.restore();
 
 
     }

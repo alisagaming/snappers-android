@@ -10,7 +10,7 @@
             and:id="@+id/root">
         <LinearLayout and:layout_width="fill_parent" and:layout_height="50dp" and:background="@drawable/settings_wnd_top"
                       and:layout_alignParentTop="true" and:id="@+id/titleCont">
-            <com.emerginggames.snappers.view.OutlinedTextView and:id="@+id/title"
+            <com.emrg.view.OutlinedTextView and:id="@+id/title"
                  and:layout_width="fill_parent" and:layout_height="wrap_content" and:gravity="center"
                  and:textColor="#fff" and:textSize="30dp"
                  app:strokeColor="#000" app:strokeWidth="1dp"
@@ -22,14 +22,14 @@
                 and:background="@drawable/settings_wnd_mid" and:layout_below="@+id/titleCont" and:orientation="vertical">
 
             <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
-                          and:background="#cdecf7">
-                <com.emerginggames.snappers.view.ImageView and:id="@+id/iconUser"
+                          and:background="@color/row_dark">
+                <com.emrg.view.ImageView and:id="@+id/iconUser"
                       and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
                       and:src="@drawable/icon_user" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
                 <TextView and:id="@+id/loginFbText"
                           and:layout_width="0dp" and:layout_height="wrap_content" and:gravity="center" and:layout_gravity="center"
                           and:layout_weight="1" and:textColor="#1f5897" and:text="@string/loginToFb" />
-                <com.emerginggames.snappers.view.OutlinedTextView and:id="@+id/loginFbBtn"
+                <com.emrg.view.OutlinedTextView and:id="@+id/loginFbBtn"
                          and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_gravity="center"
                          and:gravity="center" and:textColor="#fff" and:text="@string/login" and:textSize="30px"
                          app:strokeColor="#000" app:strokeWidth="1dp" and:background="@drawable/button_blue"
@@ -37,8 +37,8 @@
             </LinearLayout>
 
             <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
-                          and:background="#e9fbff">
-                <com.emerginggames.snappers.view.ImageView and:id="@+id/iconFb"
+                          and:background="@color/row_light">
+                <com.emrg.view.ImageView and:id="@+id/iconFb"
                           and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
                           and:src="@drawable/icon_fb" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
                 <TextView and:id="@+id/shareFbText" and:layout_width="0dp" and:layout_height="wrap_content"
@@ -51,8 +51,8 @@
             </LinearLayout>
 
             <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
-                          and:background="#e9fbff">
-                <com.emerginggames.snappers.view.ImageView and:id="@+id/iconSound"
+                          and:background="@color/row_dark">
+                <com.emrg.view.ImageView and:id="@+id/iconSound"
                           and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
                           and:src="@drawable/icon_sound" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
                 <TextView and:id="@+id/soundText" and:layout_width="0dp" and:layout_height="wrap_content"
@@ -65,8 +65,8 @@
             </LinearLayout>
 
             <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
-                          and:background="#e9fbff">
-                <com.emerginggames.snappers.view.ImageView and:id="@+id/iconMusic"
+                          and:background="@color/row_light">
+                <com.emrg.view.ImageView and:id="@+id/iconMusic"
                           and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
                           and:src="@drawable/icon_music" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
                 <TextView and:id="@+id/musicText" and:layout_width="0dp" and:layout_height="wrap_content"

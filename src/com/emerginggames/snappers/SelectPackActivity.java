@@ -2,12 +2,12 @@ package com.emerginggames.snappers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.emerginggames.snappers.view.FixedRatioPager;
+import com.emrg.view.FixedRatioPager;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.emerginggames.snappers.data.LevelPackTable;
 import com.emerginggames.snappers.model.ImagePaginatorParam;
 import com.emerginggames.snappers.model.LevelPack;
-import com.emerginggames.snappers.view.IOnItemSelectedListener;
+import com.emrg.view.IOnItemSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;

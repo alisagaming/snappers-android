@@ -7,30 +7,30 @@
                 and:layout_height="fill_parent"
                 and:background="@drawable/gradient_blue"
         >
-    <com.emerginggames.snappers.view.ImageView and:src="@drawable/main_screen" and:layout_width="fill_parent"
+    <com.emrg.view.ImageView and:src="@drawable/main_screen" and:layout_width="fill_parent"
                   and:layout_height="wrap_content"
                   and:layout_alignParentBottom="true" and:scaleType="fitCenter" and:adjustViewBounds="true"
             />
 
-    <com.emerginggames.snappers.view.ImageView and:id="@+id/logo"
+    <com.emrg.view.ImageView and:id="@+id/logo"
               and:layout_height="wrap_content" and:layout_width="wrap_content"
               and:src="@drawable/logo" and:scaleType="fitCenter" and:adjustViewBounds="true"
               and:layout_alignParentTop="true" and:layout_centerHorizontal="true"/>
 
-    <com.emerginggames.snappers.view.ImageView and:id="@+id/playButtonOnline"
+    <com.emrg.view.ImageView and:id="@+id/playButtonOnline"
             and:layout_width="wrap_content" and:layout_height="wrap_content"
             and:layout_above="@+id/playButtonOffline"
             and:layout_alignParentRight="true" and:layout_marginRight="20dp"
             and:adjustViewBounds="true"
             and:src="@drawable/button_play" and:onClick="onPlayButtonClick"/>
 
-    <com.emerginggames.snappers.view.ImageView and:id="@+id/playButtonOffline"
+    <com.emrg.view.ImageView and:id="@+id/playButtonOffline"
             and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_above="@+id/dailyBonus"
             and:layout_alignParentRight="true"
             and:adjustViewBounds="true"
             and:src="@drawable/button_play_offline" and:onClick="onPlayButtonOfflineClick" and:layout_marginRight="20dp"/>
 
-    <com.emerginggames.snappers.view.OutlinedTextView
+    <com.emrg.view.OutlinedTextView
             and:layout_width="wrap_content" and:layout_height="wrap_content"
             and:layout_alignParentRight="true" and:layout_alignParentBottom="true" and:id="@+id/dailyBonus"
             and:background="@drawable/button_daily_bonus" and:onClick="onDailyBonus" and:text="@string/collect_now"
@@ -40,7 +40,7 @@
             and:textSize="20dp"
             and:gravity="center"/>
 
-        <com.emerginggames.snappers.view.ImageView and:id="@+id/settingsBtn"
+        <com.emrg.view.ImageView and:id="@+id/settingsBtn"
             and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_margin="20dp"
             and:layout_alignParentBottom="true" and:layout_alignParentLeft="true"
             and:src="@drawable/button_settings" and:scaleType="fitCenter" and:adjustViewBounds="true"

@@ -1,4 +1,4 @@
-package com.emerginggames.snappers.view;
+package com.emrg.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.emerginggames.snappers.UserPreferences;
 import com.emerginggames.snappers.gdx.Resources;
-import com.emerginggames.snappers.UserPreferences;
 import com.emerginggames.snappers.Metrics;
 import com.emerginggames.snappers.R;
-import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.model.LevelPack;
 
 /**

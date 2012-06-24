@@ -18,12 +18,9 @@ import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.utils.Store;
 import com.emerginggames.snappers.utils.TapjoyPointsListener;
-import com.emerginggames.snappers.view.*;
+import com.emrg.view.*;
 import com.tapjoy.TapjoyConnect;
 import com.emerginggames.snappers.data.LevelTable;
-import com.emerginggames.snappers.gdx.Game;
-import com.emerginggames.snappers.gdx.IAppGameListener;
-import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.model.Level;
 import com.emerginggames.snappers.model.LevelPack;
 

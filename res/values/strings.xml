@@ -48,7 +48,10 @@
     <string name="new_level" formatted="false">You\'ve reached level %d!</string>
     <string name="settings">Settings</string>
     <string name="loginToFb">Login to FB</string>
+    <string name="loggedToFb" formatted="false">Logged in as %s</string>
+    <string name="loggedToFbNoName">Logged in</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="shareToFb">Share on FB</string>
     <string name="sound">Sound</string>
     <string name="music">Music</string>
@@ -57,5 +60,10 @@
     <string name="received_bonus_hints" formatted="false">You\'ve received %d bonus hints!</string>
     <string name="likeUrl" >http://www.facebook.com/SnappersApp</string>
     <string name="marketUrl" >market://details?id=com.emerginggames.snappers</string>
+
+    <string name="friends">Friends</string>
+    <string name="invite">Invite</string>
+    <string name="gift">Gift</string>
+    <string name="notPlaying">not playing</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.emerginggames.snappers.view;
+package com.emrg.view;
 
 /**
  * Created by IntelliJ IDEA.

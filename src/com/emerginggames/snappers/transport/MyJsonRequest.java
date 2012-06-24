@@ -33,8 +33,6 @@ public abstract class MyJsonRequest implements Runnable {
     protected MyJsonRequest(String methodName, boolean post) {
         this.methodName = methodName;
         isPost = post;
-        this.params = params;
-        this.handler = handler;
     }
 
     abstract void onSuccess(Object object);
@@ -61,12 +59,17 @@ public abstract class MyJsonRequest implements Runnable {
                 responce = postMessage(JsonTransport.SERVER + methodName);
             else
                 responce = getMessage(JsonTransport.SERVER + methodName);
-            if (isResponceOk(responce))
-                onSuccess(responce.get("data"));
+            if (isResponceOk(responce)){
+                if (responce.has("data"))
+                    onSuccess(responce.get("data"));
+                else
+                    onSuccess(responce);
+            }
 
 
             else throw new Exception(responce.getString("data"));
         } catch (Exception e) {
+            new Exception("error in method " + methodName, e);
             handler.onError(e);
         }
     }
@@ -98,7 +101,8 @@ public abstract class MyJsonRequest implements Runnable {
         HttpPost post = new HttpPost(new URI(path));
         if (jsonParam == null)
             jsonParam = mapToJson(params);
-        post.setEntity(new StringEntity(jsonParam.toString()));
+        if (jsonParam != null)
+            post.setEntity(new StringEntity(jsonParam.toString()));
 
         HttpClient client = getClient(post.getParams());
 

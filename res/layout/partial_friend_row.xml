@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:and="http://schemas.android.com/apk/res/android"
+              and:layout_width="fill_parent" and:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
+              and:orientation="horizontal" and:background="@color/row_dark"
+              and:paddingLeft="3dp" and:paddingRight="3dp" and:paddingTop="2dp" and:paddingBottom="2dp"
+              and:weightSum="100"
+        >
+    <RelativeLayout and:layout_width="0px" and:layout_height="fill_parent" and:layout_weight="23">
+        <com.emrg.view.ImageView and:id="@+id/iconUser"
+             and:layout_width="fill_parent" and:layout_height="wrap_content"
+             and:src="@drawable/icon_user" and:scaleType="fitCenter" and:adjustViewBounds="true"
+             and:layout_marginRight="5dp"/>
+        <TextView and:id="@+id/level" and:layout_width="wrap_content" and:layout_height="wrap_content"
+                  and:background="@drawable/star_friend"
+                  and:layout_alignParentBottom="true" and:layout_alignParentRight="true"
+                  and:textColor="#000" and:gravity="center"
+                  and:textSize="16dp"
+                  and:padding="8dp"
+                  and:visibility="gone"
+                />
+    </RelativeLayout>
+
+    <LinearLayout and:layout_weight="44" and:layout_width="0px" and:layout_height="wrap_content" and:layout_gravity="center"
+                  and:orientation="vertical">
+
+        <TextView and:id="@+id/title"
+                  and:layout_width="fill_parent" and:layout_height="wrap_content"  and:layout_gravity="center"
+                  and:maxLines="1" and:ellipsize="end" and:gravity="left"
+                  and:textColor="#477bc1"
+                  and:textStyle="bold" and:textSize="20dp"
+                />
+
+        <TextView and:id="@+id/score"
+                  and:layout_width="fill_parent" and:layout_height="wrap_content"  and:layout_gravity="center"
+                  and:maxLines="1" and:ellipsize="end" and:gravity="left"
+                  and:textColor="#477bc1"
+                  and:textSize="20dp" and:textStyle="bold"
+                />
+    </LinearLayout>
+
+    <com.emrg.view.OutlinedTextView and:id="@+id/btn"
+                                    and:layout_width="0px" and:layout_height="wrap_content" and:layout_weight="33"
+                                    and:layout_gravity="center" and:gravity="center" and:textColor="#fff"
+                                    app:strokeColor="#000" app:strokeWidth="1dp" and:textSize="30dp"
+                                    and:background="@drawable/button_green" and:padding="10dp"
+                                    and:layout_marginTop="5dp" and:layout_marginBottom="5dp"/>
+</LinearLayout>

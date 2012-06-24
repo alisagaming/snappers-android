@@ -1,4 +1,4 @@
-package com.emerginggames.snappers.view;
+package com.emrg.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

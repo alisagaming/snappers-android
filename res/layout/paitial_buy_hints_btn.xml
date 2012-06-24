@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.emerginggames.snappers.view.SquaredRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.emrg.view.SquaredRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
@@ -16,21 +16,21 @@
                       android:layout_weight="11">
             <LinearLayout android:layout_width="0px" android:layout_height="fill_parent" android:layout_weight="9"/>
 
-            <com.emerginggames.snappers.view.OutlinedTextView android:id="@+id/title"
+            <com.emrg.view.OutlinedTextView android:id="@+id/title"
                      android:layout_width="0px" android:layout_height="wrap_content" android:layout_gravity="bottom"
                      android:layout_weight="11" android:gravity="left|bottom"
                      app:strokeColor="#000" app:strokeWidth="1dp" android:textColor="#fff"/>
         </LinearLayout>
 
-        <com.emerginggames.snappers.view.OutlinedTextView android:id="@+id/price"
+        <com.emrg.view.OutlinedTextView android:id="@+id/price"
                  android:layout_width="fill_parent" android:layout_height="0px" android:gravity="center"
                  app:strokeColor="#000" app:strokeWidth="1dp" android:textColor="#feb506" android:layout_weight="10"/>
 
     </LinearLayout>
 
-    <com.emerginggames.snappers.view.ImageView android:id="@+id/bestDeal"
+    <com.emrg.view.ImageView android:id="@+id/bestDeal"
               android:layout_width="wrap_content" android:layout_height="wrap_content"
               android:src="@drawable/bestdeal"
               android:layout_alignParentTop="true" android:layout_alignParentRight="true"/>
 
-</com.emerginggames.snappers.view.SquaredRelativeLayout>
+</com.emrg.view.SquaredRelativeLayout>

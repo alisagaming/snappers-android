@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.emerginggames.snappers.model.ImageDrawInfo;
 import com.emerginggames.snappers.model.ImagePaginatorParam;
-import com.emerginggames.snappers.view.ICurrentItemSelector;
-import com.emerginggames.snappers.view.IOnItemSelectedListener;
-import com.emerginggames.snappers.view.RotatedImageView;
+import com.emrg.view.ICurrentItemSelector;
+import com.emrg.view.IOnItemSelectedListener;
+import com.emrg.view.RotatedImageView;
 
 import java.util.List;
 

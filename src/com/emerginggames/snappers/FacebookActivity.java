@@ -3,18 +3,19 @@ package com.emerginggames.snappers;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
-import com.emerginggames.snappers.transport.JsonResponseHandler;
-import com.facebook.android.DialogError;
+import android.util.TypedValue;
+import android.view.*;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import com.emerginggames.snappers.gdx.Resources;
+import com.emerginggames.snappers.transport.FacebookTransport;
+import com.emrg.view.OutlinedTextView;
+import com.emerginggames.snappers.model.FacebookFriend;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
-import com.emerginggames.snappers.model.FacebookFriend;
-import com.emerginggames.snappers.model.SyncData;
-import com.emerginggames.snappers.transport.JsonResponseHandler;
-import com.emerginggames.snappers.transport.JsonTransport;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,9 +24,8 @@ import com.emerginggames.snappers.transport.JsonTransport;
  * Time: 17:34
  */
 public class FacebookActivity extends Activity {
-    private static final String APP_ID = "256726611099954";
-    Facebook facebook = new Facebook(APP_ID);
-    private SharedPreferences mPrefs;
+    int wndWidth;
+    FacebookTransport facebookTransport;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,55 +35,32 @@ public class FacebookActivity extends Activity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_empty);
+        setContentView(R.layout.layout_facebook);
 
-        mPrefs = getPreferences(MODE_PRIVATE);
-        String access_token = mPrefs.getString("access_token", null);
-        long expires = mPrefs.getLong("access_expires", 0);
-        if (access_token != null) {
-            facebook.setAccessToken(access_token);
-        }
-        if (expires != 0) {
-            facebook.setAccessExpires(expires);
-        }
+        Metrics.setSizeByView(getWindow().getDecorView(), getApplicationContext());
+        wndWidth = Metrics.screenWidth;
 
-        /*
-        * Only call authorize if the access_token has expired.
-        */
-        if (!facebook.isSessionValid()) {
-
-            facebook.authorize(this, new Facebook.DialogListener() {
+        facebookTransport = new FacebookTransport(this);
+        if (!facebookTransport.isLoggedIn()){
+            facebookTransport.login(new FacebookTransport.ResponseListener(){
                 @Override
-                public void onComplete(Bundle values) {
-                    SharedPreferences.Editor editor = mPrefs.edit();
-                    editor.putString("access_token", facebook.getAccessToken());
-                    editor.putLong("access_expires", facebook.getAccessExpires());
-                    editor.commit();
-
+                public void onOk(Object data) {
                     getFriends();
-                    doSync();
+                    facebookTransport.sync(null);
+
                 }
 
                 @Override
-                public void onFacebookError(FacebookError error) {
-                    finish();
-                }
-
-                @Override
-                public void onError(DialogError e) {
-                    finish();
-                }
-
-                @Override
-                public void onCancel() {
+                public void onError(Throwable e) {
                     finish();
                 }
             });
         }
         else {
             getFriends();
-            //doSync();
-            facebook.extendAccessTokenIfNeeded(this, null);
+            facebookTransport.sync(null);
+            facebookTransport.getName(null);
+            facebookTransport.extendAccessTokenIfNeeded();
         }
     }
 
@@ -91,45 +68,76 @@ public class FacebookActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        facebook.authorizeCallback(requestCode, resultCode, data);
-    }
-
-    void doSync(){
-        JsonTransport.sync(mPrefs.getString("access_token", null), SyncData.load(this), new JsonResponseHandler(){
-            @Override
-            public void onError(Exception error) {
-                Log.e("Snappers", error.getMessage(), error);
-                play();
-            }
-
-            @Override
-            public void onOk(Object responce) {
-                ((SyncData)responce).save(FacebookActivity.this);
-            }
-        });
+        facebookTransport.getFB().authorizeCallback(requestCode, resultCode, data);
     }
 
     public void getFriends(){
-        JsonTransport.getFriends(mPrefs.getString("access_token", null), new JsonResponseHandler() {
+        facebookTransport.getFriends(new FacebookTransport.ResponseListener() {
             @Override
-            public void onOk(Object responce) {
-                showFriendsList((FacebookFriend[])responce);
+            public void onOk(Object data) {
+                showFriendsList((FacebookFriend[]) data);
             }
 
             @Override
-            public void onError(Exception error) {
-                Log.e("Snappers", error.getMessage(), error);
+            public void onError(Throwable e) {
                 play();
             }
         });
     }
 
-    void showFriendsList(FacebookFriend[] friends){
+    void showFriendsList(final FacebookFriend[] friends) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LayoutInflater inflater = getLayoutInflater();
+                Typeface font = Resources.getFont(FacebookActivity.this);
+                int starWidth = wndWidth * 56 /640;
+                LinearLayout table = (LinearLayout)findViewById(R.id.table);
+                for (int i = 1; i < friends.length; i++) {
+                    FacebookFriend friend = friends[i];
+                    LinearLayout row = (LinearLayout) inflater.inflate(R.layout.partial_friend_row, null);
+                    TextView title = (TextView) row.findViewById(R.id.title);
+                    title.setText(friend.first_name);
+                    title.setTypeface(font);
+                    title.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
+
+                    TextView score = (TextView) row.findViewById(R.id.score);
+                    if (friend.installed)
+                        score.setText(Integer.toString(friend.xp_count));
+                    else
+                        score.setText(R.string.notPlaying);
+                    score.setTypeface(font);
+                    score.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
+
+                    OutlinedTextView button = (OutlinedTextView) row.findViewById(R.id.btn);
+                    button.setText(friend.installed ? R.string.gift : R.string.invite);
+                    button.setTypeface(font);
+
+                    if (friend.installed) {
+                        TextView star = (TextView) row.findViewById(R.id.level);
+                        star.setText(Integer.toString(Settings.getLevel(friend.xp_count)));
+                        star.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
+                        star.setTypeface(font);
+                        star.setVisibility(View.VISIBLE);
+                        ViewGroup.LayoutParams lp = star.getLayoutParams();
+                        lp.height = lp.width = starWidth;
+                    }
+
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    table.addView(row, lp);
+                }
+            }
+        });
 
     }
 
-    void play(){
+    void play() {
         startActivity(new Intent(this, SelectPackActivity.class));
+    }
+
+    public void onBackButtonClick(View v){
+        finish();
     }
 
 

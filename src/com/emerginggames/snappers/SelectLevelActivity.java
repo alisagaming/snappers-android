@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import com.emerginggames.snappers.view.FixedRatioPager;
+import com.emrg.view.FixedRatioPager;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.emerginggames.snappers.data.LevelTable;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.model.Level;
 import com.emerginggames.snappers.model.LevelPack;
-import com.emerginggames.snappers.view.IOnItemSelectedListener;
-import com.emerginggames.snappers.view.ImageView;
-import com.viewpagerindicator.CirclePageIndicator;
+import com.emrg.view.IOnItemSelectedListener;
+import com.emrg.view.ImageView;
 
 /**
  * Created by IntelliJ IDEA.

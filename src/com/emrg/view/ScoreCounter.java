@@ -1,4 +1,4 @@
-package com.emerginggames.snappers.view;
+package com.emrg.view;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -13,7 +13,6 @@ import com.emerginggames.snappers.R;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.Metrics;
 import com.emerginggames.snappers.Settings;
-import com.emerginggames.snappers.gdx.Resources;
 
 /**
  * Created by IntelliJ IDEA.

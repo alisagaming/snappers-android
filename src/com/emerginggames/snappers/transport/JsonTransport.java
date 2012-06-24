@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.emerginggames.snappers.model.FacebookFriend;
-import com.emerginggames.snappers.model.SyncData;
 import com.emerginggames.snappers.utils.WorkerThreads;
 
 import java.util.*;
@@ -20,7 +19,15 @@ public class JsonTransport {
     public static final String SERVER = "https://snappersbackend.emerginggames.com:8080/";
     static final String METHOD_SYNC = "sync";
     static final String METHOD_FRIENDS = "friends";
+    static final String METHOD_INVITE = "invite";
+    static final String METHOD_SHARE = "share";
+    static final String METHOD_GIFT = "gift";
+    static final String METHOD_PROMO = "promo";
+
     static final String KEY_ACCESS_TOKEN = "access_token";
+    static final String KEY_INVITE_TO = "invite_to";
+    static final String KEY_MESSAGE = "message";
+    static final String KEY_CODE = "code";
 
     public static void sync(String token, SyncData data, JsonResponseHandler handler) {
         JSONObject obj = data.toJson();
@@ -41,6 +48,51 @@ public class JsonTransport {
         FriendsRequest request = new FriendsRequest(data, handler);
         WorkerThreads.run(request);
     }
+
+    public static void invite(String token, long user, String message, JsonResponseHandler handler){
+        JSONObject data = new JSONObject();
+        try{
+            data.put(KEY_ACCESS_TOKEN, token);
+            data.put(KEY_INVITE_TO, user);
+            data.put(KEY_MESSAGE, message);
+        }catch (Exception e){ handler.onError(e);}
+
+        OkRequest request = new OkRequest(METHOD_INVITE, "InviteOkMessage", data, handler);
+        WorkerThreads.run(request);
+    }
+
+    public static void share(String token, String message, JsonResponseHandler handler){
+        JSONObject data = new JSONObject();
+        try{
+            data.put(KEY_ACCESS_TOKEN, token);
+            data.put(KEY_MESSAGE, message);
+        }catch (Exception e){ handler.onError(e);}
+
+        OkRequest request = new OkRequest(METHOD_SHARE, "ShareOkMessage", data, handler);
+        WorkerThreads.run(request);
+    }
+
+    public static void gift(String token, long user, JsonResponseHandler handler){
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put(KEY_ACCESS_TOKEN, token);
+        data.put(KEY_INVITE_TO, user);
+
+        OkRequest request = new OkRequest(METHOD_GIFT, "GiftOkMessage", data, handler);
+        WorkerThreads.run(request);
+    }
+
+    public static void promo(String token, String code, JsonResponseHandler handler){
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put(KEY_ACCESS_TOKEN, token);
+        data.put(KEY_CODE, code);
+
+        PromoRequest request = new PromoRequest(data, handler);
+        WorkerThreads.run(request);
+    }
+
+
+
+
 
     static class SyncRequest extends MyJsonRequest {
         SyncRequest(JSONObject params, JsonResponseHandler handler) {
@@ -90,6 +142,58 @@ public class JsonTransport {
             return object.getString("type").equalsIgnoreCase("FriendsOkMessage");
         }
     }
+
+    static class OkRequest extends MyJsonRequest{
+        String okType;
+        OkRequest(String method, String okType, JSONObject data, JsonResponseHandler handler) {
+            super(method, true);
+            this.okType = okType;
+            setParams(data);
+            setHandler(handler);
+        }
+
+        OkRequest(String method, String okType, Map data, JsonResponseHandler handler) {
+            super(method, false);
+            this.okType = okType;
+            setParams(data);
+            setHandler(handler);
+        }
+
+        @Override
+        boolean isResponceOk(JSONObject object) throws JSONException {
+            return object.getString("type").equalsIgnoreCase(okType);
+        }
+
+        @Override
+        void onSuccess(Object object) {
+            handler.onOk(null);
+        }
+    }
+
+    static class PromoRequest extends MyJsonRequest {
+        PromoRequest(Map params, JsonResponseHandler handler) {
+            super(METHOD_PROMO, false);
+            setParams(params);
+            setHandler(handler);
+        }
+
+        @Override
+        void onSuccess(Object object) {
+            try {
+                int hints = ((JSONObject)object).getInt("promo_hints");
+                handler.onOk(hints);
+            } catch (JSONException e) {
+                handler.onError(e);
+            }
+        }
+
+        @Override
+        boolean isResponceOk(JSONObject object) throws JSONException {
+            return object.getString("type").equalsIgnoreCase("PromoOkMessage");
+        }
+    }
+
+
 
 
 }

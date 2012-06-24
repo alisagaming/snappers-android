@@ -1,4 +1,4 @@
-package com.emerginggames.snappers.view;
+package com.emrg.view;
 
 import android.app.Dialog;
 import android.content.Context;

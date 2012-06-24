@@ -2,7 +2,9 @@ package com.emerginggames.snappers;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Build;
+import android.view.View;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.gdx.Resources;
 
@@ -56,7 +58,12 @@ public class Metrics {
     public static int bgSourceHeight;
 
     public static boolean initDone = false;
-    
+
+    public static void setSizeByView(View v, Context context){
+        Rect r = new Rect();
+        v.getWindowVisibleDisplayFrame(r);
+        Metrics.setSize(r.width(), r.height(), context);
+    }
 
     public static void setSize(int width, int height, Context context){
         screenWidth = width;

@@ -10,18 +10,13 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CheckBox;
 
 import android.widget.RelativeLayout;
 import com.emerginggames.snappers.gdx.Resources;
-import com.emerginggames.snappers.view.GameDialog;
-import com.emerginggames.snappers.view.OutlinedTextView;
-import com.facebook.android.AsyncFacebookRunner;
+import com.emrg.view.GameDialog;
+import com.emrg.view.OutlinedTextView;
 import net.hockeyapp.android.CrashManager;
-import com.emerginggames.snappers.gdx.Resources;
-import com.emerginggames.snappers.view.GameDialog;
-import com.emerginggames.snappers.view.OutlinedTextView;
-import com.emerginggames.snappers.view.SettingsDialog;
+import com.emerginggames.snappers.SettingsDialog;
 
 /**
  * Created by IntelliJ IDEA.

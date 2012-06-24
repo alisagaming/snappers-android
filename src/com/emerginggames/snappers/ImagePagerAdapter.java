@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import com.emerginggames.snappers.model.ImageDrawInfo;
 import com.emerginggames.snappers.model.ImagePaginatorParam;
-import com.emerginggames.snappers.view.IOnItemSelectedListener;
-import com.emerginggames.snappers.view.ImageView;
+import com.emrg.view.IOnItemSelectedListener;
+import com.emrg.view.ImageView;
 
 import java.util.List;
 

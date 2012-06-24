@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:and="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
+                and:layout_width="fill_parent" and:layout_height="fill_parent"
+                and:id="@+id/root">
+
+    <com.emrg.view.ImageView and:id="@+id/bgImage"
+                             and:layout_width="fill_parent" and:layout_height="fill_parent"
+                             and:layout_centerInParent="true"
+                             and:src="@drawable/bg1" and:scaleType="matrix"/>
+
+    <com.emrg.view.OutlinedTextView and:id="@+id/hintBtn"
+                                    and:layout_width="wrap_content" and:layout_height="wrap_content"
+                                    and:layout_alignParentTop="true" and:layout_alignParentRight="true"
+                                    and:background="@drawable/button_hint" and:scaleType="fitCenter"
+                                    and:adjustViewBounds="true"
+                                    and:textColor="@android:color/white" and:gravity="center"
+                                    app:strokeColor="#000" app:strokeWidth="1dp" app:setTextSizeToFit="true"/>
+
+    <LinearLayout and:layout_width="fill_parent" and:layout_height="fill_parent" and:orientation="vertical"
+                  and:layout_below="@+id/hintBtn" and:layout_above="@+id/footer"
+                  and:padding="5dp"
+            >
+        <LinearLayout and:layout_width="fill_parent" and:layout_height="50dp"
+                      and:background="@drawable/settings_wnd_top"
+                      and:layout_alignParentTop="true" and:id="@+id/titleCont">
+            <com.emrg.view.OutlinedTextView and:id="@+id/title"
+                                            and:layout_width="fill_parent" and:layout_height="wrap_content"
+                                            and:gravity="center"
+                                            and:textColor="#fff" and:textSize="30dp" app:strokeColor="#000"
+                                            app:strokeWidth="1dp"
+                                            and:text="@string/friends"
+                    />
+        </LinearLayout>
+
+        <ScrollView and:id="@+id/mainCont" and:layout_width="fill_parent" and:layout_height="0px" and:layout_weight="1"
+                    and:background="@drawable/settings_wnd_mid">
+            <LinearLayout and:id="@+id/table" and:layout_width="fill_parent" and:layout_height="wrap_content"
+                          and:orientation="vertical"/>
+
+        </ScrollView>
+
+        <LinearLayout and:id="@+id/footerCont" and:layout_width="fill_parent" and:layout_height="50dp"
+                      and:background="@drawable/settings_wnd_bottom"
+                />
+
+    </LinearLayout>
+
+    <LinearLayout and:id="@+id/footer"
+                  and:layout_width="fill_parent" and:layout_height="wrap_content"
+                  and:orientation="horizontal" and:weightSum="100"
+                  and:layout_alignParentBottom="true"
+            >
+
+        <com.emrg.view.ImageView and:id="@+id/backButton"
+                                 and:layout_width="0dp" and:layout_height="wrap_content"
+                                 and:layout_gravity="bottom"
+                                 and:layout_weight="25"
+                                 and:src="@drawable/arrow_back_btn" and:scaleType="fitCenter"
+                                 and:adjustViewBounds="true"
+                                 and:onClick="onBackButtonClick"
+                />
+
+        <LinearLayout and:layout_height="0px" and:layout_weight="25" and:layout_width="0px"/>
+
+        <com.emrg.view.ImageView and:id="@+id/playButton"
+                                 and:layout_width="0dp" and:layout_height="wrap_content"
+                                 and:layout_gravity="bottom"
+                                 and:layout_weight="50"
+                                 and:src="@drawable/button_play_long" and:scaleType="fitCenter"
+                                 and:adjustViewBounds="true"
+                                 and:onClick="onBackButtonClick"
+                />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

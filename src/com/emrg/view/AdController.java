@@ -1,4 +1,4 @@
-package com.emerginggames.snappers.view;
+package com.emrg.view;
 
 import android.content.Context;
 import android.os.Build;
@@ -10,7 +10,6 @@ import com.emerginggames.snappers.UserPreferences;
 import com.google.ads.*;
 import com.emerginggames.snappers.R;
 import com.emerginggames.snappers.Settings;
-import com.emerginggames.snappers.gdx.Game;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

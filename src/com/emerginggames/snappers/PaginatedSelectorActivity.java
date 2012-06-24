@@ -1,6 +1,5 @@
 package com.emerginggames.snappers;
 
-import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,9 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import com.emerginggames.snappers.gdx.Resources;
-import com.emerginggames.snappers.view.*;
-import com.emerginggames.snappers.R;
-import com.emerginggames.snappers.gdx.Resources;
+import com.emrg.view.*;
 
 /**
  * Created by IntelliJ IDEA.

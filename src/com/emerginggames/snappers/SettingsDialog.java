@@ -1,9 +1,9 @@
-package com.emerginggames.snappers.view;
+package com.emerginggames.snappers;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.util.TypedValue;
@@ -17,7 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.emerginggames.snappers.*;
 import com.emerginggames.snappers.gdx.Resources;
-import com.emerginggames.snappers.gdx.Resources;
+import com.emerginggames.snappers.transport.FacebookTransport;
+import com.emrg.view.OutlinedTextView;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,16 +28,20 @@ import com.emerginggames.snappers.gdx.Resources;
  */
 public class SettingsDialog extends Dialog {
     int width;
+    FacebookTransport facebookTransport;
+    Activity context;
+    UserPreferences prefs;
 
-    public SettingsDialog(Context context, int width) {
+    public SettingsDialog(Activity context, int width) {
         super(context, R.style.GameDialog);
+        this.context = context;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_settings);
         setWidth(width);
         int padding = width / 31;
         int scrWidth = getWindow().getWindowManager().getDefaultDisplay().getWidth();
 
-        UserPreferences prefs = UserPreferences.getInstance(getContext());
+        prefs = UserPreferences.getInstance(getContext());
 
         Typeface font = Resources.getFont(getContext());
 
@@ -94,6 +99,32 @@ public class SettingsDialog extends Dialog {
         }
     }
 
+    void setupLoginRow(){
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (facebookTransport.isLoggedIn()){
+                    String userName = prefs.getFacebookUserName();
+                    if (userName != null)
+                        ((TextView)findViewById(R.id.loginFbText)).setText(context.getString(R.string.loggedToFb, userName));
+                    else
+                        ((TextView)findViewById(R.id.loginFbText)).setText(R.string.loggedToFbNoName);
+                    ((OutlinedTextView)findViewById(R.id.loginFbBtn)).setText(R.string.logout);
+                } else {
+                    ((TextView)findViewById(R.id.loginFbText)).setText(R.string.loginToFb);
+                    ((OutlinedTextView)findViewById(R.id.loginFbBtn)).setText(R.string.login);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        facebookTransport = new FacebookTransport(context);
+        setupLoginRow();
+    }
+
     void scaleItem(int id, float scale){
         LinearLayout.LayoutParams lpl = (LinearLayout.LayoutParams)findViewById(id).getLayoutParams();
         lpl.width = (int)(lpl.width / scale);
@@ -123,6 +154,22 @@ public class SettingsDialog extends Dialog {
     View.OnClickListener loginClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (facebookTransport.isLoggedIn()){
+                facebookTransport.logoff(new FacebookTransport.ResponseListener(){
+                    @Override
+                    public void onOk(Object data) {
+                        setupLoginRow();
+                    }
+                });
+            }
+            else {
+                facebookTransport.login(new FacebookTransport.ResponseListener() {
+                    @Override
+                    public void onOk(Object data) {
+                        setupLoginRow();
+                    }
+                });
+            }
 
         }
     };

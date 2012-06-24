@@ -38,6 +38,9 @@ public class UserPreferences {
     private static final String LAST_RATE_RECOMMENDED = "LAST_RATE_RECOMMENDED";
     private static final String LAST_LIKE_RECOMMENDED = "LAST_LIKE_RECOMMENDED";
     private static final String PROMO_CODE = "PROMO_CODE";
+    private static final String FACEBOOK_NAME = "fbName";
+    private static final String FACEBOOK_EXPIRES = "access_expires";
+    private static final String FACEBOOK_TOKEN = "access_token";
     public static String Key1;
     public static String Key11;
     public static String Key21;
@@ -296,6 +299,38 @@ public class UserPreferences {
         return getString(PROMO_CODE);
     }
 
+    public String getFbToken(){
+        return prefs.getString(FACEBOOK_TOKEN, null);
+    }
+
+    public void setFbToken(String token){
+        prefs.edit().putString("access_token", token).commit();
+    }
+
+    public void setFacebookUserName(String name){
+        prefs.edit().putString(FACEBOOK_NAME, name).commit();
+    }
+
+    public String getFacebookUserName(){
+        return prefs.getString(FACEBOOK_NAME, null);
+    }
+
+    public long getFbExpires(){
+        return prefs.getLong(FACEBOOK_EXPIRES, 0);
+    }
+
+    public void setFbExpires(long expires){
+        prefs.edit().putLong(FACEBOOK_EXPIRES, expires);
+    }
+
+    public void setFb(String token, long expires){
+        prefs.edit().putString(FACEBOOK_TOKEN, token).putLong(FACEBOOK_EXPIRES, expires).commit();
+    }
+
+    public void clearFb(){
+        prefs.edit().remove(FACEBOOK_EXPIRES).remove(FACEBOOK_NAME).remove(FACEBOOK_TOKEN).commit();
+    }
+
 
 
 
@@ -382,7 +417,7 @@ public class UserPreferences {
         editor.commit();
     }
 
-    private String getString(String key){
+    public String getString(String key){
         try {
             return deS(prefs.getString(_S(key), null), key);
         }catch (Exception e){

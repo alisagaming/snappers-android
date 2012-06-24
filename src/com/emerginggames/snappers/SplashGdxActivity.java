@@ -13,26 +13,17 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.emerginggames.snappers.DbSettings;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.gdx.Splash;
 import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.utils.OnlineSettings;
 import com.emerginggames.snappers.utils.WorkerThread;
-import com.emerginggames.snappers.view.ImageView;
-import com.emerginggames.snappers.view.OutlinedTextView;
+import com.emrg.view.ImageView;
+import com.emrg.view.OutlinedTextView;
 import com.tapjoy.TapjoyConnect;
 import com.emerginggames.snappers.data.DbCopyOpenHelper;
 
-import com.emerginggames.snappers.gdx.Resources;
-import com.emerginggames.snappers.gdx.Splash;
-
 import net.hockeyapp.android.UpdateManager;
-import com.emerginggames.snappers.utils.GInAppStore;
-import com.emerginggames.snappers.utils.OnlineSettings;
-import com.emerginggames.snappers.utils.WorkerThread;
-import com.emerginggames.snappers.view.ImageView;
-import com.emerginggames.snappers.view.OutlinedTextView;
 
 /**
  * Created by IntelliJ IDEA.

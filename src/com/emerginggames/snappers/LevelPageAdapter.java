@@ -5,8 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import com.emerginggames.snappers.model.LevelPack;
-import com.emerginggames.snappers.view.IOnItemSelectedListener;
-import com.emerginggames.snappers.view.LevelListFragment;
+import com.emrg.view.IOnItemSelectedListener;
+import com.emrg.view.LevelListFragment;
 
 /**
  * Created by IntelliJ IDEA.

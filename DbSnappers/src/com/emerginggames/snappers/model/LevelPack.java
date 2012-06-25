@@ -8,8 +8,8 @@ import java.io.Serializable;
  * Date: 23.03.12
  * Time: 1:14
  */
-public class LevelPack implements Serializable{
-    public int id;
+public class LevelPack extends DbItem implements Serializable{
+    //public int id;
     public String background;
     public boolean shadows;
     public String title;

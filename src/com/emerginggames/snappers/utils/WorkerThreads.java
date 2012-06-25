@@ -12,68 +12,79 @@ import com.badlogic.gdx.utils.Pool;
  * Time: 13:18
  */
 public class WorkerThreads {
+    private static final int MAX_THREADS = 3;
     private static WorkerThreads instance;
 
-    private Array<Handler> activeHandlers;
-    private Pool<Handler> handlerPool;
+    private Array<HandlerWrapper> activeHandlers;
+    //private Pool<HandlerWrapper> handlerPool;
 
     public WorkerThreads() {
-        activeHandlers = new Array<Handler>();
-        handlerPool = new Pool<Handler>() {
-            @Override
-            protected Handler newObject() {
-                HandlerThread thread = new HandlerThread("");
-                thread.start();
-                return new Handler(thread.getLooper());
-            }
-        };
+        activeHandlers = new Array<HandlerWrapper>(MAX_THREADS);
     }
 
-    static Handler getFreeHandler(){
+    static HandlerWrapper getFreeHandler(){
         if (instance == null)
             instance = new WorkerThreads();
 
-        Handler handler = instance.handlerPool.obtain();
-        instance.activeHandlers.add(handler);
-        return handler;
+        return instance.getHandler();
     }
 
-    static void freeHandler(Handler handler){
-        instance.activeHandlers.removeValue(handler, true);
-        instance.handlerPool.free(handler);
+    HandlerWrapper getHandler(){
+        synchronized (activeHandlers){
+            if (activeHandlers.size < MAX_THREADS){
+                HandlerThread thread = new HandlerThread("");
+                thread.start();
+                HandlerWrapper wrapper =  new HandlerWrapper(new Handler(thread.getLooper()), thread);
+                activeHandlers.add(wrapper);
+                return wrapper;
+            }
+            else {
+                HandlerWrapper cur, min = activeHandlers.get(0);
+                int minQueue = min.queueLength;
+
+                for (int i=1; i< MAX_THREADS; i++){
+                    cur = activeHandlers.get(i);
+                    if (cur.queueLength < minQueue)
+                        min = cur;
+                }
+                return min;
+            }
+        }
+    }
+
+    void killHandler(HandlerWrapper handler){
+        synchronized (activeHandlers){
+            activeHandlers.removeValue(handler, true);
+        }
     }
 
     public static void run (Runnable runnable){
-        /*Handler h = getFreeHandler();
-        ClassToRunInThread cl = new ClassToRunInThread(h, runnable);
-        h.post(cl);*/
-        HandlerThread th = new HandlerThread("web worker thread");
-        th.start();
-        Handler h = new Handler(th.getLooper());
-        ClassToRunInThread cl = new ClassToRunInThread(th, runnable);
-        h.post(cl);
+        getFreeHandler().run(runnable);
     }
 
-    static class ClassToRunInThread implements Runnable{
-        Runnable toRun;
-//        Handler currentHandler;
+    class HandlerWrapper{
+        Handler handler;
         HandlerThread thread;
+        public int queueLength = 0;
 
-/*        ClassToRunInThread(Handler currentHandler, Runnable toRun) {
-            this.currentHandler = currentHandler;
-            this.toRun = toRun;
-        }*/
-
-        ClassToRunInThread(HandlerThread thread, Runnable toRun) {
+        HandlerWrapper(Handler handler, HandlerThread thread) {
+            this.handler = handler;
             this.thread = thread;
-            this.toRun = toRun;
         }
 
-        @Override
-        public void run() {
-            toRun.run();
-            //freeHandler(currentHandler);
-            thread.quit();
+        public void run(final Runnable r){
+            queueLength++;
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    r.run();
+                    queueLength--;
+                    if (queueLength == 0){
+                        killHandler(HandlerWrapper.this);
+                        thread.quit();
+                    }
+                }
+            });
         }
     }
 }

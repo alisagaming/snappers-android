@@ -22,10 +22,12 @@ public class SyncData {
     public int hint_count;
     public int xp_count;
     public int xp_level;
-    public String gifts;
+    //public String gifts;
+    public long[] gifts;
     public int dollars_spent;
     public String promoCode;
     public Map<String, Integer> levelUnlocks;
+
 
     public SyncData() {
     }
@@ -33,9 +35,9 @@ public class SyncData {
     public SyncData(JSONObject data) throws JSONException {
         hint_count = data.optInt("hint_count");
         xp_count = data.optInt("xp_count");
-        gifts = data.optString("gifts");
         dollars_spent = data.optInt("dollars_spent");
         promoCode = data.getString("code");
+        setGifts(data.optString("gifts"));
 
         levelUnlocks = new HashMap<String, Integer>();
         if (!data.isNull("max_unlocked_level_for_pack1"))
@@ -50,6 +52,15 @@ public class SyncData {
             levelUnlocks.put("level-pack-5", data.getInt("max_unlocked_level_for_pack5"));
         if (!data.isNull("max_unlocked_level_for_packP1"))
             levelUnlocks.put("premium-level-pack-1", data.getInt("max_unlocked_level_for_packP1"));
+    }
+
+    void setGifts(String giftsStr){
+        if (giftsStr == null || giftsStr.length() == 0)
+            return;
+        String[] giftsArr = giftsStr.split(",");
+        gifts = new long[giftsArr.length];
+        for(int i=0; i< giftsArr.length; i++)
+            gifts[i] = Long.parseLong(giftsArr[i]);
     }
 
     SyncData(Context context){

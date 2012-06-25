@@ -137,12 +137,12 @@ public class LevelDbLoader {
                 pack.soundtrack = xpp.getAttributeValue(i);
         }
 
-        pack.id = (int) levelPackTable.insert(pack);
+        levelPackTable.insert(pack);
     }
 
     private void parseAndSaveLevel(XmlPullParser xpp, LevelPack pack){
         Level level = new Level();
-        level.packNumber = pack.id;
+        level.packNumber = (int)pack.id;
 
         for (int i=0; i< xpp.getAttributeCount(); i++){
             if (xpp.getAttributeName(i).equalsIgnoreCase("number"))

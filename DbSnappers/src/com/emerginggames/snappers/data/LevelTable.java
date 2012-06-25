@@ -76,7 +76,7 @@ public class LevelTable  extends SQLiteTable<Level>{
         }
     }
     
-    public int countLevels(int packId){
+    public int countLevels(long packId){
         return count(String.format("%s = %d", KEY_LEVEL_PACK_ID, packId));
     }
 

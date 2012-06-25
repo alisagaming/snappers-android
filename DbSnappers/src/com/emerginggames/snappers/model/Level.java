@@ -8,8 +8,8 @@ import java.io.Serializable;
  * Date: 12.03.12
  * Time: 20:06
  */
-public class Level implements Serializable{
-    public int id;
+public class Level extends DbItem implements Serializable{
+    //public int id;
     public int number;
     public int complexity;
     public String zappers;

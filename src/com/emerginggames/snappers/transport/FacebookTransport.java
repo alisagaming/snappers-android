@@ -44,45 +44,53 @@ public class FacebookTransport {
         mAsyncRunner = new AsyncFacebookRunner(facebook);
     }
 
-    public void sync(ResponseListener listener){
+    public void sync(ResponseListener listener) {
         UserPreferences mPrefs = UserPreferences.getInstance(context);
-        JsonTransport.sync(mPrefs.getFbToken(), SyncData.load(context), new FacebookJsonListener(listener){
+        JsonTransport.sync(mPrefs.getFbToken(), SyncData.load(context), new FacebookJsonListener(listener) {
             @Override
             public void onOk(Object responce) {
-                ((SyncData)responce).save(context);
+                ((SyncData) responce).save(context);
                 super.onOk(responce);
             }
         });
     }
 
-    public Facebook getFB(){
+
+    public Facebook getFB() {
         return facebook;
     }
 
-    public void getFriends(ResponseListener listener){
+    public void getFriends(ResponseListener listener) {
         UserPreferences mPrefs = UserPreferences.getInstance(context);
         JsonTransport.getFriends(mPrefs.getFbToken(), new FacebookJsonListener(listener));
     }
 
-    public static void invite(Context context, long user_id, String message, ResponseListener listener){
+    public static void invite(Context context, long user_id, String message, ResponseListener listener) {
         UserPreferences mPrefs = UserPreferences.getInstance(context);
         JsonTransport.invite(mPrefs.getFbToken(), user_id, message, new FacebookJsonListener(listener));
     }
 
     public static class ResponseListener {
-        public void onOk(Object data){}
-        public void onError(Throwable e){}
+        public void onOk(Object data) {
+        }
+
+        public void onError(Throwable e) {
+        }
     }
 
-    public void getName(ResponseListener listener){
+    public interface GiftsReceiver {
+        public void giftsReceived(long[] senders);
+    }
+
+    public void getName(ResponseListener listener) {
         mAsyncRunner.request("me", new NameRequestListener(context, listener));
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return facebook.isSessionValid();
     }
 
-    public void extendAccessTokenIfNeeded(){
+    public void extendAccessTokenIfNeeded() {
         facebook.extendAccessTokenIfNeeded(context, new Facebook.ServiceListener() {
             @Override
             public void onComplete(Bundle values) {
@@ -98,23 +106,27 @@ public class FacebookTransport {
         });
     }
 
-    public void login(final ResponseListener listener1){
+    public void login(final ResponseListener listener1, final boolean deferRequestName) {
         facebook.authorize(context, new Facebook.DialogListener() {
             @Override
             public void onComplete(Bundle values) {
                 prefs.setFb(facebook.getAccessToken(), facebook.getAccessExpires());
-                getName(new ResponseListener(){
-                    @Override
-                    public void onOk(Object data) {
-                        listener1.onOk(null);
-                    }
+                if (deferRequestName) {
+                    listener1.onOk(null);
+                    getName(null);
+                } else
+                    getName(new ResponseListener() {
+                        @Override
+                        public void onOk(Object data) {
+                            listener1.onOk(null);
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        listener1.onOk(null);
-                    }
-                });
-                listener1.onOk(null);
+                        @Override
+                        public void onError(Throwable e) {
+                            listener1.onOk(null);
+                        }
+                    });
+
             }
 
             @Override
@@ -134,7 +146,7 @@ public class FacebookTransport {
         });
     }
 
-    public void logoff(final ResponseListener listener){
+    public void logoff(final ResponseListener listener) {
         mAsyncRunner.logout(context, new AsyncFacebookRunner.RequestListener() {
             @Override
             public void onComplete(String response, Object state) {
@@ -146,14 +158,17 @@ public class FacebookTransport {
             public void onIOException(IOException e, Object state) {
                 listener.onError(e);
             }
+
             @Override
             public void onFileNotFoundException(FileNotFoundException e, Object state) {
                 listener.onError(e);
             }
+
             @Override
             public void onMalformedURLException(MalformedURLException e, Object state) {
                 listener.onError(e);
             }
+
             @Override
             public void onFacebookError(FacebookError e, Object state) {
                 listener.onError(e);
@@ -161,7 +176,7 @@ public class FacebookTransport {
         });
     }
 
-    private static class FacebookJsonListener implements JsonResponseHandler{
+    private static class FacebookJsonListener implements JsonResponseHandler {
         private ResponseListener listener;
 
         private FacebookJsonListener(ResponseListener listener) {
@@ -171,7 +186,7 @@ public class FacebookTransport {
         @Override
         public void onError(Exception error) {
             Log.e("Snappers", error.getMessage(), error);
-            if (listener!= null)
+            if (listener != null)
                 listener.onError(error);
         }
 

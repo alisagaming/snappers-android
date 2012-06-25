@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import com.emerginggames.snappers.model.DbItem;
 
 import java.lang.reflect.Array;
 
@@ -15,7 +16,7 @@ import java.lang.reflect.Array;
  * Date: 23.03.12
  * Time: 1:37
  */
-public abstract class SQLiteTable<T> {
+public abstract class SQLiteTable<T extends DbItem> {
 
     protected static final String KEY_ID = "_id";
 
@@ -64,7 +65,9 @@ public abstract class SQLiteTable<T> {
     }
 
     public long insert(T object){
-        return bindToInsertStatement(object).executeInsert();
+        synchronized (insertStmt){
+            return object.id = bindToInsertStatement(object).executeInsert();
+        }
     }
 
     public T load(int id){
@@ -84,12 +87,12 @@ public abstract class SQLiteTable<T> {
         return result;
     }
 
-    public long save(T object, int id){
-        if (!isExist(id))
+    public long save(T object){
+        if (!isExist(object.id))
             return insert(object);
 
-        update(object, id);
-        return 0;
+        update(object);
+        return object.id;
     }
     
     public int count(String where){
@@ -103,7 +106,7 @@ public abstract class SQLiteTable<T> {
 
     }
 
-    public boolean isExist(int id){
+    public boolean isExist(long id){
         Cursor mCursor = db.query(true, getTableName(), new String[] { KEY_ID}, KEY_ID + "=" + id, null, null, null, null, null);
         if (mCursor == null)
             return false;
@@ -112,9 +115,17 @@ public abstract class SQLiteTable<T> {
         return result;
     }
 
-    public boolean update(T object, int id){
+    public boolean update(T object){
         ContentValues values = createValues(object);
-        return db.update(getTableName(), values, KEY_ID + "=" + id, null) > 0;
+        return db.update(getTableName(), values, KEY_ID + "=" + object.id, null) > 0;
+    }
+
+    public void delete_byID(long id){
+        db.delete(getTableName(), KEY_ID+"="+id, null);
+    }
+
+    public void delete(T object){
+        delete_byID(object.id);
     }
     
     protected T[] getAll(Class<T> clazz, String where){

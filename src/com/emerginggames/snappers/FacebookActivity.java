@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.*;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.emerginggames.snappers.data.FriendTable;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.transport.FacebookTransport;
 import com.emrg.view.OutlinedTextView;
@@ -46,19 +47,16 @@ public class FacebookActivity extends Activity {
                 @Override
                 public void onOk(Object data) {
                     getFriends();
-                    facebookTransport.sync(null);
-
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     finish();
                 }
-            });
+            }, false);
         }
         else {
             getFriends();
-            facebookTransport.sync(null);
             facebookTransport.getName(null);
             facebookTransport.extendAccessTokenIfNeeded();
         }
@@ -75,12 +73,29 @@ public class FacebookActivity extends Activity {
         facebookTransport.getFriends(new FacebookTransport.ResponseListener() {
             @Override
             public void onOk(Object data) {
-                showFriendsList((FacebookFriend[]) data);
+                FacebookFriend[] friends = (FacebookFriend[]) data;
+
+                FriendTable tbl = new FriendTable(FacebookActivity.this, true);
+                tbl.syncWithDb(friends);
+                tbl.close();
+
+                showFriendsList(friends);
+                facebookTransport.sync(null);
             }
 
             @Override
             public void onError(Throwable e) {
-                play();
+                facebookTransport.sync(new FacebookTransport.ResponseListener(){
+                    @Override
+                    public void onOk(Object data) {
+                        play();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        play();
+                    }
+                });
+
             }
         });
     }

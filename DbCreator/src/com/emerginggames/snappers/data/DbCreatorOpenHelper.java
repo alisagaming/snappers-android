@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbCreatorOpenHelper extends SQLiteOpenHelper {
     Context mContext;
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "snappers_data";
     boolean creareDb = false;
 
@@ -22,6 +22,7 @@ public class DbCreatorOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createTableLevels(db);
         createTableLevelPacks(db);
+        createTableFacebookFriends(db);
         creareDb = true;
     }
 
@@ -32,6 +33,7 @@ public class DbCreatorOpenHelper extends SQLiteOpenHelper {
 
         createTableLevels(db);
         createTableLevelPacks(db);
+        createTableFacebookFriends(db);
         creareDb = true;
     }
 
@@ -69,6 +71,17 @@ public class DbCreatorOpenHelper extends SQLiteOpenHelper {
                 LevelPackTable.KEY_IS_PREMIUM + " INTEGER, " +
                 LevelPackTable.KEY_LEVEL_ICON + " TEXT, " +
                 LevelPackTable.KEY_SOUNDTRACK + " TEXT " +
+                " );";
+
+        db.execSQL(TABLE_CREATE);
+    }
+
+    private void createTableFacebookFriends(SQLiteDatabase db){
+        String TABLE_CREATE = "CREATE TABLE " + FriendTable.TABLE_NAME + " (" +
+                FriendTable.KEY_ID + " INTEGER PRIMARY KEY, " +
+                FriendTable.KEY_NAME + " TEXT, " +
+                FriendTable.KEY_FB_ID + " INTEGER, " +
+                FriendTable.KEY_LAST_GIFT_SENT + " INTEGER " +
                 " );";
 
         db.execSQL(TABLE_CREATE);

@@ -19,7 +19,6 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     public static final String MAIL = "vitaliy.suprun@gmail.com";
     protected static final String TABLE_NAME = "level_pack";
 
-    protected static final String KEY_ID = "_id";
     protected static final String KEY_NAME = "name";
     protected static final String KEY_BACKGROUND = "background";
     protected static final String KEY_SHADOWS = "shadows";
@@ -99,13 +98,6 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     public void countLevels(LevelPack pack){
         LevelTable levelTable = new LevelTable(db);
         pack.levelCount = levelTable.countLevels(pack.id);
-    }
-
-    @Override
-    public long insert(LevelPack object) {
-        if (insertStmt == null)
-            insertStmt = prepareInsertStatement();
-        return super.insert(object);
     }
 
     @Override

@@ -72,7 +72,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         for (int i=0; i< levelPacks.length; i++){
             LevelPack pack = levelPacks[i];
             if (settings.isPackUnlocked(pack)){
-                params.add(new ImagePaginatorParam(pack.id, i));
+                params.add(new ImagePaginatorParam((int)pack.id, i));
                 levelPackStatus[i] = true;
             } else if (!pack.isPremium)
                 params.add(new ImagePaginatorParam(ImagePaginatorParam.LOCKED, i));
@@ -107,13 +107,13 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
         if (checkResult == VISIBLE_PACK_UNLOCKED){
             UserPreferences settings = UserPreferences.getInstance(this);
             for (int i=0; i<levelPacks.length; i++)
-                if (!levelPackStatus[i] && settings.isPackUnlocked(levelPacks[i].id))
+                if (!levelPackStatus[i] && settings.isPackUnlocked((int)levelPacks[i].id))
                     updatePackCover(i);
         }
     }
 
     void updatePackCover(int i){
-        int id = levelPacks[i].id;
+        int id = (int)levelPacks[i].id;
         adapter.changeImages(i, ImagePaginatorParam.getLevelImageIds(id));
         levelPackStatus[i] = true;
     }
@@ -137,7 +137,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
     }
 
     protected void showPackLockedMessage(final LevelPack pack){
-        LevelPack prevPack = LevelPackTable.get(pack.id-1, this);
+        LevelPack prevPack = LevelPackTable.get((int)pack.id-1, this);
         String message = getString(R.string.level_locked, prevPack.title);
         showMessageDialog(message, new int[]{18, 38});
     }
@@ -145,7 +145,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
     void buyLevelPack(LevelPack pack){
         if (Settings.DEBUG){
             UserPreferences.getInstance(this).unlockLevelPack(pack);
-            updatePackCoverById(pack.id);
+            updatePackCoverById((int)pack.id);
         }
     }
 }

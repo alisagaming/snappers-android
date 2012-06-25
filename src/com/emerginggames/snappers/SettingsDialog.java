@@ -168,7 +168,7 @@ public class SettingsDialog extends Dialog {
                     public void onOk(Object data) {
                         setupLoginRow();
                     }
-                });
+                }, true);
             }
 
         }

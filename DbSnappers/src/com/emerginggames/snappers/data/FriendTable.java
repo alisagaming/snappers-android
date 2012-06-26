@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import com.emerginggames.snappers.model.FacebookFriend;
 
+import java.util.Arrays;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay
@@ -137,6 +139,18 @@ public class FriendTable extends SQLiteTable<FacebookFriend>{
         FriendTable tbl = new FriendTable(context, false);
         try{
             return tbl.update(friend);
+        }
+        finally {
+            tbl.close();
+        }
+    }
+
+    public static FacebookFriend[] getFriends(Context context, long[] facebookIds){
+        FriendTable tbl = new FriendTable(context, false);
+        String temp = Arrays.toString(facebookIds);
+        String ids = temp.substring(1, temp.length()-1);
+        try{
+            return tbl.getAll(FacebookFriend.class, String.format("%s in (%s)", KEY_FB_ID, ids));
         }
         finally {
             tbl.close();

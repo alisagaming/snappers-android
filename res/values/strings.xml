@@ -69,5 +69,10 @@
     <string name="invited">Invited</string>
 
     <string name="inviteMessage" formatted="false">Hi %s! Download the free game Snappers 2 for Android of iPhone. Enter my code %s and get a bonus!</string>
+    <string name="receivedGift" formatted="false">You\'ve received 1 hint from %s.</string>
+    <string name="receivedGifts" formatted="false">You\'ve received %d hints from %s.</string>
+    <string name="receivedGiftsMore" formatted="false">You\'ve received %d hints from %s and others.</string>
+    <string name="someone">someone</string>
+    <string name="twoFriends" formatted="false">%s and %s</string>
 
 </resources>

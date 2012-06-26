@@ -54,49 +54,52 @@ public class SyncData {
             levelUnlocks.put("premium-level-pack-1", data.getInt("max_unlocked_level_for_packP1"));
     }
 
-    void setGifts(String giftsStr){
+    void setGifts(String giftsStr) {
         if (giftsStr == null || giftsStr.length() == 0)
             return;
         String[] giftsArr = giftsStr.split(",");
         gifts = new long[giftsArr.length];
-        for(int i=0; i< giftsArr.length; i++)
+        for (int i = 0; i < giftsArr.length; i++)
             gifts[i] = Long.parseLong(giftsArr[i]);
     }
 
-    SyncData(Context context){
+    SyncData(Context context) {
         UserPreferences prefs = UserPreferences.getInstance(context);
         hint_count = prefs.getHintsRemaining();
         xp_count = prefs.getScore();
         xp_level = Settings.getLevel(xp_count);
         promoCode = prefs.getPromoCode();
 
-        for (LevelPack pack: LevelPackTable.getAll(context)){
+        for (LevelPack pack : LevelPackTable.getAll(context)) {
             int n = prefs.getLevelUnlocked(pack);
             if (n > 0)
                 addLevelUnlock(pack, n);
         }
     }
 
-    public static SyncData load(Context context){
+    public static SyncData load(Context context) {
         return new SyncData(context);
     }
 
-    public void save(Context context){
+    public void save(Context context) {
         UserPreferences prefs = UserPreferences.getInstance(context);
         int currentScore = prefs.getScore();
-        if (currentScore >= xp_count)
-            return;
+        if (currentScore < xp_count) {
+            prefs.setHints(hint_count);
+            prefs.setScore(xp_count);
+            if (!promoCode.equals(prefs.getPromoCode()))
+                prefs.setPromoCode(promoCode);
 
-        prefs.setHints(hint_count);
-        prefs.setScore(xp_count);
-        if(!promoCode.equals(prefs.getPromoCode()))
-            prefs.setPromoCode(promoCode);
+            for (Map.Entry<String, Integer> pairs : levelUnlocks.entrySet()) {
+                String key = pairs.getKey();
+                Integer value = pairs.getValue();
 
-        for (Map.Entry<String, Integer> pairs : levelUnlocks.entrySet()) {
-            String key = pairs.getKey();
-            Integer value = pairs.getValue();
+                prefs.unlockLevel(key, value);
+            }
+        }
 
-            prefs.unlockLevel(key, value);
+        if (gifts != null && gifts.length != 0){
+            prefs.addHints(gifts.length);
         }
     }
 

@@ -15,9 +15,12 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.emerginggames.snappers.gdx.Game;
 import com.emerginggames.snappers.gdx.IAppGameListener;
 import com.emerginggames.snappers.gdx.Resources;
+import com.emerginggames.snappers.model.SyncData;
+import com.emerginggames.snappers.transport.FacebookTransport;
 import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.utils.Store;
 import com.emerginggames.snappers.utils.TapjoyPointsListener;
+import com.emerginggames.snappers.utils.Utils;
 import com.emrg.view.*;
 import com.tapjoy.TapjoyConnect;
 import com.emerginggames.snappers.data.LevelTable;
@@ -49,6 +52,7 @@ public class GameActivity extends AndroidApplication {
     GameDialogsController gameDialogsController;
     View helpView;
     Level startLevel;
+    FacebookTransport facebookTransport;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -109,6 +113,10 @@ public class GameActivity extends AndroidApplication {
 
         if (TapjoyConnect.getTapjoyConnectInstance() == null)
             TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
+
+        facebookTransport = new FacebookTransport(this);
+        if (!facebookTransport.isLoggedIn())
+            facebookTransport = null;
     }
 
     public void initViews(){
@@ -249,6 +257,22 @@ public class GameActivity extends AndroidApplication {
         levelInfo.hide();
     }
 
+    void syncFacebook(){
+        facebookTransport.sync(new FacebookTransport.ResponseListener(){
+            @Override
+            public void onOk(Object data) {
+                SyncData sync = (SyncData) data;
+                if (data == null || sync.gifts == null || sync.gifts.length == 0)
+                    return;
+
+                GameDialog dialog = new GameDialog(GameActivity.this, Metrics.screenWidth * 95 / 100);
+                dialog.setMessage(Utils.getGiftsMessage(GameActivity.this, sync), Metrics.fontSize);
+                dialog.addOkButton();
+                dialog.show();
+            }
+        });
+    }
+
 
 
     class GameListener implements IAppGameListener {
@@ -293,6 +317,9 @@ public class GameActivity extends AndroidApplication {
                     rootLayout.removeView(helpView);
                     helpView = null;
             }
+
+            if (facebookTransport != null)
+                syncFacebook();
         }
 
         @Override

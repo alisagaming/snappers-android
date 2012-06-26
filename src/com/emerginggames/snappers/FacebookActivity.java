@@ -2,20 +2,19 @@ package com.emerginggames.snappers;
 
 import android.content.Intent;
 import android.graphics.*;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.emerginggames.snappers.data.FriendTable;
 import com.emerginggames.snappers.gdx.Resources;
+import com.emerginggames.snappers.model.SyncData;
 import com.emerginggames.snappers.transport.FacebookTransport;
+import com.emerginggames.snappers.utils.Utils;
 import com.emerginggames.snappers.utils.WorkerThreads;
 import com.emrg.view.ImageView;
 import com.emrg.view.OutlinedTextView;
@@ -41,6 +40,8 @@ public class FacebookActivity extends BaseActivity {
         setupElements();
 
         wndWidth = Metrics.screenWidth;
+
+        showGifts(null);
 
         facebookTransport = new FacebookTransport(this);
         if (!facebookTransport.isLoggedIn()) {
@@ -85,7 +86,12 @@ public class FacebookActivity extends BaseActivity {
                 tbl.close();
                 hideProgressDialog();
                 showFriendsList(friends);
-                facebookTransport.sync(null);
+                facebookTransport.sync(new FacebookTransport.ResponseListener() {
+                    @Override
+                    public void onOk(Object data) {
+                        showGifts((SyncData) data);
+                    }
+                });
             }
 
             @Override
@@ -94,6 +100,7 @@ public class FacebookActivity extends BaseActivity {
                     @Override
                     public void onOk(Object data) {
                         play();
+                        showGifts((SyncData) data);
                         hideProgressDialog();
                     }
 
@@ -106,6 +113,13 @@ public class FacebookActivity extends BaseActivity {
 
             }
         });
+    }
+
+    void showGifts(SyncData data){
+        if (data == null || data.gifts == null || data.gifts.length == 0)
+        return;
+
+        showMessageDialog(Utils.getGiftsMessage(this, data), null);
     }
 
     void showFriendsList(final FacebookFriend[] friends) {
@@ -168,8 +182,6 @@ public class FacebookActivity extends BaseActivity {
             table.addView(row, lp);
             WorkerThreads.run(new LoadIconForView(friend.facebook_id, (ImageView)row.findViewById(R.id.iconUser)));
         }
-
-
     }
 
     void play() {

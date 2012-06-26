@@ -13,10 +13,10 @@ import android.view.WindowManager;
 
 import android.widget.RelativeLayout;
 import com.emerginggames.snappers.gdx.Resources;
+import com.emerginggames.snappers.transport.FacebookTransport;
 import com.emrg.view.GameDialog;
 import com.emrg.view.OutlinedTextView;
 import net.hockeyapp.android.CrashManager;
-import com.emerginggames.snappers.SettingsDialog;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,79 +42,85 @@ public class MainScreenActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_main);
 
+        FacebookTransport facebookTransport = new FacebookTransport(this);
+
         scrWidth = getWindowManager().getDefaultDisplay().getWidth();
         scrHeight = getWindowManager().getDefaultDisplay().getHeight();
         prefs = UserPreferences.getInstance(this);
 
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)findViewById(R.id.logo).getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) findViewById(R.id.logo).getLayoutParams();
         lp.width = Math.round(scrWidth * 0.8f);
-        lp.topMargin = scrWidth /20;
+        lp.topMargin = scrWidth / 20;
 
-        lp = (RelativeLayout.LayoutParams)findViewById(R.id.playButtonOnline).getLayoutParams();
+        lp = (RelativeLayout.LayoutParams) findViewById(R.id.playButtonOnline).getLayoutParams();
         lp.width = Math.round(scrWidth * 0.45f);
-        lp.rightMargin = scrWidth /20;
+        lp.rightMargin = scrWidth / 20;
 
-        lp = (RelativeLayout.LayoutParams)findViewById(R.id.playButtonOffline).getLayoutParams();
-        lp.width = (int)(scrWidth * 0.35f);
-        lp.rightMargin = scrWidth /20;
-        lp.topMargin = lp.bottomMargin = scrHeight /20;
+        if (facebookTransport.isLoggedIn())
+            findViewById(R.id.playButtonOffline).setVisibility(View.INVISIBLE);
+        else {
+            lp = (RelativeLayout.LayoutParams) findViewById(R.id.playButtonOffline).getLayoutParams();
+            lp.width = (int) (scrWidth * 0.35f);
+            lp.rightMargin = scrWidth / 20;
+            lp.topMargin = lp.bottomMargin = scrHeight / 20;
+        }
 
-        lp = (RelativeLayout.LayoutParams)findViewById(R.id.settingsBtn).getLayoutParams();
+        lp = (RelativeLayout.LayoutParams) findViewById(R.id.settingsBtn).getLayoutParams();
         lp.width = lp.height = scrWidth / 5;
 
         setupDailyBonusCounter();
         SoundManager.getInstance(this).setUp();
     }
 
-    void setupDailyBonusCounter(){
-        OutlinedTextView dailyBonus = (OutlinedTextView)findViewById(R.id.dailyBonus);
+    void setupDailyBonusCounter() {
+        OutlinedTextView dailyBonus = (OutlinedTextView) findViewById(R.id.dailyBonus);
         dailyBonus.setMaxLines2(1);
         dailyBonus.setBackgroundPaddings(DAILY_BONUS_PADDINGS);
-        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams)dailyBonus.getLayoutParams();
+        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) dailyBonus.getLayoutParams();
         mlp.width = Math.round(scrWidth * 0.45f);
         mlp.height = LayoutParams.WRAP_CONTENT;
-        mlp.rightMargin = scrWidth /20;
+        mlp.rightMargin = scrWidth / 20;
         dailyBonus.setLayoutParams(mlp);
-        float scale = (float)mlp.width / dailyBonus.getBackground().getIntrinsicWidth();
-        mlp.height = (int)(dailyBonus.getBackground().getIntrinsicHeight() * scale);
+        float scale = (float) mlp.width / dailyBonus.getBackground().getIntrinsicWidth();
+        mlp.height = (int) (dailyBonus.getBackground().getIntrinsicHeight() * scale);
         dailyBonus.setTypeface(Resources.getFont(this));
         dailyBonus.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
     }
 
-    public void settingsButtonClick(View v){
-        if (settingsDialog == null){
-            settingsDialog = new SettingsDialog(this, getWindow().getDecorView().getWidth() * 95/ 100);
+    public void settingsButtonClick(View v) {
+        if (settingsDialog == null) {
+            settingsDialog = new SettingsDialog(this, getWindow().getDecorView().getWidth() * 95 / 100);
             settingsDialog.setOwnerActivity(this);
         }
         settingsDialog.show();
         findViewById(R.id.settingsBtn).setVisibility(View.INVISIBLE);
     }
 
-    public void onPlayButtonClick(View v){
+    public void onPlayButtonClick(View v) {
         startActivity(new Intent(this, FacebookActivity.class));
     }
 
-    public void onDailyBonus(View v){
+    public void onDailyBonus(View v) {
         long lastUsed = prefs.getLastUsedDailyBonus();
         long now = System.currentTimeMillis();
         long diff = now - lastUsed;
-        if (diff > DAY_MS){
-            int ch = (int)(Math.random() * 100);
-            int sum=0;
-            for (int i=0; i<BONUS_CHANCES.length; i++ ){
+        if (diff > DAY_MS) {
+            int ch = (int) (Math.random() * 100);
+            int sum = 0;
+            for (int i = 0; i < BONUS_CHANCES.length; i++) {
                 sum += BONUS_CHANCES[i];
-                if (ch < sum){
-                    if (messageDialog == null){
-                        messageDialog = new GameDialog(this, getWindow().getDecorView().getWidth() * 95/ 100);
+                if (ch < sum) {
+                    if (messageDialog == null) {
+                        messageDialog = new GameDialog(this, getWindow().getDecorView().getWidth() * 95 / 100);
                         messageDialog.addOkButton();
                         messageDialog.setTypeface(Resources.getFont(this));
                     }
 
-                    prefs.addHints(i+1);
+                    prefs.addHints(i + 1);
                     if (i == 0)
                         messageDialog.setMessage(R.string.received_bonus_hint, Metrics.fontSize);
                     else
-                        messageDialog.setMessage(getString(R.string.received_bonus_hints, i+1), Metrics.fontSize);
+                        messageDialog.setMessage(getString(R.string.received_bonus_hints, i + 1), Metrics.fontSize);
 
                     messageDialog.show();
                     break;
@@ -126,13 +132,13 @@ public class MainScreenActivity extends Activity {
         }
     }
 
-    public void onSettingsDialogClosed(){
+    public void onSettingsDialogClosed() {
         findViewById(R.id.settingsBtn).setVisibility(View.VISIBLE);
     }
 
-    public void onPlayButtonOfflineClick(View v){
+    public void onPlayButtonOfflineClick(View v) {
         SoundManager.getInstance(this).playButtonSound();
-        ((SnappersApplication)getApplication()).setSwitchingActivities();
+        ((SnappersApplication) getApplication()).setSwitchingActivities();
         startActivity(new Intent(this, SelectPackActivity.class));
     }
 
@@ -141,7 +147,7 @@ public class MainScreenActivity extends Activity {
         super.onResume();
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
             checkForCrashes();
-        ((SnappersApplication)getApplication()).activityResumed(this);
+        ((SnappersApplication) getApplication()).activityResumed(this);
         isActive = true;
         if (Settings.IS_PREMIUM)
             handler.post(updateDailyBonusCounter);
@@ -152,7 +158,7 @@ public class MainScreenActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        ((SnappersApplication)getApplication()).activityPaused();
+        ((SnappersApplication) getApplication()).activityPaused();
         isActive = false;
     }
 
@@ -168,18 +174,18 @@ public class MainScreenActivity extends Activity {
 
             long lastUsed = prefs.getLastUsedDailyBonus();
             long now = System.currentTimeMillis();
-            OutlinedTextView bonusBtn = (OutlinedTextView)findViewById(R.id.dailyBonus);
+            OutlinedTextView bonusBtn = (OutlinedTextView) findViewById(R.id.dailyBonus);
             long diff = now - lastUsed;
             if (diff > DAY_MS)
                 bonusBtn.setText2(R.string.collect_now);
             else {
                 int s, m, h, dt;
-                dt = (int)((DAY_MS - diff) / 1000);
-                s = dt%60;
-                dt = dt/60;
-                m = dt%60;
-                dt = dt/60;
-                h = dt%24;
+                dt = (int) ((DAY_MS - diff) / 1000);
+                s = dt % 60;
+                dt = dt / 60;
+                m = dt % 60;
+                dt = dt / 60;
+                h = dt % 24;
                 bonusBtn.setText2(String.format("%d:%02d:%02d", h, m, s));
                 handler.postDelayed(updateDailyBonusCounter, 1000);
             }

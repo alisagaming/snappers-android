@@ -38,6 +38,8 @@ public class MainStage extends MyStage {
     protected static final float BANG_FRAME_DURATION = 0.12f;
     protected static final int WAIT_FOR_TUTORIAL = 5000;
     private static final float SNAPPER_WARM_TIME = 0.6f;
+    private static final float TIME_TO_WAIT_FOR_WON = 1;
+
     private final GameLogic logic;
 
     IGameEventListener mGame;
@@ -55,6 +57,7 @@ public class MainStage extends MyStage {
     private Sounds sounds;
     public int marginBottom;
     public int maxMarginBottom;
+    float timeToFireWon = TIME_TO_WAIT_FOR_WON;
 
     public MainStage(int width, int height, IGameEventListener listener) {
         super(width, height, true);
@@ -72,6 +75,7 @@ public class MainStage extends MyStage {
 
     public void setLevel(Level level){
         gameOverFired = false;
+        timeToFireWon = TIME_TO_WAIT_FOR_WON;
         logic.startLevel(level);
 
         if (width != 0)
@@ -120,13 +124,22 @@ public class MainStage extends MyStage {
 
         boolean isGameOver = logic.isGameOver();
         if (isGameOver && !gameOverFired){
-            gameOverFired = true;
-            if (logic.isGameLost())
+            if (logic.isGameLost()){
+                gameOverFired = true;
                 mGame.gameLost();
-            else
-                mGame.gameWon();
+            }
+            else{
+                if (timeToFireWon > 0)
+                    timeToFireWon -= delta;
+                else
+                    {
+                        gameOverFired = true;
+                        mGame.gameWon();
+                    }
+            }
         } else if (!isGameOver && gameOverFired){
             gameOverFired = false;
+            timeToFireWon = TIME_TO_WAIT_FOR_WON;
         }
 
         sounds.act(delta, acts);

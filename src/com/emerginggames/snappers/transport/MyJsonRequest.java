@@ -1,5 +1,6 @@
 package com.emerginggames.snappers.transport;
 
+import android.util.Log;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -23,12 +24,15 @@ import java.security.cert.CertificateException;
 import java.util.Map;
 
 public abstract class MyJsonRequest implements Runnable {
+    private static final String TAG = "Snappers/MyJsonRequest";
     boolean isPost;
+    boolean debug;
     JSONObject jsonParam;
     Map params;
     protected JsonResponseHandler handler;
     String methodName;
     private static final int SOCKET_TIMEOUT = 15000;
+
 
     protected MyJsonRequest(String methodName, boolean post) {
         this.methodName = methodName;
@@ -78,10 +82,16 @@ public abstract class MyJsonRequest implements Runnable {
         HttpGet httpGet = new HttpGet(path + mapToString(params));
         HttpClient client = getClient(httpGet.getParams());
 
+        if (debug)
+            Log.d(TAG, String.format("Get request: %s", path + mapToString(params)));
+
+
         httpGet.setHeader("Accept", "application/json");
 
         ResponseHandler responseHandler = new BasicResponseHandler();
         String responce = (String) client.execute(httpGet, responseHandler);
+        if (debug)
+            Log.d(TAG, String.format("Get responce: %s\n%s", path, responce));
         return new JSONObject(responce);
     }
 
@@ -103,6 +113,9 @@ public abstract class MyJsonRequest implements Runnable {
             jsonParam = mapToJson(params);
         if (jsonParam != null)
             post.setEntity(new StringEntity(jsonParam.toString()));
+        if (debug && jsonParam != null)
+            Log.d(TAG, String.format("Post request: %s\n%s", path, jsonParam.toString()));
+
 
         HttpClient client = getClient(post.getParams());
 
@@ -111,6 +124,9 @@ public abstract class MyJsonRequest implements Runnable {
 
         ResponseHandler responseHandler = new BasicResponseHandler();
         String responce = (String) client.execute(post, responseHandler);
+        if (debug)
+            Log.d(TAG, String.format("Post responce: %s\n%s", path, responce));
+
         return new JSONObject(responce);
     }
 
@@ -157,5 +173,9 @@ public abstract class MyJsonRequest implements Runnable {
             builder.append("&");
         }
         return builder.toString();
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 }

@@ -66,7 +66,7 @@ public abstract class SQLiteTable<T extends DbItem> {
 
     public long insert(T object){
         synchronized (insertStmt){
-            return object.id = bindToInsertStatement(object).executeInsert();
+            return object.id = (int)bindToInsertStatement(object).executeInsert();
         }
     }
 
@@ -106,7 +106,7 @@ public abstract class SQLiteTable<T extends DbItem> {
 
     }
 
-    public boolean isExist(long id){
+    public boolean isExist(int id){
         Cursor mCursor = db.query(true, getTableName(), new String[] { KEY_ID}, KEY_ID + "=" + id, null, null, null, null, null);
         if (mCursor == null)
             return false;
@@ -120,7 +120,7 @@ public abstract class SQLiteTable<T extends DbItem> {
         return db.update(getTableName(), values, KEY_ID + "=" + object.id, null) > 0;
     }
 
-    public void delete_byID(long id){
+    public void delete_byID(int id){
         db.delete(getTableName(), KEY_ID+"="+id, null);
     }
 

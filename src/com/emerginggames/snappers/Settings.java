@@ -16,16 +16,21 @@ import java.io.IOException;
 public class Settings {
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
     public static final String FONT = "Berlin Sans FB.ttf";
+
     public static final int BONUS_FOR_RATE = 1;
     public static final int BONUS_FOR_LIKE = 1;
     public static final int LEVEL_TO_RECOMMEND = 10;
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
+
     public static boolean DEBUG = true;
     public static final boolean DEBUG_BUY = true & DEBUG;
     public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
     public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
     public static boolean GoogleInAppEnabled = true;
+
+    public static final long GIFT_INTERVAL = 1;//24*60*60*1000;//1 day
+
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
     public static final String BUGSENSE_API_KEY = "8a555912";
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;

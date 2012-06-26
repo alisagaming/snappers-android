@@ -1,4 +1,5 @@
 <resources>
     <item type="id" name="adCont" />
     <item type="id" name="image" />
+    <item type="id" name="progress" />
 </resources>

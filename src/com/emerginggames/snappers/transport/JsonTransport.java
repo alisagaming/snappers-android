@@ -1,5 +1,6 @@
 package com.emerginggames.snappers.transport;
 
+import com.emerginggames.snappers.Settings;
 import com.emerginggames.snappers.model.SyncData;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +27,7 @@ public class JsonTransport {
 
     static final String KEY_ACCESS_TOKEN = "access_token";
     static final String KEY_INVITE_TO = "invite_to";
+    static final String KEY_GIFT_TO = "gift_to";
     static final String KEY_MESSAGE = "message";
     static final String KEY_CODE = "code";
 
@@ -38,6 +40,7 @@ public class JsonTransport {
         }
 
         SyncRequest syncRequest = new SyncRequest(obj, handler);
+        syncRequest.setDebug(Settings.DEBUG);
         WorkerThreads.run(syncRequest);
     }
 
@@ -46,6 +49,7 @@ public class JsonTransport {
         data.put(KEY_ACCESS_TOKEN, token);
 
         FriendsRequest request = new FriendsRequest(data, handler);
+        request.setDebug(Settings.DEBUG);
         WorkerThreads.run(request);
     }
 
@@ -58,6 +62,7 @@ public class JsonTransport {
         }catch (Exception e){ handler.onError(e);}
 
         OkRequest request = new OkRequest(METHOD_INVITE, "InviteOkMessage", data, handler);
+        request.setDebug(Settings.DEBUG);
         WorkerThreads.run(request);
     }
 
@@ -69,15 +74,17 @@ public class JsonTransport {
         }catch (Exception e){ handler.onError(e);}
 
         OkRequest request = new OkRequest(METHOD_SHARE, "ShareOkMessage", data, handler);
+        request.setDebug(Settings.DEBUG);
         WorkerThreads.run(request);
     }
 
     public static void gift(String token, long user, JsonResponseHandler handler){
         Map<String, Object> data = new HashMap<String, Object>();
         data.put(KEY_ACCESS_TOKEN, token);
-        data.put(KEY_INVITE_TO, user);
+        data.put(KEY_GIFT_TO, user);
 
         OkRequest request = new OkRequest(METHOD_GIFT, "GiftOkMessage", data, handler);
+        request.setDebug(Settings.DEBUG);
         WorkerThreads.run(request);
     }
 
@@ -87,6 +94,7 @@ public class JsonTransport {
         data.put(KEY_CODE, code);
 
         PromoRequest request = new PromoRequest(data, handler);
+        request.setDebug(Settings.DEBUG);
         WorkerThreads.run(request);
     }
 

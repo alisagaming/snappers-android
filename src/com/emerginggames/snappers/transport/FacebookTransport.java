@@ -1,11 +1,14 @@
 package com.emerginggames.snappers.transport;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import com.emerginggames.snappers.UserPreferences;
+import com.emerginggames.snappers.data.FriendTable;
+import com.emerginggames.snappers.model.FacebookFriend;
 import com.emerginggames.snappers.model.SyncData;
 import com.facebook.android.*;
 import org.json.JSONException;
@@ -22,7 +25,8 @@ import java.net.MalformedURLException;
  * Time: 18:20
  */
 public class FacebookTransport {
-    private static final String APP_ID = "256726611099954";
+    //private static final String APP_ID = "256726611099954";//that was my
+    private static final String APP_ID = "342228659169507"; //that's from iphone app
     Facebook facebook;
     Activity context;
     private AsyncFacebookRunner mAsyncRunner;
@@ -65,9 +69,21 @@ public class FacebookTransport {
         JsonTransport.getFriends(mPrefs.getFbToken(), new FacebookJsonListener(listener));
     }
 
-    public static void invite(Context context, long user_id, String message, ResponseListener listener) {
+    public void invite(long user_id, String message, ResponseListener listener) {
         UserPreferences mPrefs = UserPreferences.getInstance(context);
         JsonTransport.invite(mPrefs.getFbToken(), user_id, message, new FacebookJsonListener(listener));
+    }
+
+    public void gift(final FacebookFriend friend, ResponseListener listener) {
+        UserPreferences mPrefs = UserPreferences.getInstance(context);
+        JsonTransport.gift(mPrefs.getFbToken(), friend.facebook_id, new FacebookJsonListener(listener) {
+            @Override
+            public void onOk(Object responce) {
+                friend.lastSendGift = System.currentTimeMillis();
+                FriendTable.update(context, friend);
+                super.onOk(responce);
+            }
+        });
     }
 
     public static class ResponseListener {
@@ -176,7 +192,7 @@ public class FacebookTransport {
         });
     }
 
-    private static class FacebookJsonListener implements JsonResponseHandler {
+    private class FacebookJsonListener implements JsonResponseHandler {
         private ResponseListener listener;
 
         private FacebookJsonListener(ResponseListener listener) {
@@ -184,16 +200,27 @@ public class FacebookTransport {
         }
 
         @Override
-        public void onError(Exception error) {
+        public void onError(final Exception error) {
             Log.e("Snappers", error.getMessage(), error);
+
             if (listener != null)
-                listener.onError(error);
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onError(error);
+                    }
+                });
         }
 
         @Override
-        public void onOk(Object responce) {
+        public void onOk(final Object responce) {
             if (listener != null)
-                listener.onOk(responce);
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onOk(responce);
+                    }
+                });
         }
     }
 

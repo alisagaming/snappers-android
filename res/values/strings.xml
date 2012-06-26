@@ -65,5 +65,9 @@
     <string name="invite">Invite</string>
     <string name="gift">Gift</string>
     <string name="notPlaying">not playing</string>
+    <string name="sent">Sent</string>
+    <string name="invited">Invited</string>
+
+    <string name="inviteMessage" formatted="false">Hi %s! Download the free game Snappers 2 for Android of iPhone. Enter my code %s and get a bonus!</string>
 
 </resources>

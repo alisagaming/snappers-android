@@ -5,7 +5,7 @@
               xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
               and:orientation="horizontal" and:background="@color/row_dark"
               and:paddingLeft="3dp" and:paddingRight="3dp" and:paddingTop="2dp" and:paddingBottom="2dp"
-              and:weightSum="100"
+              and:weightSum="100" and:baselineAligned="false"
         >
     <RelativeLayout and:layout_width="0px" and:layout_height="fill_parent" and:layout_weight="23">
         <com.emrg.view.ImageView and:id="@+id/iconUser"
@@ -15,9 +15,8 @@
         <TextView and:id="@+id/level" and:layout_width="wrap_content" and:layout_height="wrap_content"
                   and:background="@drawable/star_friend"
                   and:layout_alignParentBottom="true" and:layout_alignParentRight="true"
-                  and:textColor="#000" and:gravity="center"
+                  and:textColor="#672e00" and:gravity="center"
                   and:textSize="16dp"
-                  and:padding="8dp"
                   and:visibility="gone"
                 />
     </RelativeLayout>
@@ -40,10 +39,25 @@
                 />
     </LinearLayout>
 
-    <com.emrg.view.OutlinedTextView and:id="@+id/btn"
-                                    and:layout_width="0px" and:layout_height="wrap_content" and:layout_weight="33"
-                                    and:layout_gravity="center" and:gravity="center" and:textColor="#fff"
-                                    app:strokeColor="#000" app:strokeWidth="1dp" and:textSize="30dp"
-                                    and:background="@drawable/button_green" and:padding="10dp"
-                                    and:layout_marginTop="5dp" and:layout_marginBottom="5dp"/>
+    <RelativeLayout and:id="@+id/btn"
+                    and:layout_width="0px" and:layout_height="wrap_content" and:layout_weight="33"
+                    and:background="@drawable/button_green"
+                    and:layout_marginTop="5dp" and:layout_marginBottom="5dp"
+            >
+
+        <com.emrg.view.ImageView and:id="@+id/progress" and:layout_width="30dp" and:layout_height="30dp"
+                                 and:layout_centerInParent="true"
+                                 and:visibility="invisible" and:src="@drawable/transparent"
+                                 and:adjustViewBounds="true"
+                />
+
+        <com.emrg.view.OutlinedTextView and:id="@+id/btnText"
+                    and:layout_width="fill_parent" and:layout_height="wrap_content"
+                    and:layout_centerInParent="true" and:textColor="#fff" and:gravity="center"
+                    app:strokeColor="#000" app:strokeWidth="1dp" and:textSize="30dp"
+                    and:layout_marginTop="5dp" and:layout_marginBottom="5dp"
+                    />
+
+    </RelativeLayout>
+
 </LinearLayout>

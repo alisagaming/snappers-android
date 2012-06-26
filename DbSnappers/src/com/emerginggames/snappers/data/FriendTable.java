@@ -97,7 +97,7 @@ public class FriendTable extends SQLiteTable<FacebookFriend>{
                         continue;
                     if (friendsInDb[i].facebook_id == friend.facebook_id){
                         friend.id = friendsInDb[i].id;
-                        friend.lastSendGift = friendsInDb[i].id;
+                        friend.lastSendGift = friendsInDb[i].lastSendGift;
                         if (!friend.first_name.equals(friendsInDb[i].first_name))
                             update(friend);
                         friendsInDb[i] = null;
@@ -127,6 +127,16 @@ public class FriendTable extends SQLiteTable<FacebookFriend>{
         FriendTable tbl = new FriendTable(context, false);
         try{
             return tbl.getByFbId(fbId);
+        }
+        finally {
+            tbl.close();
+        }
+    }
+
+    public static boolean update(Context context, FacebookFriend friend){
+        FriendTable tbl = new FriendTable(context, false);
+        try{
+            return tbl.update(friend);
         }
         finally {
             tbl.close();

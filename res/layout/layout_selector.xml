@@ -9,8 +9,15 @@
             and:layout_width="fill_parent" and:layout_height="fill_parent" and:layout_centerInParent="true"
             and:src="@drawable/bg1" and:scaleType="matrix"/>
 
+    <com.emrg.view.OutlinedTextView and:id="@+id/hintBtn"
+                                    and:layout_width="wrap_content" and:layout_height="wrap_content"
+                                    and:layout_alignParentTop="true" and:layout_alignParentRight="true"
+                                    and:background="@drawable/button_hint" and:scaleType="fitCenter" and:adjustViewBounds="true"
+                                    and:textColor="@android:color/white" and:gravity="center"
+                                    app:strokeColor="#000" app:strokeWidth="1dp" app:setTextSizeToFit="true"/>
+
     <LinearLayout and:layout_width="fill_parent" and:layout_height="fill_parent" and:orientation="vertical"
-                  and:layout_centerHorizontal="true" and:layout_below="@+id/hintBtn">
+                  and:layout_centerHorizontal="true" and:layout_below="@+id/hintBtn" and:layout_above="@+id/backButton">
 
         <LinearLayout and:orientation="horizontal" and:layout_width="fill_parent" and:layout_height="wrap_content">
             <LinearLayout and:id="@+id/resLoadIndicator" and:layout_height="5dp" and:layout_width="5dp"
@@ -32,25 +39,14 @@
                 app:strokeColor="#909090" app:snap="true"
                 />
 
-        <LinearLayout and:id="@+id/footer"
-                      and:layout_width="fill_parent" and:layout_height="wrap_content"
-                      and:orientation="horizontal" and:layout_gravity="bottom" and:weightSum="100"
-                >
-
-            <com.emrg.view.ImageView and:id="@+id/backButton"
-                       and:layout_width="0dp" and:layout_height="wrap_content" and:layout_gravity="bottom"
-                       and:layout_weight="25"
-                       and:src="@drawable/arrow_back_btn" and:scaleType="fitCenter" and:adjustViewBounds="true"
-                       and:onClick="onBackButtonClick"
-                    />
-        </LinearLayout>
-
     </LinearLayout>
-    <com.emrg.view.OutlinedTextView and:id="@+id/hintBtn"
-         and:layout_width="wrap_content" and:layout_height="wrap_content"
-         and:layout_alignParentTop="true" and:layout_alignParentRight="true"
-         and:background="@drawable/button_hint" and:scaleType="fitCenter" and:adjustViewBounds="true"
-         and:textColor="@android:color/white" and:gravity="center"
-         app:strokeColor="#000" app:strokeWidth="1dp" app:setTextSizeToFit="true"/>
+
+    <com.emrg.view.ImageView and:id="@+id/backButton"
+                             and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_gravity="bottom"
+                             and:layout_alignParentLeft="true" and:layout_alignParentBottom="true"
+                             and:src="@drawable/arrow_back_btn" and:scaleType="fitCenter" and:adjustViewBounds="true"
+                             and:onClick="onBackButtonClick"
+            />
+
 
 </RelativeLayout>

@@ -32,7 +32,7 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         if (!intent.hasExtra(LEVEL_PACK_TAG))
             finish();
         pack = (LevelPack) intent.getSerializableExtra(LEVEL_PACK_TAG);
-        pack.levelCount = LevelTable.countLevels(this, (int)pack.id);
+        pack.levelCount = LevelTable.countLevels(this, pack.id);
 
         adapter = new LevelPageAdapter(getSupportFragmentManager(), pack, this);
 

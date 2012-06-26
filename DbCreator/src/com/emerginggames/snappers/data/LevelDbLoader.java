@@ -142,7 +142,7 @@ public class LevelDbLoader {
 
     private void parseAndSaveLevel(XmlPullParser xpp, LevelPack pack){
         Level level = new Level();
-        level.packNumber = (int)pack.id;
+        level.packNumber = pack.id;
 
         for (int i=0; i< xpp.getAttributeCount(); i++){
             if (xpp.getAttributeName(i).equalsIgnoreCase("number"))

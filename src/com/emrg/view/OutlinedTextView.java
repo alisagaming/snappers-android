@@ -175,8 +175,6 @@ public class OutlinedTextView extends TextView{
         textPaint.setTextSize(size);
 
         needResize = false;
-
-        makeNewLayout(measuredWidth);
     }
 
     public void setLineEnds(int[] lineEnds) {
@@ -297,6 +295,8 @@ public class OutlinedTextView extends TextView{
         mLayout = null;
     }
 
+
+
     public void setText2(CharSequence text){
         setText(text);
         mLayout = null;
@@ -315,6 +315,9 @@ public class OutlinedTextView extends TextView{
         textPaint.setTypeface(typeface);
         textPaint.setTextSize(getTextSize());
         textPaint.setAntiAlias(true);
+        textPaint.setFlags(Paint.DEV_KERN_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+
+
 
         outlinePaint.setColor(strokeColor);
         outlinePaint.setTypeface(typeface);

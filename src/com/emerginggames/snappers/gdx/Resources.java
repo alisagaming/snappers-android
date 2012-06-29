@@ -44,12 +44,14 @@ public class Resources {
     public static TextureRegion bg;
     public static PrepareableTextureAtlas mainTextures;
     public static TextureRegion hintCircle;
+    public static TextureRegion rays;
 
     public static PrepareableTextureAtlas.AtlasRegion[] snapperBack;
     public static PrepareableTextureAtlas.AtlasRegion[] eyeFrames;
     public static PrepareableTextureAtlas.AtlasRegion[] blastFrames;
     public static PrepareableTextureAtlas.AtlasRegion[] bangFrames;
     public static PrepareableTextureAtlas.AtlasRegion[] hintFrames;
+
 
     public static Sound[] popSounds;
     public static Sound winSound;
@@ -103,9 +105,9 @@ public class Resources {
         blastFrames = new PrepareableTextureAtlas.AtlasRegion[1];
         blastFrames[0] = mainTextures.findRegion(String.format("blast"));
 
-        bangFrames  = new PrepareableTextureAtlas.AtlasRegion[9];
-        for (int i = 0; i < 9; i++)
-            bangFrames[i] = mainTextures.findRegion(String.format("b%d", i+1));
+        bangFrames  = new PrepareableTextureAtlas.AtlasRegion[5];
+        for (int i = 0; i < 5; i++)
+            bangFrames[i] = mainTextures.findRegion(String.format("b%d", 5 + i));
 
         hintFrames  = new PrepareableTextureAtlas.AtlasRegion[18];
         for (int i = 0; i < 10; i++)
@@ -113,7 +115,8 @@ public class Resources {
         for (int i=10; i<18; i++)
             hintFrames[i] = hintFrames[18-i];
 
-        hintCircle = mainTextures.findRegion(String.format("round"));
+        hintCircle = mainTextures.findRegion("round");
+        rays = mainTextures.findRegion("rays");
     }
 
     public static boolean loadBg(String name) {

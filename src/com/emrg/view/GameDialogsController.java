@@ -2,6 +2,7 @@ package com.emrg.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.view.WindowManager;
 import com.emerginggames.snappers.*;
 import com.tapjoy.TapjoyConnect;
 import com.emerginggames.snappers.gdx.Game;
@@ -41,7 +42,8 @@ public class GameDialogsController{
 
     public void showNewLevelDialog(int newLevel){
         mCurrentLevel = newLevel;
-        mActivity.getGameOverMessageController().showRays();
+        //mActivity.getGameOverMessageController().showRays();
+        mActivity.getGame().showRays(true);
         mActivity.runOnUiThread(showNewLevelDialog);
     }
 
@@ -161,18 +163,19 @@ public class GameDialogsController{
                 newLevelDialog = new NewLevelDialog(mActivity, Metrics.screenWidth * 95 / 100);
             }
             newLevelDialog.setLevel(mCurrentLevel);
+            newLevelDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             newLevelDialog.show();
             newLevelDialog.setBtnClickListener(new GameDialog.OnDialogEventListener() {
                 @Override
                 public void onButtonClick(int unpressedDrawableId) {
                     newLevelDialog.hide();
-                    mActivity.getGameOverMessageController().hideRays();
+                    mActivity.getGame().showRays(false);
                 }
 
                 @Override
                 public void onCancel() {
                     newLevelDialog.hide();
-                    mActivity.getGameOverMessageController().hideRays();
+                    mActivity.getGame().showRays(false);
                 }
             });
 

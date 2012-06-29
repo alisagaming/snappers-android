@@ -52,18 +52,19 @@ public     class GameOverMessageController {
         stars = new StarsController();
     }
 
-    public void showRays(){
-        mActivity.runOnUiThread(showRays);
-    }
-
-    public void hideRays(){
-        mActivity.runOnUiThread(hideRays);
-    }
-
     public void show(boolean isWon, int msgValue){
         this.isWon = isWon;
         this.msgValue = msgValue;
         mActivity.runOnUiThread(show);
+    }
+
+    public void show(){
+        mActivity.runOnUiThread(show);
+    }
+
+    public void setResult(boolean isWon, int msgValue){
+        this.isWon = isWon;
+        this.msgValue = msgValue;
     }
 
     public void hide(){
@@ -107,52 +108,6 @@ public     class GameOverMessageController {
         @Override
         public void run() {
             layout.setVisibility(View.GONE);
-        }
-    };
-
-    Runnable hideRays = new Runnable() {
-        @Override
-        public void run() {
-            layout.findViewById(R.id.backCont).setVisibility(View.GONE);
-        }
-    };
-
-    Runnable showRays = new Runnable() {
-        @Override
-        public void run() {
-            if (((RelativeLayout)layout.findViewById(R.id.backCont)).getChildCount() == 0){
-                int width = Metrics.screenWidth;
-                int height = Metrics.screenHeight;
-                int diagonal = (int)(Math.sqrt(width * width + height * height));
-                float scale = (float)diagonal/width;
-
-                ImageView rays = new ImageView(mActivity);
-                rays.setImageResource(R.drawable.rays);
-                rays.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
-
-                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, width);
-                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-                ((RelativeLayout)layout.findViewById(R.id.backCont)).addView(rays, lp);
-                lp = (RelativeLayout.LayoutParams)layout.findViewById(R.id.backCont).getLayoutParams();
-                lp.width = lp.height = diagonal;
-
-                RotateAnimation animation = new RotateAnimation(0, 359, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                animation.setDuration(2000);
-                animation.setRepeatMode(Animation.RESTART);
-                animation.setRepeatCount(Integer.MAX_VALUE);
-
-                ScaleAnimation scaleAnim = new ScaleAnimation(scale, scale, scale, scale, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-
-                AnimationSet set = new AnimationSet(true);
-                set.addAnimation(animation);
-                set.addAnimation(scaleAnim);
-                set.setInterpolator(new LinearInterpolator());
-                set.setFillAfter(true);
-
-                rays.setAnimation(set);
-            }
-
-            layout.findViewById(R.id.backCont).setVisibility(View.VISIBLE);
         }
     };
 

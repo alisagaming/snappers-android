@@ -1,5 +1,6 @@
 package com.emerginggames.snappers.gdx;
 
+import android.util.FloatMath;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -20,6 +21,9 @@ import com.emerginggames.snappers.model.Level;
 public class Game implements ApplicationListener{
     public enum Stages{MainStage, GameOverStage, HelpStage, HintMenu}
     public Stages currentStageE;
+    private static final float RAYS_SPEED =  - 360 / 2;
+    private static final float RAYS_OPACITY =  0.8f;
+
 
     int width;
     int height;
@@ -31,10 +35,13 @@ public class Game implements ApplicationListener{
     protected Sprite bg;
     boolean isPaused;
     public IAppGameListener mGameListener;
+    protected Sprite rays;
 
     protected boolean objectsCreated = false;
     public static boolean isSoundEnabled;
     public boolean initDone = false;
+
+    boolean showRays = false;
 
     public Game(Level level, IAppGameListener gameListener) {
         this.level = level;
@@ -59,6 +66,16 @@ public class Game implements ApplicationListener{
         if (Resources.loadBg(level.pack.background))
             bg = new Sprite(Resources.bg);
 
+        rays = new Sprite(Resources.rays);
+        float screenDiag = FloatMath.sqrt(width * width + height * height);
+        float w = rays.getWidth();
+        float h = rays.getHeight();
+
+        float scale = screenDiag / h;
+        rays.setScale(scale);
+        rays.setOrigin(w/2, h/2);
+        rays.setPosition(width/2 - w/2, height/2 - h/2);
+
         objectsCreated = true;
     }
 
@@ -73,6 +90,8 @@ public class Game implements ApplicationListener{
         initDone = true;
         mGameListener.onInitDone();
     }
+
+
 
     @Override
     public void render() {
@@ -102,6 +121,11 @@ public class Game implements ApplicationListener{
         }
 
         batch.begin();
+        if (showRays){
+            rays.rotate(delta * RAYS_SPEED);
+            rays.draw(batch, RAYS_OPACITY);
+
+        }
         if (Settings.DEBUG)
             Resources.fnt1.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, Resources.fnt1.getLineHeight() + mainStage.marginBottom);
         batch.end();
@@ -149,6 +173,10 @@ public class Game implements ApplicationListener{
             return level;
         else
             return mainStage.getLogic().level;
+    }
+
+    public void showRays(boolean isShow){
+        showRays = isShow;
     }
 
     private void setStage(MyStage stage){

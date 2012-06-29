@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.util.FloatMath;
 import android.util.TypedValue;
 import android.view.View;
-import com.emerginggames.snappers.model.ImageDrawInfo;
+import com.emerginggames.snappers2.model.ImageDrawInfo;
 
 import java.io.IOException;
 import java.io.InputStream;

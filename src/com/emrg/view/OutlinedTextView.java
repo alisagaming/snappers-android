@@ -14,7 +14,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.emerginggames.snappers.R;
+import com.emerginggames.snappers2.R;
 
 
 /**

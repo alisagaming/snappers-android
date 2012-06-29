@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:and="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
+                xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers2"
               and:layout_width="fill_parent"
               and:layout_height="fill_parent"
         >

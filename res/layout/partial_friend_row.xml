@@ -2,7 +2,7 @@
 
 <LinearLayout xmlns:and="http://schemas.android.com/apk/res/android"
               and:layout_width="fill_parent" and:layout_height="wrap_content"
-              xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers"
+              xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers2"
               and:orientation="horizontal" and:background="@color/row_dark"
               and:paddingLeft="3dp" and:paddingRight="3dp" and:paddingTop="2dp" and:paddingBottom="2dp"
               and:weightSum="100" and:baselineAligned="false"

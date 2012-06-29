@@ -49,6 +49,7 @@ public class UserPreferences extends UserPreferencesBase {
     private static final String FACEBOOK_TOKEN = "access_token";
     private static final String FB_UID = "fb_uid_";
     private static final String HAD_FB_SYNC = "had fb sync";
+    private static final String SHARE_TO_FB = "shareToFb";
 
 
     private static final int INITIAL_HINTS = Settings.DEBUG ? 10 : 2;
@@ -251,6 +252,16 @@ public class UserPreferences extends UserPreferencesBase {
     public boolean getSound() {
         return getBoolean(SOUND, true);
     }
+
+    public boolean getShareToFb() {
+        return getBoolean(SHARE_TO_FB, true);
+    }
+
+    public void setShareToFb(boolean enabled) {
+        putBoolean(SHARE_TO_FB, enabled);
+    }
+
+
 
     public boolean isLiked() {
         return getBoolean(USER_LIKED, false);

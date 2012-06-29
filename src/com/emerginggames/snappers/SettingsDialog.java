@@ -65,10 +65,12 @@ public class SettingsDialog extends Dialog {
 
         ((CheckBox)findViewById(R.id.soundCheckbox)).setChecked(prefs.getSound());
         ((CheckBox)findViewById(R.id.musicCheckbox)).setChecked(prefs.getMusic());
+        ((CheckBox)findViewById(R.id.shareToFbCheckbox)).setChecked(prefs.getShareToFb());
 
 
         findViewById(R.id.soundCheckbox).setOnClickListener(soundClickListener);
         findViewById(R.id.musicCheckbox).setOnClickListener(musicClickListener);
+        findViewById(R.id.shareToFbCheckbox).setOnClickListener(shareClickListener);
 
         findViewById(R.id.backButton).setOnClickListener(backClickListener);
 
@@ -257,5 +259,12 @@ public class SettingsDialog extends Dialog {
         }
     };
 
+    View.OnClickListener shareClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            UserPreferences.getInstance(getContext()).setShareToFb(((CheckBox) v).isChecked());
+            SoundManager.playButtonSoundIfPossible();
+        }
+    };
 
 }

@@ -25,7 +25,7 @@
     <string name="free_hints">Free hints</string>
 
     <string name="youHaveOneHint">You have 1 hint.\nUse it?</string>
-    <string name="youHave_n_Hints" formatted="false">You have %d hints.\nUse it?</string>
+    <string name="youHave_n_Hints" formatted="false">You have %d hints.\nUse one?</string>
     <string name="youHaveNoHints">You\'ve got no hints.</string>
     <string name="buySome">Get some!</string>
     <string name="getOnline">Get online to get some.</string>

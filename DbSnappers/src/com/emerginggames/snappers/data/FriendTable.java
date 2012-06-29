@@ -16,14 +16,14 @@ import java.util.Arrays;
  * Date: 25.06.12
  * Time: 4:18
  */
-public class FriendTable extends SQLiteTable<FacebookFriend>{
+public class FriendTable extends SQLiteTable<FacebookFriend> {
     protected static final String TABLE_NAME = "facebook_friends";
 
     protected static final String KEY_NAME = "name";
     protected static final String KEY_FB_ID = "fb_id";
     protected static final String KEY_LAST_GIFT_SENT = "last_gift_sent";
-
-    protected static final String[] COLUMN_LIST = new String[] { KEY_ID, KEY_NAME, KEY_FB_ID, KEY_LAST_GIFT_SENT};
+    protected static final String KEY_XP = "xp";
+    protected static final String[] COLUMN_LIST = new String[]{KEY_ID, KEY_NAME, KEY_FB_ID, KEY_LAST_GIFT_SENT, KEY_XP};
 
 
     public FriendTable(SQLiteDatabase db) {
@@ -47,6 +47,7 @@ public class FriendTable extends SQLiteTable<FacebookFriend>{
         bindNullable(insertStmt, 1, friend.first_name);
         insertStmt.bindLong(2, friend.facebook_id);
         insertStmt.bindLong(3, friend.lastSendGift);
+        insertStmt.bindLong(4, friend.installed ? friend.xp_count : -1);
         return insertStmt;
     }
 
@@ -55,7 +56,8 @@ public class FriendTable extends SQLiteTable<FacebookFriend>{
         String queryStr = "INSERT INTO " + TABLE_NAME + "(" +
                 KEY_NAME + ", " +
                 KEY_FB_ID + ", " +
-                KEY_LAST_GIFT_SENT +  ") values (?, ?, ?)";
+                KEY_LAST_GIFT_SENT + ", " +
+                KEY_XP + ") values (?, ?, ?, ?)";
 
         return db.compileStatement(queryStr);
     }
@@ -67,6 +69,8 @@ public class FriendTable extends SQLiteTable<FacebookFriend>{
         friend.first_name = cursor.getString(1);
         friend.facebook_id = cursor.getLong(2);
         friend.lastSendGift = cursor.getLong(3);
+        friend.xp_count = cursor.getInt(4);
+        friend.installed = friend.xp_count != -1;
         return friend;
     }
 
@@ -86,18 +90,19 @@ public class FriendTable extends SQLiteTable<FacebookFriend>{
         contentValues.put(KEY_NAME, friend.first_name);
         contentValues.put(KEY_FB_ID, friend.facebook_id);
         contentValues.put(KEY_LAST_GIFT_SENT, friend.lastSendGift);
+        contentValues.put(KEY_XP, friend.installed ? friend.xp_count : -1);
         return contentValues;
     }
 
-    public void syncWithDb(FacebookFriend[] friends){
+    protected void syncWithDb(FacebookFriend[] friends) {
         FacebookFriend[] friendsInDb = getAll(FacebookFriend.class, null);
 
-        if (friendsInDb != null && friendsInDb.length != 0){
-            for(FacebookFriend friend: friends){
-                for (int i=0; i< friendsInDb.length; i++){
+        if (friendsInDb != null && friendsInDb.length != 0) {
+            for (FacebookFriend friend : friends) {
+                for (int i = 0; i < friendsInDb.length; i++) {
                     if (friendsInDb[i] == null)
                         continue;
-                    if (friendsInDb[i].facebook_id == friend.facebook_id){
+                    if (friendsInDb[i].facebook_id == friend.facebook_id) {
                         friend.id = friendsInDb[i].id;
                         friend.lastSendGift = friendsInDb[i].lastSendGift;
                         if (!friend.first_name.equals(friendsInDb[i].first_name))
@@ -109,51 +114,88 @@ public class FriendTable extends SQLiteTable<FacebookFriend>{
                 }
             }
 
-            for(FacebookFriend friend: friendsInDb){
+            for (FacebookFriend friend : friendsInDb) {
                 if (friend != null)
                     delete(friend);
             }
         }
 
-        for (FacebookFriend friend: friends){
+        for (FacebookFriend friend : friends) {
             if (friend.id == 0)
                 insert(friend);
         }
     }
 
-    public FacebookFriend getByFbId(long fbId){
+    public static void syncWithDb(Context context, FacebookFriend[] friends) {
+        synchronized (DbLock) {
+            FriendTable tbl = new FriendTable(context, true);
+            try {
+                tbl.syncWithDb(friends);
+            } finally {
+                tbl.close();
+            }
+        }
+    }
+
+
+    public FacebookFriend getByFbId(long fbId) {
         return getByWhereStr(KEY_FB_ID + " = " + Long.toString(fbId));
     }
 
-    public static FacebookFriend getByFbId(Context context, long fbId){
-        FriendTable tbl = new FriendTable(context, false);
-        try{
-            return tbl.getByFbId(fbId);
-        }
-        finally {
-            tbl.close();
-        }
-    }
-
-    public static boolean update(Context context, FacebookFriend friend){
-        FriendTable tbl = new FriendTable(context, false);
-        try{
-            return tbl.update(friend);
-        }
-        finally {
-            tbl.close();
+    public static FacebookFriend getByFbId(Context context, long fbId) {
+        synchronized (DbLock) {
+            FriendTable tbl = new FriendTable(context, false);
+            try {
+                return tbl.getByFbId(fbId);
+            } finally {
+                tbl.close();
+            }
         }
     }
 
-    public static FacebookFriend[] getFriends(Context context, long[] facebookIds){
-        FriendTable tbl = new FriendTable(context, false);
-        String temp = Arrays.toString(facebookIds);
-        String ids = temp.substring(1, temp.length()-1);
-        try{
-            return tbl.getAll(FacebookFriend.class, String.format("%s in (%s)", KEY_FB_ID, ids));
+    public static boolean update(Context context, FacebookFriend friend) {
+        synchronized (DbLock) {
+            FriendTable tbl = new FriendTable(context, false);
+            try {
+                return tbl.update(friend);
+            } finally {
+                tbl.close();
+            }
         }
-        finally {
-            tbl.close();
+    }
+
+    public static FacebookFriend[] getFriends(Context context, long[] facebookIds) {
+        synchronized (DbLock) {
+            FriendTable tbl = new FriendTable(context, false);
+            String temp = Arrays.toString(facebookIds);
+            String ids = temp.substring(1, temp.length() - 1);
+            try {
+                return tbl.getAll(FacebookFriend.class, String.format("%s in (%s)", KEY_FB_ID, ids));
+            } finally {
+                tbl.close();
+            }
+        }
+    }
+
+    public static void clear(Context context) {
+        synchronized (DbLock) {
+            FriendTable tbl = new FriendTable(context, false);
+            try {
+                tbl.db.delete(TABLE_NAME, "1=1", null);
+            } finally {
+                tbl.close();
+            }
+        }
+    }
+
+    public static FacebookFriend[] getAll(Context context) {
+        synchronized (DbLock) {
+            FriendTable tbl = new FriendTable(context, false);
+            try {
+                return tbl.getAll(FacebookFriend.class, null);
+            } finally {
+                tbl.close();
+            }
         }
     }
 }

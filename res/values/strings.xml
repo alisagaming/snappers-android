@@ -74,5 +74,10 @@
     <string name="receivedGiftsMore" formatted="false">You\'ve received %d hints from %s and others.</string>
     <string name="someone">someone</string>
     <string name="twoFriends" formatted="false">%s and %s</string>
+    <string name="showMore">Show more…</string>
+    <string name="loading">Loading…</string>
+    <string name="failedToGetUserInfo">Failed to get user info.</string>
+    <string name="failedToGetFriends">Failed to get friends.</string>
+    <string name="failedToGetData">Failed to get data.</string>
 
 </resources>

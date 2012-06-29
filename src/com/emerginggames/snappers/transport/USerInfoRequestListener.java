@@ -3,6 +3,7 @@ package com.emerginggames.snappers.transport;
 import android.content.Context;
 import android.util.Log;
 import com.emerginggames.snappers.UserPreferences;
+import com.emerginggames.snappers.model.FbUserInfo;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
@@ -19,11 +20,11 @@ import java.net.MalformedURLException;
  * Date: 25.06.12
  * Time: 2:57
  */
-public class NameRequestListener implements AsyncFacebookRunner.RequestListener {
+public class UserInfoRequestListener implements AsyncFacebookRunner.RequestListener {
     Context context;
     FacebookTransport.ResponseListener listener;
 
-    public NameRequestListener(Context context, FacebookTransport.ResponseListener listener) {
+    public UserInfoRequestListener(Context context, FacebookTransport.ResponseListener listener) {
         this.context = context;
         this.listener = listener;
     }
@@ -31,19 +32,22 @@ public class NameRequestListener implements AsyncFacebookRunner.RequestListener 
     public void onComplete(final String response, final Object state) {
         try {
             JSONObject json = Util.parseJson(response);
-            final String name = json.getString("first_name");
-            UserPreferences prefs = UserPreferences.getInstance(context);
-            if (name != null && !name.equalsIgnoreCase(prefs.getFacebookUserName()))
-                prefs.setFacebookUserName(name);
+            FbUserInfo user = new FbUserInfo();
+
+            user.name = json.getString("first_name");
+            user.fbUID = json.getLong("id");
+            UserPreferences.getInstance(context).setCurrentUser(user);
+
             if (listener != null)
-                listener.onOk(state);
+                listener.onOk(user);
 
         } catch (JSONException e) {
             Log.w("SNAPPERS", "JSON Error in response");
         } catch (FacebookError e) {
             Log.w("SNAPPERS", "Facebook Error: " + e.getMessage());
         } catch (Exception e){
-            Log.w("SNAPPERS", "Facebook Error: " + e.getMessage());
+            Log.e("SNAPPERS", "Facebook Error: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 

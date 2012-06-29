@@ -86,7 +86,7 @@ public class ScoreCounter {
     }
 
     public void setScoreProlonged(int score){
-        scoreStep = Math.max(1, (score - currentScore) / 10);
+        scoreStep = Math.max(1, (score - currentScore) / 15);
         scoreDest = score;
         updateScore.run();
     }
@@ -124,7 +124,7 @@ public class ScoreCounter {
                 currentScore = scoreDest;
             setScore(currentScore);
             if (currentScore < scoreDest)
-                handler.postDelayed(updateScore, 70);
+                handler.postDelayed(updateScore, 40);
 
         }
     };

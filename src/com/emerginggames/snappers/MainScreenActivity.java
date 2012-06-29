@@ -56,14 +56,10 @@ public class MainScreenActivity extends Activity {
         lp.width = Math.round(scrWidth * 0.45f);
         lp.rightMargin = scrWidth / 20;
 
-        if (facebookTransport.isLoggedIn())
-            findViewById(R.id.playButtonOffline).setVisibility(View.INVISIBLE);
-        else {
-            lp = (RelativeLayout.LayoutParams) findViewById(R.id.playButtonOffline).getLayoutParams();
-            lp.width = (int) (scrWidth * 0.35f);
-            lp.rightMargin = scrWidth / 20;
-            lp.topMargin = lp.bottomMargin = scrHeight / 20;
-        }
+        lp = (RelativeLayout.LayoutParams) findViewById(R.id.playButtonOffline).getLayoutParams();
+        lp.width = (int) (scrWidth * 0.35f);
+        lp.rightMargin = scrWidth / 20;
+        lp.topMargin = lp.bottomMargin = scrHeight / 20;
 
         lp = (RelativeLayout.LayoutParams) findViewById(R.id.settingsBtn).getLayoutParams();
         lp.width = lp.height = scrWidth / 5;
@@ -134,6 +130,9 @@ public class MainScreenActivity extends Activity {
 
     public void onSettingsDialogClosed() {
         findViewById(R.id.settingsBtn).setVisibility(View.VISIBLE);
+
+        FacebookTransport facebookTransport = new FacebookTransport(this);
+        findViewById(R.id.playButtonOffline).setVisibility(facebookTransport.isLoggedIn() ? View.INVISIBLE: View.VISIBLE);
     }
 
     public void onPlayButtonOfflineClick(View v) {
@@ -153,16 +152,22 @@ public class MainScreenActivity extends Activity {
             handler.post(updateDailyBonusCounter);
         else
             findViewById(R.id.dailyBonus).setVisibility(View.INVISIBLE);
+
+        FacebookTransport facebookTransport = new FacebookTransport(this);
+
+        findViewById(R.id.playButtonOffline).setVisibility(facebookTransport.isLoggedIn() ? View.INVISIBLE: View.VISIBLE);
     }
 
+
+
     @Override
-    protected void onPause() {
+    protected void onPause(){
         super.onPause();
         ((SnappersApplication) getApplication()).activityPaused();
         isActive = false;
     }
 
-    private void checkForCrashes() {
+    private void checkForCrashes(){
         CrashManager.register(this, Settings.APP_ID);
     }
 

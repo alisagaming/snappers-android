@@ -26,16 +26,16 @@ public class Settings {
     public static boolean DEBUG = true;
     public static final boolean DEBUG_BUY = true & DEBUG;
     public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
-    public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
+    public static final boolean NO_PREF_ENCRYPT = true & DEBUG;
     public static boolean GoogleInAppEnabled = true;
 
-    public static final long GIFT_INTERVAL = 1;//24*60*60*1000;//1 day
+    public static final long GIFT_INTERVAL = 24*60*60*1000;//1 day
 
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
     public static final String BUGSENSE_API_KEY = "8a555912";
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
     public static final boolean SEND_EXTENDED_AD_INFO = false;
-    public static final boolean IS_PREMIUM = true;
+    public static final boolean IS_PREMIUM = false;
     //1543619c1de44e80af13f861b204b778
     private static String adwhirlKey = "5D43298AD9AB6642H81E3D3F20BA02E8FHAAD7E50F0B01C4B6H13863AC093001CC1H16B7733B6AFA5528H39DA19D96F7DF7F3HAD9A87096A80397FHDF9A4393DB6D4F33";
     //App ID ? 6ac99625-6d02-4326-becd-213a233c511a

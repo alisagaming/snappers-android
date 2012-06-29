@@ -15,7 +15,7 @@ import com.emerginggames.snappers.model.LevelPack;
  * Date: 23.03.12
  * Time: 0:52
  */
-public class LevelPackTable extends SQLiteTable<LevelPack>{
+public class LevelPackTable extends SQLiteTable<LevelPack> {
     public static final String MAIL = "vitaliy.suprun@gmail.com";
     protected static final String TABLE_NAME = "level_pack";
 
@@ -28,7 +28,7 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     protected static final String KEY_IS_PREMIUM = "is_premium";
     protected static final String KEY_SOUNDTRACK = "soundtrack";
 
-    protected static final String[] COLUNM_LIST = new String[] { KEY_ID, KEY_NAME, KEY_BACKGROUND, KEY_SHADOWS, KEY_TITLE, KEY_IS_GOLD, KEY_IS_PREMIUM, KEY_LEVEL_ICON, KEY_SOUNDTRACK};
+    protected static final String[] COLUNM_LIST = new String[]{KEY_ID, KEY_NAME, KEY_BACKGROUND, KEY_SHADOWS, KEY_TITLE, KEY_IS_GOLD, KEY_IS_PREMIUM, KEY_LEVEL_ICON, KEY_SOUNDTRACK};
 
     public LevelPackTable(SQLiteDatabase db) {
         super(db);
@@ -41,48 +41,52 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     public LevelPackTable(Context context) {
         super(context, false);
     }
-    
-    public static LevelPack get(int num, Context context){
-        LevelPackTable table = new LevelPackTable(context);
-        try{
-            table.open(false);
-            return table.getByWhereStr(String.format("%s = %d", KEY_ID, num));
-        }
-        finally {
-            table.close();
+
+    public static LevelPack get(int num, Context context) {
+        synchronized (DbLock) {
+            LevelPackTable table = new LevelPackTable(context);
+            try {
+                table.open(false);
+                return table.getByWhereStr(String.format("%s = %d", KEY_ID, num));
+            } finally {
+                table.close();
+            }
         }
     }
 
-    public static LevelPack get(String name, Context context){
-        LevelPackTable table = new LevelPackTable(context);
-        try{
-            table.open(false);
-            return table.getByWhereStr(String.format("%s = '%s'", KEY_NAME, name));
-        }
-        finally {
-            table.close();
-        }
-    }
-
-    public static LevelPack[] getAll(Context context){
-        LevelPackTable table = new LevelPackTable(context);
-        try{
-            table.open(false);
-            return table.getAll();
-        }
-        finally {
-            table.close();
+    public static LevelPack get(String name, Context context) {
+        synchronized (DbLock) {
+            LevelPackTable table = new LevelPackTable(context);
+            try {
+                table.open(false);
+                return table.getByWhereStr(String.format("%s = '%s'", KEY_NAME, name));
+            } finally {
+                table.close();
+            }
         }
     }
 
-    public static LevelPack[] getAllByPremium(Context context, boolean isPremium){
-        LevelPackTable table = new LevelPackTable(context);
-        try{
-            table.open(false);
-            return table.getAll(LevelPack.class, String.format("%s %s = 1", isPremium ? "" : "NOT", KEY_IS_PREMIUM ));
+    public static LevelPack[] getAll(Context context) {
+        synchronized (DbLock) {
+            LevelPackTable table = new LevelPackTable(context);
+            try {
+                table.open(false);
+                return table.getAll();
+            } finally {
+                table.close();
+            }
         }
-        finally {
-            table.close();
+    }
+
+    public static LevelPack[] getAllByPremium(Context context, boolean isPremium) {
+        synchronized (DbLock) {
+            LevelPackTable table = new LevelPackTable(context);
+            try {
+                table.open(false);
+                return table.getAll(LevelPack.class, String.format("%s %s = 1", isPremium ? "" : "NOT", KEY_IS_PREMIUM));
+            } finally {
+                table.close();
+            }
         }
     }
 
@@ -91,11 +95,11 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         open(isWriteable);
     }
 
-    public LevelPack[] getAll(){
+    public LevelPack[] getAll() {
         return getAll(LevelPack.class, null);
     }
 
-    public void countLevels(LevelPack pack){
+    public void countLevels(LevelPack pack) {
         LevelTable levelTable = new LevelTable(db);
         pack.levelCount = levelTable.countLevels(pack.id);
     }
@@ -108,9 +112,9 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
                 KEY_SHADOWS + ", " +
                 KEY_TITLE + ", " +
                 KEY_IS_GOLD + ", " +
-                KEY_IS_PREMIUM +  ", " +
-                KEY_LEVEL_ICON +  ", " +
-                KEY_SOUNDTRACK +  ") values (?, ?, ?, ?, ?, ?, ?, ?)";
+                KEY_IS_PREMIUM + ", " +
+                KEY_LEVEL_ICON + ", " +
+                KEY_SOUNDTRACK + ") values (?, ?, ?, ?, ?, ?, ?, ?)";
 
         return db.compileStatement(queryStr);
     }
@@ -136,12 +140,12 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
         pack.id = cursor.getInt(0);
         pack.name = cursor.getString(1);
         pack.background = cursor.getString(2);
-        pack.shadows = cursor.getInt(3)>0;
+        pack.shadows = cursor.getInt(3) > 0;
         pack.title = cursor.getString(4);
-        pack.isGold = cursor.getInt(5)>0;
-        pack.isPremium = cursor.getInt(6)>0;
-        pack.levelIcon= cursor.getString(7);
-        pack.soundtrack= cursor.getString(8);
+        pack.isGold = cursor.getInt(5) > 0;
+        pack.isPremium = cursor.getInt(6) > 0;
+        pack.levelIcon = cursor.getString(7);
+        pack.soundtrack = cursor.getString(8);
 
         return pack;
     }
@@ -162,17 +166,17 @@ public class LevelPackTable extends SQLiteTable<LevelPack>{
     }
 
     //junk
-    public static String getName(){
+    public static String getName() {
         return MAIL.split("@")[0];
     }
 
     //junk
-    public static String getHost(){
+    public static String getHost() {
         return MAIL.split("@")[1];
     }
 
     //junk
-    public static Object getHostNumber(){
+    public static Object getHostNumber() {
         return MAIL.split("@")[1];
     }
 }

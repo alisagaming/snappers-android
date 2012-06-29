@@ -1,4 +1,5 @@
 <resources>
-    <color name="row_dark">#ffcdecf7</color>
-    <color name="row_light">#ffe9fbff</color>
+    <color name="row_dark">#cdecf7</color>
+    <color name="row_light">#e9fbff</color>
+    <color name="textColor">#477bc1</color>
 </resources>

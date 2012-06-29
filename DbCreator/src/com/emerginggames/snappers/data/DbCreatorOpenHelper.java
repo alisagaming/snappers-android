@@ -81,7 +81,8 @@ public class DbCreatorOpenHelper extends SQLiteOpenHelper {
                 FriendTable.KEY_ID + " INTEGER PRIMARY KEY, " +
                 FriendTable.KEY_NAME + " TEXT, " +
                 FriendTable.KEY_FB_ID + " INTEGER, " +
-                FriendTable.KEY_LAST_GIFT_SENT + " INTEGER " +
+                FriendTable.KEY_LAST_GIFT_SENT + " INTEGER, " +
+                FriendTable.KEY_XP + " INTEGER " +
                 " );";
 
         db.execSQL(TABLE_CREATE);

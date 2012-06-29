@@ -63,46 +63,6 @@ public class SyncData {
             gifts[i] = Long.parseLong(giftsArr[i]);
     }
 
-    SyncData(Context context) {
-        UserPreferences prefs = UserPreferences.getInstance(context);
-        hint_count = prefs.getHintsRemaining();
-        xp_count = prefs.getScore();
-        xp_level = Settings.getLevel(xp_count);
-        promoCode = prefs.getPromoCode();
-
-        for (LevelPack pack : LevelPackTable.getAll(context)) {
-            int n = prefs.getLevelUnlocked(pack);
-            if (n > 0)
-                addLevelUnlock(pack, n);
-        }
-    }
-
-    public static SyncData load(Context context) {
-        return new SyncData(context);
-    }
-
-    public void save(Context context) {
-        UserPreferences prefs = UserPreferences.getInstance(context);
-        int currentScore = prefs.getScore();
-        if (currentScore < xp_count) {
-            prefs.setHints(hint_count);
-            prefs.setScore(xp_count);
-            if (!promoCode.equals(prefs.getPromoCode()))
-                prefs.setPromoCode(promoCode);
-
-            for (Map.Entry<String, Integer> pairs : levelUnlocks.entrySet()) {
-                String key = pairs.getKey();
-                Integer value = pairs.getValue();
-
-                prefs.unlockLevel(key, value);
-            }
-        }
-
-        if (gifts != null && gifts.length != 0){
-            prefs.addHints(gifts.length);
-        }
-    }
-
     public JSONObject toJson() {
         JSONObject obj = new JSONObject();
         try {
@@ -112,12 +72,13 @@ public class SyncData {
             obj.put("dollars_spent", Integer.toString(dollars_spent));
             obj.put("code", promoCode);
 
-            for (Map.Entry<String, Integer> pairs : levelUnlocks.entrySet()) {
-                String key = pairs.getKey();
-                Integer value = pairs.getValue();
+            if (levelUnlocks != null)
+                for (Map.Entry<String, Integer> pairs : levelUnlocks.entrySet()) {
+                    String key = pairs.getKey();
+                    Integer value = pairs.getValue();
 
-                obj.put(getPackJsonId(key), value.toString());
-            }
+                    obj.put(getPackJsonId(key), value.toString());
+                }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

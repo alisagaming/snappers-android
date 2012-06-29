@@ -137,7 +137,7 @@ public     class GameOverMessageController {
                 lp.width = lp.height = diagonal;
 
                 RotateAnimation animation = new RotateAnimation(0, 359, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                animation.setDuration(600);
+                animation.setDuration(2000);
                 animation.setRepeatMode(Animation.RESTART);
                 animation.setRepeatCount(Integer.MAX_VALUE);
 

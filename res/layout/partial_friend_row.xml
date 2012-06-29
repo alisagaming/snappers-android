@@ -10,7 +10,7 @@
     <RelativeLayout and:layout_width="0px" and:layout_height="fill_parent" and:layout_weight="23">
         <com.emrg.view.ImageView and:id="@+id/iconUser"
              and:layout_width="fill_parent" and:layout_height="wrap_content"
-             and:src="@drawable/icon_user" and:scaleType="fitCenter" and:adjustViewBounds="true"
+             and:src="@drawable/icon_user" and:scaleType="centerCrop" and:adjustViewBounds="true"
              and:layout_marginRight="5dp"/>
         <TextView and:id="@+id/level" and:layout_width="wrap_content" and:layout_height="wrap_content"
                   and:background="@drawable/star_friend"
@@ -27,16 +27,12 @@
         <TextView and:id="@+id/title"
                   and:layout_width="fill_parent" and:layout_height="wrap_content"  and:layout_gravity="center"
                   and:maxLines="1" and:ellipsize="end" and:gravity="left"
-                  and:textColor="#477bc1"
-                  and:textStyle="bold" and:textSize="20dp"
-                />
+                  and:textColor="@color/textColor" and:textStyle="bold" and:textSize="20dp"/>
 
         <TextView and:id="@+id/score"
                   and:layout_width="fill_parent" and:layout_height="wrap_content"  and:layout_gravity="center"
                   and:maxLines="1" and:ellipsize="end" and:gravity="left"
-                  and:textColor="#477bc1"
-                  and:textSize="20dp" and:textStyle="bold"
-                />
+                  and:textColor="@color/textColor" and:textStyle="bold" and:textSize="20dp"/>
     </LinearLayout>
 
     <RelativeLayout and:id="@+id/btn"

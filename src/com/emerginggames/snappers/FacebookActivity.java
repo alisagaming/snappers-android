@@ -3,6 +3,7 @@ package com.emerginggames.snappers;
 import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.animation.Animation;
@@ -10,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.emerginggames.snappers.data.FriendTable;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.model.SyncData;
@@ -29,8 +31,19 @@ import java.net.URL;
  * Time: 17:34
  */
 public class FacebookActivity extends BaseActivity {
+    private static final int SYNC_DONE = 1;
+    private static final int SYNC_FAILED = 2;
+    private static final int FRIENDS_DONE = 4;
+    private static final int FRIENDS_FAILED = 8;
+    private static final int UINFO_DONE = 16;
+    private static final int UINFO_FAILED = 32;
+    private static final int JUST_LOGGED = 64;
+    private static final int ALL_DONE = SYNC_DONE | FRIENDS_DONE | UINFO_DONE;
     int wndWidth;
     FacebookTransport facebookTransport;
+    int flags;
+    FacebookFriend[] friends;
+    UserPreferences prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,30 +54,48 @@ public class FacebookActivity extends BaseActivity {
 
         wndWidth = Metrics.screenWidth;
 
-        showGifts(null);
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) findViewById(R.id.playButton).getLayoutParams();
+        lp.leftMargin = lp.bottomMargin = Metrics.screenWidth / 20;
+        lp.height = Metrics.screenWidth / 5;
+
+        prefs = UserPreferences.getInstance(getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         facebookTransport = new FacebookTransport(this);
         if (!facebookTransport.isLoggedIn()) {
             facebookTransport.login(new FacebookTransport.ResponseListener() {
                 @Override
                 public void onOk(Object data) {
-                    getFriends();
+                    gotFlag(JUST_LOGGED);
+                    showProgressDialog(getString(R.string.loading));
                 }
 
                 @Override
                 public void onError(Throwable e) {
+                    if (e != null)
+                        Log.e(TAG, e.getMessage(), e);
                     finish();
                 }
-            }, false);
+            });
         } else {
-            getFriends();
-            facebookTransport.getName(null);
+            if (prefs.hadFbSync())
+                gotFlag(JUST_LOGGED);
+            else{
+                getFriends();
+                getUInfo();
+                sync();
+            }
+            FacebookFriend[] friends = FriendTable.getAll(this);
+            if (friends == null || friends.length == 0)
+                showProgressDialog(getString(R.string.loading));
+            else
+                showFriendsList(friends);
             facebookTransport.extendAccessTokenIfNeeded();
         }
-
-        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) findViewById(R.id.playButton).getLayoutParams();
-        lp.leftMargin = lp.bottomMargin = Metrics.screenWidth / 20;
-        lp.height = Metrics.screenWidth / 5;
     }
 
     @Override
@@ -74,43 +105,115 @@ public class FacebookActivity extends BaseActivity {
         facebookTransport.getFB().authorizeCallback(requestCode, resultCode, data);
     }
 
-    public void getFriends() {
-        showProgressDialog();
-        facebookTransport.getFriends(new FacebookTransport.ResponseListener() {
+    void getUInfo(){
+        if (checkFlag(UINFO_DONE) && !checkFlag(UINFO_FAILED))
+            return;
+        facebookTransport.getUserInfo(new FacebookTransport.ResponseListener() {
             @Override
             public void onOk(Object data) {
-                FacebookFriend[] friends = (FacebookFriend[]) data;
-
-                FriendTable tbl = new FriendTable(FacebookActivity.this, true);
-                tbl.syncWithDb(friends);
-                tbl.close();
-                hideProgressDialog();
-                showFriendsList(friends);
-                facebookTransport.sync(new FacebookTransport.ResponseListener() {
-                    @Override
-                    public void onOk(Object data) {
-                        showGifts((SyncData) data);
-                    }
-                });
+                gotFlag(UINFO_DONE);
             }
 
             @Override
             public void onError(Throwable e) {
-                facebookTransport.sync(new FacebookTransport.ResponseListener() {
-                    @Override
-                    public void onOk(Object data) {
-                        play();
-                        showGifts((SyncData) data);
-                        hideProgressDialog();
-                    }
+                gotFlag(UINFO_FAILED);
+            }
+        });
+    }
 
+    void sync(){
+        if (checkFlag(SYNC_DONE) && !checkFlag(SYNC_FAILED))
+            return;
+        facebookTransport.sync(new FacebookTransport.ResponseListener(){
+            @Override
+            public void onOk(Object data) {
+                gotFlag(SYNC_DONE);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, e.getMessage(), e);
+                gotFlag(SYNC_FAILED);
+            }
+        });
+    }
+
+    void getFriends(){
+        facebookTransport.getFriends(new FacebookTransport.ResponseListener() {
+            @Override
+            public void onOk(Object data) {
+                friends = (FacebookFriend[]) data;
+                gotFlag(FRIENDS_DONE);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, e.getMessage(), e);
+                gotFlag(FRIENDS_FAILED);
+            }
+        });
+    }
+
+    boolean checkFlag(int flag){
+        return (flags & flag) == flag;
+    }
+
+
+    void gotFlag(int flag){
+        flags |= flag;
+        switch (flag){
+            case JUST_LOGGED:
+                getFriends();
+                getUInfo();
+                break;
+            case UINFO_DONE:
+                flags = flags & ~UINFO_FAILED;
+                if ((flags & JUST_LOGGED) == JUST_LOGGED)
+                    sync();
+                break;
+            case UINFO_FAILED:
+                if ((flags & JUST_LOGGED) == JUST_LOGGED){
+                    showToast(getString(R.string.failedToGetUserInfo));
+                    finish();
+                } else
+                    flags |= UINFO_DONE;
+                break;
+            case FRIENDS_DONE:
+                flags = flags & ~FRIENDS_FAILED;
+                FriendTable.syncWithDb(getApplicationContext(), friends);
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void onError(Throwable e) {
-                        play();
+                    public void run() {
                         hideProgressDialog();
+                        showFriendsList(friends);
                     }
                 });
+                break;
+            case FRIENDS_FAILED:
+                if ((flags & JUST_LOGGED) == JUST_LOGGED)
+                    showToast(getString(R.string.failedToGetFriends));
+                flags |= FRIENDS_DONE;
+                break;
+            case SYNC_DONE:
+                flags = flags & ~SYNC_FAILED;
+                updateHints();
+                updateScore();
+                break;
+            case SYNC_FAILED:
+                if ((flags & JUST_LOGGED) == JUST_LOGGED)
+                    showToast(getString(R.string.failedToGetUserInfo));
+                flags |= SYNC_DONE;
+                break;
+        }
+        if ((flags & ALL_DONE) == ALL_DONE)
+            hideProgressDialog();
+    }
 
+    void showToast(final String message){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(FacebookActivity.this, message, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -119,24 +222,49 @@ public class FacebookActivity extends BaseActivity {
         if (data == null || data.gifts == null || data.gifts.length == 0)
         return;
 
-        showMessageDialog(Utils.getGiftsMessage(this, data), null);
+        showMessageDialog(Utils.getGiftsMessage(this, data));
     }
 
     void showFriendsList(final FacebookFriend[] friends) {
-        findViewById(R.id.tableCont).setVisibility(View.VISIBLE);
+        if (friends == null || friends.length == 0)
+            return;
 
+        this.friends = friends;
+
+        LinearLayout table = (LinearLayout) findViewById(R.id.table);
+        table.removeAllViewsInLayout();
+        showFriendsRows(0,  20);
+        showControls();
+    }
+
+    void showControls(){
+        findViewById(R.id.tableCont).setVisibility(View.VISIBLE);
+        findViewById(R.id.backButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.playButton).setVisibility(View.VISIBLE);
+    }
+
+    void play() {
+        ((SnappersApplication) getApplication()).setSwitchingActivities();
+        startActivity(new Intent(this, SelectPackActivity.class));
+    }
+
+    public void onPlayButtonClick(View v) {
+        SoundManager.getInstance(this).playButtonSound();
+        play();
+    }
+
+    void showFriendsRows(int start, int max){
         LayoutInflater inflater = getLayoutInflater();
         Typeface font = Resources.getFont(FacebookActivity.this);
         int starWidth = wndWidth * 56 / 640;
         LinearLayout table = (LinearLayout) findViewById(R.id.table);
-        table.removeAllViews();
 
-        int amount = friends.length;
-        if (amount > 20)
-            amount = 20;
+        int amount = Math.min(max, friends.length - start);
+
+        Runnable loaders[] = new Runnable[amount];
 
         for (int i = 0; i < amount; i++) {
-            FacebookFriend friend = friends[i];
+            FacebookFriend friend = friends[start + i];
             LinearLayout row = (LinearLayout) inflater.inflate(R.layout.partial_friend_row, null);
             if (i % 2 == 1)
                 row.setBackgroundColor(getResources().getColor(R.color.row_light));
@@ -180,18 +308,26 @@ public class FacebookActivity extends BaseActivity {
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             table.addView(row, lp);
-            WorkerThreads.run(new LoadIconForView(friend.facebook_id, (ImageView)row.findViewById(R.id.iconUser)));
+            loaders[i] = new LoadIconForView(friend.facebook_id, (ImageView)row.findViewById(R.id.iconUser));
         }
-    }
 
-    void play() {
-        ((SnappersApplication) getApplication()).setSwitchingActivities();
-        startActivity(new Intent(this, SelectPackActivity.class));
-    }
+        if (start + amount < friends.length){
+            TextView more = new TextView(this);
+            more.setText(R.string.showMore);
+            more.setTypeface(font);
+            more.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
+            more.setTextColor(getResources().getColor(R.color.textColor));
+            more.setGravity(Gravity.CENTER);
+            more.setOnClickListener(moreClickListener);
+            more.setBackgroundColor(R.color.row_dark);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 3 * Metrics.fontSize);
+            table.addView(more, lp);
+        }
 
-    public void onPlayButtonClick(View v) {
-        SoundManager.getInstance(this).playButtonSound();
-        play();
+        getWindow().getDecorView().requestLayout();
+        getWindow().getDecorView().invalidate();
+
+        WorkerThreads.run(loaders);
     }
 
     View.OnClickListener friendClickListener = new View.OnClickListener() {
@@ -201,21 +337,23 @@ public class FacebookActivity extends BaseActivity {
 
             int size = v.getHeight() - v.getPaddingBottom() - v.getPaddingTop();
             if (size == 0)
-                size++;
+                size = 30;
 
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)bar.getLayoutParams();
-            lp.width = lp.height = size;
-            bar.setLayoutParams(lp);
+            showProgress(bar, size);
 
-            bar.setVisibility(View.VISIBLE);
+            //RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)bar.getLayoutParams();
+            //lp.width = lp.height = size;
+            //bar.setLayoutParams(lp);
 
-            bar.setImageResource(R.drawable.spinner_white_48);
+            //bar.setVisibility(View.VISIBLE);
+
+            //bar.setImageResource(R.drawable.spinner_white_48);
             v.findViewById(R.id.btnText).setVisibility(View.INVISIBLE);
             v.setClickable(false);
 
-            Animation rotation = AnimationUtils.loadAnimation(FacebookActivity.this, R.anim.rotate);
-            rotation.setRepeatCount(Animation.INFINITE);
-            bar.startAnimation(rotation);
+            //Animation rotation = AnimationUtils.loadAnimation(FacebookActivity.this, R.anim.rotate);
+            //rotation.setRepeatCount(Animation.INFINITE);
+            //bar.startAnimation(rotation);
 
             FacebookFriend friend = (FacebookFriend) v.getTag();
             if (friend.installed)
@@ -225,6 +363,28 @@ public class FacebookActivity extends BaseActivity {
                 String msg = getString(R.string.inviteMessage, friend.first_name, code);
                 facebookTransport.invite(friend.id, msg, new GiftInviteResponceListener(friend, v, bar));
             }
+        }
+    };
+
+    void showProgress(ImageView bar, int size){
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)bar.getLayoutParams();
+        lp.width = lp.height = size;
+        bar.setLayoutParams(lp);
+        bar.setVisibility(View.VISIBLE);
+        bar.setImageResource(R.drawable.spinner_white_48);
+
+        Animation rotation = AnimationUtils.loadAnimation(FacebookActivity.this, R.anim.rotate);
+        rotation.setRepeatCount(Animation.INFINITE);
+        bar.startAnimation(rotation);
+    }
+
+    View.OnClickListener moreClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            LinearLayout table = ((LinearLayout)findViewById(R.id.table));
+            table.removeViewInLayout(v);
+            int currentShown = ((LinearLayout) findViewById(R.id.table)).getChildCount();
+            showFriendsRows(currentShown, 20);
         }
     };
 

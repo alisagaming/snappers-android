@@ -3,7 +3,11 @@ package com.emerginggames.snappers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import com.emerginggames.snappers.data.FriendTable;
+import com.emerginggames.snappers.model.FbUserInfo;
+import com.emerginggames.snappers.model.SyncData;
 import com.emerginggames.snappers.utils.DeviceUuidFactory;
+import com.emerginggames.snappers.utils.UserPreferencesBase;
 import org.acra.ACRA;
 import com.emerginggames.snappers.data.CryptHelperAES;
 import com.emerginggames.snappers.data.LevelPackTable;
@@ -13,14 +17,16 @@ import com.emerginggames.snappers.model.LevelPack;
 
 import com.emerginggames.snappers.utils.DeviceUuidFactory;
 
+import java.util.Map;
+
 /**
  * Created by IntelliJ IDEA.
  * User: babay
  * Date: 06.04.12
  * Time: 17:01
  */
-public class UserPreferences {
-    private static final String PREFERENCES = "Preferences";
+public class UserPreferences extends UserPreferencesBase {
+
     private static final String INITIIALISED = "Initialised";
     private static final String SCORE = "Score";
     private static final String HINTS = "Hints";
@@ -41,435 +47,406 @@ public class UserPreferences {
     private static final String FACEBOOK_NAME = "fbName";
     private static final String FACEBOOK_EXPIRES = "access_expires";
     private static final String FACEBOOK_TOKEN = "access_token";
-    public static String Key1;
-    public static String Key11;
-    public static String Key21;
-    public static String Key2;
-    public static String Key3;
-    public static String Key4;
-    public static String Key5;
+    private static final String FB_UID = "fb_uid_";
+    private static final String HAD_FB_SYNC = "had fb sync";
 
-    private static final int INITIAL_HINTS = Settings.DEBUG? 10:2;
-    Context context;
+
+    private static final int INITIAL_HINTS = Settings.DEBUG ? 10 : 2;
     private static UserPreferences instance;
-    SharedPreferences prefs;
-    DeviceUuidFactory factory;
-    HintChangedListener hintChangedListener;
+    private static final Object editorLock = new Object();
 
-    public static UserPreferences getInstance(Context context){
+
+    HintChangedListener hintChangedListener;
+    long fbUID;
+
+
+    public static UserPreferences getInstance(Context context) {
         if (instance == null)
             return instance = new UserPreferences(context);
         return instance;
     }
 
     public UserPreferences(Context context) {
-        this.context = context;
-        prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        if (LevelPackTable.getName().equals("vitaliy.suprun"))
-            if (LevelPackTable.getHost().equals("gmail.com")){
-                if (Key1 == null)
-                    factory = new DeviceUuidFactory(context);
-                getKey1();
-                getKey2();
-                getKey3();
-            }
+        super(context);
         initialise();
+        fbUID = prefs.getLong(FB_UID, 0);
     }
 
     public static void setContext(Context context) {
         if (instance == null)
             instance = new UserPreferences(context);
-        else if (context!= null)
+        else if (context != null)
             instance.context = context;
     }
 
-    public void setLastUsedDailyBonus(long time){
-        putLong(LAST_USED_DAILY_BONUS, time, LAST_USED_DAILY_BONUS);
+    public void setLastUsedDailyBonus(long time) {
+        putLong(LAST_USED_DAILY_BONUS, time);
     }
 
-    public long getLastUsedDailyBonus(){
-        return getLong(LAST_USED_DAILY_BONUS, 0, LAST_USED_DAILY_BONUS);
+    public long getLastUsedDailyBonus() {
+        return getLong(LAST_USED_DAILY_BONUS, 0);
     }
 
-    public void setTapjoyEnabled(boolean enabled){
-        putBoolean(TAPJOY_ENABLED, enabled, TAPJOY_ENABLED);
+    public void setTapjoyEnabled(boolean enabled) {
+        putBoolean(TAPJOY_ENABLED, enabled);
     }
 
-    public boolean isTapjoyEnabled(){
-        return getBoolean(TAPJOY_ENABLED, false, TAPJOY_ENABLED);
+    public boolean isTapjoyEnabled() {
+        return getBoolean(TAPJOY_ENABLED, false);
     }
 
-    public void setIngameAds(boolean enabled){
-        putBoolean(INGAMEADS, enabled, INGAMEADS);
+    public void setIngameAds(boolean enabled) {
+        putBoolean(INGAMEADS, enabled);
     }
 
-    public boolean getIngameAds(){
-        return getBoolean(INGAMEADS, false, INGAMEADS);
+    public boolean getIngameAds() {
+        return getBoolean(INGAMEADS, false);
     }
 
-    public void touchHints(){
-        putBoolean(HINTS_TOUCHED, true, HINTS_TOUCHED);
+    public void touchHints() {
+        putBoolean(HINTS_TOUCHED, true);
     }
 
-    public boolean areHintsTouched(){
-        return getBoolean(HINTS_TOUCHED, false, HINTS_TOUCHED);
+    public boolean areHintsTouched() {
+        return getBoolean(HINTS_TOUCHED, false);
     }
 
-    public int getHintsRemaining(){
-        return getInt(HINTS, 0, HINTS);
+    public int getHintsRemaining() {
+        return getInt(fbUID == 0 ? HINTS : "!" + HINTS, 0, HINTS);
     }
 
-    public void setGInAppInitDone(boolean done){
-        putBoolean(G_IN_APP_INIT_DONE, done, G_IN_APP_INIT_DONE);
+    public void setGInAppInitDone(boolean done) {
+        putBoolean(G_IN_APP_INIT_DONE, done);
     }
 
-    public boolean isGInAppInitDone(){
-        return getBoolean(G_IN_APP_INIT_DONE, false, G_IN_APP_INIT_DONE);
+    public boolean isGInAppInitDone() {
+        return getBoolean(G_IN_APP_INIT_DONE, false);
     }
 
-    public void useHint(){
+    public void useHint() {
         addHints(-1);
     }
 
-    public void addHints(int amount){
+    public void addHints(int amount) {
         int hintsRemaining = getHintsRemaining();
         setHints(amount + hintsRemaining);
-        if (hintChangedListener!= null)
-            hintChangedListener.onHintsChanged(hintsRemaining, hintsRemaining +amount);
+        if (hintChangedListener != null)
+            hintChangedListener.onHintsChanged(hintsRemaining, hintsRemaining + amount);
 
     }
 
-    public void setHints(int amount){
-        putInt(HINTS, amount, HINTS);
+    public void setHints(int amount) {
+        putInt(fbUID == 0 ? HINTS : "!" + HINTS, amount, HINTS);
         if (!areHintsTouched())
             touchHints();
     }
-    
-    public boolean isPackUnlocked(int id){
+
+    public boolean isPackUnlocked(int id) {
         return getLevelUnlocked(id) > 0;
     }
 
-    public boolean isPackUnlocked(LevelPack pack){
+    public boolean isPackUnlocked(LevelPack pack) {
         return getLevelUnlocked(pack) > 0;
     }
 
-    public int getLevelUnlocked(LevelPack pack){
+    public int getLevelUnlocked(LevelPack pack) {
         if (pack == null)
             return 0;
         if (Settings.ENABLE_ALL_LEVELS)
             return 1000;
-        if (Settings.IS_PREMIUM && pack.title.equals("Extra"))
-            return Math.max(1, getInt(String.format(LEVEL_UNLOCK, pack.name), 0, pack.name));
+        if (pack.id == 1 || (Settings.IS_PREMIUM && pack.title.equals("Extra")))
+            return Math.max(1, getInt(getPackKey(pack.name), 0, pack.name));
 
-        return getInt(String.format(LEVEL_UNLOCK, pack.name), 0, pack.name);
+        return getInt(getPackKey(pack.name), 0, pack.name);
     }
-    
-    public int getLevelUnlocked(int packId){
+
+    public int getLevelUnlocked(int packId) {
         return getLevelUnlocked(LevelPackTable.get(packId, context));
     }
 
-    public void unlockNextLevelPack(LevelPack cur){
+    public void unlockNextLevelPack(LevelPack cur) {
         if (cur.isPremium)
             return;
         LevelPack[] packs = LevelPackTable.getAllByPremium(context, false);
-        for (int i=0; i< packs.length-1; i++)
-            if (packs[i].id == cur.id){
+        for (int i = 0; i < packs.length - 1; i++)
+            if (packs[i].id == cur.id) {
                 unlockLevelPack(packs[i + 1]);
                 return;
             }
     }
 
-    public void unlockLevelPack(LevelPack pack){
-        putInt(String.format(LEVEL_UNLOCK, pack.name), 1, pack.name);
+    public void unlockLevelPack(LevelPack pack) {
+        putInt(getPackKey(pack.name), 1, pack.name);
     }
 
-    public void lockLevelPack(LevelPack pack){
+    public void lockLevelPack(LevelPack pack) {
+        remove(getPackKey(pack.name));
+    }
+
+    public int getScore() {
+        return prefs.getInt(fbUID == 0 ? SCORE : "!" + SCORE, 0);
+    }
+
+    public void setScore(int addScore) {
         Editor editor = prefs.edit();
-        editor.remove(_S(String.format(LEVEL_UNLOCK, pack.name)));
+        editor.putInt(fbUID == 0 ? SCORE : "!" + SCORE, addScore);
         editor.commit();
     }
-    
-    public int getScore(){
-        return prefs.getInt(SCORE, 0);
-    }
 
-    public void setScore(int addScore){
-        Editor editor = prefs.edit();
-        editor.putInt(SCORE, addScore);
-        editor.commit();
-    }
-
-    public void addScore(int addScore){
+    public void addScore(int addScore) {
         addScore += getScore();
         Editor editor = prefs.edit();
-        editor.putInt(SCORE, addScore);
+        editor.putInt(fbUID == 0 ? SCORE : "!" + SCORE, addScore);
         editor.commit();
     }
 
-    public void unlockNextLevel(Level currentLevel){
+    public void unlockNextLevel(Level currentLevel) {
         if (currentLevel.pack == null)
             currentLevel.pack = LevelPackTable.get(currentLevel.packNumber, context);
         int unlocked = getLevelUnlocked(currentLevel.pack);
-        if (unlocked> currentLevel.number)
+        if (unlocked > currentLevel.number)
             return;
 
         unlockLevel(currentLevel.pack.name, currentLevel.number + 1);
     }
 
-    public void unlockLevel(String name, int level){
-        putInt(String.format(LEVEL_UNLOCK, name), level, name);
+    public void unlockLevel(String name, int level) {
+        putInt(getPackKey(name), level, name);
     }
 
-    public boolean isLevelSolved(Level level){
+    public boolean isLevelSolved(Level level) {
         return level.number < getLevelUnlocked(level.packNumber);
     }
 
-    public boolean isAdFree(){
-        return  getBoolean(ADFREE, false, ADFREE);
+    public boolean isAdFree() {
+        return getBoolean(ADFREE, false);
     }
 
-    public void setAdFree(boolean isAdFree){
-        putBoolean(ADFREE, isAdFree, ADFREE);
+    public void setAdFree(boolean isAdFree) {
+        putBoolean(ADFREE, isAdFree);
     }
 
-    private void initialise(){
-        if (getBoolean(INITIIALISED, false, INITIIALISED))
+    private void initialise() {
+        if (getBoolean(INITIIALISED, false))
             return;
 
-        unlockLevelPack(LevelPackTable.get(1, context));
-        putInt(HINTS, INITIAL_HINTS, HINTS);
-        putBoolean(INITIIALISED, true, INITIIALISED);
+        putInt(fbUID == 0 ? HINTS : "!" + HINTS, INITIAL_HINTS, HINTS);
+        putBoolean(INITIIALISED, true);
 
         ACRA.getACRASharedPreferences().edit().putBoolean(ACRA.PREF_ENABLE_DEVICE_ID, false).commit();
     }
 
-    public void setMusic(boolean enabled){
-        putBoolean(MUSIC, enabled, MUSIC);
+    public void setMusic(boolean enabled) {
+        putBoolean(MUSIC, enabled);
     }
 
-    public boolean getMusic(){
-        return getBoolean(MUSIC, true, MUSIC);
+    public boolean getMusic() {
+        return getBoolean(MUSIC, true);
     }
 
-    public void setSound(boolean enabled){
-        putBoolean(SOUND, enabled, SOUND);
+    public void setSound(boolean enabled) {
+        putBoolean(SOUND, enabled);
     }
 
-    public boolean getSound(){
-        return getBoolean(SOUND, true, SOUND);
+    public boolean getSound() {
+        return getBoolean(SOUND, true);
     }
 
-    public boolean isLiked(){
-        return getBoolean(USER_LIKED, false, USER_LIKED);
+    public boolean isLiked() {
+        return getBoolean(USER_LIKED, false);
     }
 
-    public void setLiked(boolean liked){
-        putBoolean(USER_LIKED, liked, USER_LIKED);
+    public void setLiked(boolean liked) {
+        putBoolean(USER_LIKED, liked);
     }
 
-    public boolean isRated(){
-        return getBoolean(USER_RATED, false, USER_RATED);
+    public boolean isRated() {
+        return getBoolean(USER_RATED, false);
     }
 
-    public void setRated(boolean rated){
-        putBoolean(USER_RATED, rated, USER_RATED);
+    public void setRated(boolean rated) {
+        putBoolean(USER_RATED, rated);
     }
 
-    public long getLastLikeRecommeded(){
-        return getLong(LAST_LIKE_RECOMMENDED, 0, LAST_LIKE_RECOMMENDED);
+    public long getLastLikeRecommeded() {
+        return getLong(LAST_LIKE_RECOMMENDED, 0);
     }
 
-    public void setLastLikeRecommended(long time){
-        putLong(LAST_LIKE_RECOMMENDED, time, LAST_LIKE_RECOMMENDED);
+    public void setLastLikeRecommended(long time) {
+        putLong(LAST_LIKE_RECOMMENDED, time);
     }
 
-    public long getLastRateRecommeded(){
-        return getLong(LAST_RATE_RECOMMENDED, 0, LAST_RATE_RECOMMENDED);
+    public long getLastRateRecommeded() {
+        return getLong(LAST_RATE_RECOMMENDED, 0);
     }
 
-    public void setLastRateRecommended(long time){
-        putLong(LAST_RATE_RECOMMENDED, time, LAST_RATE_RECOMMENDED);
+    public void setLastRateRecommended(long time) {
+        putLong(LAST_RATE_RECOMMENDED, time);
     }
 
-    public void setPromoCode(String code){
+    public void setPromoCode(String code) {
         putString(PROMO_CODE, code);
     }
 
-    public String getPromoCode(){
+    public String getPromoCode() {
         return getString(PROMO_CODE);
     }
 
-    public String getFbToken(){
+    public String getFbToken() {
         return prefs.getString(FACEBOOK_TOKEN, null);
     }
 
-    public void setFbToken(String token){
+    public void setFbToken(String token) {
         prefs.edit().putString("access_token", token).commit();
     }
 
-    public void setFacebookUserName(String name){
+    public void setFacebookUserName(String name) {
         prefs.edit().putString(FACEBOOK_NAME, name).commit();
     }
 
-    public String getFacebookUserName(){
+    public String getFacebookUserName() {
         return prefs.getString(FACEBOOK_NAME, null);
     }
 
-    public long getFbExpires(){
+    public long getFbExpires() {
         return prefs.getLong(FACEBOOK_EXPIRES, 0);
     }
 
-    public void setFbExpires(long expires){
+    public void setFbExpires(long expires) {
         prefs.edit().putLong(FACEBOOK_EXPIRES, expires);
     }
 
-    public void setFb(String token, long expires){
+    public void setFb(String token, long expires) {
         prefs.edit().putString(FACEBOOK_TOKEN, token).putLong(FACEBOOK_EXPIRES, expires).commit();
     }
 
-    public void clearFb(){
-        prefs.edit().remove(FACEBOOK_EXPIRES).remove(FACEBOOK_NAME).remove(FACEBOOK_TOKEN).commit();
+    public void logoffFb() {
+        prefs.edit().remove(FACEBOOK_EXPIRES).remove(FACEBOOK_NAME).remove(FACEBOOK_TOKEN).remove(FB_UID).commit();
+        fbUID = 0;
+        clearFbUidInfo();
     }
 
+    public void setCurrentUser(FbUserInfo user) {
+        if (prefs.getLong(FB_UID, 0) != user.fbUID) {
+            clearFbUidInfo();
+            prefs.edit().putLong(FB_UID, user.fbUID).putString(FACEBOOK_NAME, user.name).commit();
+            fbUID = user.fbUID;
+        } else if (!user.name.equalsIgnoreCase(getFacebookUserName()))
+            setFacebookUserName(user.name);
+    }
+
+    public void loggedIn(String token, long expires) {
+        clearFbUidInfo();
+        setFb(token, expires);
+    }
+
+    public void clearFbUidInfo() {
+        FriendTable.clear(context);
+        synchronized (editorLock) {
+            editor = prefs.edit();
+            editor
+                    .remove(USER_LIKED)
+                    .remove(HAD_FB_SYNC);
+
+            remove("!" + SCORE);
+            remove("!" + HINTS);
+
+            LevelPack[] packs = LevelPackTable.getAll(context);
+
+            for (LevelPack pack : packs)
+                remove("!" + getPackKey(pack.name));
+
+            editor.commit();
+            editor = null;
+        }
+
+        fbUID = 0;
+    }
+
+    String getPackKey(String name) {
+        String key = String.format(LEVEL_UNLOCK, name);
+        return fbUID == 0 ? key : "!" + key;
+    }
+
+    boolean hadFbSync() {
+        return prefs.getBoolean(HAD_FB_SYNC, false);
+    }
+
+    void setFbSync() {
+        if (editor == null){
+            Editor edt = prefs.edit();
+            edt.putBoolean(HAD_FB_SYNC, true);
+            edt.commit();
+        }
+        else
+            editor.putBoolean(HAD_FB_SYNC, true);
+    }
+
+    public SyncData getSyncData() {
+        long tmpUid = 0;
+        if (!hadFbSync()) {
+            tmpUid = fbUID;
+            fbUID = 0;
+        }
+
+        SyncData syncData = new SyncData();
+        syncData.hint_count = getHintsRemaining();
+        syncData.xp_count = getScore();
+        syncData.xp_level = Settings.getLevel(syncData.xp_count);
+        syncData.promoCode = getPromoCode();
+
+        for (LevelPack pack : LevelPackTable.getAll(context)) {
+            int n = getLevelUnlocked(pack);
+            if (n > 0)
+                syncData.addLevelUnlock(pack, n);
+        }
+
+        if (tmpUid != 0)
+            fbUID = tmpUid;
 
 
+        return syncData;
+    }
 
+    public void saveSyncData(SyncData data) {
+        int currentScore = getScore();
+        synchronized (editorLock) {
+            editor = prefs.edit();
+            if (currentScore < data.xp_count) {
+                setHints(data.hint_count);
+                setScore(data.xp_count);
+                if (!data.promoCode.equals(getPromoCode()))
+                    setPromoCode(data.promoCode);
 
+                for (Map.Entry<String, Integer> pairs : data.levelUnlocks.entrySet()) {
+                    String key = pairs.getKey();
+                    Integer value = pairs.getValue();
 
+                    unlockLevel(key, value);
+                }
+            }
 
+            if (data.gifts != null && data.gifts.length != 0) {
+                addHints(data.gifts.length);
+            }
 
+            setFbSync();
 
-
-
-
-    private String _S(String s){
-        try{
-            if (Settings.NO_PREF_ENCRYPT)
-                return s;
-            else
-                return CryptHelperAES.encrypt(getKey3(), s);
-        } catch (Exception e){
-            throw new RuntimeException(e);
+            editor.commit();
+            editor = null;
         }
     }
-    
-    private String deS(String s){
-        try{
-            return CryptHelperAES.decrypt(getKey3(), s);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
 
-    private String _S(String s, String salt){
-        try{
-            if (Settings.NO_PREF_ENCRYPT)
-                return s;
-            else
-                return CryptHelperAES.encrypt(salt + getKey3(), s);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String deS(String s, String salt){
-        try{
-            if (Settings.NO_PREF_ENCRYPT)
-                return s;
-            else
-                return CryptHelperAES.decrypt(salt + getKey3(), s);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    private int getInt(String key, int def, String salt){
-        try {
-            return Integer.parseInt(deS(prefs.getString(_S(key), null), salt));
-        }catch (Exception e){
-            return def;
-        }
-    }
-
-    private void putInt(String key, int val, String salt){
-        Editor editor = prefs.edit();
-        editor.putString(_S(key), _S(Integer.toString(val), salt));
-        editor.commit();
-    }
-
-    private long getLong(String key, int def, String salt){
-        try {
-            return Long.parseLong(deS(prefs.getString(_S(key), null), salt));
-        }catch (Exception e){
-            return def;
-        }
-    }
-
-    private void putLong(String key, long val, String salt){
-        Editor editor = prefs.edit();
-        editor.putString(_S(key), _S(Long.toString(val), salt));
-        editor.commit();
-    }
-
-    private void putString(String key, String val){
-        Editor editor = prefs.edit();
-        editor.putString(_S(key), _S(val, key));
-        editor.commit();
-    }
-
-    public String getString(String key){
-        try {
-            return deS(prefs.getString(_S(key), null), key);
-        }catch (Exception e){
-            return null;
-        }
-    }
-
-    private boolean getBoolean(String key, boolean def, String salt){
-        try {
-            return Boolean.parseBoolean(deS(prefs.getString(_S(key), null), salt));
-        }catch (Exception e){
-            return def;
-        }
-    }
-
-    private void putBoolean(String key, boolean val, String salt){
-        Editor editor = prefs.edit();
-        editor.putString(_S(key), _S(Boolean.toString(val), salt));
-        editor.commit();
-    }
-
-    public String getKey1(){
-        if (Key1 == null)
-            Key1 = context.getString(R.string.app_name) + LevelPackTable.MAIL;
-        Key11 = Key1;
-        return Key1;
-    }
-
-    public String getKey3(){
-        if (Key3 == null)
-            Key3 = factory.getDeviceUuid().toString() + LevelPackTable.getHost();
-        return Key3;
-    }
-
-    public String getKey12(){
-        String res = Key11;
-        Key11 = Key21;
-        return Key21 = res;
-    }
-
-    public String getKey2(){
-        if (Key2 == null)
-            Key2 = LevelPackTable.getHost() + LevelTable.getMail();
-        Key21 = Key2;
-        return Key2;
+    public boolean hasUID() {
+        return fbUID != 0;
     }
 
     public void setHintChangedListener(HintChangedListener hintChangedListener) {
         this.hintChangedListener = hintChangedListener;
     }
 
-    public interface HintChangedListener{
+    public interface HintChangedListener {
         public void onHintsChanged(int old, int current);
     }
+
 }

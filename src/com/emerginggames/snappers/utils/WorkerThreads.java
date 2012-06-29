@@ -62,6 +62,16 @@ public class WorkerThreads {
         getFreeHandler().run(runnable);
     }
 
+    public static void run (final Runnable[] runnables){
+        getFreeHandler().run(new Runnable() {
+            @Override
+            public void run() {
+                for (Runnable runnable: runnables)
+                    getFreeHandler().run(runnable);
+            }
+        });
+    }
+
     class HandlerWrapper{
         Handler handler;
         HandlerThread thread;

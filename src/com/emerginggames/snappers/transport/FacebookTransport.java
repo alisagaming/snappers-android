@@ -1,9 +1,6 @@
 package com.emerginggames.snappers.transport;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import com.emerginggames.snappers.UserPreferences;
@@ -11,8 +8,6 @@ import com.emerginggames.snappers.data.FriendTable;
 import com.emerginggames.snappers.model.FacebookFriend;
 import com.emerginggames.snappers.model.SyncData;
 import com.facebook.android.*;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,10 +45,10 @@ public class FacebookTransport {
 
     public void sync(ResponseListener listener) {
         UserPreferences mPrefs = UserPreferences.getInstance(context);
-        JsonTransport.sync(mPrefs.getFbToken(), SyncData.load(context), new FacebookJsonListener(listener) {
+        JsonTransport.sync(mPrefs.getFbToken(), mPrefs.getSyncData(), new FacebookJsonListener(listener) {
             @Override
             public void onOk(Object responce) {
-                ((SyncData) responce).save(context);
+                UserPreferences.getInstance(context).saveSyncData(((SyncData) responce));
                 super.onOk(responce);
             }
         });
@@ -98,8 +93,8 @@ public class FacebookTransport {
         public void giftsReceived(long[] senders);
     }
 
-    public void getName(ResponseListener listener) {
-        mAsyncRunner.request("me", new NameRequestListener(context, listener));
+    public void getUserInfo(ResponseListener listener) {
+        mAsyncRunner.request("me", new UserInfoRequestListener(context, listener));
     }
 
     public boolean isLoggedIn() {
@@ -122,42 +117,31 @@ public class FacebookTransport {
         });
     }
 
-    public void login(final ResponseListener listener1, final boolean deferRequestName) {
+    public void login(final ResponseListener listener1) {
         facebook.authorize(context, new Facebook.DialogListener() {
             @Override
             public void onComplete(Bundle values) {
                 prefs.setFb(facebook.getAccessToken(), facebook.getAccessExpires());
-                if (deferRequestName) {
-                    listener1.onOk(null);
-                    getName(null);
-                } else
-                    getName(new ResponseListener() {
-                        @Override
-                        public void onOk(Object data) {
-                            listener1.onOk(null);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            listener1.onOk(null);
-                        }
-                    });
-
+                if  (listener1 != null)
+                    listener1.onOk(values);
             }
 
             @Override
             public void onFacebookError(FacebookError error) {
-                listener1.onError(error);
+                if  (listener1 != null)
+                    listener1.onError(error);
             }
 
             @Override
             public void onError(DialogError e) {
-                listener1.onError(e);
+                if  (listener1 != null)
+                    listener1.onError(e);
             }
 
             @Override
             public void onCancel() {
-                listener1.onError(null);
+                if  (listener1 != null)
+                    listener1.onError(null);
             }
         });
     }
@@ -167,7 +151,7 @@ public class FacebookTransport {
             @Override
             public void onComplete(String response, Object state) {
                 listener.onOk(state);
-                prefs.clearFb();
+                prefs.logoffFb();
             }
 
             @Override

@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import com.emerginggames.snappers.*;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.transport.FacebookTransport;
+import com.emrg.view.ImageView;
 import com.emrg.view.OutlinedTextView;
 
 /**
@@ -55,7 +58,7 @@ public class SettingsDialog extends Dialog {
         otv.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
         otv.setOnClickListener(loginClickListener);
 
-        setupRow(padding, font, R.id.iconUser, R.id.loginFbText, R.id.loginFbBtn);
+        setupRow(padding, font, R.id.iconUser, R.id.loginFbText, R.id.loginBtnCont);
         setupRow(padding, font, R.id.iconFb, R.id.shareFbText, R.id.shareToFbCheckbox);
         setupRow(padding, font, R.id.iconSound, R.id.soundText, R.id.soundCheckbox);
         setupRow(padding, font, R.id.iconMusic, R.id.musicText, R.id.musicCheckbox);
@@ -103,6 +106,9 @@ public class SettingsDialog extends Dialog {
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                hideLoginProgress();
+                unblock();
+                findViewById(R.id.loginFbBtn).setVisibility(View.VISIBLE);
                 if (facebookTransport.isLoggedIn()){
                     String userName = prefs.getFacebookUserName();
                     if (userName != null)
@@ -129,7 +135,16 @@ public class SettingsDialog extends Dialog {
         LinearLayout.LayoutParams lpl = (LinearLayout.LayoutParams)findViewById(id).getLayoutParams();
         lpl.width = (int)(lpl.width / scale);
         lpl.height = (int)(lpl.height / scale);
+    }
 
+    void block(){
+        findViewById(R.id.backButton).setVisibility(View.INVISIBLE);
+        setCancelable(false);
+    }
+
+    void unblock(){
+        findViewById(R.id.backButton).setVisibility(View.VISIBLE);
+        setCancelable(true);
     }
 
     void setupRow(int padding, Typeface font, int iconId, int textId, int btnId){
@@ -151,28 +166,69 @@ public class SettingsDialog extends Dialog {
         getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
     }
 
+    void showProgress(ImageView bar, int size){
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)bar.getLayoutParams();
+        lp.width = lp.height = size;
+        bar.setLayoutParams(lp);
+        bar.setVisibility(View.VISIBLE);
+        bar.setImageResource(R.drawable.spinner_white_48);
+
+        Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+        rotation.setRepeatCount(Animation.INFINITE);
+        bar.startAnimation(rotation);
+    }
+
+    void hideLoginProgress(){
+        View img = findViewById(R.id.progress);
+        img.clearAnimation();
+        img.setVisibility(View.INVISIBLE);
+    }
+
     View.OnClickListener loginClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (facebookTransport.isLoggedIn()){
-                facebookTransport.logoff(new FacebookTransport.ResponseListener(){
-                    @Override
-                    public void onOk(Object data) {
-                        setupLoginRow();
-                    }
-                });
-            }
-            else {
-                facebookTransport.login(new FacebookTransport.ResponseListener() {
-                    @Override
-                    public void onOk(Object data) {
-                        setupLoginRow();
-                    }
-                }, true);
-            }
-
+            if (facebookTransport.isLoggedIn())
+                logoff();
+            else
+                login();
         }
     };
+
+    void login(){
+            facebookTransport.login(new FacebookTransport.ResponseListener() {
+                @Override
+                public void onOk(Object data) {
+                    setupLoginRow();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    setupLoginRow();
+                }
+            });
+    }
+
+    void logoff(){
+        int size = findViewById(R.id.loginFbBtn).getHeight();
+        if (size == 0)
+            size = 30;
+
+        showProgress((ImageView)findViewById(R.id.progress), size);
+        block();
+        findViewById(R.id.loginFbBtn).setVisibility(View.INVISIBLE);
+
+        facebookTransport.logoff(new FacebookTransport.ResponseListener(){
+            @Override
+            public void onOk(Object data) {
+                setupLoginRow();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                setupLoginRow();
+            }
+        });
+    }
 
     View.OnClickListener backClickListener = new View.OnClickListener() {
         @Override

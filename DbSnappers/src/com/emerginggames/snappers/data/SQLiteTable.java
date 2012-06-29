@@ -26,6 +26,8 @@ public abstract class SQLiteTable<T extends DbItem> {
     protected SQLiteDatabase db;
     protected SQLiteStatement insertStmt;
 
+    public static final Object DbLock = new Object();
+
     protected SQLiteTable(SQLiteDatabase db) {
         this.db = db;
         if (!db.isReadOnly())

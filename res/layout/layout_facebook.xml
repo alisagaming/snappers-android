@@ -20,9 +20,10 @@
 
     <LinearLayout and:id="@+id/tableCont"
             and:layout_width="fill_parent" and:layout_height="fill_parent" and:orientation="vertical"
-                  and:layout_below="@+id/hintBtn" and:layout_above="@+id/playButton"
-                  and:padding="5dp" and:visibility="invisible"
+            and:layout_below="@+id/hintBtn" and:layout_above="@+id/playButton" and:padding="5dp"
+            and:visibility="invisible"
             >
+
         <LinearLayout and:layout_width="fill_parent" and:layout_height="50dp"
                       and:background="@drawable/settings_wnd_top" and:id="@+id/titleCont">
             <com.emrg.view.OutlinedTextView and:id="@+id/title"
@@ -34,12 +35,14 @@
                     />
         </LinearLayout>
 
-        <ScrollView and:id="@+id/mainCont" and:layout_width="fill_parent" and:layout_height="0px" and:layout_weight="1"
-                    and:background="@drawable/settings_wnd_mid">
-            <LinearLayout and:id="@+id/table" and:layout_width="fill_parent" and:layout_height="wrap_content"
-                          and:orientation="vertical"/>
+        <LinearLayout and:layout_width="fill_parent" and:layout_height="0px" and:layout_weight="1" and:background="@drawable/settings_wnd_mid">
+            <ScrollView and:id="@+id/mainCont" and:layout_width="fill_parent" and:layout_height="fill_parent">
+                <LinearLayout and:id="@+id/table" and:layout_width="fill_parent" and:layout_height="wrap_content"
+                              and:orientation="vertical"/>
+            </ScrollView>
+        </LinearLayout>
 
-        </ScrollView>
+
 
         <LinearLayout and:id="@+id/footerCont" and:layout_width="fill_parent" and:layout_height="50dp"
                       and:background="@drawable/settings_wnd_bottom"
@@ -53,6 +56,7 @@
                                  and:src="@drawable/arrow_back_btn" and:scaleType="fitCenter"
                                  and:adjustViewBounds="true"
                                  and:onClick="onBackButtonClick"
+                                 and:visibility="invisible"
                 />
 
 
@@ -62,6 +66,7 @@
                                  and:src="@drawable/button_play_long" and:scaleType="fitCenter"
                                  and:adjustViewBounds="true"
                                  and:onClick="onPlayButtonClick"
+                                 and:visibility="invisible"
                 />
 
 </RelativeLayout>

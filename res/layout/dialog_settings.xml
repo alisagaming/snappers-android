@@ -27,13 +27,20 @@
                       and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
                       and:src="@drawable/icon_user" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
                 <TextView and:id="@+id/loginFbText"
-                          and:layout_width="0dp" and:layout_height="wrap_content" and:gravity="center" and:layout_gravity="center"
-                          and:layout_weight="1" and:textColor="#1f5897" and:text="@string/loginToFb" />
-                <com.emrg.view.OutlinedTextView and:id="@+id/loginFbBtn"
-                         and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_gravity="center"
-                         and:gravity="center" and:textColor="#fff" and:text="@string/login" and:textSize="30px"
-                         app:strokeColor="#000" app:strokeWidth="1dp" and:background="@drawable/button_blue"
-                         and:padding="10dp"/>
+                            and:layout_width="0dp" and:layout_height="wrap_content" and:gravity="center" and:layout_gravity="center"
+                            and:layout_weight="1" and:textColor="#1f5897" and:text="@string/loginToFb" />
+                <RelativeLayout and:id="@+id/loginBtnCont"
+                            and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_gravity="center"
+                            and:background="@drawable/button_blue" and:padding="5dp">
+                    <com.emrg.view.OutlinedTextView and:id="@+id/loginFbBtn"
+                            and:layout_width="wrap_content" and:layout_height="wrap_content" and:gravity="center"
+                            and:textColor="#fff" and:text="@string/login" app:strokeColor="#000" app:strokeWidth="1dp"
+                            and:paddingTop="3dp" and:paddingBottom="5dp" and:paddingLeft="3dp" and:paddingRight="3dp"/>
+                    <com.emrg.view.ImageView and:id="@+id/progress" and:layout_width="20dp" and:layout_height="20dp"
+                            and:layout_centerInParent="true" and:src="@drawable/transparent" and:visibility="invisible"
+                            and:adjustViewBounds="true"/>
+                </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"

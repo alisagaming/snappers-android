@@ -42,8 +42,6 @@ public class MainScreenActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_main);
 
-        FacebookTransport facebookTransport = new FacebookTransport(this);
-
         scrWidth = getWindowManager().getDefaultDisplay().getWidth();
         scrHeight = getWindowManager().getDefaultDisplay().getHeight();
         prefs = UserPreferences.getInstance(this);

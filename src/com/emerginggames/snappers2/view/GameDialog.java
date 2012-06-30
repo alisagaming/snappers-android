@@ -41,6 +41,7 @@ public class GameDialog extends Dialog {
     public GameDialog(Context context, int width) {
         this(context);
         this.width = width;
+        getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
     }
 
     public void setBtnClickListener(OnDialogEventListener btnClickListener) {

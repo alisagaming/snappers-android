@@ -1,5 +1,7 @@
 package com.emerginggames.snappers2.view;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.WindowManager;
@@ -45,6 +47,12 @@ public class GameDialogsController{
         //mActivity.getGameOverMessageController().showRays();
         mActivity.getGame().showRays(true);
         mActivity.runOnUiThread(showNewLevelDialog);
+    }
+
+    void showPromoDialog(){
+        PromoDialog promoDialog = new PromoDialog(mActivity);
+        promoDialog.setOwnerActivity(mActivity);
+        promoDialog.show();
     }
 
     Runnable showPausedDialog = new Runnable() {
@@ -226,8 +234,10 @@ public class GameDialogsController{
                     break;
 
                 case R.drawable.button_promo:
-                    mActivity.wentTapjoy = true;
-                    TapjoyConnect.getTapjoyConnectInstance().showOffers();
+//                    mActivity.wentTapjoy = true;
+//                    TapjoyConnect.getTapjoyConnectInstance().showOffers();
+                    showPromoDialog();
+                    dlg.hide();
                     break;
 
                 case R.drawable.button_like:

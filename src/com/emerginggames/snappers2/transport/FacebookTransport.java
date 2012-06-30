@@ -81,6 +81,11 @@ public class FacebookTransport {
         });
     }
 
+    public void checkPromo(String code, ResponseListener listener){
+        UserPreferences mPrefs = UserPreferences.getInstance(context);
+        JsonTransport.promo(mPrefs.getFbToken(), code, new FacebookJsonListener(listener));
+    }
+
     public static class ResponseListener {
         public void onOk(Object data) {
         }
@@ -89,9 +94,7 @@ public class FacebookTransport {
         }
     }
 
-    public interface GiftsReceiver {
-        public void giftsReceived(long[] senders);
-    }
+
 
     public void getUserInfo(ResponseListener listener) {
         mAsyncRunner.request("me", new UserInfoRequestListener(context, listener));

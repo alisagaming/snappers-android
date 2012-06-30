@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:and="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res/com.emerginggames.snappers2"
+                and:layout_width="fill_parent"
+                and:layout_height="fill_parent"
+                and:id="@+id/root"
+        >
+
+    <LinearLayout and:id="@+id/dialog" and:layout_width="fill_parent" and:layout_height="wrap_content"
+                  and:orientation="vertical"
+                  and:layout_centerHorizontal="true"
+                  and:background="@drawable/dialog"
+
+            >
+
+        <com.emrg.view.OutlinedTextView and:id="@+id/message"
+                                        and:layout_width="fill_parent" and:layout_height="wrap_content"
+                                        app:strokeWidth="1dp" app:strokeColor="#000" and:textColor="#fff"
+                                        and:textStyle="bold" and:gravity="left"
+                                        and:text="@string/enterCode" and:textSize="20dp"
+                                        and:layout_marginTop="6dp" and:layout_marginBottom="2dp"/>
+
+        <EditText and:id="@+id/editCode" and:layout_width="fill_parent" and:layout_height="wrap_content"
+                  and:background="@drawable/text_field" and:textSize="30dp" and:textColor="#000"
+                />
+
+
+        <com.emrg.view.ImageView and:id="@+id/okBtn" and:src="@drawable/button_ok"
+                                 and:layout_marginTop="10dp"
+                                 and:layout_width="130dp" and:layout_height="wrap_content"
+                                 and:adjustViewBounds="true" and:scaleType="fitCenter"
+                                 and:layout_gravity="center"/>
+
+
+        <com.emrg.view.OutlinedTextView and:id="@+id/yourCode"
+                                        and:layout_width="fill_parent" and:layout_height="wrap_content"
+                                        app:strokeWidth="1dp"
+                                        app:strokeColor="#000" and:textColor="#fff" and:textStyle="bold"
+                                        and:gravity="center"/>
+
+        <LinearLayout and:layout_width="wrap_content" and:layout_height="wrap_content"
+                      and:layout_gravity="center" and:id="@+id/buttonCont" and:orientation="vertical"/>
+    </LinearLayout>
+
+    <RelativeLayout and:id="@+id/shade"
+                  and:layout_width="fill_parent" and:layout_height="wrap_content" and:layout_centerHorizontal="true"
+                  and:visibility="gone" and:background="@drawable/dialog_sh"/>
+
+    <com.emrg.view.ImageView and:id="@+id/close_btn"
+                             and:layout_width="wrap_content" and:layout_height="wrap_content"
+                             and:src="@drawable/button_close" and:layout_alignParentTop="true"
+                             and:layout_alignParentRight="true"/>
+</RelativeLayout>

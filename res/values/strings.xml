@@ -79,5 +79,14 @@
     <string name="failedToGetUserInfo">Failed to get user info.</string>
     <string name="failedToGetFriends">Failed to get friends.</string>
     <string name="failedToGetData">Failed to get data.</string>
+    <string name="pleaseRateUs" formatted="false">Enjoy playing?\nPlease, rate us 5 stars!</string>
+    <string name="pleaseRateUs" formatted="false">Enjoy playing?\nPlease, rate us 5 stars!</string>
+    <string name="enterCode">Enter code:</string>
+    <string name="yourCodeIs" formatted="false">Your code is\n%s</string>
+    <string name="cantUseOwnCode">You\'ve entered your own code. Please ask friends for their codes.</string>
+    <string name="noSuchCode">No such code.</string>
+    <string name="noSuchCodeLong">The code you\'ve entered is incorrect.</string>
+    <string name="youVeGotHint">You\'ve got one hint.</string>
+    <string name="youVeGotHints" formatted="false">You\'ve got %d hints.</string>
 
 </resources>

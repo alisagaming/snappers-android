@@ -88,5 +88,6 @@
     <string name="noSuchCodeLong">The code you\'ve entered is incorrect.</string>
     <string name="youVeGotHint">You\'ve got one hint.</string>
     <string name="youVeGotHints" formatted="false">You\'ve got %d hints.</string>
+    <string name="pleaseWait" >Please, wait…</string>
 
 </resources>

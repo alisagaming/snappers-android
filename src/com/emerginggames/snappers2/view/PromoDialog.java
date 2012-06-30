@@ -2,17 +2,17 @@ package com.emerginggames.snappers2.view;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 import com.emerginggames.snappers2.Metrics;
 import com.emerginggames.snappers2.R;
 import com.emerginggames.snappers2.SoundManager;
@@ -66,6 +66,16 @@ public class PromoDialog extends Dialog {
         yourCode.setTypeface(font);
         String code = UserPreferences.getInstance(getContext()).getPromoCode();
         yourCode.setText(getContext().getResources().getString(R.string.yourCodeIs, code));
+
+        OutlinedTextView wait = (OutlinedTextView)findViewById(R.id.wait);
+        wait.setTypeface(font);
+        wait.setTextSize(Metrics.fontSize);
+
+        View spinner = findViewById(R.id.progress);
+
+        Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+        rotation.setRepeatCount(Animation.INFINITE);
+        spinner.startAnimation(rotation);
     }
 
     View.OnClickListener closeBtnListener = new View.OnClickListener() {
@@ -87,7 +97,7 @@ public class PromoDialog extends Dialog {
                 return;
             }
 
-            LinearLayout shade = (LinearLayout)findViewById(R.id.shade);
+            RelativeLayout shade = (RelativeLayout)findViewById(R.id.shade);
             LinearLayout dialog = (LinearLayout)findViewById(R.id.dialog);
             ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)shade.getLayoutParams();
             lp.height = dialog.getHeight();

@@ -32,6 +32,8 @@ public class SettingsDialog extends Dialog {
     FacebookTransport facebookTransport;
     Activity context;
     UserPreferences prefs;
+    boolean syncDone = false;
+    boolean nameDone = false;
 
     public SettingsDialog(Activity context, int width) {
         super(context, R.style.GameDialog);
@@ -166,7 +168,13 @@ public class SettingsDialog extends Dialog {
         getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
     }
 
-    void showProgress(ImageView bar, int size){
+    void showProgress(){
+        int size = findViewById(R.id.loginFbBtn).getHeight();
+        if (size == 0)
+            size = 30;
+
+        ImageView bar = (ImageView)findViewById(R.id.progress);
+
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)bar.getLayoutParams();
         lp.width = lp.height = size;
         bar.setLayoutParams(lp);
@@ -198,7 +206,8 @@ public class SettingsDialog extends Dialog {
             facebookTransport.login(new FacebookTransport.ResponseListener() {
                 @Override
                 public void onOk(Object data) {
-                    setupLoginRow();
+                    showProgress();
+                    getUInfo();
                 }
 
                 @Override
@@ -208,12 +217,36 @@ public class SettingsDialog extends Dialog {
             });
     }
 
-    void logoff(){
-        int size = findViewById(R.id.loginFbBtn).getHeight();
-        if (size == 0)
-            size = 30;
+    void getUInfo(){
+        facebookTransport.getUserInfo(new FacebookTransport.ResponseListener(){
+            @Override
+            public void onOk(Object data) {
+                sync();
+            }
 
-        showProgress((ImageView)findViewById(R.id.progress), size);
+            @Override
+            public void onError(Throwable e) {
+                setupLoginRow();
+            }
+        });
+    }
+
+    void sync(){
+        facebookTransport.sync(new FacebookTransport.ResponseListener(){
+            @Override
+            public void onOk(Object data) {
+                setupLoginRow();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                setupLoginRow();
+            }
+        });
+    }
+
+    void logoff(){
+        showProgress();
         block();
         findViewById(R.id.loginFbBtn).setVisibility(View.INVISIBLE);
 

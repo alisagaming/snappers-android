@@ -86,8 +86,11 @@
     <string name="cantUseOwnCode">You\'ve entered your own code. Please ask friends for their codes.</string>
     <string name="noSuchCode">No such code.</string>
     <string name="noSuchCodeLong">The code you\'ve entered is incorrect.</string>
-    <string name="youVeGotHint">You\'ve got one hint.</string>
+    <string name="youVeGotHint">Congratulations! You\'ve received a free hint.</string>
     <string name="youVeGotHints" formatted="false">You\'ve got %d hints.</string>
     <string name="pleaseWait" >Please, wait…</string>
+    <string name="rateUs">Enjoyed playing?\nPlease, rate us 5 stars!</string>
+    <string name="share">Share your success with friends and get a free hint!</string>
+    <string name="shareMessage" formatted="false">I\'ve just reached level %d in Snappers! Can you beat that? Download the free game Snappers 2 for iPhone or Android, enter my code %s and get a bonus!</string>
 
 </resources>

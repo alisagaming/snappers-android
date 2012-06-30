@@ -3,7 +3,8 @@ package com.emerginggames.snappers2.transport;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import com.emerginggames.snappers2.UserPreferences;
+import com.emerginggames.snappers2.*;
+import com.emerginggames.snappers2.R;
 import com.emerginggames.snappers2.data.FriendTable;
 import com.emerginggames.snappers2.model.FacebookFriend;
 import com.emerginggames.snappers2.model.SyncData;
@@ -84,6 +85,14 @@ public class FacebookTransport {
     public void checkPromo(String code, ResponseListener listener){
         UserPreferences mPrefs = UserPreferences.getInstance(context);
         JsonTransport.promo(mPrefs.getFbToken(), code, new FacebookJsonListener(listener));
+    }
+
+    public void share(ResponseListener listener){
+        UserPreferences mPrefs = UserPreferences.getInstance(context);
+        int level = Settings.getLevel(mPrefs.getScore());
+        String code = mPrefs.getPromoCode();
+        String message = context.getString(R.string.shareMessage, level, code);
+        JsonTransport.share(mPrefs.getFbToken(), message, new FacebookJsonListener(listener));
     }
 
     public static class ResponseListener {

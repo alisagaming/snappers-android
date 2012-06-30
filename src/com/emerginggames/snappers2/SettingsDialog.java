@@ -184,6 +184,8 @@ public class SettingsDialog extends Dialog {
         Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
         rotation.setRepeatCount(Animation.INFINITE);
         bar.startAnimation(rotation);
+
+        findViewById(R.id.loginFbBtn).setVisibility(View.INVISIBLE);
     }
 
     void hideLoginProgress(){
@@ -248,8 +250,6 @@ public class SettingsDialog extends Dialog {
     void logoff(){
         showProgress();
         block();
-        findViewById(R.id.loginFbBtn).setVisibility(View.INVISIBLE);
-
         facebookTransport.logoff(new FacebookTransport.ResponseListener(){
             @Override
             public void onOk(Object data) {

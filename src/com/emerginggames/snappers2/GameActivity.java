@@ -55,7 +55,6 @@ public class GameActivity extends AndroidApplication {
     Level startLevel;
     FacebookTransport facebookTransport;
 
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Resources.context = this;
@@ -169,7 +168,6 @@ public class GameActivity extends AndroidApplication {
             adController.finish();
             adController = null;
         }
-
 
         if (wentTapjoy) {
             TapjoyConnect.getTapjoyConnectInstance().getTapPoints(new TapjoyPointsListener(getApplicationContext()));
@@ -313,6 +311,9 @@ public class GameActivity extends AndroidApplication {
             if (newLevel > currentLevel){
                 currentLevel = newLevel;
                 gameDialogsController.showNewLevelDialog(newLevel);
+
+                if (hasFacebook() && newLevel > 5  && prefs.getShareToFb() /*&& Math.random() > 0.5*/)
+                    gameDialogsController.showShareDialog();
             }
             if (helpView != null){
                     rootLayout.removeView(helpView);
@@ -392,6 +393,10 @@ public class GameActivity extends AndroidApplication {
             topButtons.updateHints();
         }
     };
+
+    public boolean hasFacebook(){
+        return facebookTransport!= null;
+    }
 
     public AdController getAdController(){
         return adController;

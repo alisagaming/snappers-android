@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.WindowManager;
 import com.emerginggames.snappers2.*;
+import com.emerginggames.snappers2.transport.FacebookTransport;
 import com.tapjoy.TapjoyConnect;
 import com.emerginggames.snappers2.gdx.Game;
 import com.emerginggames.snappers2.gdx.Resources;
@@ -32,6 +33,10 @@ public class GameDialogsController{
     public void dismiss(){
         if (dlg != null)
             dlg.dismiss();
+        if (newLevelDialog != null)
+            newLevelDialog.dismiss();
+        if(buyHintsDlg != null)
+            buyHintsDlg.dismiss();
     }
 
     public void showPauseDialog(){
@@ -44,15 +49,18 @@ public class GameDialogsController{
 
     public void showNewLevelDialog(int newLevel){
         mCurrentLevel = newLevel;
-        //mActivity.getGameOverMessageController().showRays();
-        mActivity.getGame().showRays(true);
         mActivity.runOnUiThread(showNewLevelDialog);
+        mActivity.getGame().showRays(true);
     }
 
     void showPromoDialog(){
         PromoDialog promoDialog = new PromoDialog(mActivity);
         promoDialog.setOwnerActivity(mActivity);
         promoDialog.show();
+    }
+
+    public void showShareDialog(){
+        mActivity.runOnUiThread(showShareDialog);
     }
 
     Runnable showPausedDialog = new Runnable() {
@@ -192,6 +200,19 @@ public class GameDialogsController{
         }
     };
 
+    Runnable showShareDialog = new Runnable() {
+        @Override
+        public void run() {
+            if (dlg == null)
+                initDialog();
+            else dlg.clear();
+
+            dlg.setMessage(R.string.share, (int)(Metrics.fontSize * 1.15f));
+            dlg.addButton(R.drawable.button_share);
+            dlg.show();
+        }
+    };
+
     GameDialog.OnDialogEventListener dialogButtonListener = new GameDialog.OnDialogEventListener() {
         @Override
         public void onButtonClick(int unpressedDrawableId) {
@@ -253,6 +274,13 @@ public class GameDialogsController{
                     prefs.addHints(Settings.BONUS_FOR_RATE);
                     prefs.setRated(true);
                     dlg.hide();
+                    break;
+
+                case R.drawable.button_share:
+                    FacebookTransport transport = new FacebookTransport(mActivity);
+                    transport.share(null);
+                    dlg.hide();
+                    prefs.addHints(Settings.BONUS_FOR_SHARE);
                     break;
             }
         }

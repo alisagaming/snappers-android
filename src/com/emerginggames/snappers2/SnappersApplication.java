@@ -20,7 +20,8 @@ import org.acra.annotation.ReportsCrashes;
  * Time: 18:30
  */
 
-@ReportsCrashes(formKey = "0AjTdeHbU0KqqdFlJZll4dTV6Y2hXTExjbWpETDJvbnc",
+@ReportsCrashes(formKey = "dFlJZll4dTV6Y2hXTExjbWpETDJvbnc6MA",
+
         /*formUri = "http://www.bugsense.com/api/acra?api_key=8a555912",*/
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text, // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds

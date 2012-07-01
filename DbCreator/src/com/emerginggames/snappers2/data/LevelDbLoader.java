@@ -48,7 +48,7 @@ public class LevelDbLoader {
         assets = context.getAssets();
     }
 
-    public static void checkAndLoad(Context context, SharedPreferences prefs){
+/*    public static void checkAndLoad(Context context, SharedPreferences prefs){
         if (prefs.getInt(LEVELS_LOADED_VERSION_TAG, 0) != DbCopyOpenHelper.DATABASE_VERSION){
             LevelDbLoader loader = new LevelDbLoader(context);
             loader.load();
@@ -56,7 +56,7 @@ public class LevelDbLoader {
             editor.putInt(LEVELS_LOADED_VERSION_TAG, DbCopyOpenHelper.DATABASE_VERSION);
             editor.commit();
         }
-    }
+    }*/
 
     public void load(){
         if (db != null){

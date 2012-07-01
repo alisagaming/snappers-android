@@ -14,7 +14,7 @@ import java.io.*;
  * Time: 1:00
  */
 public class DbCopyOpenHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    //public static final int DATABASE_VERSION = 1;
     private static String DB_DIR = "/data/data/com.emerginggames.snappers2/databases/";
     private static final String DB_NAME = "snappers_data";
     private static String DB_PATH = DB_DIR + DB_NAME;
@@ -216,6 +216,11 @@ public class DbCopyOpenHelper extends SQLiteOpenHelper {
         // } catch (Exception ex) {
         // ex.printStackTrace();
         // }
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        upgradeDatabase = true;
     }
 
     /**

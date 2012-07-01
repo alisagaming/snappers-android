@@ -1,5 +1,6 @@
 package com.emerginggames.snappers2.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.WindowManager;
@@ -14,7 +15,7 @@ import com.emerginggames.snappers2.gdx.Resources;
  * Date: 16.06.12
  * Time: 15:08
  */
-public class GameDialogsController{
+public class GameDialogsController {
     GameDialog dlg;
     BuyHintsDialog buyHintsDlg;
     NewLevelDialog newLevelDialog;
@@ -27,45 +28,45 @@ public class GameDialogsController{
         prefs = UserPreferences.getInstance(mActivity);
     }
 
-    public void dismiss(){
+    public void dismiss() {
         if (dlg != null)
             dlg.dismiss();
         if (newLevelDialog != null)
             newLevelDialog.dismiss();
-        if(buyHintsDlg != null)
+        if (buyHintsDlg != null)
             buyHintsDlg.dismiss();
     }
 
-    public void showPauseDialog(){
+    public void showPauseDialog() {
         mActivity.runOnUiThread(showPausedDialog);
     }
 
-    public void showHintMenu(){
+    public void showHintMenu() {
         mActivity.runOnUiThread(showHintMenu);
     }
 
-    public void showNewLevelDialog(int newLevel){
+    public void showNewLevelDialog(int newLevel) {
         mCurrentLevel = newLevel;
         mActivity.runOnUiThread(showNewLevelDialog);
         mActivity.getGame().showRays(true);
     }
 
-    void showPromoDialog(){
+    void showPromoDialog() {
         PromoDialog promoDialog = new PromoDialog(mActivity);
         promoDialog.setOwnerActivity(mActivity);
         promoDialog.show();
     }
 
-    public void showShareDialog(){
+    public void showShareDialog() {
         mActivity.runOnUiThread(showShareDialog);
     }
 
-    public void showRateDialog(){
+    public void showRateDialog() {
         prefs.setLastLikeOrRecommended(System.currentTimeMillis());
         mActivity.runOnUiThread(showRateDialog);
     }
 
-    public void showLikeDialog(){
+    public void showLikeDialog() {
         prefs.setLastLikeOrRecommended(System.currentTimeMillis());
         mActivity.runOnUiThread(showLikeDialog);
     }
@@ -91,7 +92,7 @@ public class GameDialogsController{
     Runnable showBuyHintsMenu = new Runnable() {
         @Override
         public void run() {
-            if (buyHintsDlg== null){
+            if (buyHintsDlg == null) {
                 buyHintsDlg = new BuyHintsDialog(mActivity, Metrics.screenWidth * 95 / 100);
             }
 
@@ -126,7 +127,7 @@ public class GameDialogsController{
         public void run() {
             if (dlg == null)
                 initDialog();
-            else{
+            else {
                 if (dlg.isShowing())
                     dlg.hide();
                 dlg.clear();
@@ -144,7 +145,7 @@ public class GameDialogsController{
             dlg.show();
         }
 
-        void fillUseHintMenu(int hintsLeft){
+        void fillUseHintMenu(int hintsLeft) {
             if (hintsLeft == 1)
                 dlg.setMessage(R.string.youHaveOneHint, Metrics.fontSize);
             else
@@ -155,7 +156,7 @@ public class GameDialogsController{
             dlg.addButton(R.drawable.button_buyhints_long);
         }
 
-        void showBuyHintMenu(){
+        void showBuyHintMenu() {
             StringBuilder msg = new StringBuilder();
             msg.append(mActivity.getString(R.string.youHaveNoHints)).append("\n").append(mActivity.getString(R.string.buySome));
             dlg.setMessage(msg, Metrics.fontSize);
@@ -163,7 +164,7 @@ public class GameDialogsController{
             dlg.addButton(R.drawable.button_buyhints_long);
         }
 
-        void showGetOnlineMenu(){
+        void showGetOnlineMenu() {
             StringBuilder msg = new StringBuilder();
             msg.append(mActivity.getString(R.string.youHaveNoHints)).append("\n").append(mActivity.getString(R.string.getOnline));
             dlg.setMessage(msg, Metrics.fontSize);
@@ -171,7 +172,7 @@ public class GameDialogsController{
         }
     };
 
-    void initDialog(){
+    void initDialog() {
         dlg = new GameDialog(mActivity);
         dlg.setWidth(Metrics.screenWidth * 95 / 100);
         dlg.setBtnClickListener(dialogButtonListener);
@@ -179,10 +180,20 @@ public class GameDialogsController{
         dlg.setTypeface(Resources.getFont(mActivity));
     }
 
+    void showNeedFacebookMessage() {
+        if (dlg == null)
+            initDialog();
+        else
+            dlg.clear();
+        dlg.setMessage(R.string.needFacebook, Metrics.fontSize);
+        dlg.addOkButton();
+        dlg.show();
+    }
+
     Runnable showNewLevelDialog = new Runnable() {
         @Override
         public void run() {
-            if (newLevelDialog == null){
+            if (newLevelDialog == null) {
                 newLevelDialog = new NewLevelDialog(mActivity, Metrics.screenWidth * 95 / 100);
             }
             newLevelDialog.setLevel(mCurrentLevel);
@@ -214,7 +225,7 @@ public class GameDialogsController{
                 initDialog();
             else dlg.clear();
 
-            dlg.setMessage(R.string.share, (int)(Metrics.fontSize * 1.15f));
+            dlg.setMessage(R.string.share, (int) (Metrics.fontSize * 1.15f));
             dlg.addButton(R.drawable.button_share);
             dlg.show();
         }
@@ -227,7 +238,7 @@ public class GameDialogsController{
                 initDialog();
             else dlg.clear();
 
-            dlg.setMessage(R.string.rateUs, (int)(Metrics.fontSize * 1.15f));
+            dlg.setMessage(R.string.rateUs, (int) (Metrics.fontSize * 1.15f));
             dlg.addButton(R.drawable.button_rate_long);
             dlg.show();
         }
@@ -240,7 +251,7 @@ public class GameDialogsController{
                 initDialog();
             else dlg.clear();
 
-            dlg.setMessage(R.string.likeUs, (int)(Metrics.fontSize * 1.15f));
+            dlg.setMessage(R.string.likeUs, (int) (Metrics.fontSize * 1.15f));
             dlg.addButton(R.drawable.button_like_long);
             dlg.show();
         }
@@ -250,7 +261,7 @@ public class GameDialogsController{
         @Override
         public void onButtonClick(int unpressedDrawableId) {
             Game game = mActivity.getGame();
-            switch (unpressedDrawableId){
+            switch (unpressedDrawableId) {
                 case R.drawable.button_resume_long:
                     dlg.hide();
                     game.setPaused(false);
@@ -288,19 +299,25 @@ public class GameDialogsController{
                     break;
 
                 case R.drawable.button_promo:
+                    dlg.hide();
+                    if (mActivity.hasFacebook())
+                        showPromoDialog();
+                    else
+                        showNeedFacebookMessage();
 //                    mActivity.wentTapjoy = true;
 //                    TapjoyConnect.getTapjoyConnectInstance().showOffers();
-                    showPromoDialog();
-                    dlg.hide();
                     break;
 
                 case R.drawable.button_like_long:
                 case R.drawable.button_like:
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.likeUrl)));
-                    mActivity.startActivity(browserIntent);
-                    prefs.addHints(Settings.BONUS_FOR_LIKE);
-                    prefs.setLiked(true);
                     dlg.hide();
+                    if (mActivity.hasFacebook()) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.likeUrl)));
+                        mActivity.startActivity(browserIntent);
+                        prefs.addHints(Settings.BONUS_FOR_LIKE);
+                        prefs.setLiked(true);
+                    } else
+                        showNeedFacebookMessage();
                     break;
 
                 case R.drawable.button_rate_long:
@@ -316,6 +333,14 @@ public class GameDialogsController{
                     transport.share(null);
                     dlg.hide();
                     prefs.addHints(Settings.BONUS_FOR_SHARE);
+                    break;
+
+                case R.drawable.button_invite:
+                    dlg.hide();
+                    if (mActivity.hasFacebook()) {
+                        mActivity.startActivity(new Intent(mActivity, InviteActivity.class));
+                    } else
+                        showNeedFacebookMessage();
                     break;
             }
         }

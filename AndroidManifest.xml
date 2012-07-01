@@ -45,6 +45,7 @@
         <activity android:name="com.tapjoy.TapjoyFeaturedAppWebView" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="com.tapjoy.TapjoyVideoView" android:configChanges="keyboardHidden|orientation" />
         <activity android:name=".FacebookActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".InviteActivity"/>
 
         <service android:name=".utils.BillingService" />
 

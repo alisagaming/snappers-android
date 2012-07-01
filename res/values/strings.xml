@@ -94,5 +94,6 @@
     <string name="share">Share your success with friends and get a free hint!</string>
     <string name="shareMessage" formatted="false">I\'ve just reached level %d in Snappers! Can you beat that? Download the free game Snappers 2 for iPhone or Android, enter my code %s and get a bonus!</string>
     <string name="inviteFriends">Invite some friends to be able to receive FREE gifts!</string>
+    <string name="needFacebook">Please, go back to Settings and login to Facebook first!</string>
 
 </resources>

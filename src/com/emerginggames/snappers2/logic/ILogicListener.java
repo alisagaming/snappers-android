@@ -9,4 +9,5 @@ package com.emerginggames.snappers2.logic;
 public interface ILogicListener {
     public void snapperHit(int i, int j);
     public void tap();
+    public boolean canTap(int i, int j);
 }

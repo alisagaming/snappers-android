@@ -234,10 +234,15 @@ public class MainStage extends MyStage {
             mGame.getAppListener().updateTapsLeft(logic.tapRemains);
             if (isHinting){
                 if (logic.tapRemains > 0)
-                    hint.updateHint();
+                    hint.hintTapped();
                 else
                     isHinting = false;
             }
+        }
+
+        @Override
+        public boolean canTap(int i, int j) {
+            return !isHinting || hint.isHintingSnapper(i, j);
         }
     };
 

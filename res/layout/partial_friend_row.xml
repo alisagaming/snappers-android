@@ -21,7 +21,7 @@
                 />
     </RelativeLayout>
 
-    <LinearLayout and:layout_weight="44" and:layout_width="0px" and:layout_height="wrap_content" and:layout_gravity="center"
+    <LinearLayout and:layout_weight="47" and:layout_width="0px" and:layout_height="wrap_content" and:layout_gravity="center"
                   and:orientation="vertical">
 
         <TextView and:id="@+id/title"
@@ -36,7 +36,7 @@
     </LinearLayout>
 
     <RelativeLayout and:id="@+id/btn"
-                    and:layout_width="0px" and:layout_height="wrap_content" and:layout_weight="33"
+                    and:layout_width="0px" and:layout_height="wrap_content" and:layout_weight="30"
                     and:background="@drawable/button_green"
                     and:layout_marginTop="5dp" and:layout_marginBottom="5dp"
             >

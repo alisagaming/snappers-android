@@ -26,6 +26,7 @@ public class Hints{
     Sprite backSprite;
     float animationTime;
     float backMaxScale;
+    boolean hintWaiting;
 
 
     public Hints(GameLogic logic) {
@@ -42,7 +43,7 @@ public class Hints{
     public void updateLevel(){
         decodeSolution(logic.level);
         currentHint = -1;
-        updateHint();
+        nextHint();
     }
 
     private void decodeSolution(Level level){
@@ -52,8 +53,25 @@ public class Hints{
             hints[i] = Integer.parseInt(chunks[i]);
     }
 
-    public void updateHint(){
+    public void hintTapped(){
+        hintWaiting = true;
+    }
+
+    public boolean isHintingSnapper(int i1, int j1){
+        if (currentHint == -1)
+            return false;
+        if (currentHint >= hints.length)
+            return false;
+
+        int pos = hints[currentHint];
+        int i = pos% Snappers.WIDTH;
+        int j = pos/Snappers.WIDTH;
+        return (i == i1 && j == j1);
+    }
+
+    void nextHint(){
         currentHint++;
+        hintWaiting = false;
         if (currentHint >= hints.length)
             return;
         int pos = hints[currentHint];
@@ -66,20 +84,25 @@ public class Hints{
         animationTime = 0;
         backSprite.setPosition(x - backSprite.getRegionWidth()/2, y - backSprite.getRegionHeight()/2);
         backSprite.setOrigin(backSprite.getRegionWidth()/2, backSprite.getRegionHeight()/2);
+
     }
 
     public void draw(SpriteBatch batch){
-        hintSprite.draw(batch);
+        if (!hintWaiting)
+            hintSprite.draw(batch);
     }
 
     public void drawBack(SpriteBatch batch){
-        float a = FloatMath.sin(3.14f * animationTime / BACK_ANIMATION_PERIOD) * 0.2f + 0.5f;
-
-        backSprite.draw(batch, a);
+        if (!hintWaiting){
+            float a = FloatMath.sin(3.14f * animationTime / BACK_ANIMATION_PERIOD) * 0.2f + 0.5f;
+            backSprite.draw(batch, a);
+        }
     }
 
     public void act(float delta){
         hintSprite.act(delta);
         animationTime += delta;
+        if (hintWaiting && logic.countBlasts() == 0)
+            nextHint();
     }
 }

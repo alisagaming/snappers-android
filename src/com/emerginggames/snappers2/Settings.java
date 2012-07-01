@@ -19,7 +19,8 @@ public class Settings {
 
     public static final int BONUS_FOR_RATE = 1;
     public static final int BONUS_FOR_LIKE = 1;
-    public static final int BONUS_FOR_SHARE = 0;
+    public static final int BONUS_FOR_SHARE = 1;
+    public static final int BONUS_FOR_INVITE = 1;
     public static final int LEVEL_TO_RECOMMEND = 10;
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;

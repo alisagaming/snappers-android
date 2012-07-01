@@ -61,6 +61,9 @@ public class GameLogic {
     public void tapSnapper(int i, int j) {
         if (snapperTouchedI >= 0 || tapRemains < 1)
             return;
+        if (!snapperListener.canTap(i, j))
+            return;
+
         tapRemains--;
         snapperListener.tap();
         snapperTouchedI = i;
@@ -134,6 +137,10 @@ public class GameLogic {
 
     public List<Blast> getBlasts() {
         return blasts.activeBlasts;
+    }
+
+    public int countBlasts(){
+        return blasts.activeBlasts.size();
     }
 
     private class Blasts {

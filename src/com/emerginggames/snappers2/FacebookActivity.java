@@ -58,6 +58,9 @@ public class FacebookActivity extends BaseActivity {
         lp.leftMargin = lp.bottomMargin = Metrics.screenWidth / 20;
         lp.height = Metrics.screenWidth / 5;
 
+        OutlinedTextView bottomText = (OutlinedTextView)findViewById(R.id.bottomMessage);
+        bottomText.setTypeface(Resources.getFont(getApplicationContext()));
+
         prefs = UserPreferences.getInstance(getApplicationContext());
     }
 
@@ -190,8 +193,10 @@ public class FacebookActivity extends BaseActivity {
                 });
                 break;
             case FRIENDS_FAILED:
-                if ((flags & JUST_LOGGED) == JUST_LOGGED)
+                if ((flags & JUST_LOGGED) == JUST_LOGGED){
                     showToast(getString(R.string.failedToGetFriends));
+                    showControls();
+                }
                 flags |= FRIENDS_DONE;
                 break;
             case SYNC_DONE:
@@ -341,19 +346,8 @@ public class FacebookActivity extends BaseActivity {
 
             showProgress(bar, size);
 
-            //RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)bar.getLayoutParams();
-            //lp.width = lp.height = size;
-            //bar.setLayoutParams(lp);
-
-            //bar.setVisibility(View.VISIBLE);
-
-            //bar.setImageResource(R.drawable.spinner_white_48);
             v.findViewById(R.id.btnText).setVisibility(View.INVISIBLE);
             v.setClickable(false);
-
-            //Animation rotation = AnimationUtils.loadAnimation(FacebookActivity.this, R.anim.rotate);
-            //rotation.setRepeatCount(Animation.INFINITE);
-            //bar.startAnimation(rotation);
 
             FacebookFriend friend = (FacebookFriend) v.getTag();
             if (friend.installed)
@@ -404,14 +398,15 @@ public class FacebookActivity extends BaseActivity {
             OutlinedTextView text = (OutlinedTextView) v.findViewById(R.id.btnText);
             if (friend.installed)
                 text.setText2(R.string.sent);
-            else
+            else{
                 text.setText2(R.string.invited);
+                prefs.addHints(Settings.BONUS_FOR_INVITE);
+                updateHints();
+            }
             text.setVisibility(View.VISIBLE);
             v.setEnabled(false);
             img.clearAnimation();
             img.setVisibility(View.INVISIBLE);
-
-            //((ImageView)img).setImageResource(R.drawable.transparent);
         }
 
         @Override

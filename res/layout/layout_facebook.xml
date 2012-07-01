@@ -42,11 +42,13 @@
             </ScrollView>
         </LinearLayout>
 
-
-
-        <LinearLayout and:id="@+id/footerCont" and:layout_width="fill_parent" and:layout_height="50dp"
-                      and:background="@drawable/settings_wnd_bottom"
-                />
+        <LinearLayout and:id="@+id/footerCont" and:layout_width="fill_parent" and:layout_height="wrap_content"
+                      and:background="@drawable/settings_wnd_bottom" and:orientation="vertical">
+            <com.emrg.view.OutlinedTextView and:id="@+id/bottomMessage"
+                    and:layout_width="fill_parent" and:layout_height="wrap_content" and:layout_gravity="center"
+                    and:textColor="#fff" app:strokeColor="#000" app:strokeWidth="1dp" and:textSize="16dp"
+                    and:text="@string/inviteFriends" and:gravity="center" and:padding="2dp"/>
+        </LinearLayout>
 
     </LinearLayout>
 

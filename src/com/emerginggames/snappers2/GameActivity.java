@@ -312,7 +312,7 @@ public class GameActivity extends AndroidApplication {
                 currentLevel = newLevel;
                 gameDialogsController.showNewLevelDialog(newLevel);
 
-                if (hasFacebook() && newLevel > 5  && prefs.getShareToFb() /*&& Math.random() > 0.5*/)
+                if (hasFacebook() && newLevel > 5  && prefs.getShareToFb() && Math.random() > 0.5)
                     gameDialogsController.showShareDialog();
             }
             if (helpView != null){

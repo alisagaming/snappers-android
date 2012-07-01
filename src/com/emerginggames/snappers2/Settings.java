@@ -1,6 +1,7 @@
 package com.emerginggames.snappers2;
 
 import android.content.Context;
+import android.util.Log;
 import com.emerginggames.snappers2.data.CryptHelperDES;
 
 
@@ -45,15 +46,17 @@ public class Settings {
     //1543619c1de44e80af13f861b204b778
     private static String adwhirlKey = "5D43298AD9AB6642H81E3D3F20BA02E8FHAAD7E50F0B01C4B6H13863AC093001CC1H16B7733B6AFA5528H39DA19D96F7DF7F3HAD9A87096A80397FHDF9A4393DB6D4F33";
     //App ID ? 6ac99625-6d02-4326-becd-213a233c511a
-    private static String TJKey = "A69127567A50A671572E74997F8580A6JC78105DD8B3BFAE7J1BBB20C96D5B687BJ24B66487EDBAF2C1JAC0A19640D6AAD514B8E1BBE3F8248E2";
+    private static String TJKey = "AEA6EAFD7FA9BC26565E0C589BC0238AJC78105DD8B3BFAE7J63943BBFE8BB9317J24B66487EDBAF2C1J7C340D30CF49B18BB5F3AC4B52D0289D";
     //GvTn bQgQ 1P86 bB5X gr4L
 
                                        //E5FDD91C61783906K0357C137318677C4KE887BEF3AE633FABK5DD66C05D4227322K4AD4B5F812A26DCD
-    private static String TJSecretKey = "E5FDD91C61783906K19727591AFFB805AKE887BEF3AE633FABK5153EAA399A85809K4AD4B5F812A26DCD";
+    private static String TJSecretKey = "2D6CA34B4974E7B9K0FFB56E29EA65C62K58DE70E9EAF4D73DK77181EC5A393B1E3K9927B62D954DAE0F";
 
     private static final String gInAPPKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgWK5eC6WW8fiRuvVfxaSaqUyMnpthTtV8abNUYLbS4pRcjbolfQJTFqZg+rzIADeBV1VZ0Iw/ZHO6i7n3iqFSDqKdBHwkteoEgynBJy+9THP7X8kN+C+h1V25cJforTyZiaXaY0Nz2Vq+mphnmGl9tettg/ZUiyqPm3Tt6SSJFdhdk1y5SO8LtTB+2VLHYe8e+XiEI2YGXm4NJ2G79pXooDSrmYV0CZ0uT6w3w7F9vmPEF0fvxtEN5D9SMhRfWlJ6rV/Mhnf46JmZTC5nGXhCwMG/uhWQbywhgLtQyMGzehsKxZyW5SSGq80RwHhmpYMN9F6Ekq8I6UTC/KHqt1UhQIDAQAB";
 
-    private static final String mediationKey = "37FDED5609B0932FO67E17937D7A51DC7O589E501DD5C05FB8OA1D3454BF7B738D9";
+    private static final String mediationKey = "CE61BF07159274D6O67E17937D7A51DC7O49479B778C212A30OA1D3454BF7B738D9";
+
+
 
 
 
@@ -64,10 +67,10 @@ public class Settings {
             prefs.getKey1();
             prefs.getKey2();
             //df03 8f9a c585 4e20
-            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "df03"));
-            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "8f9a"));
-            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "c585"));
-            Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "4e20"));
+            Log.e("ENCODED - adMob1!!!", CryptHelperDES.encrypt(prefs.getKey12(), "df03"));
+            Log.e("ENCODED - adMob2!!!", CryptHelperDES.encrypt(prefs.getKey12(), "8f9a"));
+            Log.e("ENCODED - adMob3!!!", CryptHelperDES.encrypt(prefs.getKey12(), "c585"));
+            Log.e("ENCODED - adMob4!!!", CryptHelperDES.encrypt(prefs.getKey12(), "4e20"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }*/
@@ -174,11 +177,11 @@ public class Settings {
         //GvTn bQgQ 1P86 bB5X gr4L
 /*        try{
             prefs.getKey1();
-            Log.e("ENCODED - Tj-secret!!!", CryptHelperDES.encrypt(prefs.getKey12(), "GvTn"));
-            Log.e("ENCODED - Tj-secret!!!", CryptHelperDES.encrypt(prefs.getKey12(), "bQgQ"));
-            Log.e("ENCODED - Tj-secret!!!", CryptHelperDES.encrypt(prefs.getKey12(), "1P86"));
-            Log.e("ENCODED - Tj-secret!!!", CryptHelperDES.encrypt(prefs.getKey12(), "bB5X"));
-            Log.e("ENCODED - Tj-secret!!!", CryptHelperDES.encrypt(prefs.getKey12(), "gr4L"));
+            Log.e("ENCODED - Tj-secret!!!1", CryptHelperDES.encrypt(prefs.getKey12(), "GvTn"));
+            Log.e("ENCODED - Tj-secret!!!2", CryptHelperDES.encrypt(prefs.getKey12(), "bQgQ"));
+            Log.e("ENCODED - Tj-secret!!!3", CryptHelperDES.encrypt(prefs.getKey12(), "1P86"));
+            Log.e("ENCODED - Tj-secret!!!4", CryptHelperDES.encrypt(prefs.getKey12(), "bB5X"));
+            Log.e("ENCODED - Tj-secret!!!5", CryptHelperDES.encrypt(prefs.getKey12(), "gr4L"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }*/

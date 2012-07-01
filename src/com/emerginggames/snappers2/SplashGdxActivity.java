@@ -119,14 +119,15 @@ public class SplashGdxActivity extends AndroidApplication {
             long startTime = System.currentTimeMillis();
             new DbCopyOpenHelper(SplashGdxActivity.this).initializeDataBase();
 
-            OnlineSettings.update(getApplicationContext());
-
-            String tjSecretKey = Settings.getTapJoyAppId(getApplicationContext());
-
-            TapjoyConnect.requestTapjoyConnect(getApplicationContext(), tjSecretKey, tjSecretKey);
-
             UserPreferences.getInstance(SplashGdxActivity.this);
+
+            TapjoyConnect.requestTapjoyConnect(getApplicationContext(),
+                    Settings.getTapJoyAppId(getApplicationContext()),
+                    Settings.getTapJoySecretKey(getApplicationContext()));
+
             GInAppStore.getInstance(getApplicationContext());
+
+            OnlineSettings.update(getApplicationContext());
 
             long now = System.currentTimeMillis();
             if (now - startTime < SPLASH_TIME)

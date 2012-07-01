@@ -342,7 +342,6 @@ public class UserPreferences extends UserPreferencesBase {
         synchronized (editorLock) {
             editor = prefs.edit();
             editor
-                    .remove(USER_LIKED)
                     .remove(HAD_FB_SYNC);
 
             remove("!" + SCORE);

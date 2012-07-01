@@ -216,8 +216,6 @@ public class MainStage extends MyStage {
         this.drawButtons = drawButtons;
     }
 
-
-
     private ILogicListener logicListener = new ILogicListener() {
         @Override
         public void snapperHit(int i, int j) {

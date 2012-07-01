@@ -294,6 +294,7 @@ public class GameActivity extends AndroidApplication {
 
         @Override
         public void levelSolved(Level level, final int score) {
+            boolean shared = false;
             prefs.unlockNextLevel(level);
             topButtons.showGameWonMenu();
             if (adController != null)
@@ -312,8 +313,10 @@ public class GameActivity extends AndroidApplication {
                 currentLevel = newLevel;
                 gameDialogsController.showNewLevelDialog(newLevel);
 
-                if (hasFacebook() && newLevel > 5  && prefs.getShareToFb() && Math.random() > 0.5)
+                if (hasFacebook() && newLevel > 5  && prefs.getShareToFb() && Math.random() > 0.5){
                     gameDialogsController.showShareDialog();
+                    shared = true;
+                }
             }
             if (helpView != null){
                     rootLayout.removeView(helpView);
@@ -322,6 +325,26 @@ public class GameActivity extends AndroidApplication {
 
             if (facebookTransport != null)
                 syncFacebook();
+
+            boolean canLike = !shared && hasFacebook() && !prefs.isLiked()
+                    && (System.currentTimeMillis() - prefs.getLastLikeOrRateRecommeded() > Settings.LIKE_INTERVAL)
+                    && (level.number % Settings.LEVEL_TO_RECOMMEND == 0);
+                    //&& (level.pack.id > 1 || level.number > 5);
+
+            boolean canRate = !shared && !prefs.isRated()
+                    && (System.currentTimeMillis() - prefs.getLastLikeOrRateRecommeded() > Settings.RATE_INTERVAL)
+                    && (level.number % Settings.LEVEL_TO_RECOMMEND == 0);
+                    //&& (level.pack.id > 1 || level.number > 5);
+
+            if (canLike && canRate)
+                if (Math.random() < 0.5)
+                    gameDialogsController.showLikeDialog();
+                else gameDialogsController.showRateDialog();
+            else if (canLike)
+                gameDialogsController.showLikeDialog();
+            else if (canRate)
+                gameDialogsController.showRateDialog();
+
         }
 
         @Override

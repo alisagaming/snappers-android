@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false" android:state_enabled="true" android:drawable="@drawable/like_long_btn"/>
+    <item android:state_pressed="true" android:state_enabled="true">
+        <layer-list>
+            <item android:drawable="@drawable/like_long_btn"/>
+            <item android:drawable="@drawable/btn_294x116_sh"/>
+        </layer-list>
+    </item>
+</selector>

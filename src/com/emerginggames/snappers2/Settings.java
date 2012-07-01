@@ -21,7 +21,7 @@ public class Settings {
     public static final int BONUS_FOR_LIKE = 1;
     public static final int BONUS_FOR_SHARE = 1;
     public static final int BONUS_FOR_INVITE = 1;
-    public static final int LEVEL_TO_RECOMMEND = 10;
+
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
 
@@ -32,6 +32,10 @@ public class Settings {
     public static boolean GoogleInAppEnabled = true;
 
     public static final long GIFT_INTERVAL = 24*60*60*1000;//1 day
+    public static final long LIKE_INTERVAL = 24*60*60*1000;//3 day
+    public static final long RATE_INTERVAL = 24*60*60*1000;//1 day
+    public static final int LEVEL_TO_RECOMMEND = 30;
+
 
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
     public static final String BUGSENSE_API_KEY = "8a555912";

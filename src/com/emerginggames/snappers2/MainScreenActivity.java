@@ -91,7 +91,7 @@ public class MainScreenActivity extends Activity {
     }
 
     public void onPlayButtonClick(View v) {
-        prefs.addHints(680);
+        //prefs.addHints(680);
         startActivity(new Intent(this, FacebookActivity.class));
     }
 

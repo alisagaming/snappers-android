@@ -1,13 +1,10 @@
 package com.emerginggames.snappers2.view;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.WindowManager;
 import com.emerginggames.snappers2.*;
 import com.emerginggames.snappers2.transport.FacebookTransport;
-import com.tapjoy.TapjoyConnect;
 import com.emerginggames.snappers2.gdx.Game;
 import com.emerginggames.snappers2.gdx.Resources;
 
@@ -61,6 +58,16 @@ public class GameDialogsController{
 
     public void showShareDialog(){
         mActivity.runOnUiThread(showShareDialog);
+    }
+
+    public void showRateDialog(){
+        prefs.setLastLikeOrRecommended(System.currentTimeMillis());
+        mActivity.runOnUiThread(showRateDialog);
+    }
+
+    public void showLikeDialog(){
+        prefs.setLastLikeOrRecommended(System.currentTimeMillis());
+        mActivity.runOnUiThread(showLikeDialog);
     }
 
     Runnable showPausedDialog = new Runnable() {
@@ -213,6 +220,32 @@ public class GameDialogsController{
         }
     };
 
+    Runnable showRateDialog = new Runnable() {
+        @Override
+        public void run() {
+            if (dlg == null)
+                initDialog();
+            else dlg.clear();
+
+            dlg.setMessage(R.string.rateUs, (int)(Metrics.fontSize * 1.15f));
+            dlg.addButton(R.drawable.button_rate_long);
+            dlg.show();
+        }
+    };
+
+    Runnable showLikeDialog = new Runnable() {
+        @Override
+        public void run() {
+            if (dlg == null)
+                initDialog();
+            else dlg.clear();
+
+            dlg.setMessage(R.string.likeUs, (int)(Metrics.fontSize * 1.15f));
+            dlg.addButton(R.drawable.button_like_long);
+            dlg.show();
+        }
+    };
+
     GameDialog.OnDialogEventListener dialogButtonListener = new GameDialog.OnDialogEventListener() {
         @Override
         public void onButtonClick(int unpressedDrawableId) {
@@ -261,6 +294,7 @@ public class GameDialogsController{
                     dlg.hide();
                     break;
 
+                case R.drawable.button_like_long:
                 case R.drawable.button_like:
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.likeUrl)));
                     mActivity.startActivity(browserIntent);
@@ -269,6 +303,7 @@ public class GameDialogsController{
                     dlg.hide();
                     break;
 
+                case R.drawable.button_rate_long:
                 case R.drawable.button_rate:
                     mActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.marketUrl))));
                     prefs.addHints(Settings.BONUS_FOR_RATE);

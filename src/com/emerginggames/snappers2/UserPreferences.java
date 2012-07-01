@@ -36,7 +36,7 @@ public class UserPreferences extends UserPreferencesBase {
     private static final String USER_LIKED = "LIKED";
     private static final String USER_RATED = "RATED";
     private static final String LAST_RATE_RECOMMENDED = "LAST_RATE_RECOMMENDED";
-    private static final String LAST_LIKE_RECOMMENDED = "LAST_LIKE_RECOMMENDED";
+    private static final String LAST_LIKE_OR_RATE_RECOMMENDED = "LAST_LIKE_OR_RATE_RECOMMENDED";
     private static final String PROMO_CODE = "PROMO_CODE";
     private static final String FACEBOOK_NAME = "fbName";
     private static final String FACEBOOK_EXPIRES = "access_expires";
@@ -273,20 +273,12 @@ public class UserPreferences extends UserPreferencesBase {
         putBoolean(USER_RATED, rated);
     }
 
-    public long getLastLikeRecommeded() {
-        return getLong(LAST_LIKE_RECOMMENDED, 0);
+    public long getLastLikeOrRateRecommeded() {
+        return getLong(LAST_LIKE_OR_RATE_RECOMMENDED, 0);
     }
 
-    public void setLastLikeRecommended(long time) {
-        putLong(LAST_LIKE_RECOMMENDED, time);
-    }
-
-    public long getLastRateRecommeded() {
-        return getLong(LAST_RATE_RECOMMENDED, 0);
-    }
-
-    public void setLastRateRecommended(long time) {
-        putLong(LAST_RATE_RECOMMENDED, time);
+    public void setLastLikeOrRecommended(long time) {
+        putLong(LAST_LIKE_OR_RATE_RECOMMENDED, time);
     }
 
     public void setPromoCode(String code) {

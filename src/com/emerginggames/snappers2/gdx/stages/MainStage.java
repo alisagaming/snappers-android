@@ -385,11 +385,7 @@ public class MainStage extends MyStage {
 
             synchronized (activeSnappers){
                 for (i=0; i< activeSnappers.size; i++)
-                    activeSnappers.get(i).snapper.draw(batch);
-
-
-                for (i=0; i< activeSnappers.size; i++)
-                    activeSnappers.get(i).eyes.draw(batch);
+                    activeSnappers.get(i).draw(batch);
             }
         }
 

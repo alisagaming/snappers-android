@@ -1,5 +1,6 @@
 package com.emerginggames.snappers2.gdx.Elements;
 
+import android.view.animation.OvershootInterpolator;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,16 +18,19 @@ public class SnapperView extends MovableActor{
     private static final float SHADOW_MULT = 1.125f;
     private static final float EYE_FRAME_TIME = 0.04f;
     private static final float EYE_FRAME_TIME_DEVIATION = 0.3f;
+    private static final float SCALE_DURATION = 0.3f;
     public static int halfSize;
     public int state;
     public int i;
     public int j;
     float yEyeShift;
     public float scale;
-    public float shadowScale;
-
+    float scaleTimer;
+    float sourceScale;
+    float targetScale;
     public Sprite snapper;
     public AnimatedSprite eyes;
+    static OvershootInterpolator scaleInterpolator;
 
     GameLogic logic;
 
@@ -38,11 +42,14 @@ public class SnapperView extends MovableActor{
         height = width = Resources.eyeFrames[0].originalWidth;
         halfSize = Resources.eyeFrames[0].originalWidth /2;
 
+        if (scaleInterpolator == null)
+            scaleInterpolator = new OvershootInterpolator(10);
     }
 
     public void set(int i, int j, int state){
         this.i = i;
         this.j = j;
+        targetScale = 0;
         setState(state);
         setPosition();
     }
@@ -66,18 +73,23 @@ public class SnapperView extends MovableActor{
         state--;
         if (state == 0)
             markToRemove(true);
-        else
+        else{
             setState(state);
+            scaleTimer = 0;
+        }
     }
 
     public void setState(int state){
+        sourceScale = targetScale;
         this.state = state;
-        scale = getScale();
-        shadowScale = scale * SHADOW_MULT;
+        targetScale = getScale();
+        if (sourceScale == 0){
+            scale = sourceScale = targetScale;
+            scaleTimer = SCALE_DURATION;
+            snapper.setScale(scale);
+            eyes.setScale(scale);
+        }
         snapper.setRegion(Resources.snapperBack[state-1]);
-        snapper.setScale(scale);
-        eyes.setScale(scale);
-        //yEyeShift = Metrics.snapperSize/25f * scale;
     }
 
     private float getScale(){
@@ -99,10 +111,26 @@ public class SnapperView extends MovableActor{
     public void act(float delta) {
         super.act(delta);
         eyes.act(delta);
+        if (scaleTimer < SCALE_DURATION){
+            scaleTimer += delta;
+            scale = sourceScale + (targetScale - sourceScale) * scaleInterpolator.getInterpolation(Math.min(scaleTimer / SCALE_DURATION, 1));
+            snapper.setScale(scale);
+            eyes.setScale(scale);
+            //yEyeShift = Metrics.snapperSize/25f * scale;
+        }
     }
 
     @Override
-    public void draw(SpriteBatch batch, float parentAlpha) {}
+    public void draw(SpriteBatch batch, float parentAlpha) {
+        snapper.draw(batch, parentAlpha);
+        eyes.draw(batch, parentAlpha);
+    }
+
+    public void draw(SpriteBatch batch) {
+        snapper.draw(batch);
+        eyes.draw(batch);
+    }
+
 
     @Override
     public boolean touchDown(float x, float y, int pointer) {

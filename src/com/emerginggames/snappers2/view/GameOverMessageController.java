@@ -175,8 +175,8 @@ public     class GameOverMessageController {
                 float endScale = (float)(Math.random() *0.3 + 0.7);
                 int endX = (int)(Math.random() * size * (1.2 - endScale));
                 int endY = (int)(Math.random() * size * (1.2 - endScale));
-                float startX = (float)(Math.random() *0.5 + 0.5);
-                float startY = (float)(Math.random() *0.5 + 0.5);
+                float startX = (float)(Math.random() *0.7 + 0.3);
+                float startY = (float)(Math.random() *0.7 + 0.3);
                 int timeDev = (int)(Math.random() * 400);
                 img.setAnimation(getAnimation(startX, startY, endX, endY, endScale, timeDev));
                 mRootLayout.addView(img);

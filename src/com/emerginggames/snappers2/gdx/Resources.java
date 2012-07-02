@@ -91,14 +91,16 @@ public class Resources {
         for (int i=14; i<28; i++)
             eyeFrames[i] = eyeFrames[27-i];
 
-        snapperBack = new PrepareableTextureAtlas.AtlasRegion[4];
+        snapperBack = new PrepareableTextureAtlas.AtlasRegion[5];
         snapperBack[0] = mainTextures.findRegion(String.format("red"));
-        snapperBack[1] = mainTextures.findRegion(String.format("green"));
-        snapperBack[2] = mainTextures.findRegion(String.format("yellow"));
-        snapperBack[3] = mainTextures.findRegion(String.format("blue"));
+        snapperBack[1] = mainTextures.findRegion(String.format("red"));
+        snapperBack[2] = mainTextures.findRegion(String.format("green"));
+        snapperBack[3] = mainTextures.findRegion(String.format("yellow"));
+        snapperBack[4] = mainTextures.findRegion(String.format("blue"));
 
-        blastFrames = new PrepareableTextureAtlas.AtlasRegion[1];
-        blastFrames[0] = mainTextures.findRegion(String.format("blast"));
+        blastFrames = new PrepareableTextureAtlas.AtlasRegion[2];
+        blastFrames[0] = mainTextures.findRegion(String.format("blast0"));
+        blastFrames[1] = mainTextures.findRegion(String.format("blast"));
 
         bangFrames  = new PrepareableTextureAtlas.AtlasRegion[5];
         for (int i = 0; i < 5; i++)

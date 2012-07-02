@@ -34,7 +34,7 @@ import java.util.List;
 public class MainStage extends MyStage {
     private static final float BLAST_ANIMATION_TIME = 0.1f;
     protected static final float POP_SOUND_DISTANCE = 0.1f;
-    protected static final float BANG_FRAME_DURATION = 0.12f;
+    //protected static final float BANG_FRAME_DURATION = 0.12f;
     protected static final int WAIT_FOR_TUTORIAL = 5000;
     private static final float SNAPPER_WARM_TIME = 0.6f;
     private static final float TIME_TO_WAIT_FOR_WON = 1;
@@ -50,7 +50,7 @@ public class MainStage extends MyStage {
     boolean drawButtons = true;
 
     float animDelta;
-    private Bangs bangs;
+    //private Bangs bangs;
     private Blasts blasts;
     private Snappers_ snappers;
     private Sounds sounds;
@@ -64,7 +64,7 @@ public class MainStage extends MyStage {
         this.mGame = listener;
 
         snappers = new Snappers_();
-        bangs = new Bangs();
+        //bangs = new Bangs();
         blasts = new Blasts();
         sounds = new Sounds();
 
@@ -142,7 +142,7 @@ public class MainStage extends MyStage {
         }
 
         sounds.act(delta, acts);
-        bangs.act(delta);
+        //bangs.act(delta);
         snappers.act(delta);
 
         if (isHinting)
@@ -169,7 +169,7 @@ public class MainStage extends MyStage {
             hint.drawBack(batch);
         snappers.draw();
         blasts.draw();
-        bangs.draw();
+        //bangs.draw();
 
         if (isHinting)
             hint.draw(batch);
@@ -221,10 +221,10 @@ public class MainStage extends MyStage {
         public void snapperHit(int i, int j) {
             SnapperView view = snappers.find(i, j);
             view.touch();
-            if (view.state <1){
+            /*if (view.state <1){
                 snappers.free(view);
                 bangs.add(i, j);
-            }
+            }*/
         }
 
         @Override
@@ -244,7 +244,7 @@ public class MainStage extends MyStage {
         }
     };
 
-    private class Bangs {
+/*    private class Bangs {
         private Array<AnimatedSprite> activeBangs ;
         private Pool<AnimatedSprite> bangPool;
 
@@ -282,7 +282,7 @@ public class MainStage extends MyStage {
             bang.setPosition(logic.getSnapperXPosision(i) - bang.getWidth()/2, logic.getSnapperYPosision(j) - bang.getHeight()/2);
             activeBangs.add(bang);
         }
-    }
+    }*/
 
     private class Blasts{
         private Animation blastAnimation;
@@ -316,7 +316,7 @@ public class MainStage extends MyStage {
         }
     }
 
-    private class Snappers_{
+    private class Snappers_ implements SnapperView.SnapperFreeListener{
         final private Array<SnapperView> activeSnappers ;
         private Pool<SnapperView> snapperViewPool;
         IAnimationFunction snapperAnimFn = new PowEasingAnim(1.5f);
@@ -325,7 +325,7 @@ public class MainStage extends MyStage {
             snapperViewPool = new Pool<SnapperView>(30, 40) {
                 @Override
                 protected SnapperView newObject() {
-                    SnapperView view = new SnapperView(logic);
+                    SnapperView view = new SnapperView(logic, Snappers_.this);
                     return view;
                 }
             };
@@ -415,6 +415,11 @@ public class MainStage extends MyStage {
                 ((SnapperView)item).shiftRandom(time);
             }
         };
+
+        @Override
+        public void onSnapperFree(SnapperView view) {
+            free(view);
+        }
     }
 
     private class Sounds{

@@ -32,6 +32,7 @@ public class Metrics {
         snapperMult2 = snapperMult1 * 0.9f;
         snapperMult3 = snapperMult2 * 0.9f;
         snapperMult4 = snapperMult3 * 0.9f;
+        snapperMult0 = snapperMult1 / 0.85f;
     }
 
     public static enum SizeMode {
@@ -43,6 +44,7 @@ public class Metrics {
     public static int fontSize;
     public static int largeFontSize;
     public static int screenMargin;
+    public static float snapperMult0;
     public static float snapperMult1;
     public static float snapperMult2;
     public static float snapperMult3;

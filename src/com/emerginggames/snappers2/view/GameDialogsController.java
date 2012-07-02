@@ -225,8 +225,8 @@ public class GameDialogsController {
                 initDialog();
             else dlg.clear();
 
-            dlg.setMessage(R.string.share, (int) (Metrics.fontSize * 1.15f));
-            dlg.addButton(R.drawable.button_share);
+            dlg.setMessage(R.string.share, (int) (Metrics.fontSize * 1.2f));
+            dlg.addButton(R.drawable.button_share, 0.5f);
             dlg.show();
         }
     };
@@ -238,8 +238,8 @@ public class GameDialogsController {
                 initDialog();
             else dlg.clear();
 
-            dlg.setMessage(R.string.rateUs, (int) (Metrics.fontSize * 1.15f));
-            dlg.addButton(R.drawable.button_rate_long);
+            dlg.setMessage(R.string.rateUs, (int) (Metrics.fontSize * 1.2f));
+            dlg.addButton(R.drawable.button_rate_long, 0.5f);
             dlg.show();
         }
     };
@@ -251,8 +251,8 @@ public class GameDialogsController {
                 initDialog();
             else dlg.clear();
 
-            dlg.setMessage(R.string.likeUs, (int) (Metrics.fontSize * 1.15f));
-            dlg.addButton(R.drawable.button_like_long);
+            dlg.setMessage(R.string.likeUs, (int) (Metrics.fontSize * 1.2f));
+            dlg.addButton(R.drawable.button_like_long, 0.5f);
             dlg.show();
         }
     };
@@ -348,7 +348,8 @@ public class GameDialogsController {
         @Override
         public void onCancel() {
             Game game = mActivity.getGame();
-            game.setStage(Game.Stages.MainStage);
+            if (game.getStage() != Game.Stages.GameOverStage)
+                game.setStage(Game.Stages.MainStage);
             game.setPaused(false);
         }
     };

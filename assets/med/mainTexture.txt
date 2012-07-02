@@ -248,9 +248,16 @@ round
   orig: 65, 65
   offset: 0, 0
   index: -1
-blast
+blast0
   rotate: false
   xy: 321, 260
+  size: 27, 27
+  orig: 27, 27
+  offset: 0, 0
+  index: -1
+blast
+  rotate: false
+  xy: 321, 288
   size: 27, 27
   orig: 27, 27
   offset: 0, 0

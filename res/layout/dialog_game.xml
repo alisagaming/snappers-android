@@ -20,7 +20,7 @@
                 android:textColor="#dd0" android:textStyle="bold"
                 android:layout_gravity="center" android:gravity="center" android:paddingTop="-4dp"/>
 
-        <com.emrg.view.OutlinedTextView android:id="@+id/message"
+        <com.emrg.view.OutlinedTextView android:id="@+id/message" android:layout_marginTop="4dp"
                 android:layout_width="fill_parent" android:layout_height="wrap_content"
                 app:strokeWidth="1dp" app:strokeColor="#000" android:textColor="#fff"
                 android:textStyle="bold" android:visibility="gone" android:gravity="center"/>

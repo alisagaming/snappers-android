@@ -19,6 +19,7 @@ public class AnimatedSprite extends Sprite implements IPositionable {
     protected float loopTime;
     protected IAnimationListener animationEndListener;
     protected TextureRegion[] sprites;
+    protected Object parent;
 
 
     public AnimatedSprite(TextureRegion[] sprites, float frameTime, boolean looping) {
@@ -47,6 +48,14 @@ public class AnimatedSprite extends Sprite implements IPositionable {
 
     public void setOpacity(float opacity){
         setColor(1,1,1, opacity);
+    }
+
+    public void setParent(Object parent) {
+        this.parent = parent;
+    }
+
+    public Object getParent() {
+        return parent;
     }
 
     public void act(float delta){

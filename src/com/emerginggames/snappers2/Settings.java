@@ -35,7 +35,7 @@ public class Settings {
     public static final long GIFT_INTERVAL = 24*60*60*1000;//1 day
     public static final long LIKE_INTERVAL = 24*60*60*1000;//3 day
     public static final long RATE_INTERVAL = 24*60*60*1000;//1 day
-    public static final int LEVEL_TO_RECOMMEND = 30;
+    public static final int LEVEL_TO_RECOMMEND = 10;//30;
 
 
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";

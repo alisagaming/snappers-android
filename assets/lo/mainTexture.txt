@@ -1,7 +1,7 @@
 
 main1.png
 format: RGBA4444
-filter: Nearest,Linear
+filter: Linear,Linear
 repeat: none
 rays
   rotate: false
@@ -248,9 +248,16 @@ blue
   orig: 48, 48
   offset: 0, 0
   index: -1
-blast
+blast0
   rotate: false
   xy: 241, 214
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+blast
+  rotate: false
+  xy: 260, 214
   size: 18, 18
   orig: 18, 18
   offset: 0, 0

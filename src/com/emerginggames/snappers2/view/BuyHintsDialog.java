@@ -27,12 +27,10 @@ public class BuyHintsDialog extends GameDialog {
     private int bestBuy = 2;
     int wndWidth;
     public BuyHintsDialog(Context context, int width) {
-        super(context);
-        setWidth(width);
+        super(context, width);
         setTwoButtonsARow(true);
         wndWidth = width;
         addButtons();
-
     }
 
     void addButtons(){

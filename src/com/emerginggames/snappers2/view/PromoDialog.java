@@ -38,11 +38,16 @@ public class PromoDialog extends Dialog {
         super(context, R.style.GameDialog);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_promo);
-        findViewById(R.id.close_btn).setOnClickListener(closeBtnListener);
+
         width = Metrics.screenWidth * 95 / 100;
         getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         setupControls();
+
+        ImageView closeBtn = (ImageView)findViewById(R.id.close_btn);
+        closeBtn.setOnClickListener(closeBtnListener);
+        ViewGroup.LayoutParams lp = closeBtn.getLayoutParams();
+        lp.width  = lp.height = width * 12/80;
     }
 
     void setupControls(){

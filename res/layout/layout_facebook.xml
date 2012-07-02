@@ -35,7 +35,7 @@
                     />
         </LinearLayout>
 
-        <LinearLayout and:layout_width="fill_parent" and:layout_height="0px" and:layout_weight="1" and:background="@drawable/settings_wnd_mid">
+        <LinearLayout and:layout_width="fill_parent" and:layout_height="0px" and:layout_weight="1" and:background="@drawable/settings_wnd_m">
             <ScrollView and:id="@+id/mainCont" and:layout_width="fill_parent" and:layout_height="fill_parent">
                 <LinearLayout and:id="@+id/table" and:layout_width="fill_parent" and:layout_height="wrap_content"
                               and:orientation="vertical"/>

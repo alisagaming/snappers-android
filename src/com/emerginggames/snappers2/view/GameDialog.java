@@ -31,17 +31,18 @@ public class GameDialog extends Dialog {
     LinearLayout lastRow;
     int width;
 
-    public GameDialog(Context context) {
+    public GameDialog(Context context, int width) {
         super(context, R.style.GameDialog);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_game);
-        findViewById(R.id.close_btn).setOnClickListener(closeBtnListener);
-    }
 
-    public GameDialog(Context context, int width) {
-        this(context);
         this.width = width;
         getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        ImageView closeBtn = (ImageView)findViewById(R.id.close_btn);
+        closeBtn.setOnClickListener(closeBtnListener);
+        ViewGroup.LayoutParams lp = closeBtn.getLayoutParams();
+        lp.width  = lp.height = width * 12/80;
     }
 
     public void setBtnClickListener(OnDialogEventListener btnClickListener) {

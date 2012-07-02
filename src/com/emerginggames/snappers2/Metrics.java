@@ -92,7 +92,7 @@ public class Metrics {
         switch (sizeMode){
             case modeS:
                 snapperSize = 48;
-                squareButtonSize = 40;
+                squareButtonSize = 48;
                 fontSize = 22;
                 hintSize=64;
                 bgSourceWidth = 320;

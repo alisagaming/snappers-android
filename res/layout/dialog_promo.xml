@@ -61,6 +61,6 @@
 
     <com.emrg.view.ImageView and:id="@+id/close_btn"
                              and:layout_width="wrap_content" and:layout_height="wrap_content"
-                             and:src="@drawable/button_close" and:layout_alignParentTop="true"
-                             and:layout_alignParentRight="true"/>
+                             and:layout_alignParentTop="true" and:layout_alignParentRight="true"
+                             and:src="@drawable/button_close" and:adjustViewBounds="true" and:scaleType="fitCenter"/>
 </RelativeLayout>

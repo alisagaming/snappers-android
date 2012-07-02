@@ -1,6 +1,5 @@
 package com.emerginggames.snappers2.view;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.WindowManager;
@@ -173,8 +172,7 @@ public class GameDialogsController {
     };
 
     void initDialog() {
-        dlg = new GameDialog(mActivity);
-        dlg.setWidth(Metrics.screenWidth * 95 / 100);
+        dlg = new GameDialog(mActivity, Metrics.screenWidth * 95 / 100);
         dlg.setBtnClickListener(dialogButtonListener);
         dlg.setItemSpacing(Metrics.screenMargin * 2);
         dlg.setTypeface(Resources.getFont(mActivity));

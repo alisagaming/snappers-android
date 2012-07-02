@@ -17,7 +17,7 @@ import com.emrg.view.ImageView;
 public class NewLevelDialog extends GameDialog {
 
     public NewLevelDialog(Context context, int width) {
-        super(context);
+        super(context, width);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         setWidth(width);
 

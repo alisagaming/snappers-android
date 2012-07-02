@@ -19,7 +19,7 @@
         </LinearLayout>
 
         <LinearLayout and:id="@+id/table" and:layout_width="fill_parent" and:layout_height="wrap_content"
-                and:background="@drawable/settings_wnd_mid" and:layout_below="@+id/titleCont" and:orientation="vertical">
+                and:background="@drawable/settings_wnd_m" and:layout_below="@+id/titleCont" and:orientation="vertical">
 
             <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
                           and:background="@color/row_dark">

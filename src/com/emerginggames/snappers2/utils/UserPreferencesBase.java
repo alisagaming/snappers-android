@@ -127,7 +127,8 @@ public class UserPreferencesBase {
 
     protected boolean getBoolean(String key, boolean def){
         try {
-            return Boolean.parseBoolean(getString(key));
+            String val = getString(key);
+            return val == null ? def : Boolean.parseBoolean(val);
         }catch (Exception e){
             return def;
         }

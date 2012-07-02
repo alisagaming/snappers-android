@@ -138,7 +138,7 @@ public class Resources {
         popSounds[3] = Gdx.audio.newSound(Gdx.files.internal("sounds/p4.mp3"));
         popSounds[4] = Gdx.audio.newSound(Gdx.files.internal("sounds/p5.mp3"));
         winSound = Gdx.audio.newSound(Gdx.files.internal("sounds/winsound.mp3"));
-        fanfareSound = Gdx.audio.newSound(Gdx.files.internal("sounds/winsound.mp3"));
+        fanfareSound = Gdx.audio.newSound(Gdx.files.internal("sounds/fanfare.mp3"));
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button2g.mp3"));
     }
 

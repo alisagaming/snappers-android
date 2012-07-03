@@ -3,12 +3,14 @@ package com.emerginggames.snappers2.view;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import com.emerginggames.snappers2.SelectLevelActivity;
 import com.emerginggames.snappers2.UserPreferences;
 import com.emerginggames.snappers2.gdx.Resources;
 import com.emerginggames.snappers2.Metrics;
@@ -24,6 +26,12 @@ import com.emrg.view.OutlinedTextView;
  * Time: 2:09
  */
 public class LevelListFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG_PACK = "snappers.pack";
+    private static final String TAG_PADDING_TOP = "snappers.pt";
+    private static final String TAG_PADDING_RIGHT = "snappers.pr";
+    private static final String TAG_PADDING_BOTTOM = "snappers.pb";
+    private static final String TAG_PADDING_LEFT = "snappers.pl";
+    private static final String TAG_START = "snappers.lStart";
     private static final int[] bgPaddings = {16,16,16,23};
     private int startFromLevel;
     private IOnItemSelectedListener itemSelectedListener;
@@ -76,6 +84,12 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         setUserVisibleHint(true);
+        outState.putSerializable(TAG_PACK, pack);
+        outState.putSerializable(TAG_PADDING_TOP, innerPaddingTop);
+        outState.putSerializable(TAG_PADDING_RIGHT, innerPaddingRight);
+        outState.putSerializable(TAG_PADDING_BOTTOM, innerPaddingBottom);
+        outState.putSerializable(TAG_PADDING_LEFT, innerPaddingLeft);
+        outState.putSerializable(TAG_START, startFromLevel);
     }
 
     @Override
@@ -85,6 +99,15 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (pack == null && savedInstanceState.containsKey(TAG_PACK)){
+            pack = (LevelPack)savedInstanceState.getSerializable(TAG_PACK);
+            innerPaddingTop = savedInstanceState.getInt(TAG_PADDING_TOP);
+            innerPaddingRight = savedInstanceState.getInt(TAG_PADDING_RIGHT);
+            innerPaddingBottom = savedInstanceState.getInt(TAG_PADDING_BOTTOM);
+            innerPaddingLeft = savedInstanceState.getInt(TAG_PADDING_LEFT);
+            startFromLevel = savedInstanceState.getInt(TAG_START);
+        }
+
         backId = getResources().getIdentifier(pack.levelIcon, "drawable", getActivity().getPackageName());
         if (backId == 0)
             backId = R.drawable.level1;
@@ -99,6 +122,7 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         layout.setOrientation(LinearLayout.VERTICAL);
         int num = startFromLevel;
 
+        Log.e("Snappers 2", "Size mode: "  + Metrics.sizeMode.toString());
         LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT, 1f);
         switch (Metrics.sizeMode){
             case modeS:
@@ -110,6 +134,8 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
             case modeL:
                 itemParams.setMargins(6,6,6,6);
                 break;
+            default:
+
         }
 
         for (int i=0; i<5; i++){
@@ -161,6 +187,9 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
+        //it's a hack! it's for onRestore;
+        if (itemSelectedListener == null)
+            itemSelectedListener = (SelectLevelActivity)getActivity();
         if (view.getTag() != null && (Integer)view.getTag()<= maxAvailableLevel)
             itemSelectedListener.onItemSelected((Integer)view.getTag());
     }

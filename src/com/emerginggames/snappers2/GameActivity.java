@@ -126,7 +126,8 @@ public class GameActivity extends AndroidApplication {
                 public void run() {
                     gameOverMessageController = new GameOverMessageController(rootLayout, GameActivity.this);
                     levelInfo = new LevelInfo(rootLayout);
-                    topButtons = new TopButtonController(rootLayout, GameActivity.this, game);
+                    levelInfo.setLevel(startLevel);
+                    topButtons = new TopButtonController(rootLayout, GameActivity.this);
                     topButtons.showMainButtons();
 
                     if (!Settings.IS_PREMIUM && !prefs.isAdFree()) {
@@ -399,7 +400,8 @@ public class GameActivity extends AndroidApplication {
 
         @Override
         public void updateLevelInfo(Level level) {
-            levelInfo.setLevel(level);
+            if (levelInfo != null)
+                levelInfo.setLevel(level);
         }
 
         @Override

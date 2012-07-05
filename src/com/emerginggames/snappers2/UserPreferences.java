@@ -210,7 +210,7 @@ public class UserPreferences extends UserPreferencesBase {
     }
 
     public boolean isLevelSolved(Level level) {
-        return level.number < getLevelUnlocked(level.packNumber);
+        return level != null && level.number < getLevelUnlocked(level.packNumber);
     }
 
     public boolean isAdFree() {

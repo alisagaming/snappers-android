@@ -29,12 +29,10 @@ public class TopButtonController {
     ScoreCounter scoreCounter;
     GameActivity activity;
     UserPreferences prefs;
-    Game game;
 
-    public TopButtonController(RelativeLayout rootLayour, GameActivity activity, Game game){
+    public TopButtonController(RelativeLayout rootLayour, GameActivity activity){
         this.activity = activity;
         prefs = UserPreferences.getInstance(activity);
-        this.game = game;
 
         layout = (RelativeLayout)activity.getLayoutInflater().inflate(R.layout.partial_topbuttons, null);
         pauseBtn = (ImageView)layout.findViewById(R.id.pauseBtn);
@@ -186,6 +184,7 @@ public class TopButtonController {
         @Override
         public void onClick(View v) {
             SoundManager.getInstance(activity).playButtonSound();
+            Game game = activity.getGame();
             switch (v.getId()){
                 case R.id.pauseBtn:
                     activity.pauseGame();

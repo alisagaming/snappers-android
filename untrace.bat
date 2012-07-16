@@ -1,0 +1,1 @@
+"c:\Program Files (x86)\Android\android-sdk\tools\proguard\bin\retrace.bat" mappings\mapping_1.01.txt trace.txt

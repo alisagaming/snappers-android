@@ -3,6 +3,7 @@ package com.emerginggames.snappers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import com.emerginggames.snappers.utils.OnlineSettings;
 import org.acra.ACRA;
 import com.emerginggames.snappers.data.CryptHelperAES;
 import com.emerginggames.snappers.data.LevelPackTable;
@@ -32,6 +33,10 @@ public class UserPreferences {
     private static final String G_IN_APP_INIT_DONE = "IN_APP_INIT_DONE";
     private static final String DONT_SHOW_APPRATER = "dontshowagain";
     private static final String LAST_APP_RATED = "LAST_DATE_APP_RATED";
+    private static final String LATEST_VERSION = "latestVersion";
+    private static final String MORE_GAMES_FREQ = "moreGamesFreq";
+    private static final String FB_URL = "fbUrl";
+    private static final String TWITTER_URL = "twUrl";
     public static String Key1;
     public static String Key11;
     public static String Key21;
@@ -77,20 +82,12 @@ public class UserPreferences {
             instance.context = context;
     }
 
-    public void setTapjoyEnabled(boolean enabled){
-        putBoolean(TAPJOY_ENABLED, enabled, TAPJOY_ENABLED);
-    }
-
     public boolean isTapjoyEnabled(){
-        return getBoolean(TAPJOY_ENABLED, false, TAPJOY_ENABLED);
-    }
-
-    public void setIngameAds(boolean enabled){
-        putBoolean(INGAMEADS, enabled, INGAMEADS);
+        return prefs.getBoolean(TAPJOY_ENABLED, false);
     }
 
     public boolean getIngameAds(){
-        return getBoolean(INGAMEADS, false, INGAMEADS);
+        return prefs.getBoolean(INGAMEADS, false);
     }
 
     public void touchHints(){
@@ -120,18 +117,14 @@ public class UserPreferences {
     public void addHints(int amount){
         synchronized (hintSync){
             int hintsRemaining = getHintsRemaining();
-            setHints(amount + hintsRemaining);
+            putInt(HINTS, amount + hintsRemaining, HINTS);
             if (hintChangedListener!= null)
                 hintChangedListener.onHintsChanged(hintsRemaining, hintsRemaining +amount);
+            if (!areHintsTouched())
+                touchHints();
         }
     }
 
-    public void setHints(int amount){
-        putInt(HINTS, amount, HINTS);
-        if (!areHintsTouched())
-            touchHints();
-    }
-    
     public boolean isPackUnlocked(int id){
         return getLevelUnlocked(id) > 0;
     }
@@ -249,11 +242,26 @@ public class UserPreferences {
         prefs.edit().putLong(LAST_APP_RATED, time).commit();
     }
 
+    public void saveSettings(OnlineSettings.SettingsData data){
+        Editor editor =  prefs.edit();
+        if (prefs.getBoolean(TAPJOY_ENABLED, false) != data.tapJoy)
+            editor.putBoolean(TAPJOY_ENABLED, data.tapJoy);
+        if (prefs.getBoolean(INGAMEADS, false) != data.inGameAds)
+            editor.putBoolean(INGAMEADS, data.inGameAds);
+        if (prefs.getInt(LATEST_VERSION, 0) != data.latestVersion)
+            editor.putInt(LATEST_VERSION, data.latestVersion);
+        if (prefs.getFloat(MORE_GAMES_FREQ, 0) != data.moreGamesFrequency)
+            editor.putFloat(MORE_GAMES_FREQ, data.moreGamesFrequency);
+        if (!prefs.getString(FB_URL, "").equals(data.facebookUrl))
+            editor.putString(FB_URL, data.facebookUrl);
+        if (!prefs.getString(TWITTER_URL, "").equals(data.twitterUrl))
+            editor.putString(TWITTER_URL, data.twitterUrl);
 
+        if (!areHintsTouched() && getHintsRemaining() != data.defaultHints)
+            editor.putString(_S(HINTS), _S(Integer.toString(data.defaultHints), HINTS));
 
-
-
-
+        editor.commit();
+    }
 
 
 

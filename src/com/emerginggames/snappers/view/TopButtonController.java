@@ -20,7 +20,6 @@ public class TopButtonController {
     RelativeLayout layout;
     ImageView pauseBtn;
     ImageView hintBtn;
-    ImageView shopBtn;
     ImageView nextBtn;
     ImageView restartBtn;
     ImageView menuBtn;
@@ -39,7 +38,6 @@ public class TopButtonController {
         layout = (RelativeLayout)activity.getLayoutInflater().inflate(R.layout.partial_topbuttons, null);
         pauseBtn = (ImageView)layout.findViewById(R.id.pauseBtn);
         hintBtn = (ImageView)layout.findViewById(R.id.hintBtn);
-        shopBtn = (ImageView)layout.findViewById(R.id.shopBtn);
         nextBtn = (ImageView)layout.findViewById(R.id.nextBtn);
         restartBtn = (ImageView)layout.findViewById(R.id.restartBtn);
         menuBtn = (ImageView)layout.findViewById(R.id.menuBtn);
@@ -47,7 +45,6 @@ public class TopButtonController {
 
         pauseBtn.setOnClickListener(mainListener);
         hintBtn.setOnClickListener(mainListener);
-        shopBtn.setOnClickListener(mainListener);
         nextBtn.setOnClickListener(mainListener);
         restartBtn.setOnClickListener(mainListener);
         menuBtn.setOnClickListener(mainListener);
@@ -91,7 +88,6 @@ public class TopButtonController {
     void hideAll(){
         pauseBtn.setVisibility(View.GONE);
         hintBtn.setVisibility(View.GONE);
-        shopBtn.setVisibility(View.GONE);
         nextBtn.setVisibility(View.GONE);
         restartBtn.setVisibility(View.GONE);
         menuBtn.setVisibility(View.GONE);
@@ -111,7 +107,6 @@ public class TopButtonController {
         @Override
         public void run() {
             hideAll();
-            shopBtn.setVisibility(View.VISIBLE);
             nextBtn.setVisibility(View.VISIBLE);
             restartBtn.setVisibility(View.VISIBLE);
             menuBtn.setVisibility(View.VISIBLE);
@@ -146,9 +141,6 @@ public class TopButtonController {
                         game.useHint();
                     else
                         activity.showHintMenu();
-                    break;
-                case R.id.shopBtn:
-                    activity.launchStore();
                     break;
                 case R.id.nextBtn:
                     game.nextLevel();

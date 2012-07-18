@@ -2,6 +2,7 @@ package com.emerginggames.snappers.view;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -25,6 +26,7 @@ import java.util.Locale;
  */
 public class AdController implements AdListener, MyAdView.OnMeasuredListener {
     //private static String MY_AD_UNIT_ID = "df038f9ac5854e20";
+    private static final long RETRY_DELAY = 30000;
     public RelativeLayout.LayoutParams lpUp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     public RelativeLayout.LayoutParams lpDown = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     boolean isShowingAd = false;
@@ -37,9 +39,10 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
     Game game;
     RelativeLayout rootLayout;
     private MyAdView adView;
-//    private AdView adView;
     int width;
     int height;
+    boolean isAdTop;
+    Handler handler = new Handler();
 
 
     public AdController(GameActivity activity, Game game, RelativeLayout rootLayout) {
@@ -55,7 +58,6 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         shouldShowIngameAd = prefs.getIngameAds();
 
         adView = new MyAdView(activity, AdSize.BANNER, Settings.getAdMobKey(activity));
-        //adView = new AdView(activity, AdSize.BANNER, Settings.getAdMobKey(activity));
 
         adView.setLayoutParams(shouldShowIngameAd ? lpDown : lpUp);
 
@@ -65,20 +67,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         adView.setId(R.id.adCont);
 
         rootLayout.addView(adView);
-        AdRequest adRequest= new AdRequest();
-/*        Set<String> keyWords = new HashSet<String>();
-        keyWords.add("game");
-        keyWords.add("puzzle");
-        adRequest.setKeywords(keyWords);*/
-
-        if (Settings.DEBUG){
-            adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
-            Context context = activity.getApplicationContext();
-            String deviceId = getEncodedDeviceId(context);
-            adRequest.addTestDevice(deviceId);
-        }
-
-        adView.loadAd(adRequest);
+        updateAd.run();
         adView.setAdListener(this);
         adView.setOnMeasuredListener(this);
     }
@@ -100,7 +89,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
 
         if (!canShowAd)
             return;
-        if (shouldShowIngameAd)
+        if (shouldShowIngameAd || !isShowingAd)
             activity.runOnUiThread(moveAdTop);
         if (!isShowingAd)
             activity.runOnUiThread(showAD);
@@ -137,10 +126,11 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
                 return;
 
             adView.setVisibility(View.VISIBLE);
-            rootLayout.removeView(adView);
-            rootLayout.addView(adView);
+            adView.bringToFront();
+            //rootLayout.removeView(adView);
+            //rootLayout.addView(adView);
             isShowingAd = true;
-            activity.getTopButtons().alignUnderView(adView);
+            //activity.getTopButtons().alignUnderView(adView);
         }
     };
 
@@ -161,6 +151,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         public void run() {
             adView.setLayoutParams(lpDown);
             activity.getTopButtons().alignTop();
+            isAdTop = false;
         }
     };
 
@@ -169,6 +160,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         public void run() {
             adView.setLayoutParams(lpUp);
             activity.getTopButtons().alignUnderView(adView);
+            isAdTop = true;
         }
     };
 
@@ -178,10 +170,15 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
             return;
         canShowAd = true;
         if (shouldShowAdTop) {
-            showAdTop();
+            if (!isShowingAd || !isAdTop)
+                activity.runOnUiThread(moveAdTop);
+            if (!isShowingAd)
+                activity.runOnUiThread(showAD);
         } else if (shouldShowIngameAd && canShowIngameAd) {
-            activity.runOnUiThread(moveAdBottom);
-            activity.runOnUiThread(showAD);
+            if (!isShowingAd || isAdTop)
+                activity.runOnUiThread(moveAdBottom);
+            if (!isShowingAd)
+                activity.runOnUiThread(showAD);
         }
     }
 
@@ -192,6 +189,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         canShowAd = false;
         if (isShowingAd)
             activity.runOnUiThread(hideAD);
+        scheduleNextAdGet();
     }
 
     @Override
@@ -255,6 +253,26 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
 
         return result;
     }
+
+    void scheduleNextAdGet(){
+        handler.postDelayed(updateAd, RETRY_DELAY);
+    }
+
+    private Runnable updateAd = new Runnable() {
+        @Override
+        public void run() {
+            AdRequest adRequest= new AdRequest();
+
+            if (Settings.DEBUG){
+                adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
+                Context context = activity.getApplicationContext();
+                String deviceId = getEncodedDeviceId(context);
+                adRequest.addTestDevice(deviceId);
+            }
+
+            adView.loadAd(adRequest);
+        }
+    };
 }
 
 

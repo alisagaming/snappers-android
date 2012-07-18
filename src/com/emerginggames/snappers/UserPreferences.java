@@ -39,6 +39,7 @@ public class UserPreferences {
     public static String Key3;
     public static String Key4;
     public static String Key5;
+    private static Object hintSync = new Object();
 
     private static final int INITIAL_HINTS = Settings.DEBUG? 10:2;
     Context context;
@@ -117,11 +118,12 @@ public class UserPreferences {
     }
 
     public void addHints(int amount){
-        int hintsRemaining = getHintsRemaining();
-        setHints(amount + hintsRemaining);
-        if (hintChangedListener!= null)
-            hintChangedListener.onHintsChanged(hintsRemaining, hintsRemaining +amount);
-
+        synchronized (hintSync){
+            int hintsRemaining = getHintsRemaining();
+            setHints(amount + hintsRemaining);
+            if (hintChangedListener!= null)
+                hintChangedListener.onHintsChanged(hintsRemaining, hintsRemaining +amount);
+        }
     }
 
     public void setHints(int amount){

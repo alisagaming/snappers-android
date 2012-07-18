@@ -55,7 +55,7 @@ public class GameActivity extends AndroidApplication {
     TopButtonController topButtons;
     GameOverMessageController gameOverMessageController;
     LevelInfo levelInfo;
-    View helpView;
+    //View helpView;
     TextView pleaseWaitText;
     View gameView;
     Level startLevel;
@@ -105,7 +105,7 @@ public class GameActivity extends AndroidApplication {
         addPleaseWait();
 
         levelInfo = new LevelInfo(rootLayout);
-        topButtons = new TopButtonController(rootLayout);
+        topButtons = new TopButtonController(rootLayout, this, game);
         topButtons.showMainButtons();
         gameOverMessageController = new GameOverMessageController();
 
@@ -120,7 +120,7 @@ public class GameActivity extends AndroidApplication {
         if (Settings.GoogleInAppEnabled)
             mStore = GInAppStore.getInstance(getApplicationContext());
 
-        if (TapjoyConnect.getTapjoyConnectInstance() == null)
+        if (prefs.isTapjoyEnabled() && TapjoyConnect.getTapjoyConnectInstance() == null)
             TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
     }
 
@@ -177,10 +177,10 @@ public class GameActivity extends AndroidApplication {
         }
 
 
-        if (wentTapjoy) {
+        if (TapjoyConnect.getTapjoyConnectInstance() == null)
             TapjoyConnect.getTapjoyConnectInstance().getTapPoints(new TapjoyPointsListener(getApplicationContext()));
-            wentTapjoy = false;
-        }
+
+        wentTapjoy = false;
         wentShop = false;
 
         ((SnappersApplication) getApplication()).activityResumed(this);
@@ -226,27 +226,6 @@ public class GameActivity extends AndroidApplication {
     public void launchStore() {
         Intent intent = new Intent(GameActivity.this, StoreActivity.class);
         startActivity(intent);
-    }
-
-    void showHelp(){
-        helpView = getLayoutInflater().inflate(R.layout.partial_help, null);
-        helpView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rootLayout.removeView(v);
-                game.setStage(Game.Stages.GameOverStage);
-                helpView = null;
-                SoundManager.getInstance(GameActivity.this).playButtonSound();
-            }
-        });
-
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        rootLayout.addView(helpView, lp);
-        game.setStage(Game.Stages.HelpStage);
-        topButtons.hideAll();
-        levelInfo.hideText();
     }
 
     Runnable showPausedDialog = new Runnable() {
@@ -430,10 +409,7 @@ public class GameActivity extends AndroidApplication {
                 prefs.unlockNextLevelPack(level.pack);
             levelInfo.setDim(true);
             levelInfo.hideText();
-            if (helpView != null){
-                rootLayout.removeView(helpView);
-                helpView = null;
-            }
+            topButtons.hideHelpIfNeeded();
         }
 
         @Override
@@ -448,10 +424,7 @@ public class GameActivity extends AndroidApplication {
                 adController.showAdTop();
             gameOverMessageController.show(false, level.tapsCount);
             levelInfo.hideText();
-            if (helpView != null){
-                rootLayout.removeView(helpView);
-                helpView = null;
-            }
+            topButtons.hideHelpIfNeeded();
         }
 
         @Override
@@ -510,152 +483,7 @@ public class GameActivity extends AndroidApplication {
         }
     };
 
-    public class TopButtonController {
-        RelativeLayout layout;
-        ImageView pauseBtn;
-        ImageView hintBtn;
-        ImageView shopBtn;
-        ImageView nextBtn;
-        ImageView restartBtn;
-        ImageView menuBtn;
-        ImageView helpBtn;
-        RelativeLayout.LayoutParams rlpTop;
-        RelativeLayout.LayoutParams rlpUnderView;
 
-        public TopButtonController(RelativeLayout rootLayour){
-            layout = (RelativeLayout)getLayoutInflater().inflate(R.layout.partial_topbuttons, null);
-            pauseBtn = (ImageView)layout.findViewById(R.id.pauseBtn);
-            hintBtn = (ImageView)layout.findViewById(R.id.hintBtn);
-            shopBtn = (ImageView)layout.findViewById(R.id.shopBtn);
-            nextBtn = (ImageView)layout.findViewById(R.id.nextBtn);
-            restartBtn = (ImageView)layout.findViewById(R.id.restartBtn);
-            menuBtn = (ImageView)layout.findViewById(R.id.menuBtn);
-            helpBtn = (ImageView)layout.findViewById(R.id.helpBtn);
-
-            pauseBtn.setOnClickListener(mainListener);
-            hintBtn.setOnClickListener(mainListener);
-            shopBtn.setOnClickListener(mainListener);
-            nextBtn.setOnClickListener(mainListener);
-            restartBtn.setOnClickListener(mainListener);
-            menuBtn.setOnClickListener(mainListener);
-            helpBtn.setOnClickListener(mainListener);
-
-            rlpTop = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, Math.round(Metrics.squareButtonSize * Metrics.squareButtonScale));
-            rlpTop.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            rlpTop.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            rlpTop.setMargins(Metrics.screenMargin, Metrics.screenMargin, Metrics.screenMargin, 0);
-
-            rootLayour.addView(layout, rlpTop);
-        }
-
-        public void alignTop(){
-            layout.setLayoutParams(rlpTop);
-        }
-
-        public void alignUnderView(View v){
-            if (rlpUnderView == null){
-                rlpUnderView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, (int) (Metrics.squareButtonSize * Metrics.squareButtonScale));
-                rlpUnderView.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                rlpUnderView.setMargins(Metrics.screenMargin, Metrics.screenMargin, Metrics.screenMargin, 0);
-            }
-            rlpUnderView.addRule(RelativeLayout.BELOW, v.getId());
-            layout.setLayoutParams(rlpUnderView);
-        }
-
-
-        public void showMainButtons(){
-            runOnUiThread(showMainButtons);
-        }
-
-        public void showGameWonMenu(){
-            runOnUiThread(showWonMenu);
-        }
-
-        public void showGameLostMenu(){
-            runOnUiThread(showLostMenu);
-        }
-
-        void hideAll(){
-            pauseBtn.setVisibility(View.GONE);
-            hintBtn.setVisibility(View.GONE);
-            shopBtn.setVisibility(View.GONE);
-            nextBtn.setVisibility(View.GONE);
-            restartBtn.setVisibility(View.GONE);
-            menuBtn.setVisibility(View.GONE);
-            helpBtn.setVisibility(View.GONE);
-        }
-
-        Runnable showMainButtons = new Runnable() {
-            @Override
-            public void run() {
-                hideAll();
-                pauseBtn.setVisibility(View.VISIBLE);
-                hintBtn.setVisibility(View.VISIBLE);
-            }
-        };
-
-        Runnable showWonMenu = new Runnable() {
-            @Override
-            public void run() {
-                hideAll();
-                shopBtn.setVisibility(View.VISIBLE);
-                nextBtn.setVisibility(View.VISIBLE);
-                restartBtn.setVisibility(View.VISIBLE);
-                menuBtn.setVisibility(View.VISIBLE);
-            }
-        };
-
-        Runnable showLostMenu = new Runnable() {
-            @Override
-            public void run() {
-                hideAll();
-                restartBtn.setVisibility(View.VISIBLE);
-                menuBtn.setVisibility(View.VISIBLE);
-                helpBtn.setVisibility(View.VISIBLE);
-            }
-        };
-
-        View.OnClickListener mainListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!game.initDone)
-                    return;
-                SoundManager.getInstance(GameActivity.this).playButtonSound();
-                switch (v.getId()){
-                    case R.id.pauseBtn:
-                        runOnUiThread(showPausedDialog);
-                        game.setPaused(true);
-                        break;
-                    case R.id.hintBtn:
-                        if (game.isHinting())
-                            return;
-
-                        if (game.isFreeHint())
-                            game.useHint();
-                        else
-                            runOnUiThread(showHintMenu);
-                        break;
-                    case R.id.shopBtn:
-                        launchStore();
-                        break;
-                    case R.id.nextBtn:
-                        game.nextLevel();
-                        game.setStage(Game.Stages.MainStage);
-                        break;
-                    case R.id.restartBtn:
-                        game.restartLevel();
-                        game.setStage(Game.Stages.MainStage);
-                        break;
-                    case R.id.menuBtn:
-                        finish();
-                        break;
-                    case R.id.helpBtn:
-                        showHelp();
-                        break;
-                }
-            }
-        };
-    }
 
     class GameOverMessageController {
         private static final int WIN_TITLES = 7;
@@ -731,7 +559,7 @@ public class GameActivity extends AndroidApplication {
        };
     }
 
-    class LevelInfo{
+    public class LevelInfo{
         OutlinedTextView levelInfo;
         OutlinedTextView tapsLeft;
         Level level;
@@ -820,5 +648,18 @@ public class GameActivity extends AndroidApplication {
                 tapsLeft.setVisibility(View.VISIBLE);
             }
         };
+    }
+
+    public void showPausedDialog(){
+        runOnUiThread(showPausedDialog);
+        game.setPaused(true);
+    }
+
+    public void showHintMenu(){
+        runOnUiThread(showHintMenu);
+    }
+
+    public LevelInfo getLevelInfo(){
+        return levelInfo;
     }
 }

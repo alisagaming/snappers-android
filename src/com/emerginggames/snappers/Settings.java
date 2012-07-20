@@ -30,6 +30,8 @@ public class Settings {
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
     public static final boolean SEND_EXTENDED_AD_INFO = false;
 
+    public static final String MoreGamesURL = "https://s3.amazonaws.com/emerginggames/moregames.json";
+
     //1543619c1de44e80af13f861b204b778
     private static String adwhirlKey = "5D43298AD9AB6642H81E3D3F20BA02E8FHAAD7E50F0B01C4B6H13863AC093001CC1H16B7733B6AFA5528H39DA19D96F7DF7F3HAD9A87096A80397FHDF9A4393DB6D4F33";
     //App ID ? 6ac99625-6d02-4326-becd-213a233c511a

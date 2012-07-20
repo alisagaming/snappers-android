@@ -15,6 +15,7 @@ import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.data.DbCopyOpenHelper;
 import com.emerginggames.snappers.gdx.Splash;
 
+import com.emerginggames.snappers.utils.MoreGamesUtil;
 import com.tapjoy.TapjoyConnect;
 import net.hockeyapp.android.UpdateManager;
 import com.emerginggames.snappers.utils.OnlineSettings;
@@ -89,6 +90,8 @@ public class SplashGdxActivity extends AndroidApplication {
                 UserPreferences.getInstance(SplashGdxActivity.this);
                 OnlineSettings.update(getApplicationContext());
                 GInAppStore.getInstance(getApplicationContext());
+
+                MoreGamesUtil.download(getApplicationContext());
 
                 long now = System.currentTimeMillis();
                 if (now - startTime < SPLASH_TIME)

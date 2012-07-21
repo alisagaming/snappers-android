@@ -41,7 +41,8 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
 
         CirclePageIndicator mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
-        findViewById(R.id.shopButton).setVisibility(View.GONE);
+        //findViewById(R.id.shopButton).setVisibility(View.GONE);
+        findViewById(R.id.moreGamesButton).setVisibility(View.GONE);
         if (Settings.GoogleInAppEnabled) {
             mGStore = GInAppStore.getInstance(getApplicationContext());
             mGStore.setListener(this, new Handler());

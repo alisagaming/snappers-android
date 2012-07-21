@@ -69,6 +69,12 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         SoundManager.getInstance(this).playButtonSound();
         startActivity(new Intent(this, StoreActivity.class));
     }
+
+    public void onMoreGamesButtonClick(View v){
+        ((SnappersApplication)getApplication()).setSwitchingActivities();
+        SoundManager.getInstance(this).playButtonSound();
+        startActivity(new Intent(this, MoreGamesActivity.class));
+    }
     
     public void showMessageDialog(String message, int[] lineEnds, View.OnClickListener leftListener, View.OnClickListener rightListener){
         if (dlg == null)

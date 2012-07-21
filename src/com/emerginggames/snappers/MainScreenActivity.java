@@ -105,6 +105,12 @@ public class MainScreenActivity extends Activity {
         startActivity(new Intent(this, StoreActivity.class));
     }
 
+    public void onMoreGamesButtonClick(View v){
+        SoundManager.getInstance(this).playButtonSound();
+        ((SnappersApplication)getApplication()).setSwitchingActivities();
+        startActivity(new Intent(this, MoreGamesActivity.class));
+    }
+
     public void onPlayButtonClick(View v){
         SoundManager.getInstance(this).playButtonSound();
         ((SnappersApplication)getApplication()).setSwitchingActivities();

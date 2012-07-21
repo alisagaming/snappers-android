@@ -3,8 +3,14 @@ package com.emerginggames.snappers.gdx;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -323,6 +329,27 @@ public class Resources {
     }
     private static PreloadRunnable preloadRunnable = new PreloadRunnable();
 
+    public static void applyTypeface(ViewGroup root, Typeface f) {
+        View child;
+        if(root != null)
+            for(int i=0;i<root.getChildCount();i++) {
+                child = root.getChildAt(i);
+                if(child == null) continue;
+                if(child instanceof ViewGroup)
+                    applyTypeface((ViewGroup)child, f);
+                else if (child instanceof TextView)
+                        ((TextView)child).setTypeface(f);
+            }
+    }
 
+    public static void applyTypeface(View root, int[] ids, Typeface f){
+        View child;
+        if(root != null)
+            for (int i=0; i<ids.length; i++){
+                child = root.findViewById(ids[i]);
+                if(child != null && child instanceof TextView)
+                    ((TextView) child).setTypeface(f);
+            }
+    }
 
 }

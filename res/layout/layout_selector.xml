@@ -71,12 +71,12 @@
         <LinearLayout android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="7"/>
 
 
-        <ImageView android:id="@+id/shopButton" android:layout_width="0dp" android:layout_height="wrap_content"
-                   android:src="@drawable/store_button" android:layout_weight="60"
+        <ImageView android:id="@+id/moreGamesButton" android:layout_width="0dp" android:layout_height="wrap_content"
+                   android:src="@drawable/button_moregames" android:layout_weight="60"
                    android:layout_gravity="center"
                    android:scaleType="fitCenter"
                    android:clickable="true"
-                   android:onClick="onStoreButtonClick"
+                   android:onClick="onMoreGamesButtonClick"
                    android:adjustViewBounds="true"
                 />
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/root"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:id="@+id/root"
                 android:background="@drawable/background"
                 android:padding="10dp"
         >
@@ -64,6 +64,18 @@
                android:scaleType="fitCenter"
                android:adjustViewBounds="true"
                android:onClick="onStoreButtonClick"
+
             />
+
+    <com.emerginggames.snappers.view.ImageView android:id="@+id/moreGamesButton"
+                       android:layout_width="wrap_content" android:layout_height="wrap_content"
+                       android:src="@drawable/button_moregames"
+                       android:layout_above="@+id/shopButton"
+                       android:layout_alignRight="@+id/shopButton"
+                       android:layout_alignLeft="@+id/shopButton"
+                       android:scaleType="fitCenter"
+                       android:adjustViewBounds="true"
+                       android:onClick="onMoreGamesButtonClick"
+                       android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>

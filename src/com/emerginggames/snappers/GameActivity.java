@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,14 +42,14 @@ public class GameActivity extends AndroidApplication {
     RelativeLayout rootLayout;
 
     public boolean isFinished = false;
-    boolean wentTapjoy = false;
+    public boolean wentTemp = false;
     boolean wentShop = false;
     LevelTable levelTable;
     Store mStore;
     GameListener gameListener;
     AdController adController;
     Game game;
-    GameDialog dlg;
+
     UserPreferences prefs;
     TopButtonController topButtons;
     GameOverMessageController gameOverMessageController;
@@ -59,6 +58,7 @@ public class GameActivity extends AndroidApplication {
     TextView pleaseWaitText;
     View gameView;
     Level startLevel;
+    GameDialogController dialogs;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +122,14 @@ public class GameActivity extends AndroidApplication {
 
         if (prefs.isTapjoyEnabled() && TapjoyConnect.getTapjoyConnectInstance() == null)
             TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
+        dialogs = new GameDialogController(this, game);
+    }
+
+    public void buy(Goods goods) {
+        if (mStore != null) {
+            wentTemp = true;
+            mStore.buy(goods);
+        }
     }
 
     void addPleaseWait(){
@@ -155,7 +163,7 @@ public class GameActivity extends AndroidApplication {
             levelTable.close();
             prefs.setHintChangedListener(null);
         }
-        if (wentShop || wentTapjoy)
+        if (wentTemp)
             Resources.preloadResourcesInWorker(null);
     }
 
@@ -180,8 +188,7 @@ public class GameActivity extends AndroidApplication {
         if (TapjoyConnect.getTapjoyConnectInstance() == null)
             TapjoyConnect.getTapjoyConnectInstance().getTapPoints(new TapjoyPointsListener(getApplicationContext()));
 
-        wentTapjoy = false;
-        wentShop = false;
+        wentTemp = false;
 
         ((SnappersApplication) getApplication()).activityResumed(this);
     }
@@ -192,7 +199,7 @@ public class GameActivity extends AndroidApplication {
             game.backButtonPressed();
     }
 
-    protected boolean checkNetworkStatus() {
+    public boolean checkNetworkStatus() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (checkNetworkType(conMgr, ConnectivityManager.TYPE_MOBILE))
             return true;
@@ -228,158 +235,16 @@ public class GameActivity extends AndroidApplication {
         startActivity(intent);
     }
 
-    Runnable showPausedDialog = new Runnable() {
-        @Override
-        public void run() {
-            if (dlg == null)
-                initDialog();
-            else
-                dlg.clear();
-            dlg.setTitle(R.string.game_paused);
-            dlg.addButton(R.drawable.resumelong, R.drawable.resumelong_tap);
-            dlg.addButton(R.drawable.restartlong, R.drawable.restartlong_tap);
-            dlg.addButton(R.drawable.menulong, R.drawable.menulong_tap);
-            dlg.addButton(R.drawable.storelong, R.drawable.storelong_tap);
-            dlg.show();
-        }
-    };
-
-    Runnable showHintMenu = new Runnable() {
-        @Override
-        public void run() {
-            if (dlg == null)
-                initDialog();
-            else{
-                if (dlg.isShowing())
-                    dlg.hide();
-                dlg.clear();
-            }
-
-            int hintsLeft = prefs.getHintsRemaining();
-            if (hintsLeft > 0)
-                fillUseHintMenu(hintsLeft);
-            else if (checkNetworkStatus())
-                showBuyHintMenu();
-            else
-                showGetOnlineMenu();
-            dlg.show();
-        }
-
-        void fillUseHintMenu(int hintsLeft){
-            if (hintsLeft == 1)
-                dlg.setMessage(R.string.youHaveOneHint, Metrics.fontSize);
-            else
-                dlg.setMessage(getResources().getString(R.string.youHave_n_Hints, hintsLeft), Metrics.fontSize);
-
-            dlg.addButton(R.drawable.useahintlong, R.drawable.useahintlong_tap);
-            if (prefs.isTapjoyEnabled())
-                dlg.addButton(R.drawable.freehintslong, R.drawable.freehintslong_tap);
-            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
-
-        }
-
-        void showBuyHintMenu(){
-            android.content.res.Resources res = getResources();
-            StringBuilder msg = new StringBuilder();
-            msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.buySome));
-            dlg.setMessage(msg, Metrics.fontSize);
-            dlg.addButton(R.drawable.buy1hint, R.drawable.buy1hint_tap);
-            dlg.addButton(R.drawable.buyhintslong, R.drawable.buyhintslong_tap);
-            if (prefs.isTapjoyEnabled())
-                dlg.addButton(R.drawable.freehintslong, R.drawable.freehintslong_tap);
-            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
-        }
-
-        void showGetOnlineMenu(){
-            android.content.res.Resources res = getResources();
-            StringBuilder msg = new StringBuilder();
-            msg.append(res.getString(R.string.youHaveNoHints)).append("\n").append(res.getString(R.string.getOnline));
-            dlg.setMessage(msg, Metrics.fontSize);
-            dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
-        }
-    };
-
-    void initDialog(){
-        dlg = new GameDialog(GameActivity.this);
-        dlg.setWidth(Math.min(Metrics.menuWidth, Metrics.screenWidth * 9 / 10));
-        dlg.setBtnClickListener(dialogButtonListener);
-        dlg.setItemSpacing(Metrics.screenMargin);
-        dlg.setTypeface(Resources.getFont(this));
-    }
-
-    GameDialog.OnDialogEventListener dialogButtonListener = new GameDialog.OnDialogEventListener() {
-        @Override
-        public void onButtonClick(int unpressedDrawableId) {
-            switch (unpressedDrawableId){
-                case R.drawable.cancellong:
-                case R.drawable.resumelong:
-                    dlg.hide();
-                    game.setPaused(false);
-                    game.setStage(Game.Stages.MainStage);
-                    break;
-
-                case R.drawable.restartlong:
-                    game.setPaused(false);
-                    game.setStage(Game.Stages.MainStage);
-                    dlg.hide();
-                    game.restartLevel();
-                    break;
-
-                case R.drawable.menulong:
-                    dlg.hide();
-                    finish();
-                    break;
-
-                case R.drawable.storelong:
-                    launchStore();
-                    break;
-
-                case R.drawable.useahintlong:
-                    prefs.useHint();
-                    game.useHint();
-                    dlg.hide();
-                    game.setStage(Game.Stages.MainStage);
-                    break;
-
-                case R.drawable.freehintslong:
-                    wentTapjoy = true;
-                    TapjoyConnect.getTapjoyConnectInstance().showOffers();
-                    break;
-
-                case R.drawable.buy1hint:
-                    buy(Goods.HintPack1);
-                    break;
-
-                case R.drawable.buyhintslong:
-                    buy(Goods.HintPack10);
-                    break;
-            }
-        }
-
-        @Override
-        public void onCancel() {
-            game.setStage(Game.Stages.MainStage);
-            game.setPaused(false);
-        }
-
-        public void buy(Goods goods) {
-            if (mStore != null) {
-                wentShop = true;
-                mStore.buy(goods);
-            }
-        }
-    };
-
     class GameListener implements IAppGameListener {
 
         @Override
         public void showPaused() {
-            runOnUiThread(showPausedDialog);
+            showPausedDialog();
         }
 
         @Override
         public void showHintMenu() {
-            runOnUiThread(showHintMenu);
+            dialogs.showHintMenu();
         }
 
         @Override
@@ -479,7 +344,7 @@ public class GameActivity extends AndroidApplication {
         @Override
         public void onHintsChanged(int old, int current) {
             if (game.getStage() == Game.Stages.HintMenu)
-                runOnUiThread(showHintMenu);
+                dialogs.showHintMenu();
         }
     };
 
@@ -651,12 +516,12 @@ public class GameActivity extends AndroidApplication {
     }
 
     public void showPausedDialog(){
-        runOnUiThread(showPausedDialog);
+        dialogs.showPaused();
         game.setPaused(true);
     }
 
     public void showHintMenu(){
-        runOnUiThread(showHintMenu);
+        dialogs.showHintMenu();
     }
 
     public LevelInfo getLevelInfo(){

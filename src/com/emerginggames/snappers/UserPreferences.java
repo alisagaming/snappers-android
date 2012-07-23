@@ -37,6 +37,8 @@ public class UserPreferences {
     private static final String MORE_GAMES_FREQ = "moreGamesFreq";
     private static final String FB_URL = "fbUrl";
     private static final String TWITTER_URL = "twUrl";
+    private static final String FB_LIKED = "fbLiked";
+    private static final String TW_FOLLOWED = "twFollowed";
     public static String Key1;
     public static String Key11;
     public static String Key21;
@@ -262,6 +264,31 @@ public class UserPreferences {
 
         editor.commit();
     }
+
+    public String getLikeUrl(){
+        return prefs.getString(FB_URL, null);
+    }
+
+    public String getFollowUrl(){
+        return prefs.getString(TWITTER_URL, null);
+    }
+
+    public boolean isLiked(){
+        return getBoolean(FB_LIKED, false, FB_LIKED);
+    }
+
+    public boolean isFollowed(){
+        return getBoolean(TW_FOLLOWED, false, TW_FOLLOWED);
+    }
+
+    public void setLiked(){
+        putBoolean(FB_LIKED, true, FB_LIKED);
+    }
+
+    public void setFolowed(){
+        putBoolean(TW_FOLLOWED, true, TW_FOLLOWED);
+    }
+
 
 
 

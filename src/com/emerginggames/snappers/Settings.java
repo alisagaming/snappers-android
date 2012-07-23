@@ -30,6 +30,10 @@ public class Settings {
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
     public static final boolean SEND_EXTENDED_AD_INFO = false;
 
+
+    public static final int BONUS_FOR_LIKE = 1;
+    public static final int BONUS_FOR_FOLLOW = 1;
+
     public static final String MoreGamesURL = "https://s3.amazonaws.com/emerginggames/moregames.json";
 
     //1543619c1de44e80af13f861b204b778

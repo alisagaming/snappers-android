@@ -23,7 +23,7 @@
     <string name="game_paused">Game paused</string>
 
     <string name="youHaveOneHint">You have 1 hint.\nUse it?</string>
-    <string name="youHave_n_Hints" formatted="false">You have %d hints.\nUse it?</string>
+    <string name="youHave_n_Hints" formatted="false">You have %d hints.\nUse one?</string>
     <string name="youHaveNoHints">You have no hints.</string>
     <string name="buySome">Buy some!</string>
     <string name="getOnline">Get online to get some.</string>
@@ -45,5 +45,6 @@
     <string name="taps_left" formatted="false">Taps left: %d</string>
     <string name="pleaseWait" formatted="false">Please wait</string>
     <string name="moreGames">More games</string>
+    <string name="freeHints">Free hints</string>
 
 </resources>

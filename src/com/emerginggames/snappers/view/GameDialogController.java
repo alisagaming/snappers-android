@@ -37,6 +37,23 @@ public class GameDialogController {
         activity.runOnUiThread(showHintMenu);
     }
 
+    public void showFreeGamesBanner(){
+        activity.runOnUiThread(showFreeGamesBanner);
+    }
+
+    Runnable showFreeGamesBanner = new Runnable() {
+        @Override
+        public void run() {
+            if (dlg == null)
+                initDialog();
+            else
+                dlg.clear();
+
+            dlg.setMessage(R.string.downloadFreeGame, Metrics.fontSize);
+
+            dlg.show();
+        }
+    };
 
     Runnable showPausedDialog = new Runnable() {
         @Override

@@ -15,7 +15,7 @@ import java.io.IOException;
 public class Settings {
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
 
-    public static boolean IS_AMAZON = false;
+    public static boolean IS_AMAZON = true;
 
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
@@ -24,7 +24,7 @@ public class Settings {
     public static final boolean ENABLE_ALL_LEVELS = false & DEBUG;
     public static final boolean NO_PREF_ENCRYPT = false & DEBUG;
     public static final boolean NO_ADS = false;
-    public static boolean GoogleInAppEnabled = true;
+    public static boolean BILLING_SUPPORTED = true;
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
     public static final String BUGSENSE_API_KEY = "8a555912";
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;

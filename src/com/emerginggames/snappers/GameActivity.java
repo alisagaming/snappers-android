@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.emerginggames.snappers.model.Goods;
+import com.emerginggames.snappers.utils.AmazonStore;
 import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.utils.Store;
 import com.emerginggames.snappers.utils.TapjoyPointsListener;
@@ -117,7 +118,9 @@ public class GameActivity extends AndroidApplication {
         levelTable = new LevelTable(this);
         levelTable.open(false);
 
-        if (Settings.GoogleInAppEnabled)
+        if (Settings.IS_AMAZON)
+            mStore = AmazonStore.getInstance(getApplicationContext());
+        else
             mStore = GInAppStore.getInstance(getApplicationContext());
 
         if (prefs.isTapjoyEnabled() && TapjoyConnect.getTapjoyConnectInstance() == null)

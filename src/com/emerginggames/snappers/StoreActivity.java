@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.View;
 import com.emerginggames.snappers.model.Goods;
 import com.emerginggames.snappers.model.ImagePaginatorParam;
+import com.emerginggames.snappers.utils.AmazonStore;
 import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.utils.Store;
 import com.emerginggames.snappers.view.FixedRatioPager;
@@ -26,7 +27,7 @@ import java.util.List;
 public class StoreActivity extends PaginatedSelectorActivity implements IOnItemSelectedListener, IStoreListener {
     LevelPack[] levelPacks;
     RotatedImagePagerAdapter adapter;
-    Store mGStore;
+    Store mStore;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +44,13 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
         mIndicator.setViewPager(pager);
         //findViewById(R.id.shopButton).setVisibility(View.GONE);
         findViewById(R.id.moreGamesButton).setVisibility(View.GONE);
-        if (Settings.GoogleInAppEnabled) {
-            mGStore = GInAppStore.getInstance(getApplicationContext());
-            mGStore.setListener(this, new Handler());
+
+        if (Settings.BILLING_SUPPORTED) {
+            if (Settings.IS_AMAZON)
+                mStore = AmazonStore.getInstance(getApplicationContext());
+            else
+                mStore = GInAppStore.getInstance(getApplicationContext());
+            mStore.setListener(this, new Handler());
         } else
             onBillingSupported(false);
     }
@@ -53,8 +58,8 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
     @Override
     protected void onPause() {
         super.onPause();
-        if (isFinishing() && mGStore != null)
-            mGStore.unSetListener();
+        if (isFinishing() && mStore != null)
+            mStore.unSetListener();
     }
 
     List<ImagePaginatorParam> getPaginatorParamList() {
@@ -93,24 +98,24 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
     }
 
     void buyLevelPack(LevelPack pack) {
-        if (mGStore != null)
-            mGStore.buy(Goods.getGoodsByLevelPack(pack));
+        if (mStore != null)
+            mStore.buy(Goods.getGoodsByLevelPack(pack));
     }
 
     void buyHints() {
-        if (mGStore != null)
+        if (mStore != null)
         if (Settings.DEBUG_BUY)
-            mGStore.itemBought(Goods.HintPack10, 1);
+            mStore.itemBought(Goods.HintPack10, 1);
         else
-            mGStore.buy(Goods.HintPack10);
+            mStore.buy(Goods.HintPack10);
     }
 
     void buyAdFree() {
-        if (mGStore != null){
+        if (mStore != null){
             if (Settings.DEBUG_BUY)
-                mGStore.itemBought(Goods.AdFree, 1);
+                mStore.itemBought(Goods.AdFree, 1);
             else
-                mGStore.buy(Goods.AdFree);
+                mStore.buy(Goods.AdFree);
         }
     }
 

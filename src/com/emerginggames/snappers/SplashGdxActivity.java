@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.emerginggames.snappers.gdx.Resources;
+import com.emerginggames.snappers.utils.AmazonStore;
 import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.data.DbCopyOpenHelper;
 import com.emerginggames.snappers.gdx.Splash;
@@ -89,7 +90,10 @@ public class SplashGdxActivity extends AndroidApplication {
 
                 UserPreferences.getInstance(SplashGdxActivity.this);
                 OnlineSettings.update(getApplicationContext());
-                GInAppStore.getInstance(getApplicationContext());
+                if (Settings.IS_AMAZON)
+                    AmazonStore.getInstance(getApplicationContext());
+                else
+                    GInAppStore.getInstance(getApplicationContext());
 
                 MoreGamesUtil.download(getApplicationContext());
 

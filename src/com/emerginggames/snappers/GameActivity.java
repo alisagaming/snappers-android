@@ -280,7 +280,7 @@ public class GameActivity extends AndroidApplication {
             levelInfo.hideText();
             topButtons.hideHelpIfNeeded();
 
-            //if (!prefs.isAdFree() && prefs.getMoreGameFreq() > Math.random())
+            if (!prefs.isAdFree() &&(level.number > 5 || level.packNumber >1) && prefs.getMoreGameFreq() > Math.random())
                 dialogs.showFreeGamesBanner();
         }
 

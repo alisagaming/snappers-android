@@ -23,6 +23,7 @@ import com.emerginggames.snappers.utils.GInAppStore;
 import com.emerginggames.snappers.utils.Store;
 import com.emerginggames.snappers.utils.TapjoyPointsListener;
 import com.emerginggames.snappers.view.*;
+import com.flurry.android.FlurryAgent;
 import com.tapjoy.TapjoyConnect;
 import com.emerginggames.snappers.data.LevelTable;
 import com.emerginggames.snappers.gdx.Game;
@@ -278,6 +279,9 @@ public class GameActivity extends AndroidApplication {
             levelInfo.setDim(true);
             levelInfo.hideText();
             topButtons.hideHelpIfNeeded();
+
+            //if (!prefs.isAdFree() && prefs.getMoreGameFreq() > Math.random())
+                dialogs.showFreeGamesBanner();
         }
 
         @Override
@@ -529,5 +533,17 @@ public class GameActivity extends AndroidApplication {
 
     public LevelInfo getLevelInfo(){
         return levelInfo;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this, Settings.FLURRY_APP_KEY);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
     }
 }

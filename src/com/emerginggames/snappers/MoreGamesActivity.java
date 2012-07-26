@@ -18,6 +18,7 @@ import com.emerginggames.snappers.model.MoreGame;
 import com.emerginggames.snappers.utils.MoreGamesUtil;
 import com.emerginggames.snappers.view.MoreGamesAdapter;
 import com.emerginggames.snappers.view.OutlinedTextView;
+import com.flurry.android.FlurryAgent;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,5 +71,17 @@ public class MoreGamesActivity extends Activity {
     protected void onResume() {
         super.onResume();
         ((SnappersApplication)getApplication()).activityResumed(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this, Settings.FLURRY_APP_KEY);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
     }
 }

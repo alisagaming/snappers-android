@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 
 import com.emerginggames.snappers.view.AppRater;
+import com.flurry.android.FlurryAgent;
 import net.hockeyapp.android.CrashManager;
 
 /**
@@ -133,5 +134,17 @@ public class MainScreenActivity extends Activity {
 
     private void checkForCrashes() {
         CrashManager.register(this, Settings.APP_ID);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this, Settings.FLURRY_APP_KEY);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
     }
 }

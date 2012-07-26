@@ -331,7 +331,7 @@ public class OutlinedTextView extends TextView{
         if (mLayout == null)
             makeNewLayout(getMeasuredWidth());
 
-        if (mLayout.getLineCount() == 1 || maxLines == 1){
+        if (maxLines == 1 && isSquare){
             drawBoring(canvas);
             return;
         }

@@ -289,6 +289,10 @@ public class UserPreferences {
         putBoolean(TW_FOLLOWED, true, TW_FOLLOWED);
     }
 
+    public float getMoreGameFreq(){
+        return prefs.getFloat(MORE_GAMES_FREQ, 0);
+    }
+
 
 
 

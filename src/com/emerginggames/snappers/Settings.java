@@ -15,7 +15,7 @@ import java.io.IOException;
 public class Settings {
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
 
-    public static boolean IS_AMAZON = true;
+    public static boolean IS_AMAZON = false;
 
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;
@@ -29,6 +29,7 @@ public class Settings {
     public static final String BUGSENSE_API_KEY = "8a555912";
     public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
     public static final boolean SEND_EXTENDED_AD_INFO = false;
+    public static final String FLURRY_APP_KEY = (IS_AMAZON ? "PPCDBY77K3VJFRP9BSJS" : "8C8AWJ71NNLSZHVN4S44");
 
 
     public static final int BONUS_FOR_LIKE = 1;

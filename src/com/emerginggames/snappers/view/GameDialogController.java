@@ -2,11 +2,16 @@ package com.emerginggames.snappers.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 import com.emerginggames.snappers.*;
 import com.emerginggames.snappers.gdx.Game;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.model.Goods;
+import com.emerginggames.snappers.model.MoreGame;
+import com.emerginggames.snappers.utils.MoreGamesUtil;
 import com.tapjoy.TapjoyConnect;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,13 +49,27 @@ public class GameDialogController {
     Runnable showFreeGamesBanner = new Runnable() {
         @Override
         public void run() {
+            List<MoreGame> games = MoreGamesUtil.load(activity.getApplicationContext());
+            if(games == null || games.size() == 0)
+                return;
+
+            MoreGamesAdapter adapter = new MoreGamesAdapter(activity.getApplicationContext(), games);
+            int pos = (int)(Math.random() * games.size());
+            View gameView = adapter.getView(pos, null, null);
+            MoreGame game = (MoreGame)adapter.getItem(pos);
+            gameView.setPadding(0,0,0,0);
+
             if (dlg == null)
                 initDialog();
             else
                 dlg.clear();
 
-            dlg.setMessage(R.string.downloadFreeGame, Metrics.fontSize);
+            dlg.setTitle(R.string.downloadFreeGame, new int[]{13, 0});
 
+            dlg.addView(gameView);
+
+            dlg.addButton(R.drawable.download_btn, R.drawable.download_btn_tap, game);
+            dlg.addButton(R.drawable.nothanks_btn, R.drawable.nothanks_btn_tap);
             dlg.show();
         }
     };
@@ -145,7 +164,7 @@ public class GameDialogController {
 
     void initDialog(){
         dlg = new GameDialog(activity);
-        dlg.setWidth(Math.min(Metrics.menuWidth, Metrics.screenWidth * 9 / 10));
+        dlg.setWidth(Metrics.screenWidth * 80 / 100);
         dlg.setBtnClickListener(dialogButtonListener);
         dlg.setItemSpacing(Metrics.screenMargin);
         dlg.setTypeface(Resources.getFont(activity));
@@ -153,7 +172,7 @@ public class GameDialogController {
 
     GameDialog.OnDialogEventListener dialogButtonListener = new GameDialog.OnDialogEventListener() {
         @Override
-        public void onButtonClick(int unpressedDrawableId) {
+        public void onButtonClick(int unpressedDrawableId, Object tag) {
             switch (unpressedDrawableId){
                 case R.drawable.cancellong:
                 case R.drawable.resumelong:
@@ -219,6 +238,15 @@ public class GameDialogController {
                 case R.drawable.tapjoy_btn:
                     activity.wentTemp = true;
                     TapjoyConnect.getTapjoyConnectInstance().showOffers();
+                    break;
+
+                case R.drawable.nothanks_btn:
+                    dlg.dismiss();
+                    break;
+
+                case R.drawable.download_btn:
+                    MoreGame game = (MoreGame)tag;
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(game.url)));
                     break;
             }
         }

@@ -44,6 +44,7 @@
     <orderEntry type="library" name="ACRA" level="project" />
     <orderEntry type="module" module-name="TapJoy" />
     <orderEntry type="library" name="Amazon in-app-purchasing-1.0.3" level="project" />
+    <orderEntry type="library" name="FlurryAgent" level="project" />
   </component>
 </module>
 

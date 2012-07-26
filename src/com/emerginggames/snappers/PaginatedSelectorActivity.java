@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.view.MyAlertDialog;
 import com.emerginggames.snappers.view.OutlinedTextView;
+import com.flurry.android.FlurryAgent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -96,5 +97,17 @@ public class PaginatedSelectorActivity extends FragmentActivity {
 
     public void hideMessageDialog(){
         dlg.hide();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this, Settings.FLURRY_APP_KEY);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
     }
 }

@@ -17,6 +17,7 @@ import com.emerginggames.snappers.data.DbCopyOpenHelper;
 import com.emerginggames.snappers.gdx.Splash;
 
 import com.emerginggames.snappers.utils.MoreGamesUtil;
+import com.flurry.android.FlurryAgent;
 import com.tapjoy.TapjoyConnect;
 import net.hockeyapp.android.UpdateManager;
 import com.emerginggames.snappers.utils.OnlineSettings;
@@ -60,6 +61,18 @@ public class SplashGdxActivity extends AndroidApplication {
             checkForUpdates();
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this, Settings.FLURRY_APP_KEY);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
     }
 
     public void gotSize(int width, int height) {

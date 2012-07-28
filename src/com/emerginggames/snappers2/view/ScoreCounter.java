@@ -97,7 +97,9 @@ public class ScoreCounter {
         if (newLevel != level)
             setLevel(newLevel, Settings.getLevelXp(newLevel), Settings.getLevelXp(newLevel+1));
 
-        float progress = Math.min(((float)score - levelScore) / (nextLevelScore - levelScore), 1);
+        boolean isMaxLevel = Settings.isMaxLevel(newLevel);
+
+        float progress = isMaxLevel ? 1 : Math.min(((float)score - levelScore) / (nextLevelScore - levelScore), 1);
         int filledWidth = Math.round(progress * (barWidth - barCoveredWidth)) + barCoveredWidth;
 
         View v = root.findViewById(R.id.inner);
@@ -105,7 +107,10 @@ public class ScoreCounter {
         lp.width = filledWidth;
         v.setLayoutParams(lp);
 
-        ((OutlinedTextView)root.findViewById(R.id.score)).setText(Integer.toString(score));
+        if (isMaxLevel)
+            ((OutlinedTextView)root.findViewById(R.id.score)).setText(R.string.maxLevel);
+        else
+            ((OutlinedTextView)root.findViewById(R.id.score)).setText(Integer.toString(score));
         currentScore = score;
     }
 

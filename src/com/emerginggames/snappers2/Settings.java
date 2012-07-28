@@ -263,4 +263,8 @@ public class Settings {
             return xpOfLevel[level - 1];
         return Integer.MAX_VALUE;
     }
+
+    public static boolean isMaxLevel(int level){
+        return level == xpOfLevel.length;
+    }
 }

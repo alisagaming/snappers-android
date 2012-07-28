@@ -96,4 +96,6 @@
     <string name="inviteFriends">Invite some friends to be able to receive FREE gifts!</string>
     <string name="needFacebook">Please, go back to Settings and login to Facebook first!</string>
 
+    <string name="maxLevel">max level</string>
+
 </resources>

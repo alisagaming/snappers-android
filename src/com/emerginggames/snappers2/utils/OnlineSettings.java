@@ -23,7 +23,7 @@ import java.net.URLConnection;
  * Time: 13:49
  */
 public class OnlineSettings implements Runnable {
-    static OnlineSettings instance;
+
     private static final int RETRY_INTERVAL = 5 * 60 * 1000;
     public static final String SETTINGS_URL = "http://s3.amazonaws.com/snappersandroid/default.xml";
     Context mContext;
@@ -40,8 +40,7 @@ public class OnlineSettings implements Runnable {
     }
 
     public static void update(Context context){
-        if (instance == null)
-            instance = new OnlineSettings(context);
+        OnlineSettings instance = new OnlineSettings(context);
         instance.handler.post(instance);
     }
 
@@ -51,7 +50,6 @@ public class OnlineSettings implements Runnable {
         try{
             getSettingsFromStream(downloadSettings(), locale).save(UserPreferences.getInstance(mContext));
             thread.quit();
-            instance = null;
             return;
         }catch (XmlPullParserException e){
             ErrorReporter.getInstance().handleSilentException(e);

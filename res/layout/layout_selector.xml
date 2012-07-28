@@ -26,10 +26,10 @@
                           and:background="#80FF0000" and:visibility="gone"/>
         </LinearLayout>
 
-        <LinearLayout and:layout_width="fill_parent" and:layout_height="0px" and:layout_weight="1" and:orientation="vertical">
+        <RelativeLayout and:layout_width="fill_parent" and:layout_height="0px" and:layout_weight="1">
             <com.emrg.view.FixedRatioPager and:id="@+id/pager"
-                     and:layout_height="wrap_content" and:layout_width="fill_parent" and:layout_gravity="center"/>
-        </LinearLayout>
+                     and:layout_height="wrap_content" and:layout_width="fill_parent" and:layout_centerInParent="true"/>
+        </RelativeLayout>
 
 
 

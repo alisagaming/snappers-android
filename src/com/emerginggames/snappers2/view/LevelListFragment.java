@@ -122,7 +122,6 @@ public class LevelListFragment extends Fragment implements View.OnClickListener 
         layout.setOrientation(LinearLayout.VERTICAL);
         int num = startFromLevel;
 
-        Log.e("Snappers 2", "Size mode: "  + Metrics.sizeMode.toString());
         LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.FILL_PARENT, 1f);
         switch (Metrics.sizeMode){
             case modeS:

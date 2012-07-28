@@ -34,12 +34,13 @@ public class Resources {
         public static boolean isBgLoading;
         public static String bgName;
         public static PrepareableTextureAtlas.TextureAtlasData mainTextures;
+        public static TextureData rays;
     }
 
     public static TextureRegion bg;
     public static PrepareableTextureAtlas mainTextures;
     public static TextureRegion hintCircle;
-    public static TextureRegion rays;
+    public static Texture rays;
 
     public static PrepareableTextureAtlas.AtlasRegion[] snapperBack;
     public static PrepareableTextureAtlas.AtlasRegion[] eyeFrames;
@@ -113,7 +114,8 @@ public class Resources {
             hintFrames[i] = hintFrames[18-i];
 
         hintCircle = mainTextures.findRegion("round");
-        rays = mainTextures.findRegion("rays");
+        //rays = mainTextures.findRegion("rays");
+        rays = new Texture(Preload.rays);
     }
 
     public static boolean loadBg(String name) {
@@ -156,12 +158,16 @@ public class Resources {
                 FileHandle packFile = Gdx.files.internal(dir + "mainTexture.txt");
                 Preload.mainTextures = new PrepareableTextureAtlas.TextureAtlasData(packFile, packFile.parent(), false);
             }
+
+            if (Preload.rays == null)
+                Preload.rays = new FileTextureData(Gdx.files.internal(dir + "rays.png"), null, Pixmap.Format.RGBA4444, false);
         }
     }
 
     public static void preparePreload() {
         synchronized (syncLock) {
             prepareData(Preload.mainTextures);
+            prepareData(Preload.rays);
         }
     }
 

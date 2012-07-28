@@ -21,7 +21,7 @@ import com.emerginggames.snappers2.model.Level;
 public class Game implements ApplicationListener{
     public enum Stages{MainStage, GameOverStage, HelpStage, HintMenu}
     public Stages currentStageE;
-    private static final float RAYS_SPEED =  - 360 / 2;
+    private static final float RAYS_SPEED =  - 360 / 10;
     private static final float RAYS_OPACITY =  0.8f;
 
 

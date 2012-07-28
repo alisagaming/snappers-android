@@ -3,261 +3,254 @@ main1.png
 format: RGBA4444
 filter: Linear,Linear
 repeat: none
-rays
-  rotate: false
-  xy: 0, 0
-  size: 320, 320
-  orig: 320, 320
-  offset: 0, 0
-  index: -1
 h9
   rotate: false
-  xy: 321, 0
+  xy: 0, 0
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h8
   rotate: false
-  xy: 500, 0
+  xy: 179, 0
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h7
   rotate: false
-  xy: 679, 0
+  xy: 358, 0
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h6
   rotate: false
-  xy: 0, 321
+  xy: 537, 0
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h5
   rotate: false
-  xy: 0, 500
+  xy: 716, 0
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h4
   rotate: false
-  xy: 0, 679
+  xy: 0, 179
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h3
   rotate: false
-  xy: 179, 321
+  xy: 0, 358
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h2
   rotate: false
-  xy: 179, 500
+  xy: 0, 537
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h10
   rotate: false
-  xy: 179, 679
+  xy: 0, 716
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 h1
   rotate: false
-  xy: 358, 321
+  xy: 179, 179
   size: 178, 178
   orig: 178, 178
   offset: 0, 0
   index: -1
 yellow
   rotate: false
-  xy: 321, 179
+  xy: 895, 0
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 red
   rotate: false
-  xy: 402, 179
+  xy: 895, 81
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 green
   rotate: false
-  xy: 500, 179
+  xy: 0, 895
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e9
   rotate: false
-  xy: 581, 179
+  xy: 81, 895
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e8
   rotate: false
-  xy: 679, 179
+  xy: 358, 179
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e7
   rotate: false
-  xy: 760, 179
+  xy: 358, 260
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e6
   rotate: false
-  xy: 858, 0
+  xy: 439, 179
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e5
   rotate: false
-  xy: 939, 0
+  xy: 439, 260
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e4
   rotate: false
-  xy: 858, 81
+  xy: 520, 179
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e3
   rotate: false
-  xy: 939, 81
+  xy: 520, 260
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e2
   rotate: false
-  xy: 858, 162
+  xy: 601, 179
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e14
   rotate: false
-  xy: 939, 162
+  xy: 601, 260
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e13
   rotate: false
-  xy: 0, 858
+  xy: 682, 179
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e12
   rotate: false
-  xy: 0, 939
+  xy: 682, 260
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e11
   rotate: false
-  xy: 81, 858
+  xy: 763, 179
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e10
   rotate: false
-  xy: 81, 939
+  xy: 763, 260
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 e1
   rotate: false
-  xy: 179, 858
+  xy: 844, 179
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 blue
   rotate: false
-  xy: 179, 939
+  xy: 844, 260
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 b9
   rotate: false
-  xy: 858, 243
+  xy: 925, 179
   size: 77, 77
   orig: 77, 77
   offset: 0, 0
   index: -1
 b8
   rotate: false
-  xy: 939, 243
+  xy: 925, 257
   size: 77, 77
   orig: 77, 77
   offset: 0, 0
   index: -1
 b7
   rotate: false
-  xy: 260, 858
+  xy: 179, 358
   size: 77, 77
   orig: 77, 77
   offset: 0, 0
   index: -1
 b6
   rotate: false
-  xy: 260, 936
+  xy: 179, 436
   size: 77, 77
   orig: 77, 77
   offset: 0, 0
   index: -1
 b5
   rotate: false
-  xy: 537, 321
+  xy: 179, 514
   size: 77, 77
   orig: 77, 77
   offset: 0, 0
   index: -1
 round
   rotate: false
-  xy: 537, 399
+  xy: 179, 592
   size: 65, 65
   orig: 65, 65
   offset: 0, 0
   index: -1
 blast0
   rotate: false
-  xy: 321, 260
+  xy: 976, 0
   size: 27, 27
   orig: 27, 27
   offset: 0, 0
   index: -1
 blast
   rotate: false
-  xy: 321, 288
+  xy: 976, 28
   size: 27, 27
   orig: 27, 27
   offset: 0, 0

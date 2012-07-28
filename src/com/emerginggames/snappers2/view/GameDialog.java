@@ -2,6 +2,7 @@ package com.emerginggames.snappers2.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.View;
@@ -43,6 +44,14 @@ public class GameDialog extends Dialog {
         closeBtn.setOnClickListener(closeBtnListener);
         ViewGroup.LayoutParams lp = closeBtn.getLayoutParams();
         lp.width  = lp.height = width * 12/80;
+
+        setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (btnClickListener!= null)
+                    btnClickListener.onCancel();
+            }
+        });
     }
 
     public void setBtnClickListener(OnDialogEventListener btnClickListener) {
@@ -190,20 +199,11 @@ public class GameDialog extends Dialog {
         }
     };
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (btnClickListener!= null)
-            btnClickListener.onCancel();
-    }
-
     View.OnClickListener closeBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             SoundManager.playButtonSoundIfPossible();
             cancel();
-            if (btnClickListener!= null)
-                btnClickListener.onCancel();
         }
     };
 

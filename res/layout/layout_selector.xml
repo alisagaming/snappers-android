@@ -67,7 +67,16 @@
                    android:layout_alignParentRight="true"
                    android:scaleType="fitEnd"
                    android:onClick="onMoreGamesButtonClick"
-                   android:adjustViewBounds="true"/>
+                   android:adjustViewBounds="true"
+                   android:visibility="gone"
+                />
+
+        <com.emerginggames.snappers.view.ImageView android:id="@+id/storeButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                   android:src="@drawable/store_button"
+                                                   android:layout_alignParentRight="true"
+                                                   android:scaleType="fitEnd"
+                                                   android:onClick="onStoreButtonClick"
+                                                   android:adjustViewBounds="true"/>
 
     </RelativeLayout>
 

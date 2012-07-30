@@ -113,8 +113,9 @@ public class GameDialogController {
             if (dlg == null)
                 initDialog();
             else{
-                if (dlg.isShowing())
-                    dlg.dismiss();
+                if (dlg.isShowing()){
+                    dlg.cancel();
+                }
                 dlg.clear();
             }
 
@@ -196,20 +197,16 @@ public class GameDialogController {
             switch (unpressedDrawableId){
                 case R.drawable.cancellong:
                 case R.drawable.resumelong:
-                    dlg.dismiss();
-                    game.setPaused(false);
-                    game.setStage(Game.Stages.MainStage);
+                    dlg.cancel();
                     break;
 
                 case R.drawable.restartlong:
-                    game.setPaused(false);
-                    game.setStage(Game.Stages.MainStage);
-                    dlg.dismiss();
+                    dlg.cancel();
                     game.restartLevel();
                     break;
 
                 case R.drawable.menulong:
-                    dlg.dismiss();
+                    dlg.cancel();
                     activity.finish();
                     break;
 
@@ -220,8 +217,7 @@ public class GameDialogController {
                 case R.drawable.useahintlong:
                     prefs.useHint();
                     game.useHint();
-                    dlg.dismiss();
-                    game.setStage(Game.Stages.MainStage);
+                    dlg.cancel();
                     break;
 
                 case R.drawable.freehintslong:
@@ -261,7 +257,7 @@ public class GameDialogController {
                     break;
 
                 case R.drawable.nothanks_btn:
-                    dlg.dismiss();
+                    dlg.cancel();
                     break;
 
                 case R.drawable.download_btn:

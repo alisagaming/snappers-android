@@ -6,11 +6,9 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import com.emerginggames.snappers.GameActivity;
-import com.emerginggames.snappers.UserPreferences;
+import android.widget.TableLayout;
+import com.emerginggames.snappers.*;
 import com.google.ads.*;
-import com.emerginggames.snappers.R;
-import com.emerginggames.snappers.Settings;
 import com.emerginggames.snappers.gdx.Game;
 
 import java.math.BigInteger;
@@ -58,6 +56,15 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         shouldShowIngameAd = prefs.getIngameAds();
 
         adView = new MyAdView(activity, AdSize.BANNER, Settings.getAdMobKey(activity));
+/*        View v = adView.getChildAt(0);
+        if (v != null){
+            v.getLayoutParams().width = ViewGroup.LayoutParams.FILL_PARENT;
+            if (v instanceof ViewGroup){
+                v = ((ViewGroup)v).getChildAt(0);
+                if (v != null)
+                    v.getLayoutParams().width = ViewGroup.LayoutParams.FILL_PARENT;
+            }
+        }*/
 
         adView.setLayoutParams(shouldShowIngameAd ? lpDown : lpUp);
 

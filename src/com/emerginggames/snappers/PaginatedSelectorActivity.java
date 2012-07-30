@@ -52,11 +52,10 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         lp.width = lp.height = (int)(screen.width() /5.5f);
         lp.leftMargin = defPadding * 2;
 
-        lp = (ViewGroup.MarginLayoutParams)findViewById(R.id.moreGamesButton).getLayoutParams();
+        lp = (ViewGroup.MarginLayoutParams)findViewById(R.id.storeButton).getLayoutParams();
         lp.height = (int)(screen.width() /5.5f);
         lp.width = lp.height * 40 / 13;
         lp.rightMargin = defPadding * 2;
-
     }
 
     @Override

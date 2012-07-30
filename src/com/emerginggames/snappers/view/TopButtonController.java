@@ -62,7 +62,7 @@ public class TopButtonController {
         layout.setLayoutParams(rlpTop);
     }
 
-    public void alignUnderView(View v){
+    public void alignBelow(View v){
         if (rlpUnderView == null){
             rlpUnderView = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, (int) (Metrics.squareButtonSize * Metrics.squareButtonScale));
             rlpUnderView.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -70,6 +70,15 @@ public class TopButtonController {
         }
         rlpUnderView.addRule(RelativeLayout.BELOW, v.getId());
         layout.setLayoutParams(rlpUnderView);
+    }
+
+    public void alignAbove(View v){
+        alignTop();
+        if (helpView != null){
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)helpView.getLayoutParams();
+            lp.addRule(RelativeLayout.ABOVE, v.getId());
+            helpView.setLayoutParams(lp);
+        }
     }
 
 
@@ -175,10 +184,15 @@ public class TopButtonController {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        AdController adController = activity.getAdController();
+        if (adController != null && adController.isAdBottom())
+            lp.addRule(RelativeLayout.ABOVE, adController.getAdViewId());
+
         rootLayout.addView(helpView, lp);
         game.setStage(Game.Stages.HelpStage);
         hideAll();
         activity.getLevelInfo().hideText();
+
     }
 
     public void hideHelpIfNeeded(){

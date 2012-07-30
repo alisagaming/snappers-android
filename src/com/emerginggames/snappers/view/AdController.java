@@ -130,7 +130,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
             //rootLayout.removeView(adView);
             //rootLayout.addView(adView);
             isShowingAd = true;
-            //activity.getTopButtons().alignUnderView(adView);
+            //activity.getTopButtons().alignBelow(adView);
         }
     };
 
@@ -150,7 +150,7 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         @Override
         public void run() {
             adView.setLayoutParams(lpDown);
-            activity.getTopButtons().alignTop();
+            activity.getTopButtons().alignAbove(adView);
             isAdTop = false;
         }
     };
@@ -159,10 +159,18 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         @Override
         public void run() {
             adView.setLayoutParams(lpUp);
-            activity.getTopButtons().alignUnderView(adView);
+            activity.getTopButtons().alignBelow(adView);
             isAdTop = true;
         }
     };
+
+    public int getAdViewId(){
+        return adView.getId();
+    }
+
+    public boolean isAdBottom(){
+        return shouldShowIngameAd && isShowingAd;
+    }
 
     @Override
     public void onReceiveAd(Ad ad) {

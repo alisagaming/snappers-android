@@ -229,6 +229,10 @@ public class GameActivity extends AndroidApplication {
         return topButtons;
     }
 
+    public AdController getAdController(){
+        return adController;
+    }
+
     private boolean checkNetworkType(ConnectivityManager conMgr, int type) {
         NetworkInfo netInfo = conMgr.getNetworkInfo(type);
         return netInfo != null && netInfo.isConnectedOrConnecting();

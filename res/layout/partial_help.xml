@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-    <com.emerginggames.snappers.view.ImageView android:id="@+id/help"
-          android:layout_width="fill_parent" android:layout_height="wrap_content"
-          android:src="@drawable/instructions"
-          />
-
-</LinearLayout>
+<com.emerginggames.snappers.view.ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/help"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:src="@drawable/instructions" android:scaleType="fitCenter" android:adjustViewBounds="true"
+        android:paddingBottom="@dimen/helpPadding"
+        />

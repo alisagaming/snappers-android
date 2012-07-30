@@ -10,37 +10,23 @@ import com.emerginggames.snappers.SplashGdxActivity;
  * Time: 23:51
  */
 public class Splash implements ApplicationListener {
-    SplashGdxActivity activity;
-    boolean done = false;
-
-    public Splash(SplashGdxActivity activity) {
-        this.activity = activity;
-    }
+    public Splash() {}
 
     @Override
-    public void create() {
-    }
+    public void create() {}
 
     @Override
-    public void resize(int width, int height) {
-        if (!done)
-            activity.gotSize(width, height);
-        done = true;
-    }
+    public void resize(int width, int height) {}
 
     @Override
-    public void render() {
-    }
+    public void render() {}
 
     @Override
-    public void pause() {
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-    }
+    public void resume() {}
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() {}
 }

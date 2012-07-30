@@ -1,6 +1,7 @@
 package com.emerginggames.snappers;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -47,7 +48,7 @@ public class SplashGdxActivity extends AndroidApplication {
         config.useAccelerometer = false;
         config.useCompass = false;
 
-        View gameView = initializeForView(new Splash(this), config);
+        View gameView = initializeForView(new Splash(), config);
         RelativeLayout rootLayout = new RelativeLayout(this);
         rootLayout.addView(gameView);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
@@ -60,6 +61,7 @@ public class SplashGdxActivity extends AndroidApplication {
         if (Settings.CRASH_REPORTER == Settings.CrashReporter.HockeyApp)
             checkForUpdates();
 
+        Metrics.setSizeByView(getWindow().getDecorView(), getApplicationContext());
 
     }
 
@@ -73,18 +75,6 @@ public class SplashGdxActivity extends AndroidApplication {
     protected void onStop() {
         super.onStop();
         FlurryAgent.onEndSession(this);
-    }
-
-    public void gotSize(int width, int height) {
-        if (width > height){
-            int scrWidth = getWindowManager().getDefaultDisplay().getWidth();
-            int scrHeight = getWindowManager().getDefaultDisplay().getHeight();
-            int panelHeight = scrHeight - height;
-            width = scrHeight;
-            height = scrWidth - panelHeight;
-        }
-
-        Metrics.setSize(width, height, getApplicationContext());
     }
 
     @Override

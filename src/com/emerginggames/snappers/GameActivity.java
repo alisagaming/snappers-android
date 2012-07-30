@@ -89,6 +89,8 @@ public class GameActivity extends AndroidApplication {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
+        Metrics.setSizeByView(getWindow().getDecorView(), getApplicationContext());
+
         rootLayout = new RelativeLayout(this);
 
         Rect rect = new Rect();

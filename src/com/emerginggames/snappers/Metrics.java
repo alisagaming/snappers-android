@@ -2,7 +2,9 @@ package com.emerginggames.snappers;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Build;
+import android.view.View;
 import com.emerginggames.snappers.gdx.Resources;
 
 public class Metrics {
@@ -76,6 +78,12 @@ public class Metrics {
         initDone = true;
         if (context != null)
             screenSizeMode = context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+    }
+
+    public static void setSizeByView(View v, Context context){
+        Rect r = new Rect();
+        v.getWindowVisibleDisplayFrame(r);
+        Metrics.setSize(r.width(), r.height(), context);
     }
 
     static void setScreenMode(int width){

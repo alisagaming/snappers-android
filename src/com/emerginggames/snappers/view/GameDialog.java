@@ -53,8 +53,6 @@ public class GameDialog extends Dialog {
     public void addButton(int idUnpressed, int idPressed){
         TwoStateButton btn = new TwoStateButton(getContext());
         btn.setup(idUnpressed, idPressed, clickListener);
-        btn.setAdjustViewBounds(true);
-        btn.setBackgroundColor(Color.argb(128, 255, 0, 0));
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, itemSpacing, 0, 0);
@@ -102,6 +100,14 @@ public class GameDialog extends Dialog {
         t.setVisibility(View.VISIBLE);
         t.setMaxLines2(lineEnds.length);
         t.setLineEnds(lineEnds);
+    }
+
+    public void setTitle(int msg, int size){
+        OutlinedTextView t = (OutlinedTextView)findViewById(R.id.title);
+        t.setText2(msg);
+        t.setVisibility(View.VISIBLE);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        t.setMaxLines2(0);
     }
 
     public void setMessage(int messageId, int size){

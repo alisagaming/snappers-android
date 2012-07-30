@@ -103,7 +103,7 @@ public class GameDialogController {
                 dlg.addButton(R.drawable.follow_twitter_btn, R.drawable.follow_twitter_btn_tap);
             if (prefs.isTapjoyEnabled())
                 dlg.addButton(R.drawable.tapjoy_btn, R.drawable.tapjoy_btn_tap);
-            dlg.setTitle(R.string.freeHints);
+            dlg.setTitle(R.string.freeHints, (int)(Metrics.fontSize * 1.5));
         }
     };
 

@@ -15,8 +15,7 @@ public class TwoStateButton extends ImageView {
     public TwoStateButton(Context context) {
         super(context);
         setAdjustViewBounds(true);
-        ScaleType t = ScaleType.FIT_XY;
-        setScaleType(t);
+        setScaleType(ScaleType.FIT_XY);
     }
 
     public TwoStateButton(Context context, AttributeSet attrs) {

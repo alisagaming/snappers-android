@@ -139,7 +139,7 @@ public class OutlinedTextView extends TextView{
             float size = getTextSize();
 
             float textWidth = outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2;
-            float textHeight = getLineHeight();
+            float textHeight = getLineHeight()+ strokeWidth * 2;
 
             if (isSquare){
                 textWidth = Math.max(textWidth, textHeight);
@@ -149,6 +149,11 @@ public class OutlinedTextView extends TextView{
             }
 
             size = (float)Math.ceil(size * Math.min(width/ textWidth, height / textHeight));
+            outlinePaint.setTextSize(size);
+            while (outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2 > width){
+                size--;
+                outlinePaint.setTextSize(size);
+            }
             setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
             return;
         }

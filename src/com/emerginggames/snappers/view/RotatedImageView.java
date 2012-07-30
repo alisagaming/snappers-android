@@ -35,6 +35,7 @@ public class RotatedImageView extends View {
         super(context);
         mContext = context;
         angle = (float)Math.random() * 2 * MAX_ANGLE - MAX_ANGLE;
+        setSoundEffectsEnabled(false);
     }
 
     public RotatedImageView(Context context, AttributeSet attrs) {

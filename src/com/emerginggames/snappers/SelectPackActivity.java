@@ -138,7 +138,7 @@ public class SelectPackActivity extends PaginatedSelectorActivity  implements IO
 
     protected void showPackLockedMessage(final LevelPack pack){
         String message = getResources().getString(R.string.level_locked, pack.id-1, pack.id);
-        showMessageDialog(message, new int[]{18, 41}, null, new View.OnClickListener() {
+        showMessageDialog(message, new int[]{21, 41, message.length()}, null, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideMessageDialog();

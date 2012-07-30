@@ -32,7 +32,7 @@
                 android:textColor="#fff"
                 android:textSize="24dp"
                 app:strokeColor="#000"
-                app:strokeWidth="1dp"
+                app:strokeWidth="1px"
                 />
 
         <com.emerginggames.snappers.view.OutlinedTextView
@@ -43,7 +43,7 @@
                 android:textColor="#fff"
                 android:textSize="18dp"
                 app:strokeColor="#000"
-                app:strokeWidth="1dp"
+                app:strokeWidth="1px"
                 />
     </LinearLayout>
 

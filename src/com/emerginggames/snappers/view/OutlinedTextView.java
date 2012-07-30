@@ -34,6 +34,7 @@ public class OutlinedTextView extends TextView{
     private boolean setTextSizeToFit;
     private boolean isSquare;
     boolean isPaintPrepared;
+    int resizedTextForWidth;
     
     Layout mLayout;
     Layout mStrokeLayout;
@@ -129,28 +130,35 @@ public class OutlinedTextView extends TextView{
         if (text.length() <1)
             return;
 
+        int desiredWidth = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight() - strokeWidth * 2;
+
+        if (resizedTextForWidth == desiredWidth)
+            return;
+
+        resizedTextForWidth = desiredWidth;
+
         if (!isPaintPrepared)
             preparePaint();
 
-        if (maxLines == 1){
+        resizedTextForWidth = measuredWidth;
 
-            int width = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight();
-            int height = measuredHeight - getCompoundPaddingTop() - getCompoundPaddingBottom();
+        if (maxLines == 1){
+            int height = measuredHeight - getCompoundPaddingTop() - getCompoundPaddingBottom() - strokeWidth * 2;
             float size = getTextSize();
 
-            float textWidth = outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2;
-            float textHeight = getLineHeight()+ strokeWidth * 2;
+            float textWidth = outlinePaint.measureText(text, 0, text.length());
+            float textHeight = getLineHeight();
 
             if (isSquare){
                 textWidth = Math.max(textWidth, textHeight);
-                size = (float)Math.ceil(size * width/ textWidth);
+                size = (float)Math.ceil(size * desiredWidth/ textWidth);
                 setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
                 return;
             }
 
-            size = (float)Math.ceil(size * Math.min(width/ textWidth, height / textHeight));
+            size = (float)Math.ceil(size * Math.min(desiredWidth/ textWidth, height / textHeight));
             outlinePaint.setTextSize(size);
-            while (outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2 > width){
+            while (outlinePaint.measureText(text, 0, text.length()) > desiredWidth){
                 size--;
                 outlinePaint.setTextSize(size);
             }
@@ -172,7 +180,6 @@ public class OutlinedTextView extends TextView{
 
         float size = getTextSize();
 
-        int desiredWidth = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight() - strokeWidth * 2;
         size = size * desiredWidth/width;
         setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         outlinePaint.setTextSize(size);

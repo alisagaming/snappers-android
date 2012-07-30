@@ -53,7 +53,7 @@ public class GameDialogController {
             if(games == null || games.size() == 0)
                 return;
 
-            MoreGamesAdapter adapter = new MoreGamesAdapter(activity.getApplicationContext(), games);
+            MoreGamesAdapter adapter = new MoreGamesAdapter(activity.getApplicationContext(), games, false);
             int pos = (int)(Math.random() * games.size());
             View gameView = adapter.getView(pos, null, null);
             MoreGame game = (MoreGame)adapter.getItem(pos);
@@ -172,9 +172,9 @@ public class GameDialogController {
             float density = activity.getResources().getDisplayMetrics().density;
             int dpWidth = (int)(Metrics.screenWidth / density);
             if (dpWidth < 3 * 160)
-                maxWidthDip = (int)(1.7f * 160);
+                maxWidthDip = (int)(1.8f * 160);
             else if (dpWidth < 5 * 160)
-                maxWidthDip = (int)(2.6f * 160);
+                maxWidthDip = (int)(2.8f * 160);
             else
                 maxWidthDip = (int)(3.5f * 160);
 

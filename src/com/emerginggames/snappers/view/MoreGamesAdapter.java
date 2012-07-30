@@ -2,10 +2,12 @@ package com.emerginggames.snappers.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.emerginggames.snappers.Metrics;
 import com.emerginggames.snappers.R;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.model.MoreGame;
@@ -23,10 +25,12 @@ import java.util.List;
 public class MoreGamesAdapter extends BaseAdapter {
     private Context context;
     private List<MoreGame> moreGames;
+    boolean isLargerText;
 
-    public MoreGamesAdapter(Context context, List<MoreGame> moreGames) {
+    public MoreGamesAdapter(Context context, List<MoreGame> moreGames, boolean isLargerText) {
         this.context = context;
         this.moreGames = moreGames;
+        this.isLargerText = isLargerText;
     }
 
     @Override
@@ -56,11 +60,27 @@ public class MoreGamesAdapter extends BaseAdapter {
 
 
         Bitmap bitmap = MoreGamesUtil.getIcon(game, context);
-        if (bitmap != null)
-            ((android.widget.ImageView)view.findViewById(R.id.icon)).setImageBitmap(bitmap);
+        if (bitmap != null) {
+            ((android.widget.ImageView) view.findViewById(R.id.icon)).setImageBitmap(bitmap);
+            ViewGroup.LayoutParams lp = view.findViewById(R.id.icon).getLayoutParams();
+            lp.width = lp.height = (int) (Metrics.snapperSize * Metrics.snapperMult1);
+        }
 
-        ((OutlinedTextView)view.findViewById(R.id.title)).setText2(game.name);
-        ((OutlinedTextView)view.findViewById(R.id.descr)).setText2(game.description);
+        OutlinedTextView title = ((OutlinedTextView) view.findViewById(R.id.title));
+        OutlinedTextView description = ((OutlinedTextView) view.findViewById(R.id.descr));
+        title.setText2(game.name);
+        description.setText2(game.description);
+
+        int fontSizeBase = Metrics.screenWidth / 14;
+
+        if (isLargerText) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSizeBase * 1.3f);
+            description.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSizeBase);
+        } else {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSizeBase * 1.1f);
+            description.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSizeBase * 0.8f);
+        }
+
 
         Resources.applyTypeface(view, new int[]{R.id.title, R.id.descr}, Resources.getFont(context));
         view.setTag(game);

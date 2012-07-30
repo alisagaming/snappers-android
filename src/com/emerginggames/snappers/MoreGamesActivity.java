@@ -34,7 +34,7 @@ public class MoreGamesActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_more_games);
 
-        MoreGamesAdapter adapter = new MoreGamesAdapter(getApplicationContext(), MoreGamesUtil.load(getApplicationContext()));
+        MoreGamesAdapter adapter = new MoreGamesAdapter(getApplicationContext(), MoreGamesUtil.load(getApplicationContext()), true);
         ListView listView = (ListView)findViewById(R.id.list);
         listView.setAdapter(adapter);
 
@@ -46,10 +46,11 @@ public class MoreGamesActivity extends Activity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(game.url)));
             }
         });
-        Rect r = new Rect();
-        getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
+        Rect screen = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(screen);
         ViewGroup.LayoutParams lp = findViewById(R.id.backButton).getLayoutParams();
-        lp.width = lp.height = r.width() /5;
+        lp.width = lp.height = (int)(screen.width() /5.5f);
+
         ((TextView)findViewById(R.id.title)).setTypeface(Resources.getFont(getApplicationContext()));
         ((OutlinedTextView)findViewById(R.id.title)).setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.largeFontSize);
     }

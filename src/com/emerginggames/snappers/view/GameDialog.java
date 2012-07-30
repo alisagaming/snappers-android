@@ -92,6 +92,7 @@ public class GameDialog extends Dialog {
         t.setText2(msg);
         t.setVisibility(View.VISIBLE);
         t.setMaxLines2(1);
+        t.setLineEnds(null);
     }
 
     public void setTitle(int msg, int[] lineEnds){
@@ -108,6 +109,7 @@ public class GameDialog extends Dialog {
         t.setVisibility(View.VISIBLE);
         t.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         t.setMaxLines2(0);
+        t.setLineEnds(null);
     }
 
     public void setMessage(int messageId, int size){

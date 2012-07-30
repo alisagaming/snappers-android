@@ -59,7 +59,8 @@
                    android:layout_alignParentLeft="true"
                    android:scaleType="fitCenter"
                    android:onClick="onBackButtonClick"
-                   android:adjustViewBounds="true"/>
+                   android:adjustViewBounds="true"
+                />
 
         <com.emerginggames.snappers.view.ImageView android:id="@+id/moreGamesButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
                    android:src="@drawable/button_moregames"

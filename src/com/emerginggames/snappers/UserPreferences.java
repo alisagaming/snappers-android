@@ -290,7 +290,7 @@ public class UserPreferences {
     }
 
     public float getMoreGameFreq(){
-        return  1;//prefs.getFloat(MORE_GAMES_FREQ, 0);
+        return prefs.getFloat(MORE_GAMES_FREQ, 0);
     }
 
 

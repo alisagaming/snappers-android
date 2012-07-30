@@ -25,7 +25,7 @@ public class Game implements ApplicationListener{
     int width;
     int height;
     private SpriteBatch batch;
-    protected Level level;
+    protected Level startingLevel;
     protected InputProcessor currentInputProcessor;
     protected MyStage currentStage;
     protected MainStage mainStage;
@@ -39,7 +39,7 @@ public class Game implements ApplicationListener{
     public boolean initDone = false;
 
     public Game(Level level, IAppGameListener gameListener) {
-        this.level = level;
+        this.startingLevel = level;
         mGameListener = gameListener;
     }
 
@@ -50,16 +50,16 @@ public class Game implements ApplicationListener{
     }
 
     protected void createObjects(){
-        Resources.loadTextures(level.pack.isGold);
+        Resources.loadTextures(startingLevel.pack.isGold);
 
         batch = new SpriteBatch();
         mainStage = new MainStage(width, height, gameListener);
         gameOverStage = new DimStage(width, height, batch);
         setStage(Stages.MainStage);
 
-        mainStage.setLevel(level);
+        mainStage.setLevel(startingLevel);
 
-        if (Resources.loadBg(level.pack.background))
+        if (Resources.loadBg(startingLevel.pack.background))
             bg = new Sprite(Resources.bg);
 
         objectsCreated = true;
@@ -150,7 +150,7 @@ public class Game implements ApplicationListener{
 
     public Level getLevel(){
         if (mainStage == null)
-            return level;
+            return startingLevel;
         else
             return mainStage.getLogic().level;
     }
@@ -194,7 +194,8 @@ public class Game implements ApplicationListener{
                 if (mainStage.getLogic().isGameLost())
                     mGameListener.showGameLost(mainStage.getLogic().level);
                 else{
-                    int score = mainStage.getLogic().getScore(mGameListener.isLevelSolved(level));
+
+                    int score = mainStage.getLogic().getScore(mGameListener.isLevelSolved(getLevel()));
                     mGameListener.levelSolved(mainStage.getLogic().level, score);
                 }
                 break;
@@ -261,7 +262,7 @@ public class Game implements ApplicationListener{
 
         @Override
         public void levelPackWon() {
-            mGameListener.levelPackWon(level.pack);
+            mGameListener.levelPackWon(startingLevel.pack);
         }
 
         @Override

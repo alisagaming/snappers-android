@@ -2,6 +2,7 @@ package com.emerginggames.snappers.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,7 +25,7 @@ public class MyAlertDialog extends Dialog {
         int width = getWindow().getWindowManager().getDefaultDisplay().getWidth();
         OutlinedTextView messageText = (OutlinedTextView)findViewById(R.id.message);
         messageText.setTypeface(Resources.getFont(getContext()));
-        messageText.setTextSize(width/12);
+        messageText.setTextSize(TypedValue.COMPLEX_UNIT_PX, width/15);
         messageText.setLineSpacing(0, 1.2f);
         getWindow().setLayout( width * 8/10, WindowManager.LayoutParams.WRAP_CONTENT);
     }

@@ -114,7 +114,7 @@ public class GameDialogController {
                 initDialog();
             else{
                 if (dlg.isShowing())
-                    dlg.hide();
+                    dlg.dismiss();
                 dlg.clear();
             }
 
@@ -163,11 +163,31 @@ public class GameDialogController {
     };
 
     void initDialog(){
-        dlg = new GameDialog(activity);
-        dlg.setWidth(Metrics.screenWidth * 80 / 100);
-        dlg.setBtnClickListener(dialogButtonListener);
-        dlg.setItemSpacing(Metrics.screenMargin);
-        dlg.setTypeface(Resources.getFont(activity));
+        synchronized (this){
+
+            if (dlg != null)
+                return;
+
+            int maxWidthDip;
+            float density = activity.getResources().getDisplayMetrics().density;
+            int dpWidth = (int)(Metrics.screenWidth / density);
+            if (dpWidth < 3 * 160)
+                maxWidthDip = (int)(1.7f * 160);
+            else if (dpWidth < 5 * 160)
+                maxWidthDip = (int)(2.6f * 160);
+            else
+                maxWidthDip = (int)(3.5f * 160);
+
+            int maxWidth = (int)(maxWidthDip * density);
+
+            dlg = new GameDialog(activity);
+            dlg.setWidth(Math.min(Metrics.screenWidth * 80 / 100, maxWidth));
+
+
+            dlg.setBtnClickListener(dialogButtonListener);
+            dlg.setItemSpacing(Metrics.screenMargin);
+            dlg.setTypeface(Resources.getFont(activity));
+        }
     }
 
     GameDialog.OnDialogEventListener dialogButtonListener = new GameDialog.OnDialogEventListener() {
@@ -176,7 +196,7 @@ public class GameDialogController {
             switch (unpressedDrawableId){
                 case R.drawable.cancellong:
                 case R.drawable.resumelong:
-                    dlg.hide();
+                    dlg.dismiss();
                     game.setPaused(false);
                     game.setStage(Game.Stages.MainStage);
                     break;
@@ -184,12 +204,12 @@ public class GameDialogController {
                 case R.drawable.restartlong:
                     game.setPaused(false);
                     game.setStage(Game.Stages.MainStage);
-                    dlg.hide();
+                    dlg.dismiss();
                     game.restartLevel();
                     break;
 
                 case R.drawable.menulong:
-                    dlg.hide();
+                    dlg.dismiss();
                     activity.finish();
                     break;
 
@@ -200,7 +220,7 @@ public class GameDialogController {
                 case R.drawable.useahintlong:
                     prefs.useHint();
                     game.useHint();
-                    dlg.hide();
+                    dlg.dismiss();
                     game.setStage(Game.Stages.MainStage);
                     break;
 

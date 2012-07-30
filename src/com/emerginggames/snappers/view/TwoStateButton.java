@@ -14,6 +14,9 @@ import android.util.AttributeSet;
 public class TwoStateButton extends ImageView {
     public TwoStateButton(Context context) {
         super(context);
+        setAdjustViewBounds(true);
+        ScaleType t = ScaleType.FIT_XY;
+        setScaleType(t);
     }
 
     public TwoStateButton(Context context, AttributeSet attrs) {

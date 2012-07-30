@@ -3,9 +3,11 @@ package com.emerginggames.snappers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import com.emerginggames.snappers.gdx.Resources;
 import com.emerginggames.snappers.view.MyAlertDialog;
 import com.emerginggames.snappers.view.OutlinedTextView;
@@ -30,7 +32,7 @@ public class PaginatedSelectorActivity extends FragmentActivity {
 
         OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
         scoreView.setTypeface(Resources.getFont(this));
-        scoreView.setTextSize(width/15);
+        scoreView.setTextSize(TypedValue.COMPLEX_UNIT_PX, width / 11);
         scoreView.setPadding(0, defPadding, defPadding, -defPadding);
         String scoreStr = getResources().getString(R.string.score, UserPreferences.getInstance(this).getScore());
         scoreView.setText(scoreStr);
@@ -48,7 +50,7 @@ public class PaginatedSelectorActivity extends FragmentActivity {
         super.onResume();
         OutlinedTextView scoreView = (OutlinedTextView)findViewById(R.id.score);
         String scoreStr = getResources().getString(R.string.score, UserPreferences.getInstance(this).getScore());
-        scoreView.setText(scoreStr);
+        scoreView.setText2(scoreStr);
         ((SnappersApplication)getApplication()).activityResumed(this);
     }
 

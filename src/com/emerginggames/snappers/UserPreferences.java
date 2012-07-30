@@ -57,7 +57,7 @@ public class UserPreferences {
 
     public static UserPreferences getInstance(Context context){
         if (instance == null)
-            return instance = new UserPreferences(context);
+            return instance = new UserPreferences(context.getApplicationContext());
         //else if (context != null)
         //    instance.context = context;
         return instance;

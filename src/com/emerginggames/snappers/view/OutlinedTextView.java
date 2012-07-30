@@ -269,6 +269,14 @@ public class OutlinedTextView extends TextView{
     }
 
     @Override
+    public void setTextSize(int unit, float size) {
+        super.setTextSize(unit, size);
+        needResize = true;
+        mLayout = null;
+        invalidate();
+    }
+
+    @Override
     public void setTypeface(Typeface tf) {
         super.setTypeface(tf);
         isPaintPrepared = false;

@@ -2,6 +2,7 @@ package com.emerginggames.snappers.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.View;
@@ -53,6 +54,7 @@ public class GameDialog extends Dialog {
         TwoStateButton btn = new TwoStateButton(getContext());
         btn.setup(idUnpressed, idPressed, clickListener);
         btn.setAdjustViewBounds(true);
+        btn.setBackgroundColor(Color.argb(128, 255, 0, 0));
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, itemSpacing, 0, 0);

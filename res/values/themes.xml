@@ -20,8 +20,7 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
-    <style name="Animation_DialogAnimation">
+    <style name="Animation_DialogAnimation" parent="android:Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
-        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
     </style>
 </resources>

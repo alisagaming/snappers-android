@@ -44,6 +44,7 @@ public class StoreActivity extends PaginatedSelectorActivity implements IOnItemS
         mIndicator.setViewPager(pager);
         //findViewById(R.id.shopButton).setVisibility(View.GONE);
         findViewById(R.id.moreGamesButton).setVisibility(View.GONE);
+        findViewById(R.id.storeButton).setVisibility(View.GONE);
 
         if (Settings.BILLING_SUPPORTED) {
             if (Settings.IS_AMAZON)

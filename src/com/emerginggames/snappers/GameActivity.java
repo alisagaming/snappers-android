@@ -178,6 +178,7 @@ public class GameActivity extends AndroidApplication {
         super.onDestroy();
         if (adController!= null)
             adController.destroy();
+        dialogs.dismiss();
     }
 
     @Override

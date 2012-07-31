@@ -31,6 +31,7 @@ public class GameDialog extends Dialog {
         setOnCancelListener(new OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                hide();
                 if (btnClickListener!= null)
                     btnClickListener.onCancel();
             }
@@ -142,6 +143,12 @@ public class GameDialog extends Dialog {
             SoundManager.PlayButtonSoundIfPossible();
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        hide();
+    }
 
     public interface OnDialogEventListener {
         void onButtonClick(int unpressedDrawableId, Object tag);

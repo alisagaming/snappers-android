@@ -25,14 +25,13 @@ public class GameDialogController {
     UserPreferences prefs;
     Game game;
     GameDialog dlg;
+    int cancelAction;
 
     public GameDialogController(GameActivity activity, Game game) {
         this.activity = activity;
         this.game = game;
         prefs = UserPreferences.getInstance(activity.getApplicationContext());
     }
-
-
 
     public void showPaused() {
         activity.runOnUiThread(showPausedDialog);
@@ -71,6 +70,7 @@ public class GameDialogController {
             dlg.addButton(R.drawable.download_btn, R.drawable.download_btn_tap, game);
             dlg.addButton(R.drawable.nothanks_btn, R.drawable.nothanks_btn_tap);
             dlg.show();
+            cancelAction = R.drawable.nothanks_btn;
         }
     };
 
@@ -87,6 +87,7 @@ public class GameDialogController {
             dlg.addButton(R.drawable.menulong, R.drawable.menulong_tap);
             dlg.addButton(R.drawable.storelong, R.drawable.storelong_tap);
             dlg.show();
+            cancelAction = R.drawable.resumelong;
         }
     };
 
@@ -104,6 +105,7 @@ public class GameDialogController {
             if (prefs.isTapjoyEnabled())
                 dlg.addButton(R.drawable.tapjoy_btn, R.drawable.tapjoy_btn_tap);
             dlg.setTitle(R.string.freeHints, (int)(Metrics.fontSize * 1.5));
+            cancelAction = R.drawable.resumelong;
         }
     };
 
@@ -113,9 +115,6 @@ public class GameDialogController {
             if (dlg == null)
                 initDialog();
             else{
-                if (dlg.isShowing()){
-                    dlg.cancel();
-                }
                 dlg.clear();
             }
 
@@ -127,6 +126,7 @@ public class GameDialogController {
             else
                 showGetOnlineMenu();
             dlg.show();
+            cancelAction = R.drawable.cancellong;
         }
 
         void fillUseHintMenu(int hintsLeft){
@@ -136,8 +136,7 @@ public class GameDialogController {
                 dlg.setMessage(activity.getResources().getString(R.string.youHave_n_Hints, hintsLeft), Metrics.fontSize);
 
             dlg.addButton(R.drawable.useahintlong, R.drawable.useahintlong_tap);
-            if (prefs.isTapjoyEnabled())
-                dlg.addButton(R.drawable.freehintslong, R.drawable.freehintslong_tap);
+            dlg.addButton(R.drawable.freehintslong, R.drawable.freehintslong_tap);
             dlg.addButton(R.drawable.cancellong, R.drawable.cancellong_tap);
 
         }
@@ -194,19 +193,24 @@ public class GameDialogController {
     GameDialog.OnDialogEventListener dialogButtonListener = new GameDialog.OnDialogEventListener() {
         @Override
         public void onButtonClick(int unpressedDrawableId, Object tag) {
+            cancelAction = 0;
             switch (unpressedDrawableId){
                 case R.drawable.cancellong:
                 case R.drawable.resumelong:
-                    dlg.cancel();
+                    dlg.hide();
+                    game.setPaused(false);
+                    game.setStage(Game.Stages.MainStage);
                     break;
 
                 case R.drawable.restartlong:
-                    dlg.cancel();
+                    game.setPaused(false);
+                    game.setStage(Game.Stages.MainStage);
+                    dlg.hide();
                     game.restartLevel();
                     break;
 
                 case R.drawable.menulong:
-                    dlg.cancel();
+                    dlg.hide();
                     activity.finish();
                     break;
 
@@ -217,7 +221,8 @@ public class GameDialogController {
                 case R.drawable.useahintlong:
                     prefs.useHint();
                     game.useHint();
-                    dlg.cancel();
+                    dlg.hide();
+                    game.setStage(Game.Stages.MainStage);
                     break;
 
                 case R.drawable.freehintslong:
@@ -257,10 +262,12 @@ public class GameDialogController {
                     break;
 
                 case R.drawable.nothanks_btn:
-                    dlg.cancel();
+                    dlg.hide();
                     break;
 
                 case R.drawable.download_btn:
+                    if (tag == null)
+                        return;
                     MoreGame game = (MoreGame)tag;
                     activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(game.url)));
                     break;
@@ -269,8 +276,7 @@ public class GameDialogController {
 
         @Override
         public void onCancel() {
-            game.setStage(Game.Stages.MainStage);
-            game.setPaused(false);
+            onButtonClick(cancelAction, null);
         }
     };
 
@@ -280,5 +286,10 @@ public class GameDialogController {
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(url)).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_FROM_BACKGROUND);
         activity.startActivity(intent);
+    }
+
+    public void dismiss(){
+        if (dlg != null)
+            dlg.dismiss();
     }
 }

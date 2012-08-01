@@ -68,6 +68,7 @@ public class GameActivity extends AndroidApplication {
         Resources.getFont(this);
         prefs = UserPreferences.getInstance(getApplicationContext());
         prefs.setHintChangedListener(hintChangedListener);
+        initTapjoy();
 
         startLevel = null;
         if (savedInstanceState != null && savedInstanceState.containsKey(LEVEL_PARAM_TAG))
@@ -126,9 +127,12 @@ public class GameActivity extends AndroidApplication {
         else
             mStore = GInAppStore.getInstance(getApplicationContext());
 
+        dialogs = new GameDialogController(this, game);
+    }
+
+    void initTapjoy(){
         if (prefs.isTapjoyEnabled() && TapjoyConnect.getTapjoyConnectInstance() == null)
             TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
-        dialogs = new GameDialogController(this, game);
     }
 
     public void buy(Goods goods) {
@@ -191,8 +195,7 @@ public class GameActivity extends AndroidApplication {
             adController = null;
         }
 
-
-        if (TapjoyConnect.getTapjoyConnectInstance() == null)
+        if (TapjoyConnect.getTapjoyConnectInstance() != null)
             TapjoyConnect.getTapjoyConnectInstance().getTapPoints(new TapjoyPointsListener(getApplicationContext()));
 
         wentTemp = false;

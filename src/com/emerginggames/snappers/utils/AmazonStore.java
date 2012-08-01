@@ -57,6 +57,7 @@ public class AmazonStore extends Store {
             super(context);
         }
 
+        @Override
         public void onPurchaseResponse(PurchaseResponse purchaseResponse) {
             System.out.println("onPurchaseResponse" + purchaseResponse);
             if (purchaseResponse.getPurchaseRequestStatus() == PurchaseResponse.PurchaseRequestStatus.SUCCESSFUL ||
@@ -65,6 +66,7 @@ public class AmazonStore extends Store {
                 itemBought(item, 1);
             }
         }
+
     }
 
     Goods idToGoods(String itemId) {

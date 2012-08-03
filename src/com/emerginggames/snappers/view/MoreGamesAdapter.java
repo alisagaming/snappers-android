@@ -35,7 +35,7 @@ public class MoreGamesAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return moreGames.size();
+        return moreGames == null ? 0 : moreGames.size();
     }
 
     @Override

@@ -55,28 +55,25 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
 
         shouldShowIngameAd = prefs.getIngameAds();
 
-        adView = new MyAdView(activity, AdSize.BANNER, Settings.getAdMobKey(activity));
-/*        View v = adView.getChildAt(0);
-        if (v != null){
-            v.getLayoutParams().width = ViewGroup.LayoutParams.FILL_PARENT;
-            if (v instanceof ViewGroup){
-                v = ((ViewGroup)v).getChildAt(0);
-                if (v != null)
-                    v.getLayoutParams().width = ViewGroup.LayoutParams.FILL_PARENT;
-            }
-        }*/
-
-        adView.setLayoutParams(shouldShowIngameAd ? lpDown : lpUp);
+        initAdView();
 
         if (!shouldShowIngameAd)
             adView.setVisibility(View.INVISIBLE);
 
-        adView.setId(R.id.adCont);
-
-        rootLayout.addView(adView);
         updateAd.run();
-        adView.setAdListener(this);
-        adView.setOnMeasuredListener(this);
+    }
+
+    void initAdView() {
+        synchronized (this) {
+            if (adView != null)
+                return;
+            adView = new MyAdView(activity, AdSize.BANNER, Settings.getAdMobKey(activity));
+            adView.setLayoutParams(shouldShowIngameAd ? lpDown : lpUp);
+            adView.setId(R.id.adCont);
+            adView.setAdListener(this);
+            adView.setOnMeasuredListener(this);
+            rootLayout.addView(adView);
+        }
     }
 
     public void destroy() {
@@ -171,11 +168,11 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         }
     };
 
-    public int getAdViewId(){
+    public int getAdViewId() {
         return adView.getId();
     }
 
-    public boolean isAdBottom(){
+    public boolean isAdBottom() {
         return shouldShowIngameAd && isShowingAd;
     }
 
@@ -269,23 +266,28 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
         return result;
     }
 
-    void scheduleNextAdGet(){
+    void scheduleNextAdGet() {
         handler.postDelayed(updateAd, RETRY_DELAY);
     }
 
     private Runnable updateAd = new Runnable() {
         @Override
         public void run() {
-            AdRequest adRequest= new AdRequest();
+            AdRequest adRequest = new AdRequest();
 
-            if (Settings.DEBUG){
+            if (Settings.DEBUG) {
                 adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
                 Context context = activity.getApplicationContext();
                 String deviceId = getEncodedDeviceId(context);
                 adRequest.addTestDevice(deviceId);
             }
 
-            adView.loadAd(adRequest);
+            if (adView == null)
+                initAdView();
+            if (adView != null)
+                adView.loadAd(adRequest);
+            else
+                scheduleNextAdGet();
         }
     };
 }

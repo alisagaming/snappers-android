@@ -195,7 +195,6 @@ public class MainStage extends MyStage {
             hint = new Hints(logic, showText);
         else
             hint.updateLevel(showText);
-        logic.hintUsed = true;
         isHinting = true;
     }
 

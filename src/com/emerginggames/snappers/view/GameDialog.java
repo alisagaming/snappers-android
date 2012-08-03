@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import com.emerginggames.snappers.Settings;
 import com.emerginggames.snappers.SoundManager;
 import com.emerginggames.snappers.R;
 

@@ -26,6 +26,8 @@ public class GameLogic {
     public int tapRemains;
     ILogicListener snapperListener;
     public boolean hintUsed = false;
+    int hintI;
+    int hintJ;
 
     int snapperTouchedI = -1;
     int snapperTouchedJ = -1;
@@ -54,17 +56,30 @@ public class GameLogic {
         snappers.setSnappers(level.zappers);
         tapRemains = level.tapsCount;
         this.level = level;
-        hintUsed = false;
+        resetHint();
         startTime = System.currentTimeMillis();
     }
 
     public void tapSnapper(int i, int j) {
         if (snapperTouchedI >= 0 || tapRemains < 1)
             return;
+        if (hintUsed && (i != hintI || j != hintJ))
+            return;
         tapRemains--;
         snapperListener.tap();
         snapperTouchedI = i;
         snapperTouchedJ = j;
+    }
+
+    public void setHint(int i, int j){
+        hintUsed = true;
+        hintI = i;
+        hintJ = j;
+    }
+
+    public void resetHint(){
+        hintI = hintJ = 0;
+        hintUsed = false;
     }
 
     public boolean hitSnapper(int i, int j) {//return true if consumed touch

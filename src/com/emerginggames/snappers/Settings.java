@@ -1,6 +1,7 @@
 package com.emerginggames.snappers;
 
 import android.content.Context;
+import android.util.Log;
 import com.emerginggames.snappers.data.CryptHelperDES;
 
 import java.io.DataInputStream;
@@ -42,15 +43,18 @@ public class Settings {
     //App ID ? 6ac99625-6d02-4326-becd-213a233c511a
     private static String TJKey = "A69127567A50A671572E74997F8580A6JC78105DD8B3BFAE7J1BBB20C96D5B687BJ24B66487EDBAF2C1JAC0A19640D6AAD514B8E1BBE3F8248E2";
     //GvTn bQgQ 1P86 bB5X gr4L
+    private static String TJKeyAmazon = "ea76e140-9455-44a0-be82-4cbbd0b95b39";
 
                                        //E5FDD91C61783906K0357C137318677C4KE887BEF3AE633FABK5DD66C05D4227322K4AD4B5F812A26DCD
     private static String TJSecretKey = "E5FDD91C61783906K19727591AFFB805AKE887BEF3AE633FABK5153EAA399A85809K4AD4B5F812A26DCD";
+    private static String TJSecretKeyAmazon = " cc1vJGoHv9RYEA577vmQ";
 
     private static final String gInAPPKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgWK5eC6WW8fiRuvVfxaSaqUyMnpthTtV8abNUYLbS4pRcjbolfQJTFqZg+rzIADeBV1VZ0Iw/ZHO6i7n3iqFSDqKdBHwkteoEgynBJy+9THP7X8kN+C+h1V25cJforTyZiaXaY0Nz2Vq+mphnmGl9tettg/ZUiyqPm3Tt6SSJFdhdk1y5SO8LtTB+2VLHYe8e+XiEI2YGXm4NJ2G79pXooDSrmYV0CZ0uT6w3w7F9vmPEF0fvxtEN5D9SMhRfWlJ6rV/Mhnf46JmZTC5nGXhCwMG/uhWQbywhgLtQyMGzehsKxZyW5SSGq80RwHhmpYMN9F6Ekq8I6UTC/KHqt1UhQIDAQAB";
 
     //37FDED5609B0932F 67E17937D7A51DC7 589E501DD5C05FB8 A1D3454BF7B738D9
     private static final String mediationKey = "37FDED5609B0932FO67E17937D7A51DC7O589E501DD5C05FB8OA1D3454BF7B738D9";
     //
+    private static final String mediationKeyAmazon = "a1501bc08a2ba26";
 
 
 
@@ -62,6 +66,7 @@ public class Settings {
             prefs.getKey1();
             prefs.getKey2();
             //df03 8f9a c585 4e20
+
             Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "df03"));
             Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "8f9a"));
             Log.e("ENCODED - adMob!!!", CryptHelperDES.encrypt(prefs.getKey12(), "c585"));
@@ -69,6 +74,8 @@ public class Settings {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }*/
+        if (IS_AMAZON)
+            return mediationKeyAmazon;
         String key = prefs.getKey1() + prefs.getKey2();
         try{
             String[] chunks = mediationKey.split("O");
@@ -143,6 +150,9 @@ public class Settings {
             throw new RuntimeException(e);
         }*/
 
+        if(IS_AMAZON)
+            return TJKeyAmazon;
+
         String key = prefs.getKey1() + prefs.getKey2();
         try{
             String[] chunks = TJKey.split("J");
@@ -180,6 +190,10 @@ public class Settings {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }*/
+
+        if (IS_AMAZON)
+            return TJSecretKey;
+
         String key = prefs.getKey1();
         try{
             String[] chunks = TJSecretKey.split("K");

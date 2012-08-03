@@ -1,9 +1,9 @@
 package com.emerginggames.snappers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +21,12 @@ import com.flurry.android.FlurryAgent;
  * Date: 31.03.12
  * Time: 15:01
  */
-public class PaginatedSelectorActivity extends FragmentActivity {
+public class PaginatedSelectorActivity extends Activity {
     MyAlertDialog dlg;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_selector);
 
         Rect screen = new Rect();

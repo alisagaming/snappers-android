@@ -64,7 +64,11 @@ public class GameActivity extends AndroidApplication {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Resources.context = this;
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        Resources.context = getApplicationContext();
         Resources.getFont(this);
         prefs = UserPreferences.getInstance(getApplicationContext());
         prefs.setHintChangedListener(hintChangedListener);
@@ -85,20 +89,10 @@ public class GameActivity extends AndroidApplication {
         gameListener = new GameListener();
         game = new Game(startLevel, gameListener);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
         Metrics.setSizeByView(getWindow().getDecorView(), getApplicationContext());
 
         rootLayout = new RelativeLayout(this);
-
-        Rect rect = new Rect();
-        rootLayout.getWindowVisibleDisplayFrame(rect);
-        if (rect.width() > 0)
-            Metrics.setSize(rect.width(), rect.height(), getApplicationContext());
-
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.useAccelerometer = false;

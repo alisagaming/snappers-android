@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.emerginggames.snappers"
-      android:versionCode="16"
-      android:versionName="1.05"
+      android:versionCode="17"
+      android:versionName="1.06"
       android:installLocation="auto"
         >
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -29,11 +29,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".SelectLevelActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".GameActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".GameActivity" android:screenOrientation="portrait" />
         <activity android:name=".StoreActivity" android:screenOrientation="portrait"/>
         <activity android:name=".SelectPackActivity" android:screenOrientation="portrait"/>
         <activity android:name=".MainScreenActivity" android:screenOrientation="portrait"/>
         <activity android:name=".MoreGamesActivity" android:screenOrientation="portrait"/>
+
         <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
@@ -44,7 +45,7 @@
                   android:excludeFromRecents="true"
                   android:finishOnTaskLaunch="true" />
 
-        <activity android:name="com.tapjoy.TJCVirtualGoods" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" android:configChanges="keyboardHidden|orientation" />
+        <activity android:name="com.tapjoy.TJCVirtualGoods" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="com.tapjoy.DownloadVirtualGood" android:theme="@android:style/Theme.Dialog" android:configChanges="keyboardHidden|orientation" android:launchMode="singleTask" />
         <activity android:name="com.tapjoy.TJCOffersWebView" android:configChanges="keyboardHidden|orientation" />
         <activity android:name="com.tapjoy.TapjoyFeaturedAppWebView" android:configChanges="keyboardHidden|orientation" />

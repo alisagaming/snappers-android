@@ -1,5 +1,6 @@
 package com.emerginggames.snappers.gdx;
 
+import android.util.Log;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -71,8 +72,10 @@ public class Game implements ApplicationListener{
         if (!objectsCreated)
             createObjects();
 
-        if (bg != null)
+        if (bg != null){
             bg.setSize(width, height);
+            bg.setPosition(0,0);
+        }
         initDone = true;
         mGameListener.onInitDone();
     }

@@ -61,6 +61,7 @@ public class Hints implements IAnimationListener {
         int y = logic.getSnapperYPosision(j);
         hintSprite.positionRelative(x, y, IPositionable.Dir.CENTER, 0);
         hintSprite.restartAnimation();
+        logic.setHint(i, j);
     }
 
     @Override

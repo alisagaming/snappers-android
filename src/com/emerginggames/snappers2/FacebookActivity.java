@@ -16,6 +16,7 @@ import com.emerginggames.snappers2.data.FriendTable;
 import com.emerginggames.snappers2.gdx.Resources;
 import com.emerginggames.snappers2.model.SyncData;
 import com.emerginggames.snappers2.transport.FacebookTransport;
+import com.emerginggames.snappers2.utils.FacebookIconLoader;
 import com.emerginggames.snappers2.utils.Utils;
 import com.emerginggames.snappers2.utils.WorkerThreads;
 import com.emrg.view.ImageView;
@@ -317,7 +318,7 @@ public class FacebookActivity extends BaseActivity {
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             table.addView(row, lp);
-            loaders[i] = new LoadIconForView(friend.facebook_id, (ImageView)row.findViewById(R.id.iconUser));
+            loaders[i] = new FacebookIconLoader(this, friend.facebook_id, (ImageView)row.findViewById(R.id.iconUser));
         }
 
         if (start + amount < friends.length){
@@ -420,27 +421,6 @@ public class FacebookActivity extends BaseActivity {
             //((ImageView)img).setImageResource(R.drawable.transparent);
             v.setClickable(true);
             v.findViewById(R.id.btnText).setVisibility(View.VISIBLE);
-        }
-    }
-
-    class LoadIconForView implements Runnable {
-        private static final String URL_TEMPLATE_MED = "http://graph.facebook.com/%d/picture?type=normal";
-        ImageView view;
-        long uid;
-
-        LoadIconForView(long uid, ImageView view) {
-            this.uid = uid;
-            this.view = view;
-        }
-
-        @Override
-        public void run() {
-            try {
-                URL img_value = new URL(String.format(URL_TEMPLATE_MED, uid));
-                Bitmap mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());
-                view.setImageBitmap(mIcon1);
-            } catch (Throwable e) {
-            }
         }
     }
 }

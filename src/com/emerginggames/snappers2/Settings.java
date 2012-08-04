@@ -15,6 +15,8 @@ import java.io.IOException;
  * Time: 6:01
  */
 public class Settings {
+    public static final String TAG = "Snappers2";
+
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
     public static final String FONT = "Berlin Sans FB.ttf";
 

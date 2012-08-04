@@ -23,7 +23,7 @@ import com.emerginggames.snappers2.R;
  * Date: 23.03.12
  * Time: 17:24
  */
-public class OutlinedTextView extends TextView{
+public class OutlinedTextView extends TextView {
     protected int strokeColor = Color.TRANSPARENT;
     protected int strokeWidth = 0;
 
@@ -35,17 +35,18 @@ public class OutlinedTextView extends TextView{
     private boolean setTextSizeToFit;
     private boolean isSquare;
     boolean isPaintPrepared;
-    
+    int resizedTextForWidth;
+
     Layout mLayout;
     Layout mStrokeLayout;
 
     float mLineAdd = 0;
     float mLineMult = 1;
-    
-    int maxLines=0;
-    
+
+    int maxLines = 0;
+
     int[] mLineEnds;
-    
+
     int[] bgPad;
 
 
@@ -62,16 +63,16 @@ public class OutlinedTextView extends TextView{
         styledAttributes.recycle();
     }
 
-    public void setStroke(int color, int width){
+    public void setStroke(int color, int width) {
         strokeColor = color;
         strokeWidth = width;
         isPaintPrepared = false;
     }
 
-    public void drawBoring(Canvas canvas){
+    public void drawBoring(Canvas canvas) {
         Drawable back = getBackground();
         if (back != null && back instanceof BitmapDrawable)
-            ((BitmapDrawable)back).setAntiAlias(true);
+            ((BitmapDrawable) back).setAntiAlias(true);
         if (getBackground() != null)
             getBackground().draw(canvas);
 
@@ -92,14 +93,14 @@ public class OutlinedTextView extends TextView{
         else if ((gravity & Gravity.BOTTOM) == Gravity.BOTTOM)
             posy = getHeight() - strokeWidth - getPaddingBottom();
         else if ((gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL)
-            posy = (height + rect.height())/2 + getPaddingTop();
+            posy = (height + rect.height()) / 2 + getPaddingTop();
 
         if ((gravity & Gravity.LEFT) == Gravity.LEFT)
             posx = getPaddingLeft() + strokeWidth;
         else if ((gravity & Gravity.RIGHT) == Gravity.RIGHT)
             posx = getWidth() - rect.right - strokeWidth - getPaddingRight();
         else if ((gravity & Gravity.CENTER_HORIZONTAL) == Gravity.CENTER_HORIZONTAL)
-            posx = (width - rect.width())/2 - rect.left + getPaddingLeft();
+            posx = (width - rect.width()) / 2 - rect.left + getPaddingLeft();
 
         canvas.translate(posx, posy);
 
@@ -107,7 +108,7 @@ public class OutlinedTextView extends TextView{
         canvas.drawText(text, 0, text.length(), 0, 0, textPaint);
     }
 
-    public void setTextSizeToFit(boolean toFit){
+    public void setTextSizeToFit(boolean toFit) {
         setTextSizeToFit = toFit;
     }
 
@@ -125,41 +126,51 @@ public class OutlinedTextView extends TextView{
         mLayout = null;
     }
 
-    protected void setTextSizeToFit(int measuredWidth, int measuredHeight){
+    protected void setTextSizeToFit(int measuredWidth, int measuredHeight) {
         CharSequence text = getText();
-        if (text.length() <1)
+        if (text.length() < 1)
             return;
+
+        int desiredWidth = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight() - strokeWidth * 2;
+
+        if (resizedTextForWidth == desiredWidth)
+            return;
+
+        resizedTextForWidth = desiredWidth;
 
         if (!isPaintPrepared)
             preparePaint();
 
-        if (maxLines == 1){
-
-            int width = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight();
-            int height = measuredHeight - getCompoundPaddingTop() - getCompoundPaddingBottom();
+        if (maxLines == 1) {
+            int height = measuredHeight - getCompoundPaddingTop() - getCompoundPaddingBottom() - strokeWidth * 2;
             float size = getTextSize();
 
-            float textWidth = outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2;
+            float textWidth = outlinePaint.measureText(text, 0, text.length());
             float textHeight = getLineHeight();
 
-            if (isSquare){
+            if (isSquare) {
                 textWidth = Math.max(textWidth, textHeight);
-                size = (float)Math.ceil(size * width/ textWidth);
-                setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
+                size = (float) Math.ceil(size * desiredWidth / textWidth);
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
                 return;
             }
 
-            size = (float)Math.ceil(size * Math.min(width/ textWidth, height / textHeight));
-            setTextSize( TypedValue.COMPLEX_UNIT_PX, size);
+            size = (float) Math.ceil(size * Math.min(desiredWidth / textWidth, height / textHeight));
+            outlinePaint.setTextSize(size);
+            while (outlinePaint.measureText(text, 0, text.length()) > desiredWidth) {
+                size--;
+                outlinePaint.setTextSize(size);
+            }
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
             return;
         }
-        
+
         if (mLineEnds == null)
             return;
 
         float width = 0;
         int lastEnd = 0;
-        for (int i=0; i< mLineEnds.length; i++){
+        for (int i = 0; i < mLineEnds.length; i++) {
             if (mLineEnds[i] == 0)
                 break;
             width = Math.max(width, outlinePaint.measureText(text, lastEnd, mLineEnds[i]));
@@ -168,13 +179,14 @@ public class OutlinedTextView extends TextView{
 
         float size = getTextSize();
 
-        int desiredWidth = measuredWidth - getCompoundPaddingLeft() - getCompoundPaddingRight() - strokeWidth * 2;
-        size = size * desiredWidth/width;
+        size = size * desiredWidth / width;
         setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         outlinePaint.setTextSize(size);
         textPaint.setTextSize(size);
 
         needResize = false;
+
+        makeNewLayout(measuredWidth);
     }
 
     public void setLineEnds(int[] lineEnds) {
@@ -195,30 +207,30 @@ public class OutlinedTextView extends TextView{
         if (lp.height > 0)
             hSize = Math.min(hSize, lp.height);
 
-        if (wMode == MeasureSpec.UNSPECIFIED || hMode == MeasureSpec.UNSPECIFIED){
+        if (wMode == MeasureSpec.UNSPECIFIED || hMode == MeasureSpec.UNSPECIFIED) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }
 
-        needResize |=  (lastMeasuredWidth != wSize || getMeasuredHeight() != hSize);
+        needResize |= (lastMeasuredWidth != wSize || getMeasuredHeight() != hSize);
         float scale = 0;
 
-        if (needResize && bgPad != null){
+        if (needResize && bgPad != null) {
             if (hMode == MeasureSpec.EXACTLY)
-                scale =  (float)hSize / getBackground().getIntrinsicHeight();
+                scale = (float) hSize / getBackground().getIntrinsicHeight();
             else if (wMode == MeasureSpec.EXACTLY)
-                scale =  (float)wSize / getBackground().getIntrinsicWidth();
+                scale = (float) wSize / getBackground().getIntrinsicWidth();
             if (scale != 0)
-                setPadding((int)(bgPad[0] * scale), (int)(bgPad[1] * scale), (int)(bgPad[2] * scale), (int)(bgPad[3] * scale));
+                setPadding((int) (bgPad[0] * scale), (int) (bgPad[1] * scale), (int) (bgPad[2] * scale), (int) (bgPad[3] * scale));
         }
 
-        if (needResize && isSquare && maxLines == 1 && setTextSizeToFit){
+        if (needResize && isSquare && maxLines == 1 && setTextSizeToFit) {
             setTextSizeToFit(wSize, hSize);
             setMeasuredDimension(wSize, wSize);
             return;
         }
 
-        if (needResize && setTextSizeToFit){
+        if (needResize && setTextSizeToFit) {
             setTextSizeToFit(wSize, hSize);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -232,10 +244,10 @@ public class OutlinedTextView extends TextView{
         needResize = false;
     }
 
-    void makeNewLayout(int width){
+    void makeNewLayout(int width) {
         Layout.Alignment alignment;
         int gravity = getGravity();
-        int w  = width - getCompoundPaddingLeft() - getCompoundPaddingRight();
+        int w = width - getCompoundPaddingLeft() - getCompoundPaddingRight();
         switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
             case Gravity.CENTER_HORIZONTAL:
                 alignment = Layout.Alignment.ALIGN_CENTER;
@@ -250,7 +262,7 @@ public class OutlinedTextView extends TextView{
         }
         if (!isPaintPrepared || textPaint == null || outlinePaint == null)
             preparePaint();
-        
+
         CharSequence text = getText();
         mLayout = new StaticLayout(text, textPaint,
                 w, alignment, mLineMult, mLineMult, true);
@@ -262,6 +274,14 @@ public class OutlinedTextView extends TextView{
     @Override
     public void setTextSize(float size) {
         super.setTextSize(size);
+        needResize = true;
+        mLayout = null;
+        invalidate();
+    }
+
+    @Override
+    public void setTextSize(int unit, float size) {
+        super.setTextSize(unit, size);
         needResize = true;
         mLayout = null;
         invalidate();
@@ -295,19 +315,17 @@ public class OutlinedTextView extends TextView{
         mLayout = null;
     }
 
-
-
-    public void setText2(CharSequence text){
+    public void setText2(CharSequence text) {
         setText(text);
         mLayout = null;
     }
 
-    public void setText2(int id){
+    public void setText2(int id) {
         setText(id);
         mLayout = null;
     }
 
-    protected void preparePaint(){
+    protected void preparePaint() {
         Typeface typeface = getTypeface();
         ColorStateList colors = getTextColors();
 
@@ -315,9 +333,6 @@ public class OutlinedTextView extends TextView{
         textPaint.setTypeface(typeface);
         textPaint.setTextSize(getTextSize());
         textPaint.setAntiAlias(true);
-        textPaint.setFlags(Paint.DEV_KERN_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-
-
 
         outlinePaint.setColor(strokeColor);
         outlinePaint.setTypeface(typeface);
@@ -328,7 +343,7 @@ public class OutlinedTextView extends TextView{
 
         fontMetrics = outlinePaint.getFontMetrics();
     }
-    
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -337,40 +352,35 @@ public class OutlinedTextView extends TextView{
 
         canvas.save();
 
-        if (mLayout.getLineCount() == 1 || maxLines == 1){
+        if (maxLines == 1) {
             drawBoring(canvas);
-            return;
+        } else {
+            canvas.translate(getPaddingLeft(), getCompoundPaddingTop());
+            int maxWidth = 0;
+            for (int i = 0; i < mLayout.getLineCount(); i++) {
+                maxWidth = Math.max(maxWidth, (int) mLayout.getLineRight(i));
+            }
+            mStrokeLayout.draw(canvas);
+            mLayout.draw(canvas);
         }
-
-        canvas.translate(getPaddingLeft(), getCompoundPaddingTop());
-        int maxWidth = 0;
-        for (int i=0; i< mLayout.getLineCount(); i++){
-            maxWidth = Math.max(maxWidth, (int)mLayout.getLineRight(i));
-        }
-
-        mStrokeLayout.draw(canvas);
-        mLayout.draw(canvas);
-
         canvas.restore();
-
-
     }
-    
-    public int getUnpaddedWidth(){
+
+    public int getUnpaddedWidth() {
         return getMeasuredWidth() - getCompoundPaddingLeft() - getCompoundPaddingLeft();
     }
 
     public int getTextHeight() {
-        return (int)Math.ceil(Math.abs(fontMetrics.ascent) + Math.abs(fontMetrics.descent) + strokeWidth * 2);
+        return (int) Math.ceil(Math.abs(fontMetrics.ascent) + Math.abs(fontMetrics.descent) + strokeWidth * 2);
     }
-    
-    public int getLineHeight(){
-        return (int)Math.ceil(Math.abs(fontMetrics.ascent) + Math.abs(fontMetrics.descent) + Math.abs(fontMetrics.leading) + strokeWidth * 2);
+
+    public int getLineHeight() {
+        return (int) Math.ceil(Math.abs(fontMetrics.ascent) + Math.abs(fontMetrics.descent) + Math.abs(fontMetrics.leading) + strokeWidth * 2);
     }
 
     protected int measureTextWidth() {
         CharSequence text = getText();
-        return (int)Math.ceil(outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2);
+        return (int) Math.ceil(outlinePaint.measureText(text, 0, text.length()) + strokeWidth * 2);
     }
 
 

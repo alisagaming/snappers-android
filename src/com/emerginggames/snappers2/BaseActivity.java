@@ -121,7 +121,7 @@ public class BaseActivity extends FragmentActivity {
         lp.width = Math.round(bgWidth * scale);
         lp.rightMargin = lp.topMargin = Metrics.screenMargin;
 
-        int[] iPaddings = {27, 23, 94, 23};
+        int[] iPaddings = {27, 18, 94, 18};
         hintBtn.setPadding((int) (iPaddings[0] * scale), (int) (iPaddings[1] * scale), (int) (iPaddings[2] * scale), (int) (iPaddings[3] * scale));
         hintBtn.setLayoutParams(lp);
         hintBtn.setTypeface(Resources.getFont(getApplicationContext()));

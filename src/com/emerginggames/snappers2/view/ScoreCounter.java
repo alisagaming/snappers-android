@@ -46,16 +46,17 @@ public class ScoreCounter {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         root = (RelativeLayout)inflater.inflate(R.layout.score_counter, null);
 
-        TextView levelText = (TextView)root.findViewById(R.id.level);
+        OutlinedTextView levelText = (OutlinedTextView)root.findViewById(R.id.level);
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams)levelText.getLayoutParams();
         barCoveredWidth = mlp.width = height;
         mlp.height = height;
         levelText.setTypeface(font);
-        levelText.setTextSize(TypedValue.COMPLEX_UNIT_PX, height / 3);
+        //levelText.setTextSize(TypedValue.COMPLEX_UNIT_PX, height / 3);
+        levelText.setMaxLines2(1);
 
         int bgHeight = levelText.getBackground().getIntrinsicHeight();
         float scale = ((float)height / bgHeight );
-        int[] iPaddings = {32, 31, 32, 36};
+        int[] iPaddings = {33, 30, 33, 36};
         levelText.setPadding((int)(iPaddings[0] * scale), (int)(iPaddings[1] * scale), (int)(iPaddings[2] * scale), (int)(iPaddings[3] * scale));
 
 

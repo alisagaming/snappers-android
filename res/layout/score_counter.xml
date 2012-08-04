@@ -32,5 +32,6 @@
                                                  android:textSize="18dp"
                                                  android:gravity="center"
                                                  android:drawingCacheQuality="high"
+                                                 app:setTextSizeToFit="true"
         />
 </RelativeLayout>

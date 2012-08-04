@@ -1,8 +1,29 @@
 <resources>
     <style name="RCAlertDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog</item>
+        <item name="android:windowAnimationStyle">@style/Animation_DialogAnimation</item>
     </style>
     <style name="GameDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation_DialogAnimation</item>
     </style>
+
+    <style name="appTheme">
+        <item name="android:soundEffectsEnabled">false</item>
+        <item name="android:windowAnimationStyle">@style/Animation_CustomAnimation</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style  name="Animation_CustomAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+    </style>
+
+    <style name="Animation_DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+    </style>
+
 </resources>

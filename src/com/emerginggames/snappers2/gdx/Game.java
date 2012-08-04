@@ -81,7 +81,8 @@ public class Game implements ApplicationListener{
 
     @Override
     public void resize(int i, int i1) {
-        mGameListener.gotScreenSize(width = i, height = i1);
+        width = i;
+        height = i1;
         if (!objectsCreated)
             createObjects();
 

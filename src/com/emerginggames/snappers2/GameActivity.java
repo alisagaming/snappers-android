@@ -86,10 +86,10 @@ public class GameActivity extends AndroidApplication {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
+
+        Metrics.setSizeByView(getWindow().getDecorView(), getApplicationContext());
         rootLayout = new RelativeLayout(this);
-        Rect rect = new Rect();
-        rootLayout.getWindowVisibleDisplayFrame(rect);
-        Metrics.setSize(rect.width(), rect.height(), getApplicationContext());
+
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
@@ -99,6 +99,8 @@ public class GameActivity extends AndroidApplication {
 
         View gameView = initializeForView(game, config);
         rootLayout.addView(gameView);
+
+        initViews();
 
         setContentView(rootLayout);
 
@@ -119,22 +121,18 @@ public class GameActivity extends AndroidApplication {
             facebookTransport = null;
     }
 
-    public void initViews(){
-        if (topButtons == null)
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    gameOverMessageController = new GameOverMessageController(rootLayout, GameActivity.this);
-                    levelInfo = new LevelInfo(rootLayout);
-                    levelInfo.setLevel(startLevel);
-                    topButtons = new TopButtonController(rootLayout, GameActivity.this);
-                    topButtons.showMainButtons();
+    public void initViews() {
+        if (topButtons == null) {
+            gameOverMessageController = new GameOverMessageController(rootLayout, GameActivity.this);
+            levelInfo = new LevelInfo(rootLayout);
+            levelInfo.setLevel(startLevel);
+            topButtons = new TopButtonController(rootLayout, GameActivity.this);
+            topButtons.showMainButtons();
 
-                    if (!Settings.IS_PREMIUM && !prefs.isAdFree()) {
-                        adController = new AdController(GameActivity.this, rootLayout);
-                    }
-                }
-            });
+            if (!Settings.IS_PREMIUM && !prefs.isAdFree()) {
+                adController = new AdController(GameActivity.this, rootLayout);
+            }
+        }
     }
 
     @Override
@@ -222,12 +220,12 @@ public class GameActivity extends AndroidApplication {
         return false;
     }
 
-    public void pauseGame(){
+    public void pauseGame() {
         game.setPaused(true);
         gameDialogsController.showPauseDialog();
     }
 
-    public void showHintMenu(){
+    public void showHintMenu() {
         gameDialogsController.showHintMenu();
     }
 
@@ -236,7 +234,7 @@ public class GameActivity extends AndroidApplication {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public void showHelp(){
+    public void showHelp() {
         helpView = getLayoutInflater().inflate(R.layout.partial_help, null);
         helpView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,8 +255,8 @@ public class GameActivity extends AndroidApplication {
         levelInfo.hide();
     }
 
-    void syncFacebook(){
-        facebookTransport.sync(new FacebookTransport.ResponseListener(){
+    void syncFacebook() {
+        facebookTransport.sync(new FacebookTransport.ResponseListener() {
             @Override
             public void onOk(Object data) {
                 SyncData sync = (SyncData) data;
@@ -272,7 +270,6 @@ public class GameActivity extends AndroidApplication {
             }
         });
     }
-
 
 
     class GameListener implements IAppGameListener {
@@ -310,18 +307,18 @@ public class GameActivity extends AndroidApplication {
             topButtons.showScore();
 
             int newLevel = Settings.getLevel(prefs.getScore());
-            if (newLevel > currentLevel){
+            if (newLevel > currentLevel) {
                 currentLevel = newLevel;
                 gameDialogsController.showNewLevelDialog(newLevel);
 
-                if (hasFacebook() && newLevel > 5  && prefs.getShareToFb() && Math.random() > 0.5){
+                if (hasFacebook() && newLevel > 5 && prefs.getShareToFb() && Math.random() > 0.5) {
                     gameDialogsController.showShareDialog();
                     shared = true;
                 }
             }
-            if (helpView != null){
-                    rootLayout.removeView(helpView);
-                    helpView = null;
+            if (helpView != null) {
+                rootLayout.removeView(helpView);
+                helpView = null;
             }
 
             if (facebookTransport != null)
@@ -330,12 +327,12 @@ public class GameActivity extends AndroidApplication {
             boolean canLike = !shared && hasFacebook() && !prefs.isLiked()
                     && (System.currentTimeMillis() - prefs.getLastLikeOrRateRecommeded() > Settings.LIKE_INTERVAL)
                     && (level.number % Settings.LEVEL_TO_RECOMMEND == 0);
-                    //&& (level.pack.id > 1 || level.number > 5);
+            //&& (level.pack.id > 1 || level.number > 5);
 
             boolean canRate = !shared && !prefs.isRated()
                     && (System.currentTimeMillis() - prefs.getLastLikeOrRateRecommeded() > Settings.RATE_INTERVAL)
                     && (level.number % Settings.LEVEL_TO_RECOMMEND == 0);
-                    //&& (level.pack.id > 1 || level.number > 5);
+            //&& (level.pack.id > 1 || level.number > 5);
 
             if (canLike && canRate)
                 if (Math.random() < 0.5)
@@ -360,7 +357,7 @@ public class GameActivity extends AndroidApplication {
 //                adController.showAdTop();
             gameOverMessageController.show(false, level.tapsCount);
             levelInfo.hide();
-            if (helpView != null){
+            if (helpView != null) {
                 rootLayout.removeView(helpView);
                 helpView = null;
             }
@@ -382,12 +379,6 @@ public class GameActivity extends AndroidApplication {
         }
 
         @Override
-        public void gotScreenSize(int width, int height) {
-            Metrics.setSize(width, height, GameActivity.this);
-            initViews();
-        }
-
-        @Override
         public Level getNextLevel(Level currentLevel) {
             return levelTable.getNextLevel(currentLevel);
         }
@@ -406,12 +397,13 @@ public class GameActivity extends AndroidApplication {
 
         @Override
         public void updateTapsLeft(int n) {
-            levelInfo.setTapsLeft(n);
+            if (levelInfo != null)
+                levelInfo.setTapsLeft(n);
         }
 
         @Override
         public void onStageChanged(Game.Stages newStage, Game.Stages oldStage) {
-            if (adController != null){
+            if (adController != null) {
                 boolean oldAdTop = oldStage == Game.Stages.GameOverStage || oldStage == Game.Stages.HelpStage;
                 boolean newAdTop = newStage == Game.Stages.GameOverStage || newStage == Game.Stages.HelpStage;
 
@@ -424,7 +416,7 @@ public class GameActivity extends AndroidApplication {
             if (oldStage == Game.Stages.GameOverStage)
                 hideGameOverMenu();
 
-            switch (newStage){
+            switch (newStage) {
                 case HintMenu:
                     showHintMenu();
                     break;
@@ -443,11 +435,11 @@ public class GameActivity extends AndroidApplication {
         }
     };
 
-    public boolean hasFacebook(){
-        return facebookTransport!= null;
+    public boolean hasFacebook() {
+        return facebookTransport != null;
     }
 
-    public AdController getAdController(){
+    public AdController getAdController() {
         return adController;
     }
 
@@ -464,9 +456,7 @@ public class GameActivity extends AndroidApplication {
     }
 
 
-
-
-    class LevelInfo{
+    class LevelInfo {
         OutlinedTextView levelInfo;
         OutlinedTextView tapsLeft;
         Level level;
@@ -475,16 +465,16 @@ public class GameActivity extends AndroidApplication {
         LinearLayout layout;
 
         LevelInfo(RelativeLayout rootLayout) {
-             layout = (LinearLayout)getLayoutInflater().inflate(R.layout.partial_game_info, null);
-            levelInfo = (OutlinedTextView)layout.findViewById(R.id.levelInfo);
-            tapsLeft = (OutlinedTextView)layout.findViewById(R.id.tapsLeft);
+            layout = (LinearLayout) getLayoutInflater().inflate(R.layout.partial_game_info, null);
+            levelInfo = (OutlinedTextView) layout.findViewById(R.id.levelInfo);
+            tapsLeft = (OutlinedTextView) layout.findViewById(R.id.tapsLeft);
 
             levelInfo.setTypeface(Resources.getFont(GameActivity.this));
             tapsLeft.setTypeface(Resources.getFont(GameActivity.this));
             levelInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
             tapsLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, Metrics.fontSize);
 
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)levelInfo.getLayoutParams();
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) levelInfo.getLayoutParams();
             levelInfo.setLayoutParams(lp);
 
 
@@ -495,26 +485,26 @@ public class GameActivity extends AndroidApplication {
             rootLayout.addView(layout, rlp);
         }
 
-        public void setLevel(Level level){
+        public void setLevel(Level level) {
             this.level = level;
             runOnUiThread(setLevel);
         }
 
-        public void setTapsLeft(int n){
+        public void setTapsLeft(int n) {
             tapsLeftN = n;
             runOnUiThread(setTapsLeft);
         }
 
-        public void setDim(boolean isDim){
+        public void setDim(boolean isDim) {
             color = isDim ? Color.rgb(128, 128, 128) : Color.rgb(255, 255, 255);
             runOnUiThread(setColor);
         }
 
-        public void show(){
+        public void show() {
             runOnUiThread(show);
         }
 
-        public void hide(){
+        public void hide() {
             runOnUiThread(hide);
         }
 

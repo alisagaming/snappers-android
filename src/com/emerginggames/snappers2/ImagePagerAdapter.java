@@ -47,6 +47,7 @@ public class ImagePagerAdapter extends PagerAdapter implements View.OnClickListe
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView image = new ImageView(context);
+        image.setSoundEffectsEnabled(false);
         Rect r = new Rect();
         image.getGlobalVisibleRect(r);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(imageWidth, imageWidth);

@@ -15,7 +15,6 @@ public interface IAppGameListener {
     public void levelSolved(Level level, int score);
     public boolean isLevelSolved(Level level);
     public boolean isSoundEnabled();
-    public void gotScreenSize(int width, int height);
     public Level getNextLevel(Level currentLevel);
     public void onInitDone();
     public void showPaused();

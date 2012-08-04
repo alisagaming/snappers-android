@@ -119,6 +119,7 @@ public class GameDialog extends Dialog {
         btn.setOnClickListener(clickListener);
         btn.setAdjustViewBounds(true);
         btn.setTag(drawable_id);
+        btn.setSoundEffectsEnabled(false);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(widthShare * width), ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, itemSpacing, 0, 0);
@@ -127,6 +128,7 @@ public class GameDialog extends Dialog {
     }
 
     void addButton(View btn){
+        btn.setSoundEffectsEnabled(false);
         if (isTwoButtonsARow){
             if (buttons %2 == 0 ){
                 lastRow = new LinearLayout(getContext());

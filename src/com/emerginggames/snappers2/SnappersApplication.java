@@ -83,7 +83,7 @@ public class SnappersApplication extends Application {
         currentActivity = activity;
         isActivityActive = true;
         isSwitchingActivity = false;
-        startMusicifShould(null);
+        startMusicifShould("song.mp3");
     }
 
     public void activityResumed(Activity activity, String soundtrack) {
@@ -100,11 +100,12 @@ public class SnappersApplication extends Application {
     }
 
     private void startMusicifShould(String soundtrack){
-        if (isMusicEnabled && currentActivity != null && isScreenOn && isUnlocked && isActivityActive){
-            if (soundtrack == null)
-                SoundManager.getInstance(currentActivity).setGameMusic();
-            else
+        if (isMusicEnabled){
+            if (soundtrack != null)
                 SoundManager.getInstance(currentActivity).setLevelMusic(soundtrack);
+        }
+
+        if (isMusicEnabled && currentActivity != null && isScreenOn && isUnlocked && isActivityActive){
             SoundManager.getInstance(currentActivity).startMusic();
         }
     }

@@ -35,7 +35,7 @@ public class SoundManager {
             throw new RuntimeException(e);
         }
 
-        setGameMusic();
+        //setGameMusic();
     }
 
     public static SoundManager getInstance(Activity context) {
@@ -82,10 +82,6 @@ public class SoundManager {
             Log.e("SNAPPERS", e.getMessage(), e);
             return;
         }
-    }
-
-    public void setGameMusic(){
-        setLevelMusic("song.mp3");
     }
 
     public void stopMusic() {

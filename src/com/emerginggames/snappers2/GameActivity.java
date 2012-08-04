@@ -177,6 +177,8 @@ public class GameActivity extends AndroidApplication {
         ((SnappersApplication) getApplication()).activityResumed(this, pack.soundtrack);
     }
 
+
+
     @Override
     public void onBackPressed() {
         if (game.initDone)

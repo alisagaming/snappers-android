@@ -325,6 +325,8 @@ public class OutlinedTextView extends TextView {
         mLayout = null;
     }
 
+
+
     protected void preparePaint() {
         Typeface typeface = getTypeface();
         ColorStateList colors = getTextColors();

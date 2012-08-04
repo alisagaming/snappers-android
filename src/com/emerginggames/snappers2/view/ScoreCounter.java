@@ -109,9 +109,9 @@ public class ScoreCounter {
         v.setLayoutParams(lp);
 
         if (isMaxLevel)
-            ((OutlinedTextView)root.findViewById(R.id.score)).setText(R.string.maxLevel);
+            ((OutlinedTextView)root.findViewById(R.id.score)).setText2(R.string.maxLevel);
         else
-            ((OutlinedTextView)root.findViewById(R.id.score)).setText(Integer.toString(score));
+            ((OutlinedTextView)root.findViewById(R.id.score)).setText2(Integer.toString(score));
         currentScore = score;
     }
 

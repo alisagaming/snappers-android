@@ -141,7 +141,9 @@ public class AdController implements AdListener, MyAdView.OnMeasuredListener {
             rootLayout.removeView(adView);
             rootLayout.addView(adView);
             isShowingAd = true;
-            activity.getTopButtons().alignUnderView(adView);
+            //if (shouldShowAdTop)
+            //    activity.getTopButtons().alignUnderView(adView);
+
         }
     };
 

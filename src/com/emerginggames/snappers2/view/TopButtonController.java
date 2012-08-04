@@ -69,6 +69,9 @@ public class TopButtonController {
 
         addScoreCounter();
         rootLayour.addView(layout, rlpTop);
+
+        lp = (RelativeLayout.LayoutParams)pauseBtn.getLayoutParams();
+        lp.width = lp.height = rlpTop.height;
     }
 
     public void updateHints(){

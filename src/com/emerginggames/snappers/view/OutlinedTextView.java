@@ -140,8 +140,6 @@ public class OutlinedTextView extends TextView{
         if (!isPaintPrepared)
             preparePaint();
 
-        resizedTextForWidth = measuredWidth;
-
         if (maxLines == 1){
             int height = measuredHeight - getCompoundPaddingTop() - getCompoundPaddingBottom() - strokeWidth * 2;
             float size = getTextSize();

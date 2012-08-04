@@ -1,6 +1,8 @@
 package com.emerginggames.snappers.utils;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -55,13 +57,22 @@ public class MoreGamesUtil {
             for (int i = 0; i < gamesArr.length(); i++) {
                 JSONObject jsonGame = gamesArr.getJSONObject(i);
                 MoreGame moreGame = new MoreGame(jsonGame);
-                if (!packageName.equals(moreGame.id))
+                if (!packageName.equals(moreGame.id) && !checkAppInstalled(context, moreGame.id))
                     games.add(moreGame);
             }
 
         } catch (JSONException e) {
         }
         return games;
+    }
+
+    static boolean checkAppInstalled(Context context, String packageName){
+        try{
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName, 0 );
+            return true;
+        } catch( PackageManager.NameNotFoundException e ){
+            return false;
+        }
     }
 
     void saveJson(JSONObject data) {

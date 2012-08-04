@@ -16,7 +16,7 @@ import java.io.IOException;
 public class Settings {
     public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
 
-    public static boolean IS_AMAZON = true;
+    public static boolean IS_AMAZON = false;
 
     public static final float REPEAT_MULT = 0.1f;
     public static final float HINTED_MULT = 0.5f;

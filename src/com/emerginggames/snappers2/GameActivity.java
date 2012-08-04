@@ -127,7 +127,7 @@ public class GameActivity extends AndroidApplication {
             levelInfo = new LevelInfo(rootLayout);
             levelInfo.setLevel(startLevel);
             topButtons = new TopButtonController(rootLayout, GameActivity.this);
-            topButtons.showMainButtons();
+
 
             if (!Settings.IS_PREMIUM && !prefs.isAdFree()) {
                 adController = new AdController(GameActivity.this, rootLayout);
@@ -387,6 +387,7 @@ public class GameActivity extends AndroidApplication {
         public void onInitDone() {
             if (adController != null)
                 adController.setGameMargins(0);
+            topButtons.showMainButtons();
         }
 
         @Override

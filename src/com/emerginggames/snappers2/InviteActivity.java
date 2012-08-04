@@ -71,7 +71,7 @@ public class InviteActivity extends BaseActivity {
 
         getFriends();
 
-        FacebookFriend[] friends = FriendTable.getAll(this);
+        FacebookFriend[] friends = FriendTable.getUnregistered(this);
         if (friends == null || friends.length == 0)
             showProgressDialog(getString(R.string.loading));
         else
@@ -88,7 +88,7 @@ public class InviteActivity extends BaseActivity {
                     @Override
                     public void run() {
                         hideProgressDialog();
-                        showFriendsList(friends);
+                        showFriendsList(FriendTable.getUnregistered(InviteActivity.this));
                     }
                 });
 

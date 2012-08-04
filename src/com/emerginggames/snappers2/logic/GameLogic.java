@@ -31,6 +31,8 @@ public class GameLogic {
     int snapperTouchedJ = -1;
     public long startTime;
 
+    private static final float BLAST_SPEED_MARGIN_PER_SECOND = 7f;
+
     Blasts blasts;
 
     public GameLogic(ILogicListener listener) {
@@ -145,7 +147,7 @@ public class GameLogic {
 
     private class Blasts {
         private static final int MAX_BLASTS = 90;
-        private static final float BLAST_SPEED_MARGIN_PER_SECOND = 7;
+
         public final List<Blast> blastsToKill;
         public final Pool<Blast> blastPool;
         public final List<Blast> activeBlasts;

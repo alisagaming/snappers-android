@@ -198,4 +198,15 @@ public class FriendTable extends SQLiteTable<FacebookFriend> {
             }
         }
     }
+
+    public static FacebookFriend[] getUnregistered(Context context) {
+        synchronized (DbLock) {
+            FriendTable tbl = new FriendTable(context, false);
+            try {
+                return tbl.getAll(FacebookFriend.class, String.format("%s = %d", KEY_XP, -1));
+            } finally {
+                tbl.close();
+            }
+        }
+    }
 }

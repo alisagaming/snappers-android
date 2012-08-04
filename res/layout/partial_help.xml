@@ -5,7 +5,8 @@
               android:layout_height="fill_parent">
     <com.emrg.view.ImageView android:id="@+id/help"
           android:layout_width="fill_parent" android:layout_height="wrap_content"
-          android:src="@drawable/instructions"
+          android:src="@drawable/instructions" android:scaleType="fitCenter" android:adjustViewBounds="true"
+          android:layout_marginBottom="@dimen/helpPadding"
           />
 
 </LinearLayout>

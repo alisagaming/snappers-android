@@ -200,19 +200,14 @@ public class Game implements ApplicationListener{
         if (currentStageE == stage)
             return;
 
-        if (currentStageE == Stages.GameOverStage)
-            mGameListener.hideGameOverMenu();
+        mGameListener.onStageChanged(stage, currentStageE);
 
         currentStageE = stage;
         switch (stage){
             case MainStage:
                 setStage(mainStage);
                 break;
-            case HelpStage:
-                break;
-            case HintMenu:
-                mGameListener.showHintMenu();
-                break;
+
             case GameOverStage:
                 if (mainStage.getLogic().isGameLost())
                     mGameListener.showGameLost(mainStage.getLogic().level);

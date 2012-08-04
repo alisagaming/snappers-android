@@ -298,8 +298,8 @@ public class GameActivity extends AndroidApplication {
             boolean shared = false;
             prefs.unlockNextLevel(level);
             topButtons.showGameWonMenu();
-            if (adController != null)
-                adController.showAdTop();
+            //if (adController != null)
+            //    adController.showAdTop();
             prefs.addScore(score);
             gameOverMessageController.show(true, score);
             Level next = getNextLevel(level);
@@ -356,8 +356,8 @@ public class GameActivity extends AndroidApplication {
         @Override
         public void showGameLost(Level level) {
             topButtons.showGameLostMenu();
-            if (adController != null)
-                adController.showAdTop();
+//            if (adController != null)
+//                adController.showAdTop();
             gameOverMessageController.show(false, level.tapsCount);
             levelInfo.hide();
             if (helpView != null){
@@ -407,6 +407,30 @@ public class GameActivity extends AndroidApplication {
         @Override
         public void updateTapsLeft(int n) {
             levelInfo.setTapsLeft(n);
+        }
+
+        @Override
+        public void onStageChanged(Game.Stages newStage, Game.Stages oldStage) {
+            if (adController != null){
+                boolean oldAdTop = oldStage == Game.Stages.GameOverStage || oldStage == Game.Stages.HelpStage;
+                boolean newAdTop = newStage == Game.Stages.GameOverStage || newStage == Game.Stages.HelpStage;
+
+                if (newAdTop && !oldAdTop)
+                    adController.showAdTop();
+                if (oldAdTop && !newAdTop)
+                    adController.hideAdTop();
+            }
+
+            if (oldStage == Game.Stages.GameOverStage)
+                hideGameOverMenu();
+
+            switch (newStage){
+                case HintMenu:
+                    showHintMenu();
+                    break;
+
+            }
+
         }
     }
 

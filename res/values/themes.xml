@@ -13,7 +13,6 @@
         <item name="android:windowAnimationStyle">@style/Animation_CustomAnimation</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style  name="Animation_CustomAnimation">

@@ -39,6 +39,7 @@ public class UserPreferences {
     private static final String TWITTER_URL = "twUrl";
     private static final String FB_LIKED = "fbLiked";
     private static final String TW_FOLLOWED = "twFollowed";
+    private static final String DECRYPTED = "decrypted";
     public static String Key1;
     public static String Key11;
     public static String Key21;
@@ -48,14 +49,15 @@ public class UserPreferences {
     public static String Key5;
     private static Object hintSync = new Object();
 
-    private static final int INITIAL_HINTS = Settings.DEBUG? 10:2;
+    private static final int INITIAL_HINTS = Settings.DEBUG ? 10 : 2;
     Context context;
     private static UserPreferences instance;
     SharedPreferences prefs;
     DeviceUuidFactory factory;
     HintChangedListener hintChangedListener;
+    private boolean decryptedAll = false;
 
-    public static UserPreferences getInstance(Context context){
+    public static UserPreferences getInstance(Context context) {
         if (instance == null)
             return instance = new UserPreferences(context.getApplicationContext());
         //else if (context != null)
@@ -67,7 +69,7 @@ public class UserPreferences {
         this.context = context;
         prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         if (LevelPackTable.getName().equals("vitaliy.suprun"))
-            if (LevelPackTable.getHost().equals("gmail.com")){
+            if (LevelPackTable.getHost().equals("gmail.com")) {
                 if (Key1 == null)
                     factory = new DeviceUuidFactory(context);
                 getKey1();
@@ -80,172 +82,173 @@ public class UserPreferences {
     public static void setContext(Context context) {
         if (instance == null)
             instance = new UserPreferences(context);
-        else if (context!= null)
+        else if (context != null)
             instance.context = context;
     }
 
-    public boolean isTapjoyEnabled(){
+    public boolean isTapjoyEnabled() {
         return prefs.getBoolean(TAPJOY_ENABLED, false);
     }
 
-    public boolean getIngameAds(){
+    public boolean getIngameAds() {
         return prefs.getBoolean(INGAMEADS, false);
     }
 
-    public void touchHints(){
-        putBoolean(HINTS_TOUCHED, true, HINTS_TOUCHED);
+    public void touchHints() {
+        putBoolean(HINTS_TOUCHED, true);
     }
 
-    public boolean areHintsTouched(){
+    public boolean areHintsTouched() {
         return getBoolean(HINTS_TOUCHED, false, HINTS_TOUCHED);
     }
 
-    public int getHintsRemaining(){
+    public int getHintsRemaining() {
         return getInt(HINTS, 0, HINTS);
     }
 
-    public void setGInAppInitDone(boolean done){
-        putBoolean(G_IN_APP_INIT_DONE, done, G_IN_APP_INIT_DONE);
+    public void setGInAppInitDone(boolean done) {
+        putBoolean(G_IN_APP_INIT_DONE, done);
     }
 
-    public boolean isGInAppInitDone(){
+    public boolean isGInAppInitDone() {
         return getBoolean(G_IN_APP_INIT_DONE, false, G_IN_APP_INIT_DONE);
     }
 
-    public void useHint(){
+    public void useHint() {
         addHints(-1);
     }
 
-    public void addHints(int amount){
-        synchronized (hintSync){
+    public void addHints(int amount) {
+        synchronized (hintSync) {
             int hintsRemaining = getHintsRemaining();
-            putInt(HINTS, amount + hintsRemaining, HINTS);
-            if (hintChangedListener!= null)
-                hintChangedListener.onHintsChanged(hintsRemaining, hintsRemaining +amount);
+            putInt(HINTS, amount + hintsRemaining);
+            if (hintChangedListener != null)
+                hintChangedListener.onHintsChanged(hintsRemaining, hintsRemaining + amount);
             if (!areHintsTouched())
                 touchHints();
         }
     }
 
-    public boolean isPackUnlocked(int id){
+    public boolean isPackUnlocked(int id) {
         return getLevelUnlocked(id) > 0;
     }
 
-    public boolean isPackUnlocked(LevelPack pack){
+    public boolean isPackUnlocked(LevelPack pack) {
         return getLevelUnlocked(pack) > 0;
     }
 
-    public int getLevelUnlocked(LevelPack pack){
+    public int getLevelUnlocked(LevelPack pack) {
         if (pack == null)
             return 0;
         if (Settings.ENABLE_ALL_LEVELS)
             return 1000;
         return getInt(String.format(LEVEL_UNLOCK, pack.name), 0, pack.name);
     }
-    
-    public int getLevelUnlocked(int packId){
+
+    public int getLevelUnlocked(int packId) {
         return getLevelUnlocked(LevelPackTable.get(packId, context));
     }
 
-    public void unlockNextLevelPack(LevelPack cur){
+    public void unlockNextLevelPack(LevelPack cur) {
         if (cur.isPremium)
             return;
         LevelPack[] packs = LevelPackTable.getAllByPremium(context, false);
-        for (int i=0; i< packs.length-1; i++)
-            if (packs[i].id == cur.id){
+        for (int i = 0; i < packs.length - 1; i++)
+            if (packs[i].id == cur.id) {
                 unlockLevelPack(packs[i + 1]);
                 return;
             }
     }
 
-    public void unlockLevelPack(LevelPack pack){
-        putInt(String.format(LEVEL_UNLOCK, pack.name), 1, pack.name);
+    public void unlockLevelPack(LevelPack pack) {
+        putInt(String.format(LEVEL_UNLOCK, pack.name), 1);
     }
 
-    public void lockLevelPack(LevelPack pack){
+    public void lockLevelPack(LevelPack pack) {
         Editor editor = prefs.edit();
         editor.remove(_S(String.format(LEVEL_UNLOCK, pack.name)));
         editor.commit();
     }
-    
-    public int getScore(){
+
+    public int getScore() {
         return prefs.getInt(SCORE, 0);
     }
 
-    public void addScore(int addScore){
+    public void addScore(int addScore) {
         addScore += getScore();
         Editor editor = prefs.edit();
         editor.putInt(SCORE, addScore);
         editor.commit();
     }
 
-    public void unlockNextLevel(Level currentLevel){
+    public void unlockNextLevel(Level currentLevel) {
         if (currentLevel.pack == null)
             currentLevel.pack = LevelPackTable.get(currentLevel.packNumber, context);
         int unlocked = getLevelUnlocked(currentLevel.pack);
-        if (unlocked> currentLevel.number)
+        if (unlocked > currentLevel.number)
             return;
 
-        putInt(String.format(LEVEL_UNLOCK, currentLevel.pack.name), currentLevel.number + 1, currentLevel.pack.name);
+        putInt(String.format(LEVEL_UNLOCK, currentLevel.pack.name), currentLevel.number + 1);
     }
 
-    public boolean isLevelSolved(Level level){
+    public boolean isLevelSolved(Level level) {
         return level.number < getLevelUnlocked(level.packNumber);
     }
 
-    public boolean isAdFree(){
-        return  Settings.NO_ADS || getBoolean(ADFREE, false, ADFREE);
+    public boolean isAdFree() {
+        return Settings.NO_ADS || getBoolean(ADFREE, false, ADFREE);
     }
 
-    public void setAdFree(boolean isAdFree){
-        putBoolean(ADFREE, isAdFree, ADFREE);
+    public void setAdFree(boolean isAdFree) {
+        putBoolean(ADFREE, isAdFree);
     }
 
-    private void initialise(){
+    private void initialise() {
+        decryptAll();
         if (getBoolean(INITIIALISED, false, INITIIALISED))
             return;
 
         unlockLevelPack(LevelPackTable.get(1, context));
-        putInt(HINTS, INITIAL_HINTS, HINTS);
-        putBoolean(INITIIALISED, true, INITIIALISED);
+        putInt(HINTS, INITIAL_HINTS);
+        putBoolean(INITIIALISED, true);
 
         ACRA.getACRASharedPreferences().edit().putBoolean(ACRA.PREF_ENABLE_DEVICE_ID, false).commit();
     }
 
-    public void setMusic(boolean enabled){
-        putBoolean(MUSIC, enabled, MUSIC);
+    public void setMusic(boolean enabled) {
+        putBoolean(MUSIC, enabled);
     }
 
-    public boolean getMusic(){
+    public boolean getMusic() {
         return getBoolean(MUSIC, true, MUSIC);
     }
 
-    public void setSound(boolean enabled){
-        putBoolean(SOUND, enabled, SOUND);
+    public void setSound(boolean enabled) {
+        putBoolean(SOUND, enabled);
     }
 
-    public boolean getSound(){
+    public boolean getSound() {
         return getBoolean(SOUND, true, SOUND);
     }
 
-    public boolean canShowAppRater(){
+    public boolean canShowAppRater() {
         return !prefs.getBoolean(DONT_SHOW_APPRATER, false);
     }
 
-    public void dontShowApprater(){
+    public void dontShowApprater() {
         prefs.edit().putBoolean(DONT_SHOW_APPRATER, true).commit();
     }
 
-    public long getLastAskAppRate(){
+    public long getLastAskAppRate() {
         return prefs.getLong(LAST_APP_RATED, 0);
     }
 
-    public void setLastAskedToRateApp(long time){
+    public void setLastAskedToRateApp(long time) {
         prefs.edit().putLong(LAST_APP_RATED, time).commit();
     }
 
-    public void saveSettings(OnlineSettings.SettingsData data){
-        Editor editor =  prefs.edit();
+    public void saveSettings(OnlineSettings.SettingsData data) {
+        Editor editor = prefs.edit();
         if (prefs.getBoolean(TAPJOY_ENABLED, false) != data.tapJoy)
             editor.putBoolean(TAPJOY_ENABLED, data.tapJoy);
         if (prefs.getBoolean(INGAMEADS, false) != data.inGameAds)
@@ -260,131 +263,135 @@ public class UserPreferences {
             editor.putString(TWITTER_URL, data.twitterUrl);
 
         if (!areHintsTouched() && getHintsRemaining() != data.defaultHints)
-            editor.putString(_S(HINTS), _S(Integer.toString(data.defaultHints), HINTS));
+            editor.putInt(HINTS, data.defaultHints);
 
         editor.commit();
     }
 
-    public String getLikeUrl(){
+    public String getLikeUrl() {
         return prefs.getString(FB_URL, null);
     }
 
-    public String getFollowUrl(){
+    public String getFollowUrl() {
         return prefs.getString(TWITTER_URL, null);
     }
 
-    public boolean isLiked(){
+    public boolean isLiked() {
         return getBoolean(FB_LIKED, false, FB_LIKED);
     }
 
-    public boolean isFollowed(){
+    public boolean isFollowed() {
         return getBoolean(TW_FOLLOWED, false, TW_FOLLOWED);
     }
 
-    public void setLiked(){
-        putBoolean(FB_LIKED, true, FB_LIKED);
+    public void setLiked() {
+        putBoolean(FB_LIKED, true);
     }
 
-    public void setFolowed(){
-        putBoolean(TW_FOLLOWED, true, TW_FOLLOWED);
+    public void setFolowed() {
+        putBoolean(TW_FOLLOWED, true);
     }
 
-    public float getMoreGameFreq(){
+    public float getMoreGameFreq() {
         return prefs.getFloat(MORE_GAMES_FREQ, 0);
     }
 
 
-
-
-    private String _S(String s){
-        try{
+    private String _S(String s) {
+        try {
             if (Settings.NO_PREF_ENCRYPT)
                 return s;
             else
                 return CryptHelperAES.encrypt(getKey3(), s);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-    
-    private String deS(String s){
-        try{
-            return CryptHelperAES.decrypt(getKey3(), s);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String _S(String s, String salt){
-        try{
+    private String deS(String s) {
+        try {
+            return CryptHelperAES.decrypt(getKey3(), s);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String _S(String s, String salt) {
+        try {
             if (Settings.NO_PREF_ENCRYPT)
                 return s;
             else
                 return CryptHelperAES.encrypt(salt + getKey3(), s);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String deS(String s, String salt){
-        try{
+    private String deS(String s, String salt) {
+        try {
             if (Settings.NO_PREF_ENCRYPT)
                 return s;
             else
                 return CryptHelperAES.decrypt(salt + getKey3(), s);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private int getInt(String key, int def, String salt){
+    private int getInt(String key, int def, String salt) {
+        if (decryptedAll)
+            return prefs.getInt(key, def);
+
         try {
             return Integer.parseInt(deS(prefs.getString(_S(key), null), salt));
-        }catch (Exception e){
-            return def;
+        } catch (Exception e) {
+            return prefs.getInt(key, def);
         }
     }
 
-    private void putInt(String key, int val, String salt){
+    private void putInt(String key, int val) {
         Editor editor = prefs.edit();
-        editor.putString(_S(key), _S(Integer.toString(val), salt));
+        editor.putString(key, Integer.toString(val));
         editor.commit();
     }
 
-    private boolean getBoolean(String key, boolean def, String salt){
+    private boolean getBoolean(String key, boolean def, String salt) {
+        if (decryptedAll)
+            return prefs.getBoolean(key, def);
+
         try {
             return Boolean.parseBoolean(deS(prefs.getString(_S(key), null), salt));
-        }catch (Exception e){
-            return def;
+        } catch (Exception e) {
+            return prefs.getBoolean(key, def);
         }
     }
 
-    private void putBoolean(String key, boolean val, String salt){
+    private void putBoolean(String key, boolean val) {
         Editor editor = prefs.edit();
-        editor.putString(_S(key), _S(Boolean.toString(val), salt));
+        editor.putString(key, Boolean.toString(val));
         editor.commit();
     }
 
-    public String getKey1(){
+    public String getKey1() {
         if (Key1 == null)
             Key1 = context.getResources().getString(R.string.app_name) + LevelPackTable.MAIL;
         Key11 = Key1;
         return Key1;
     }
 
-    public String getKey3(){
+    public String getKey3() {
         if (Key3 == null)
             Key3 = factory.getDeviceUuid().toString() + LevelPackTable.getHost();
         return Key3;
     }
 
-    public String getKey12(){
+    public String getKey12() {
         String res = Key11;
         Key11 = Key21;
         return Key21 = res;
     }
 
-    public String getKey2(){
+    public String getKey2() {
         if (Key2 == null)
             Key2 = LevelPackTable.getHost() + LevelTable.getMail();
         Key21 = Key2;
@@ -395,7 +402,65 @@ public class UserPreferences {
         this.hintChangedListener = hintChangedListener;
     }
 
-    public interface HintChangedListener{
+    public interface HintChangedListener {
         public void onHintsChanged(int old, int current);
+    }
+
+    void decryptAll() {
+        decryptedAll = prefs.getBoolean(DECRYPTED, false);
+        if (decryptedAll)
+            return;
+
+        Editor editor = prefs.edit();
+
+        if (!getBoolean(INITIIALISED, false, INITIIALISED)){
+            //editor.clear().commit();
+            return;
+        }
+
+        if (areHintsTouched()) {
+            editor.putBoolean(HINTS_TOUCHED, true);
+            editor.remove(_S(HINTS_TOUCHED));
+        }
+
+        editor.putInt(HINTS, getHintsRemaining());
+        editor.remove(_S(HINTS_TOUCHED));
+
+        if (isGInAppInitDone()) {
+            editor.putBoolean(G_IN_APP_INIT_DONE, true);
+            editor.remove(_S(G_IN_APP_INIT_DONE));
+        }
+
+        LevelPack pack;
+        for (int id = 1; id < 12; id++)
+            if (isPackUnlocked(id)) {
+                pack = LevelPackTable.get(id, context);
+                editor.putInt(String.format(LEVEL_UNLOCK, pack.name), getLevelUnlocked(pack));
+                editor.remove(_S(String.format(LEVEL_UNLOCK, pack.name)));
+            }
+
+        if (isAdFree()){
+            editor.putBoolean(ADFREE, true);
+            editor.remove(_S(ADFREE));
+        }
+
+        editor.putBoolean(MUSIC, getMusic());
+        editor.remove(_S(MUSIC));
+
+        editor.putBoolean(SOUND, getSound());
+        editor.remove(_S(SOUND));
+
+        if (isLiked()){
+            editor.putBoolean(FB_LIKED, true);
+            editor.remove(_S(FB_LIKED));
+        }
+
+        if (isFollowed()){
+            editor.putBoolean(TW_FOLLOWED, true);
+            editor.remove(_S(TW_FOLLOWED));
+        }
+
+        editor.putBoolean(DECRYPTED, true);
+        editor.commit();
     }
 }

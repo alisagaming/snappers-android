@@ -40,11 +40,11 @@
     <orderEntry type="library" name="gdx-backend-android" level="project" />
     <orderEntry type="module" module-name="DbSnappers" />
     <orderEntry type="library" name="ADS" level="project" />
-    <orderEntry type="module" module-name="Hockey" />
-    <orderEntry type="library" name="ACRA" level="project" />
     <orderEntry type="module" module-name="TapJoy" />
     <orderEntry type="library" name="Amazon in-app-purchasing-1.0.3" level="project" />
     <orderEntry type="library" name="FlurryAgent" level="project" />
+    <orderEntry type="library" name="ACRA" level="project" />
+    <orderEntry type="module" module-name="Hockey" />
   </component>
 </module>
 

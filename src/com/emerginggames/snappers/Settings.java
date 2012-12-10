@@ -14,7 +14,7 @@ import java.io.IOException;
  * Time: 6:01
  */
 public class Settings {
-    public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE}
+    public static enum CrashReporter {HockeyApp, ACRA, ACRA_BUGSENSE, NONE}
 
     public static boolean IS_AMAZON = false;
 
@@ -28,7 +28,7 @@ public class Settings {
     public static boolean BILLING_SUPPORTED = true;
     public static final String APP_ID = "0e03399851c2ed799503a9019c9630fd";
     public static final String BUGSENSE_API_KEY = "8a555912";
-    public static final CrashReporter CRASH_REPORTER = CrashReporter.ACRA;
+    public static final CrashReporter CRASH_REPORTER = CrashReporter.NONE;
     public static final boolean SEND_EXTENDED_AD_INFO = false;
     public static final String FLURRY_APP_KEY = (IS_AMAZON ? "PPCDBY77K3VJFRP9BSJS" : "8C8AWJ71NNLSZHVN4S44");
 

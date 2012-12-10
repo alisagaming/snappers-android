@@ -19,8 +19,8 @@ import org.acra.annotation.ReportsCrashes;
  * Time: 18:30
  */
 
-@ReportsCrashes(formKey = "dE9Tby0xc2puWlBCXzhJb3lpQWxGTWc6MQ",
-        /*formUri = "http://www.bugsense.com/api/acra?api_key=8a555912",*/
+/*@ReportsCrashes(formKey = "dE9Tby0xc2puWlBCXzhJb3lpQWxGTWc6MQ",
+        //formUri = "http://www.bugsense.com/api/acra?api_key=8a555912",
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text, // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds
         resNotifTickerText = R.string.crash_notif_ticker_text,
@@ -33,6 +33,7 @@ import org.acra.annotation.ReportsCrashes;
         resDialogCommentPrompt = R.string.crash_dialog_comment_prompt, // optional. when defined, adds a user text field input with this text resource as a label
         resDialogOkToast = R.string.crash_dialog_ok_toast // optional. displays a Toast message when the user accepts to send a report.
 )
+*/
 public class SnappersApplication extends Application {
     private boolean isActivityActive;
     private boolean isSwitchingActivity;

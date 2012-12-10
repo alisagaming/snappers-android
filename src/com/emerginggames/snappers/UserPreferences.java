@@ -351,7 +351,7 @@ public class UserPreferences {
 
     private void putInt(String key, int val) {
         Editor editor = prefs.edit();
-        editor.putString(key, Integer.toString(val));
+        editor.putInt(key, val);
         editor.commit();
     }
 
@@ -368,7 +368,7 @@ public class UserPreferences {
 
     private void putBoolean(String key, boolean val) {
         Editor editor = prefs.edit();
-        editor.putString(key, Boolean.toString(val));
+        editor.putBoolean(key, val);
         editor.commit();
     }
 

@@ -416,6 +416,9 @@ public class UserPreferences {
         if (!getBoolean(INITIIALISED, false, INITIIALISED)){
             //editor.clear().commit();
             return;
+        } else {
+            editor.putBoolean(INITIIALISED, true);
+            editor.remove(_S(INITIIALISED));
         }
 
         if (areHintsTouched()) {

@@ -427,7 +427,7 @@ public class UserPreferences {
         }
 
         editor.putInt(HINTS, getHintsRemaining());
-        editor.remove(_S(HINTS_TOUCHED));
+        editor.remove(_S(HINTS));
 
         if (isGInAppInitDone()) {
             editor.putBoolean(G_IN_APP_INIT_DONE, true);

@@ -205,6 +205,9 @@ public class UserPreferences {
 
     private void initialise() {
         decryptAll();
+        if (getLevelUnlocked(1) == 0){
+            prefs.edit().remove(INITIIALISED).remove(G_IN_APP_INIT_DONE).commit();
+        }
         if (getBoolean(INITIIALISED, false, INITIIALISED))
             return;
 

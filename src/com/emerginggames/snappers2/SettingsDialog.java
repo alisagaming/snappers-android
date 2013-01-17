@@ -102,6 +102,9 @@ public class SettingsDialog extends Dialog {
             scaleItem(R.id.iconSound, scale);
             scaleItem(R.id.iconMusic, scale);
         }
+
+        findViewById(R.id.fbLoginRow).setVisibility(View.GONE);
+        findViewById(R.id.fbShareRow).setVisibility(View.GONE);
     }
 
     void setupLoginRow(){
@@ -110,7 +113,7 @@ public class SettingsDialog extends Dialog {
             public void run() {
                 hideLoginProgress();
                 unblock();
-                findViewById(R.id.loginFbBtn).setVisibility(View.VISIBLE);
+                /*findViewById(R.id.loginFbBtn).setVisibility(View.VISIBLE);
                 if (facebookTransport.isLoggedIn()){
                     String userName = prefs.getFacebookUserName();
                     if (userName != null)
@@ -121,7 +124,7 @@ public class SettingsDialog extends Dialog {
                 } else {
                     ((TextView)findViewById(R.id.loginFbText)).setText(R.string.loginToFb);
                     ((OutlinedTextView)findViewById(R.id.loginFbBtn)).setText(R.string.login);
-                }
+                }*/
             }
         });
     }
@@ -169,7 +172,7 @@ public class SettingsDialog extends Dialog {
     }
 
     void showProgress(){
-        int size = findViewById(R.id.loginFbBtn).getHeight();
+        /*int size = findViewById(R.id.loginFbBtn).getHeight();
         if (size == 0)
             size = 30;
 
@@ -185,7 +188,7 @@ public class SettingsDialog extends Dialog {
         rotation.setRepeatCount(Animation.INFINITE);
         bar.startAnimation(rotation);
 
-        findViewById(R.id.loginFbBtn).setVisibility(View.INVISIBLE);
+        findViewById(R.id.loginFbBtn).setVisibility(View.INVISIBLE);*/
     }
 
     void hideLoginProgress(){

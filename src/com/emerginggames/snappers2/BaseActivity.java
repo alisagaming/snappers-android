@@ -164,6 +164,7 @@ public class BaseActivity extends FragmentActivity {
     public void showMessageDialog(String message, int[] lineEnds) {
         if (dlg == null) {
             dlg = new GameDialog(this, Metrics.screenWidth * 95 / 100);
+            dlg.setTypeface(Resources.getFont(getApplicationContext()));
             dlg.addOkButton();
         }
 

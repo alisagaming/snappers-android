@@ -23,7 +23,7 @@ public class FacebookIconLoader extends CachedFile implements CachedFile.CachedF
     long uid;
     Activity activity;
 
-    public FacebookIconLoader(Activity activity,long uid, ImageView view) {
+    public FacebookIconLoader(Activity activity, long uid, ImageView view) {
         super(activity.getApplicationContext());
         this.uid = uid;
         this.view = view;

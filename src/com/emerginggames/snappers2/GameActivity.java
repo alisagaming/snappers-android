@@ -31,6 +31,7 @@ import com.emerginggames.snappers2.model.LevelPack;
 
 public class GameActivity extends AndroidApplication {
     public static final String LEVEL_PARAM_TAG = "Level";
+    public static final String FIRST_LAUNCH_TAG = "first_launch_tag";
 
     RelativeLayout rootLayout;
 
@@ -119,6 +120,8 @@ public class GameActivity extends AndroidApplication {
         facebookTransport = new FacebookTransport(this);
         if (!facebookTransport.isLoggedIn())
             facebookTransport = null;
+
+        initTapjoy();
     }
 
     public void initViews() {
@@ -133,6 +136,11 @@ public class GameActivity extends AndroidApplication {
                 adController = new AdController(GameActivity.this, rootLayout);
             }
         }
+    }
+
+    void initTapjoy(){
+        if (prefs.isTapjoyEnabled() && TapjoyConnect.getTapjoyConnectInstance() == null)
+            TapjoyConnect.requestTapjoyConnect(getApplicationContext(), Settings.getTapJoyAppId(getApplicationContext()), Settings.getTapJoySecretKey(getApplicationContext()));
     }
 
     @Override
@@ -176,7 +184,6 @@ public class GameActivity extends AndroidApplication {
 
         ((SnappersApplication) getApplication()).activityResumed(this, pack.soundtrack);
     }
-
 
 
     @Override
@@ -267,18 +274,36 @@ public class GameActivity extends AndroidApplication {
 
                 GameDialog dialog = new GameDialog(GameActivity.this, Metrics.screenWidth * 95 / 100);
                 dialog.setMessage(Utils.getGiftsMessage(GameActivity.this, sync), Metrics.fontSize);
+                dialog.setTypeface(Resources.getFont(getApplicationContext()));
                 dialog.addOkButton();
                 dialog.show();
             }
         });
     }
 
+    public void onCloseGame() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(FIRST_LAUNCH_TAG)) {
+            Level level = (Level) intent.getSerializableExtra(LEVEL_PARAM_TAG);
+            if (level != null) {
+                Intent newIntent = new Intent(GameActivity.this, SelectLevelActivity.class);
+                newIntent.putExtra(SelectLevelActivity.LEVEL_PACK_TAG, level.pack);
+                newIntent.putExtra(SelectLevelActivity.FIRST_RUN_TAG, true);
+                startActivity(newIntent);
+            }
+        }
+    }
 
     class GameListener implements IAppGameListener {
 
         @Override
         public void showPaused() {
             pauseGame();
+        }
+
+        @Override
+        public void onCloseGame() {
+            GameActivity.this.onCloseGame();
         }
 
         @Override

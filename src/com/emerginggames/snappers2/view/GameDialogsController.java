@@ -7,6 +7,7 @@ import com.emerginggames.snappers2.*;
 import com.emerginggames.snappers2.transport.FacebookTransport;
 import com.emerginggames.snappers2.gdx.Game;
 import com.emerginggames.snappers2.gdx.Resources;
+import com.tapjoy.TapjoyConnect;
 
 /**
  * Created by IntelliJ IDEA.
@@ -112,9 +113,11 @@ public class GameDialogsController {
             dlg.setTwoButtonsARow(true);
             dlg.setItemSpacing(Metrics.screenMargin);
             dlg.setTitle(R.string.free_hints);
-            dlg.addButton(R.drawable.button_invite);
+            //dlg.addButton(R.drawable.button_invite);
+            dlg.addButton(R.drawable.button_follow, !prefs.isFollowed());
             dlg.addButton(R.drawable.button_like, !prefs.isLiked());
-            dlg.addButton(R.drawable.button_promo);
+            //dlg.addButton(R.drawable.button_promo);
+            dlg.addButton(R.drawable.button_tapjoy);
             dlg.addButton(R.drawable.button_rate, !prefs.isRated());
 
             dlg.show();
@@ -196,6 +199,7 @@ public class GameDialogsController {
             }
             newLevelDialog.setLevel(mCurrentLevel);
             newLevelDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            newLevelDialog.setTypeface(Resources.getFont(mActivity.getApplicationContext()));
             newLevelDialog.show();
             newLevelDialog.setBtnClickListener(new GameDialog.OnDialogEventListener() {
                 @Override
@@ -276,6 +280,7 @@ public class GameDialogsController {
                 case R.drawable.button_menu_long:
                     dlg.hide();
                     mActivity.finish();
+                    mActivity.onCloseGame();
                     break;
 
                 case R.drawable.button_usehint_long:
@@ -309,13 +314,28 @@ public class GameDialogsController {
                 case R.drawable.button_like_long:
                 case R.drawable.button_like:
                     dlg.hide();
-                    if (mActivity.hasFacebook()) {
+                    //if (mActivity.hasFacebook()) {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.likeUrl)));
                         mActivity.startActivity(browserIntent);
                         prefs.addHints(Settings.BONUS_FOR_LIKE);
                         prefs.setLiked(true);
-                    } else
-                        showNeedFacebookMessage();
+                    //} else
+                    //    showNeedFacebookMessage();
+                    break;
+
+                case R.drawable.button_tapjoy:
+                    mActivity.wentTapjoy = true;
+                    TapjoyConnect.getTapjoyConnectInstance().showOffers();
+
+                    break;
+
+                case R.drawable.button_follow:
+                    dlg.hide();
+                    Intent browserIntentFollow = new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.followUrl)));
+                    mActivity.startActivity(browserIntentFollow);
+                    prefs.addHints(Settings.BONUS_FOR_FOLLOW);
+                    prefs.setFollowed(true);
+
                     break;
 
                 case R.drawable.button_rate_long:
@@ -340,6 +360,8 @@ public class GameDialogsController {
                     } else
                         showNeedFacebookMessage();
                     break;
+
+
             }
         }
 

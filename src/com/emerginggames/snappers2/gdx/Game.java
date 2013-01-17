@@ -244,6 +244,7 @@ public class Game implements ApplicationListener{
                 break;
             case GameOverStage:
                 Gdx.app.exit();
+                mGameListener.onCloseGame();
                 break;
             case HelpStage:
                 setStage(Stages.GameOverStage);

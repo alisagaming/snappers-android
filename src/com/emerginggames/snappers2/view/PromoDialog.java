@@ -145,6 +145,7 @@ public class PromoDialog extends Dialog {
         if (messageDialog == null){
             messageDialog = new GameDialog(getContext(), width);
             messageDialog.addOkButton();
+            messageDialog.setTypeface(Resources.getFont(getContext()));
         }
 
         messageDialog.setMessage(message, Metrics.fontSize);

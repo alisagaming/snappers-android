@@ -22,6 +22,7 @@ public class Settings {
 
     public static final int BONUS_FOR_RATE = 1;
     public static final int BONUS_FOR_LIKE = 1;
+    public static final int BONUS_FOR_FOLLOW = 1;
     public static final int BONUS_FOR_SHARE = 1;
     public static final int BONUS_FOR_INVITE = 1;
 
@@ -63,7 +64,8 @@ public class Settings {
 
 
     public static String getAdMobKey(Context context) {
-        UserPreferences prefs = UserPreferences.getInstance(context);
+        return  "df03" + "8f9a" + "c585" + "4e20";
+        //UserPreferences prefs = UserPreferences.getInstance(context);
 
 /*        try{
             prefs.getKey1();
@@ -76,7 +78,7 @@ public class Settings {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }*/
-        String key = prefs.getKey1() + prefs.getKey2();
+        /*String key = prefs.getKey1() + prefs.getKey2();
         try{
             String[] chunks = mediationKey.split("O");
             StringBuilder b = new StringBuilder();
@@ -88,12 +90,14 @@ public class Settings {
 
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
 
     public static String getAdwhirlKey(Context context) {
-        UserPreferences prefs = UserPreferences.getInstance(context);
+
+        return  "1543619" + "c1de44e80" + "af13f86" + "1b204b778";
+        //UserPreferences prefs = UserPreferences.getInstance(context);
 
 /*        try{
             prefs.getKey1();
@@ -109,7 +113,7 @@ public class Settings {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }*/
-        String key = prefs.getKey1() + prefs.getKey2();
+        /*String key = prefs.getKey1() + prefs.getKey2();
         try{
             String[] chunks = adwhirlKey.split("H");
             StringBuilder b = new StringBuilder();
@@ -121,7 +125,7 @@ public class Settings {
 
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public static String getGitCommitString(Context context){
@@ -136,7 +140,8 @@ public class Settings {
     //App Secret Key ? GvTnbQgQ1P86bB5Xgr4L
 
     public static String getTapJoyAppId(Context context){
-        UserPreferences prefs = UserPreferences.getInstance(context);
+        return  "6ac99625-" + "6d02-4326" + "-becd-213a233c511a";
+        //UserPreferences prefs = UserPreferences.getInstance(context);
 
 /*        try{
             prefs.getKey1();
@@ -150,7 +155,7 @@ public class Settings {
             throw new RuntimeException(e);
         }*/
 
-        String key = prefs.getKey1() + prefs.getKey2();
+        /*String key = prefs.getKey1() + prefs.getKey2();
         try{
             String[] chunks = TJKey.split("J");
             StringBuilder b = new StringBuilder();
@@ -166,14 +171,12 @@ public class Settings {
 
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-
-
-        //return "437aa914-31c2-4eb2-a061-9badc6d52fb8";
+        }*/
     }
 
     public static String getTapJoySecretKey(Context context){
-        UserPreferences prefs = UserPreferences.getInstance(context);
+        return "GvTnbQgQ1P86bB5Xgr4L";
+        //UserPreferences prefs = UserPreferences.getInstance(context);
 
 
         //GvTn bQgQ 1P86 bB5X gr4L
@@ -187,7 +190,7 @@ public class Settings {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }*/
-        String key = prefs.getKey1();
+        /*String key = prefs.getKey1();
         try{
             String[] chunks = TJSecretKey.split("K");
             StringBuilder b = new StringBuilder();
@@ -199,7 +202,7 @@ public class Settings {
 
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }*/
         //return "PfVKO1NNtOicS512X2jA";
     }
 

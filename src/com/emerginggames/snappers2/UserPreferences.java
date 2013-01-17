@@ -34,6 +34,7 @@ public class UserPreferences extends UserPreferencesBase {
     private static final String G_IN_APP_INIT_DONE = "IN_APP_INIT_DONE";
     private static final String LAST_USED_DAILY_BONUS = "LAST_USED_DAILY_BONUS";
     private static final String USER_LIKED = "LIKED";
+    private static final String USER_FOLLOWED = "followed";
     private static final String USER_RATED = "RATED";
     private static final String LAST_RATE_RECOMMENDED = "LAST_RATE_RECOMMENDED";
     private static final String LAST_LIKE_OR_RATE_RECOMMENDED = "LAST_LIKE_OR_RATE_RECOMMENDED";
@@ -74,6 +75,10 @@ public class UserPreferences extends UserPreferencesBase {
             instance.context = context;
     }
 
+    public boolean isFirstLAunch(){
+        return getLevelUnlocked(1) == 1 && !isPackUnlocked(2) && !isPackUnlocked(3) && !isPackUnlocked(4) && !isPackUnlocked(5);
+    }
+
     public void setLastUsedDailyBonus(long time) {
         putLong(LAST_USED_DAILY_BONUS, time);
     }
@@ -107,7 +112,7 @@ public class UserPreferences extends UserPreferencesBase {
     }
 
     public int getHintsRemaining() {
-        return getInt(fbUID == 0 ? HINTS : "!" + HINTS, 0, HINTS);
+        return getInt(fbUID == 0 ? HINTS : "!" + HINTS, 0);
     }
 
     public void setGInAppInitDone(boolean done) {
@@ -131,7 +136,7 @@ public class UserPreferences extends UserPreferencesBase {
     }
 
     public void setHints(int amount) {
-        putInt(fbUID == 0 ? HINTS : "!" + HINTS, amount, HINTS);
+        putInt(fbUID == 0 ? HINTS : "!" + HINTS, amount);
         if (!areHintsTouched())
             touchHints();
     }
@@ -150,9 +155,9 @@ public class UserPreferences extends UserPreferencesBase {
         if (Settings.ENABLE_ALL_LEVELS)
             return 1000;
         if (pack.id == 1 || (Settings.IS_PREMIUM && pack.title.equals("Extra")))
-            return Math.max(1, getInt(getPackKey(pack.name), 0, pack.name));
+            return Math.max(1, getInt(getPackKey(pack.name), 0));
 
-        return getInt(getPackKey(pack.name), 0, pack.name);
+        return getInt(getPackKey(pack.name), 0);
     }
 
     public int getLevelUnlocked(int packId) {
@@ -171,7 +176,7 @@ public class UserPreferences extends UserPreferencesBase {
     }
 
     public void unlockLevelPack(LevelPack pack) {
-        putInt(getPackKey(pack.name), 1, pack.name);
+        putInt(getPackKey(pack.name), 1);
     }
 
     public void lockLevelPack(LevelPack pack) {
@@ -206,7 +211,7 @@ public class UserPreferences extends UserPreferencesBase {
     }
 
     public void unlockLevel(String name, int level) {
-        putInt(getPackKey(name), level, name);
+        putInt(getPackKey(name), level);
     }
 
     public boolean isLevelSolved(Level level) {
@@ -225,7 +230,7 @@ public class UserPreferences extends UserPreferencesBase {
         if (getBoolean(INITIIALISED, false))
             return;
 
-        putInt(fbUID == 0 ? HINTS : "!" + HINTS, INITIAL_HINTS, HINTS);
+        putInt(fbUID == 0 ? HINTS : "!" + HINTS, INITIAL_HINTS);
         putBoolean(INITIIALISED, true);
 
         ACRA.getACRASharedPreferences().edit().putBoolean(ACRA.PREF_ENABLE_DEVICE_ID, false).commit();
@@ -264,6 +269,15 @@ public class UserPreferences extends UserPreferencesBase {
     public void setLiked(boolean liked) {
         putBoolean(USER_LIKED, liked);
     }
+
+    public boolean isFollowed() {
+        return getBoolean(USER_FOLLOWED, false);
+    }
+
+    public void setFollowed(boolean liked) {
+        putBoolean(USER_FOLLOWED, liked);
+    }
+
 
     public boolean isRated() {
         return getBoolean(USER_RATED, false);

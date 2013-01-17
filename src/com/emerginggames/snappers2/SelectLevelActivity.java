@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import com.emerginggames.snappers2.data.LevelPackTable;
 import com.emrg.view.FixedRatioPager;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.emerginggames.snappers2.data.LevelTable;
@@ -21,6 +22,8 @@ import com.emrg.view.ImageView;
  */
 public class SelectLevelActivity extends PaginatedSelectorActivity implements IOnItemSelectedListener {
     public static final String LEVEL_PACK_TAG = "Level pack";
+    public static final String FIRST_RUN_TAG = "first run";
+
     LevelPack pack;
     private LevelPageAdapter adapter;
     AsyncTask<Integer, Integer, Integer> preloadTask;
@@ -30,8 +33,9 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
 
         Intent intent = getIntent();
         if (!intent.hasExtra(LEVEL_PACK_TAG))
-            finish();
-        pack = (LevelPack) intent.getSerializableExtra(LEVEL_PACK_TAG);
+            pack = LevelPackTable.get(1, getApplicationContext());
+        else
+            pack = (LevelPack) intent.getSerializableExtra(LEVEL_PACK_TAG);
         pack.levelCount = LevelTable.countLevels(this, pack.id);
 
         adapter = new LevelPageAdapter(getSupportFragmentManager(), pack, this);
@@ -120,5 +124,20 @@ public class SelectLevelActivity extends PaginatedSelectorActivity implements IO
         };
 
         preloadTask.execute();
+    }
+
+    @Override
+    public void onBackButtonClick(View v) {
+        super.onBackButtonClick(v);
+        if (getIntent().hasExtra(FIRST_RUN_TAG))
+            startActivity(new Intent(this, SelectPackActivity.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (getIntent().hasExtra(FIRST_RUN_TAG)){
+            startActivity(new Intent(this, SelectPackActivity.class));
+        }
     }
 }

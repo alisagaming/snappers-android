@@ -24,4 +24,5 @@ public interface IAppGameListener {
     public void updateLevelInfo(Level level);
     public void updateTapsLeft(int n);
     public void onStageChanged(Game.Stages newStage, Game.Stages oldStage);
+    public void onCloseGame();
 }

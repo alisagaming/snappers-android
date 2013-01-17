@@ -1,6 +1,7 @@
 package com.emerginggames.snappers2;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +13,11 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import android.widget.RelativeLayout;
+import com.emerginggames.snappers2.data.LevelPackTable;
+import com.emerginggames.snappers2.data.LevelTable;
 import com.emerginggames.snappers2.gdx.Resources;
+import com.emerginggames.snappers2.model.Level;
+import com.emerginggames.snappers2.model.LevelPack;
 import com.emerginggames.snappers2.transport.FacebookTransport;
 import com.emerginggames.snappers2.view.GameDialog;
 import com.emrg.view.OutlinedTextView;
@@ -54,10 +59,12 @@ public class MainScreenActivity extends Activity {
         lp.width = Math.round(scrWidth * 0.45f);
         lp.rightMargin = scrWidth / 20;
 
+        findViewById(R.id.playButtonOffline).setVisibility(View.GONE);
         lp = (RelativeLayout.LayoutParams) findViewById(R.id.playButtonOffline).getLayoutParams();
         lp.width = (int) (scrWidth * 0.35f);
         lp.rightMargin = scrWidth / 20;
         lp.topMargin = lp.bottomMargin = scrHeight / 20;
+        findViewById(R.id.playButtonOffline).setVisibility(View.INVISIBLE);
 
         lp = (RelativeLayout.LayoutParams) findViewById(R.id.settingsBtn).getLayoutParams();
         lp.width = lp.height = scrWidth / 5;
@@ -92,7 +99,16 @@ public class MainScreenActivity extends Activity {
 
     public void onPlayButtonClick(View v) {
         //prefs.addHints(680);
-        startActivity(new Intent(this, FacebookActivity.class));
+        //startActivity(new Intent(this, FacebookActivity.class));
+        if (UserPreferences.getInstance(getApplicationContext()).isFirstLAunch()){
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(GameActivity.FIRST_LAUNCH_TAG, true);
+            LevelPack levelPack = LevelPackTable.get(1, getApplicationContext());
+            Level level = LevelTable.getLevel(getApplicationContext(), 1, levelPack);
+            intent.putExtra(GameActivity.LEVEL_PARAM_TAG, level);
+            startActivity(intent);
+
+        }else startActivity(new Intent(this, SelectPackActivity.class));
     }
 
     public void onDailyBonus(View v) {
@@ -130,8 +146,8 @@ public class MainScreenActivity extends Activity {
     public void onSettingsDialogClosed() {
         findViewById(R.id.settingsBtn).setVisibility(View.VISIBLE);
 
-        FacebookTransport facebookTransport = new FacebookTransport(this);
-        findViewById(R.id.playButtonOffline).setVisibility(facebookTransport.isLoggedIn() ? View.INVISIBLE: View.VISIBLE);
+        //FacebookTransport facebookTransport = new FacebookTransport(this);
+        //findViewById(R.id.playButtonOffline).setVisibility(facebookTransport.isLoggedIn() ? View.INVISIBLE: View.VISIBLE);
     }
 
     public void onPlayButtonOfflineClick(View v) {
@@ -154,7 +170,7 @@ public class MainScreenActivity extends Activity {
 
         FacebookTransport facebookTransport = new FacebookTransport(this);
 
-        findViewById(R.id.playButtonOffline).setVisibility(facebookTransport.isLoggedIn() ? View.INVISIBLE: View.VISIBLE);
+        //findViewById(R.id.playButtonOffline).setVisibility(facebookTransport.isLoggedIn() ? View.INVISIBLE: View.VISIBLE);
     }
 
 

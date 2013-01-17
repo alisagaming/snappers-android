@@ -22,7 +22,7 @@
                 and:background="@drawable/settings_wnd_m" and:layout_below="@+id/titleCont" and:orientation="vertical">
 
             <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
-                          and:background="@color/row_dark">
+                          and:background="@color/row_dark" and:id="@+id/fbLoginRow">
                 <com.emrg.view.ImageView and:id="@+id/iconUser"
                       and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
                       and:src="@drawable/icon_user" and:scaleType="fitCenter" and:adjustViewBounds="true"/>
@@ -44,7 +44,7 @@
             </LinearLayout>
 
             <LinearLayout and:layout_width="fill_parent" and:layout_height="wrap_content"  and:orientation="horizontal"
-                          and:background="@color/row_light">
+                          and:background="@color/row_light" and:id="@+id/fbShareRow">
                 <com.emrg.view.ImageView and:id="@+id/iconFb"
                           and:layout_width="38dp" and:layout_height="38dp" and:layout_gravity="center_vertical"
                           and:src="@drawable/icon_fb" and:scaleType="fitCenter" and:adjustViewBounds="true"/>

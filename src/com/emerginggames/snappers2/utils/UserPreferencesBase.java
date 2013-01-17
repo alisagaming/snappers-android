@@ -19,30 +19,30 @@ public class UserPreferencesBase {
     protected Context context;
     protected SharedPreferences prefs;
     protected SharedPreferences.Editor editor;
-    DeviceUuidFactory factory;
+    /*DeviceUuidFactory factory;
     public static String Key1;
     public static String Key11;
     public static String Key21;
     public static String Key2;
     public static String Key3;
     public static String Key4;
-    public static String Key5;
+    public static String Key5;*/
 
     public UserPreferencesBase(Context context) {
         this.context = context;
         prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         if (LevelPackTable.getName().equals("vitaliy.suprun"))
             if (LevelPackTable.getHost().equals("gmail.com")){
-                if (Key1 == null)
+                /*if (Key1 == null)
                     factory = new DeviceUuidFactory(context);
                 getKey1();
                 getKey2();
-                getKey3();
+                getKey3();*/
             }
 
     }
 
-    private String _K(String key){
+    /*private String _K(String key){
         try{
             if (Settings.NO_PREF_ENCRYPT)
                 return key;
@@ -73,37 +73,42 @@ public class UserPreferencesBase {
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    protected int getInt(String key, int def, String salt){
-        try {
+    protected int getInt(String key, int def/*, String salt*/){
+        return prefs.getInt(key, def);
+        /*try {
             return Integer.parseInt(getString(key, salt));
         }catch (Exception e){
             return def;
-        }
+        }*/
     }
 
-    protected void putInt(String key, int val, String salt){
-        putString(key, Integer.toString(val), salt);
+    protected void putInt(String key, int val){
+        prefs.edit().putInt(key, val).commit();
+        //putString(key, Integer.toString(val), salt);
     }
 
     protected long getLong(String key, int def){
-        try {
+        return prefs.getLong(key, def);
+        /*try {
             return Long.parseLong(getString(key));
         }catch (Exception e){
             return def;
-        }
+        }*/
     }
 
     protected void putLong(String key, long val){
-        putString(key, Long.toString(val));
+        prefs.edit().putLong(key, val).commit();
+        //putString(key, Long.toString(val));
     }
 
     protected void putString(String key, String val){
-        putString(key, val, key);
+        prefs.edit().putString(key, val).commit();
+        //putString(key, val, key);
     }
 
-    protected void putString(String key, String val, String salt){
+    /*protected void putString(String key, String val, String salt){
         if (editor == null){
             SharedPreferences.Editor edt = prefs.edit();
             edt.putString(_K(key), _S(val, salt));
@@ -119,36 +124,39 @@ public class UserPreferencesBase {
         }catch (Exception e){
             return null;
         }
-    }
+    }*/
 
     protected String getString(String key){
-        return getString(key, key);
+        return prefs.getString(key, null);
+        //return getString(key, key);
     }
 
     protected boolean getBoolean(String key, boolean def){
-        try {
+        return prefs.getBoolean(key, def);
+        /*try {
             String val = getString(key);
             return val == null ? def : Boolean.parseBoolean(val);
         }catch (Exception e){
             return def;
-        }
+        }*/
     }
 
     protected void putBoolean(String key, boolean val){
-        putString(key, Boolean.toString(val));
+        prefs.edit().putBoolean(key, val).commit();
     }
 
     protected void remove(String key){
-        if (editor == null){
+        prefs.edit().remove(key).commit();
+        /*if (editor == null){
             SharedPreferences.Editor edt = prefs.edit();
             edt.remove(_K(key));
             edt.commit();
         }
         else
-            editor.remove(_K(key));
+            editor.remove(_K(key));*/
     }
 
-    public String getKey1(){
+/*    public String getKey1(){
         if (Key1 == null)
             Key1 = context.getString(R.string.app_name) + LevelPackTable.MAIL;
         Key11 = Key1;
@@ -172,7 +180,7 @@ public class UserPreferencesBase {
             Key2 = LevelPackTable.getHost() + LevelTable.getMail();
         Key21 = Key2;
         return Key2;
-    }
+    }*/
 
 
 }

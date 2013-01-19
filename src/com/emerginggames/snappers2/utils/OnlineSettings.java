@@ -4,7 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import com.emerginggames.snappers2.Settings;
 import org.acra.ErrorReporter;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -23,9 +30,11 @@ import java.net.URLConnection;
  * Time: 13:49
  */
 public class OnlineSettings implements Runnable {
-
+    static OnlineSettings instance;
     private static final int RETRY_INTERVAL = 5 * 60 * 1000;
-    public static final String SETTINGS_URL = "http://s3.amazonaws.com/snappersandroid/default.xml";
+    public static final String SETTINGS_URL_GOOGLE = "https://s3.amazonaws.com/emerginggames/snappers-googleplay.json";
+    public static final String SETTINGS_URL_AMAZON = "https://s3.amazonaws.com/emerginggames/snappers-amazon.json";
+
     Context mContext;
     HandlerThread thread;
     Looper looper;
@@ -40,18 +49,21 @@ public class OnlineSettings implements Runnable {
     }
 
     public static void update(Context context){
-        OnlineSettings instance = new OnlineSettings(context);
+        if (instance == null)
+            instance = new OnlineSettings(context);
         instance.handler.post(instance);
     }
 
     @Override
     public void run() {
-        String locale = mContext.getResources().getConfiguration().locale.getCountry();
+        //String locale = mContext.getResources().getConfiguration().locale.getCountry();
         try{
-            getSettingsFromStream(downloadSettings(), locale).save(UserPreferences.getInstance(mContext));
+            SettingsData data = new SettingsData(downloadSettings());
+            UserPreferences.getInstance(mContext).saveSettings(data);
             thread.quit();
+            instance = null;
             return;
-        }catch (XmlPullParserException e){
+        }catch (JSONException e){
             ErrorReporter.getInstance().handleSilentException(e);
         }
         catch (NullPointerException e){
@@ -60,72 +72,37 @@ public class OnlineSettings implements Runnable {
         handler.postDelayed(this, RETRY_INTERVAL);
     }
 
-    InputStream downloadSettings() throws IOException {
-        URL url = new URL(SETTINGS_URL);
-        URLConnection connection = url.openConnection();
-        connection.connect();
-        return new BufferedInputStream(url.openStream());
+    JSONObject downloadSettings() throws IOException, JSONException {
+        //HttpGet get = new HttpGet(Settings.IS_AMAZON ? SETTINGS_URL_AMAZON : SETTINGS_URL_GOOGLE);
+        HttpGet get = new HttpGet(SETTINGS_URL_GOOGLE);
+        HttpClient client = new DefaultHttpClient(get.getParams());
+        return new JSONObject(client.execute(get, new BasicResponseHandler()));
     }
 
-    CountrySettings getSettingsFromStream(InputStream stream, String locale) throws XmlPullParserException, IOException {
-        CountrySettings defaultSettings = null, settings = null;
-        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-        factory.setNamespaceAware(true);
-        XmlPullParser xpp = factory.newPullParser();
-        xpp.setInput(stream, "UTF-8");
+    public static class SettingsData {
+        public boolean tapJoy;
+        public boolean inGameAds;
+        public int defaultHints;
+        public int latestVersion;
+        public float moreGamesFrequency;
+        public String twitterUrl;
+        public String facebookUrl;
 
-        int eventType = xpp.getEventType();
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            switch (eventType){
-                case XmlPullParser.START_DOCUMENT:
-                    break;
-                case XmlPullParser.START_TAG:
-                    if (xpp.getName().equalsIgnoreCase("setting")){
-                        settings = CountrySettings.parse(xpp);
-                        if (settings.locale.equalsIgnoreCase(locale))
-                            return settings;
-                        if (settings.locale.equalsIgnoreCase("default"))
-                            defaultSettings = settings;
-                    }
-                    break;
-                case XmlPullParser.END_TAG:
-                    break;
-                case XmlPullParser.TEXT:
-                    break;
-            }
-            eventType = xpp.next();
-        }
-        return defaultSettings;
-    }
-
-    private static class CountrySettings{
-        String locale;
-        boolean tapJoy;
-        boolean inGameAds;
-        int defaultHints;
-
-        public static CountrySettings parse(XmlPullParser xpp){
-            CountrySettings s = new CountrySettings();
-
-            for (int i=0; i< xpp.getAttributeCount(); i++){
-                if (xpp.getAttributeName(i).equalsIgnoreCase("name"))
-                    s.locale = xpp.getAttributeValue(i);
-                else if (xpp.getAttributeName(i).equalsIgnoreCase("tapjoy"))
-                    s.tapJoy = xpp.getAttributeValue(i).equalsIgnoreCase("yes");
-                else if (xpp.getAttributeName(i).equalsIgnoreCase("ingameads"))
-                    s.inGameAds = xpp.getAttributeValue(i).equalsIgnoreCase("yes");
-                else if (xpp.getAttributeName(i).equalsIgnoreCase("hints"))
-                    s.defaultHints = Integer.parseInt(xpp.getAttributeValue(i));
-            }
-
-            return s;
-        }
-
-        public void save(UserPreferences prefs){
-            prefs.setTapjoyEnabled(tapJoy);
-            prefs.setIngameAds(inGameAds);
-            if (!prefs.areHintsTouched())
-                prefs.setHints(defaultHints);
+        public SettingsData(JSONObject json) throws JSONException {
+            if (json.has("latest_version"))
+                latestVersion = json.getInt("latest_version");
+            if (json.has("in_game_ads"))
+                inGameAds = json.getBoolean("in_game_ads");
+            if (json.has("hints"))
+                defaultHints = json.getInt("hints");
+            if (json.has("tapjoy"))
+                tapJoy = json.getBoolean("tapjoy");
+            if (json.has("more_games_frequency"))
+                moreGamesFrequency = (float)json.getDouble("more_games_frequency");
+            if (json.has("twitter"))
+                twitterUrl = json.getString("twitter");
+            if (json.has("facebook"))
+                facebookUrl = json.getString("facebook");
         }
     }
 }

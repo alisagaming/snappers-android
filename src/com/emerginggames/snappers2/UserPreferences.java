@@ -5,6 +5,7 @@ import android.content.SharedPreferences.Editor;
 import com.emerginggames.snappers2.data.FriendTable;
 import com.emerginggames.snappers2.model.FbUserInfo;
 import com.emerginggames.snappers2.model.SyncData;
+import com.emerginggames.snappers2.utils.OnlineSettings;
 import com.emerginggames.snappers2.utils.UserPreferencesBase;
 import org.acra.ACRA;
 import com.emerginggames.snappers2.data.LevelPackTable;
@@ -45,6 +46,11 @@ public class UserPreferences extends UserPreferencesBase {
     private static final String FB_UID = "fb_uid_";
     private static final String HAD_FB_SYNC = "had fb sync";
     private static final String SHARE_TO_FB = "shareToFb";
+    private static final String LATEST_VERSION = "latestVersion";
+    private static final String MORE_GAMES_FREQ = "moreGamesFreq";
+    private static final String FB_URL = "fbUrl";
+    private static final String TWITTER_URL = "twUrl";
+
 
 
     private static final int INITIAL_HINTS = Settings.DEBUG ? 10 : 2;
@@ -457,6 +463,27 @@ public class UserPreferences extends UserPreferencesBase {
 
     public interface HintChangedListener {
         public void onHintsChanged(int old, int current);
+    }
+
+    public void saveSettings(OnlineSettings.SettingsData data) {
+        Editor editor = prefs.edit();
+        if (prefs.getBoolean(TAPJOY_ENABLED, false) != data.tapJoy)
+            editor.putBoolean(TAPJOY_ENABLED, data.tapJoy);
+        if (prefs.getBoolean(INGAMEADS, false) != data.inGameAds)
+            editor.putBoolean(INGAMEADS, data.inGameAds);
+        if (prefs.getInt(LATEST_VERSION, 0) != data.latestVersion)
+            editor.putInt(LATEST_VERSION, data.latestVersion);
+        if (prefs.getFloat(MORE_GAMES_FREQ, 0) != data.moreGamesFrequency)
+            editor.putFloat(MORE_GAMES_FREQ, data.moreGamesFrequency);
+        if (!prefs.getString(FB_URL, "").equals(data.facebookUrl))
+            editor.putString(FB_URL, data.facebookUrl);
+        if (!prefs.getString(TWITTER_URL, "").equals(data.twitterUrl))
+            editor.putString(TWITTER_URL, data.twitterUrl);
+
+        if (!areHintsTouched() && getHintsRemaining() != data.defaultHints)
+            editor.putInt(HINTS, data.defaultHints);
+
+        editor.commit();
     }
 
 }

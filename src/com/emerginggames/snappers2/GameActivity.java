@@ -3,7 +3,6 @@ package com.emerginggames.snappers2;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -34,6 +33,9 @@ public class GameActivity extends AndroidApplication {
     public static final String LEVEL_PARAM_TAG = "Level";
     public static final String FIRST_LAUNCH_TAG = "first_launch_tag";
 
+    private static final String CHARTBOOST_CACHE1 = "cb1";
+    private static final String CHARTBOOST_CACHE2 = "cb2";
+
     RelativeLayout rootLayout;
 
     public boolean isFinished = false;
@@ -57,6 +59,7 @@ public class GameActivity extends AndroidApplication {
     Level startLevel;
     FacebookTransport facebookTransport;
     Chartboost mChartBoost;
+    String mCurrentCbCache;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +131,7 @@ public class GameActivity extends AndroidApplication {
         mChartBoost = Chartboost.sharedChartboost();
         mChartBoost.onCreate(this, Settings.CB_APP_ID, Settings.CB_SIGNATURE, null);
         mChartBoost.startSession();
+        mChartBoost.cacheInterstitial(mCurrentCbCache = CHARTBOOST_CACHE1);
     }
 
     public void initViews() {
@@ -395,8 +399,10 @@ public class GameActivity extends AndroidApplication {
             else if (canRate)
                 gameDialogsController.showRateDialog();
 
-            if (!displayedSomething && Math.random() < prefs.getChartboostChance()){
+            if (!displayedSomething && mChartBoost.hasCachedInterstitial(mCurrentCbCache)/*&& Math.random() < prefs.getChartboostChance()*/){
                 mChartBoost.showInterstitial();
+                mCurrentCbCache = mCurrentCbCache == CHARTBOOST_CACHE1 ? CHARTBOOST_CACHE2 : CHARTBOOST_CACHE1;
+                mChartBoost.cacheInterstitial(mCurrentCbCache);
                 displayedSomething = true;
             }
         }

@@ -9,8 +9,13 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
-    <!-- for updates by HockeyApp, for TapJoy -->
+    <!-- for updates by HockeyApp, for TapJoy, ChartBoost -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- for updates by ChartBoost -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
 
     <!-- for ACRA, TODO: remove on production -->
     <!--<uses-permission android:name="android.permission.READ_LOGS"/>-->

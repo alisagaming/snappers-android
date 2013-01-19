@@ -32,8 +32,8 @@ import java.net.URLConnection;
 public class OnlineSettings implements Runnable {
     static OnlineSettings instance;
     private static final int RETRY_INTERVAL = 5 * 60 * 1000;
-    public static final String SETTINGS_URL_GOOGLE = "https://s3.amazonaws.com/emerginggames/snappers-googleplay.json";
-    public static final String SETTINGS_URL_AMAZON = "https://s3.amazonaws.com/emerginggames/snappers-amazon.json";
+    public static final String SETTINGS_URL_GOOGLE = "https://s3.amazonaws.com/emerginggames/bestpuzzlegame-googleplay.json";
+    public static final String SETTINGS_URL_AMAZON = "https://s3.amazonaws.com/emerginggames/bestpuzzlegame-amazon.json";
 
     Context mContext;
     HandlerThread thread;
@@ -73,8 +73,7 @@ public class OnlineSettings implements Runnable {
     }
 
     JSONObject downloadSettings() throws IOException, JSONException {
-        //HttpGet get = new HttpGet(Settings.IS_AMAZON ? SETTINGS_URL_AMAZON : SETTINGS_URL_GOOGLE);
-        HttpGet get = new HttpGet(SETTINGS_URL_GOOGLE);
+        HttpGet get = new HttpGet(Settings.IS_AMAZON ? SETTINGS_URL_AMAZON : SETTINGS_URL_GOOGLE);
         HttpClient client = new DefaultHttpClient(get.getParams());
         return new JSONObject(client.execute(get, new BasicResponseHandler()));
     }
@@ -87,6 +86,7 @@ public class OnlineSettings implements Runnable {
         public float moreGamesFrequency;
         public String twitterUrl;
         public String facebookUrl;
+        public float interrestialFreq;
 
         public SettingsData(JSONObject json) throws JSONException {
             if (json.has("latest_version"))
@@ -103,6 +103,8 @@ public class OnlineSettings implements Runnable {
                 twitterUrl = json.getString("twitter");
             if (json.has("facebook"))
                 facebookUrl = json.getString("facebook");
+            if (json.has("interstitial_frequency"))
+                interrestialFreq = (float)json.getDouble("interstitial_frequency");
         }
     }
 }

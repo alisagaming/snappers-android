@@ -50,6 +50,7 @@ public class UserPreferences extends UserPreferencesBase {
     private static final String MORE_GAMES_FREQ = "moreGamesFreq";
     private static final String FB_URL = "fbUrl";
     private static final String TWITTER_URL = "twUrl";
+    private static final String CHARTBOOST_CHANCE = "cbChance";
 
 
 
@@ -398,6 +399,14 @@ public class UserPreferences extends UserPreferencesBase {
             editor.putBoolean(HAD_FB_SYNC, true);
     }
 
+    public float getChartboostChance(){
+        return prefs.getFloat(CHARTBOOST_CHANCE, 0.1f);
+    }
+
+    public void setChartboostChance(float chance){
+        prefs.edit().putFloat(CHARTBOOST_CHANCE, chance).commit();
+    }
+
     public SyncData getSyncData() {
         long tmpUid = 0;
         if (!hadFbSync()) {
@@ -479,6 +488,8 @@ public class UserPreferences extends UserPreferencesBase {
             editor.putString(FB_URL, data.facebookUrl);
         if (!prefs.getString(TWITTER_URL, "").equals(data.twitterUrl))
             editor.putString(TWITTER_URL, data.twitterUrl);
+
+        editor.putFloat(CHARTBOOST_CHANCE, data.interrestialFreq);
 
         if (!areHintsTouched() && getHintsRemaining() != data.defaultHints)
             editor.putInt(HINTS, data.defaultHints);

@@ -12,6 +12,7 @@ import android.view.*;
 import android.widget.*;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.chartboost.sdk.Chartboost;
 import com.emerginggames.snappers2.gdx.Game;
 import com.emerginggames.snappers2.gdx.IAppGameListener;
 import com.emerginggames.snappers2.gdx.Resources;
@@ -55,6 +56,7 @@ public class GameActivity extends AndroidApplication {
     View helpView;
     Level startLevel;
     FacebookTransport facebookTransport;
+    Chartboost mChartBoost;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +124,10 @@ public class GameActivity extends AndroidApplication {
             facebookTransport = null;
 
         initTapjoy();
+
+        mChartBoost = Chartboost.sharedChartboost();
+        mChartBoost.onCreate(this, Settings.CB_APP_ID, Settings.CB_SIGNATURE, null);
+        mChartBoost.startSession();
     }
 
     public void initViews() {
@@ -147,6 +153,18 @@ public class GameActivity extends AndroidApplication {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(LEVEL_PARAM_TAG, game == null || !game.initDone ? startLevel : game.getLevel());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mChartBoost.onStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mChartBoost.onStop(this);
     }
 
     @Override
@@ -188,6 +206,9 @@ public class GameActivity extends AndroidApplication {
 
     @Override
     public void onBackPressed() {
+        if (mChartBoost.onBackPressed())
+            return;
+
         if (game.initDone)
             game.backButtonPressed();
     }
@@ -320,6 +341,7 @@ public class GameActivity extends AndroidApplication {
         @Override
         public void levelSolved(Level level, final int score) {
             boolean shared = false;
+            boolean displayedSomething = false;
             prefs.unlockNextLevel(level);
             topButtons.showGameWonMenu();
             //if (adController != null)
@@ -342,6 +364,7 @@ public class GameActivity extends AndroidApplication {
                     gameDialogsController.showShareDialog();
                     shared = true;
                 }
+                displayedSomething = true;
             }
             if (helpView != null) {
                 rootLayout.removeView(helpView);
@@ -361,6 +384,8 @@ public class GameActivity extends AndroidApplication {
                     && (level.number % Settings.LEVEL_TO_RECOMMEND == 0);
             //&& (level.pack.id > 1 || level.number > 5);
 
+            displayedSomething |= (canLike | canRate);
+
             if (canLike && canRate)
                 if (Math.random() < 0.5)
                     gameDialogsController.showLikeDialog();
@@ -370,6 +395,10 @@ public class GameActivity extends AndroidApplication {
             else if (canRate)
                 gameDialogsController.showRateDialog();
 
+            if (!displayedSomething && Math.random() < prefs.getChartboostChance()){
+                mChartBoost.showInterstitial();
+                displayedSomething = true;
+            }
         }
 
         @Override

@@ -4,8 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.util.Log;
 import com.emerginggames.bestpuzzlegame.Settings;
-import org.acra.ErrorReporter;
+//import org.acra.ErrorReporter;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -57,10 +58,12 @@ public class OnlineSettings implements Runnable {
             instance = null;
             return;
         }catch (JSONException e){
-            ErrorReporter.getInstance().handleSilentException(e);
+            Log.e(Settings.TAG, e.getMessage(), e);
+            //ErrorReporter.getInstance().handleSilentException(e);
         }
         catch (NullPointerException e){
-            ErrorReporter.getInstance().handleSilentException(e);
+            Log.e(Settings.TAG, e.getMessage(), e);
+            //ErrorReporter.getInstance().handleSilentException(e);
         } catch (Exception e){}
         handler.postDelayed(this, RETRY_INTERVAL);
     }

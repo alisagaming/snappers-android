@@ -7,7 +7,7 @@ import com.emerginggames.bestpuzzlegame.model.FbUserInfo;
 import com.emerginggames.bestpuzzlegame.model.SyncData;
 import com.emerginggames.bestpuzzlegame.utils.OnlineSettings;
 import com.emerginggames.bestpuzzlegame.utils.UserPreferencesBase;
-import org.acra.ACRA;
+//import org.acra.ACRA;
 import com.emerginggames.bestpuzzlegame.data.LevelPackTable;
 import com.emerginggames.bestpuzzlegame.model.Level;
 import com.emerginggames.bestpuzzlegame.model.LevelPack;
@@ -240,7 +240,7 @@ public class UserPreferences extends UserPreferencesBase {
         putInt(fbUID == 0 ? HINTS : "!" + HINTS, INITIAL_HINTS);
         putBoolean(INITIIALISED, true);
 
-        ACRA.getACRASharedPreferences().edit().putBoolean(ACRA.PREF_ENABLE_DEVICE_ID, false).commit();
+        //ACRA.getACRASharedPreferences().edit().putBoolean(ACRA.PREF_ENABLE_DEVICE_ID, false).commit();
     }
 
     public void setMusic(boolean enabled) {

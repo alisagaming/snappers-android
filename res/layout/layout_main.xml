@@ -22,7 +22,9 @@
             and:layout_above="@+id/playButtonOffline"
             and:layout_alignParentRight="true" and:layout_marginRight="20dp"
             and:adjustViewBounds="true"
-            and:src="@drawable/button_play" and:onClick="onPlayButtonClick"/>
+            and:src="@drawable/button_play" and:onClick="onPlayButtonClick"
+            and:layout_marginBottom="40dp"
+            />
 
     <com.emrg.view.ImageView and:id="@+id/playButtonOffline"
             and:layout_width="wrap_content" and:layout_height="wrap_content" and:layout_above="@+id/dailyBonus"

@@ -62,6 +62,10 @@ public class Settings {
 
     private static final String mediationKey = "CE61BF07159274D6O67E17937D7A51DC7O49479B778C212A30OA1D3454BF7B738D9";
 
+    private static final String TJ_ID_GOOGLE = "7fd6c836-53ef-41a9-8867-335b91efe9ae";
+    private static final String TJ_KEY_GOOGLE = "qIEMBXVnfUPuaLwO5EF0";
+    private static final String TJ_ID_AMAZON = "607b67c4-7ed9-45b7-a8af-5d7bd2f79e80";
+    private static final String TJ_KEY_AMAZON = "9HXNeI0GoXuXMLofCYhO";
 
 
 
@@ -131,19 +135,20 @@ public class Settings {
         }*/
     }
 
-    public static String getGitCommitString(Context context){
+    /*public static String getGitCommitString(Context context){
         DataInputStream stream = new DataInputStream(context.getResources().openRawResource(R.raw.commit));
         try{
             return stream.readLine();
         } catch (IOException e){
             return "";
         }
-    }
+    }*/
     //App ID ? 6ac99625-6d02-4326-becd-213a233c511a
     //App Secret Key ? GvTnbQgQ1P86bB5Xgr4L
 
     public static String getTapJoyAppId(Context context){
-        return  "6ac99625-" + "6d02-4326" + "-becd-213a233c511a";
+        return IS_AMAZON ? TJ_ID_AMAZON : TJ_ID_GOOGLE;
+        //return  "6ac99625-" + "6d02-4326" + "-becd-213a233c511a";
         //UserPreferences prefs = UserPreferences.getInstance(context);
 
 /*        try{
@@ -178,7 +183,8 @@ public class Settings {
     }
 
     public static String getTapJoySecretKey(Context context){
-        return "GvTnbQgQ1P86bB5Xgr4L";
+        return IS_AMAZON ? TJ_KEY_AMAZON : TJ_KEY_GOOGLE;
+        //return "GvTnbQgQ1P86bB5Xgr4L";
         //UserPreferences prefs = UserPreferences.getInstance(context);
 
 

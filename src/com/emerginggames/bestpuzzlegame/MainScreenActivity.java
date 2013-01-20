@@ -63,7 +63,7 @@ public class MainScreenActivity extends Activity {
         lp.width = (int) (scrWidth * 0.35f);
         lp.rightMargin = scrWidth / 20;
         lp.topMargin = lp.bottomMargin = scrHeight / 20;
-        findViewById(R.id.playButtonOffline).setVisibility(View.INVISIBLE);
+        findViewById(R.id.playButtonOffline).setVisibility(View.GONE);
 
         lp = (RelativeLayout.LayoutParams) findViewById(R.id.settingsBtn).getLayoutParams();
         lp.width = lp.height = scrWidth / 5;

@@ -3014,10 +3014,10 @@ com.badlogic.gdx.utils.PooledLinkedList$Item -> com.badlogic.gdx.utils.p:
     java.lang.Object payload -> a
     com.badlogic.gdx.utils.PooledLinkedList$Item next -> b
     com.badlogic.gdx.utils.PooledLinkedList$Item prev -> c
-com.emerginggames.snappers2.BaseActivity -> com.emerginggames.snappers2.BaseActivity:
-    com.emerginggames.snappers2.view.ScoreCounter scoreCounter -> m
-    com.emerginggames.snappers2.view.BuyHintsDialog buyHintsDialog -> n
-    com.emerginggames.snappers2.view.GameDialog dlg -> o
+com.emerginggames.bestpuzzlegame.BaseActivity -> com.emerginggames.bestpuzzlegame.BaseActivity:
+    com.emerginggames.bestpuzzlegame.view.ScoreCounter scoreCounter -> m
+    com.emerginggames.bestpuzzlegame.view.BuyHintsDialog buyHintsDialog -> n
+    com.emerginggames.bestpuzzlegame.view.GameDialog dlg -> o
     int defPadding -> p
     android.app.ProgressDialog progressDialog -> q
     java.lang.Object progressDialogLock -> r
@@ -3031,46 +3031,46 @@ com.emerginggames.snappers2.BaseActivity -> com.emerginggames.snappers2.BaseActi
     150:152:void updateHints() -> f
     183:196:void showProgressDialog(java.lang.String) -> a
     199:211:void hideProgressDialog() -> g
-com.emerginggames.snappers2.BaseActivity$1 -> com.emerginggames.snappers2.a:
-    com.emerginggames.snappers2.BaseActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.BaseActivity$1 -> com.emerginggames.bestpuzzlegame.a:
+    com.emerginggames.bestpuzzlegame.BaseActivity this$0 -> a
     158:161:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.BaseActivity$2 -> com.emerginggames.snappers2.b:
-    com.emerginggames.snappers2.BaseActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.BaseActivity$2 -> com.emerginggames.bestpuzzlegame.b:
+    com.emerginggames.bestpuzzlegame.BaseActivity this$0 -> a
     java.lang.String val$message -> b
     186:186:void run() -> run
-com.emerginggames.snappers2.BaseActivity$3 -> com.emerginggames.snappers2.c:
-    com.emerginggames.snappers2.BaseActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.BaseActivity$3 -> com.emerginggames.bestpuzzlegame.c:
+    com.emerginggames.bestpuzzlegame.BaseActivity this$0 -> a
     202:202:void run() -> run
-com.emerginggames.snappers2.Consts -> com.emerginggames.snappers2.d:
+com.emerginggames.bestpuzzlegame.Consts -> com.emerginggames.bestpuzzlegame.d:
     long BILLING_RESPONSE_INVALID_REQUEST_ID -> a
-com.emerginggames.snappers2.Consts$PurchaseState -> com.emerginggames.snappers2.e:
-    com.emerginggames.snappers2.Consts$PurchaseState PURCHASED -> a
-    com.emerginggames.snappers2.Consts$PurchaseState CANCELED -> b
-    com.emerginggames.snappers2.Consts$PurchaseState REFUNDED -> c
-    com.emerginggames.snappers2.Consts$PurchaseState[] ENUM$VALUES -> d
-    53:57:com.emerginggames.snappers2.Consts$PurchaseState valueOf(int) -> a
-    1:1:com.emerginggames.snappers2.Consts$PurchaseState[] values() -> values
-    1:1:com.emerginggames.snappers2.Consts$PurchaseState valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.Consts$ResponseCode -> com.emerginggames.snappers2.f:
-    com.emerginggames.snappers2.Consts$ResponseCode RESULT_OK -> a
-    com.emerginggames.snappers2.Consts$ResponseCode RESULT_USER_CANCELED -> b
-    com.emerginggames.snappers2.Consts$ResponseCode RESULT_SERVICE_UNAVAILABLE -> c
-    com.emerginggames.snappers2.Consts$ResponseCode RESULT_BILLING_UNAVAILABLE -> d
-    com.emerginggames.snappers2.Consts$ResponseCode RESULT_ITEM_UNAVAILABLE -> e
-    com.emerginggames.snappers2.Consts$ResponseCode RESULT_DEVELOPER_ERROR -> f
-    com.emerginggames.snappers2.Consts$ResponseCode RESULT_ERROR -> g
-    com.emerginggames.snappers2.Consts$ResponseCode[] ENUM$VALUES -> h
-    36:40:com.emerginggames.snappers2.Consts$ResponseCode valueOf(int) -> a
-    1:1:com.emerginggames.snappers2.Consts$ResponseCode[] values() -> values
-    1:1:com.emerginggames.snappers2.Consts$ResponseCode valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.DbSettings -> com.emerginggames.snappers2.g:
+com.emerginggames.bestpuzzlegame.Consts$PurchaseState -> com.emerginggames.bestpuzzlegame.e:
+    com.emerginggames.bestpuzzlegame.Consts$PurchaseState PURCHASED -> a
+    com.emerginggames.bestpuzzlegame.Consts$PurchaseState CANCELED -> b
+    com.emerginggames.bestpuzzlegame.Consts$PurchaseState REFUNDED -> c
+    com.emerginggames.bestpuzzlegame.Consts$PurchaseState[] ENUM$VALUES -> d
+    53:57:com.emerginggames.bestpuzzlegame.Consts$PurchaseState valueOf(int) -> a
+    1:1:com.emerginggames.bestpuzzlegame.Consts$PurchaseState[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.Consts$PurchaseState valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.Consts$ResponseCode -> com.emerginggames.bestpuzzlegame.f:
+    com.emerginggames.bestpuzzlegame.Consts$ResponseCode RESULT_OK -> a
+    com.emerginggames.bestpuzzlegame.Consts$ResponseCode RESULT_USER_CANCELED -> b
+    com.emerginggames.bestpuzzlegame.Consts$ResponseCode RESULT_SERVICE_UNAVAILABLE -> c
+    com.emerginggames.bestpuzzlegame.Consts$ResponseCode RESULT_BILLING_UNAVAILABLE -> d
+    com.emerginggames.bestpuzzlegame.Consts$ResponseCode RESULT_ITEM_UNAVAILABLE -> e
+    com.emerginggames.bestpuzzlegame.Consts$ResponseCode RESULT_DEVELOPER_ERROR -> f
+    com.emerginggames.bestpuzzlegame.Consts$ResponseCode RESULT_ERROR -> g
+    com.emerginggames.bestpuzzlegame.Consts$ResponseCode[] ENUM$VALUES -> h
+    36:40:com.emerginggames.bestpuzzlegame.Consts$ResponseCode valueOf(int) -> a
+    1:1:com.emerginggames.bestpuzzlegame.Consts$ResponseCode[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.Consts$ResponseCode valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.DbSettings -> com.emerginggames.bestpuzzlegame.g:
     boolean ENABLE_ALL_LEVELS -> a
-com.emerginggames.snappers2.FacebookActivity -> com.emerginggames.snappers2.FacebookActivity:
+com.emerginggames.bestpuzzlegame.FacebookActivity -> com.emerginggames.bestpuzzlegame.FacebookActivity:
     int wndWidth -> t
-    com.emerginggames.snappers2.transport.FacebookTransport facebookTransport -> u
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport facebookTransport -> u
     int flags -> v
-    com.emerginggames.snappers2.model.FacebookFriend[] friends -> w
-    com.emerginggames.snappers2.UserPreferences prefs -> x
+    com.emerginggames.bestpuzzlegame.model.FacebookFriend[] friends -> w
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> x
     android.view.View$OnClickListener friendClickListener -> y
     android.view.View$OnClickListener moreClickListener -> z
     50:70:void onCreate(android.os.Bundle) -> onCreate
@@ -3082,73 +3082,73 @@ com.emerginggames.snappers2.FacebookActivity -> com.emerginggames.snappers2.Face
     165:165:boolean checkFlag(int) -> e
     170:219:void gotFlag(int) -> c
     222:228:void showToast(java.lang.String) -> b
-    238:247:void showFriendsList(com.emerginggames.snappers2.model.FacebookFriend[]) -> a
+    238:247:void showFriendsList(com.emerginggames.bestpuzzlegame.model.FacebookFriend[]) -> a
     250:253:void showControls() -> k
     261:263:void onPlayButtonClick(android.view.View) -> onPlayButtonClick
     266:340:void showFriendsRows$255f295(int) -> d
     368:377:void showProgress(com.emrg.view.ImageView,int) -> a
-com.emerginggames.snappers2.FacebookActivity$1 -> com.emerginggames.snappers2.h:
-    com.emerginggames.snappers2.FacebookActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$1 -> com.emerginggames.bestpuzzlegame.h:
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> a
     345:364:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.FacebookActivity$2 -> com.emerginggames.snappers2.i:
-    com.emerginggames.snappers2.FacebookActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$2 -> com.emerginggames.bestpuzzlegame.i:
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> a
     382:386:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.FacebookActivity$3 -> com.emerginggames.snappers2.j:
-    com.emerginggames.snappers2.FacebookActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$3 -> com.emerginggames.bestpuzzlegame.j:
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> a
     80:82:void onOk(java.lang.Object) -> a
     86:89:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.FacebookActivity$4 -> com.emerginggames.snappers2.k:
-    com.emerginggames.snappers2.FacebookActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$4 -> com.emerginggames.bestpuzzlegame.k:
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> a
     121:122:void onOk(java.lang.Object) -> a
     126:127:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.FacebookActivity$5 -> com.emerginggames.snappers2.l:
-    com.emerginggames.snappers2.FacebookActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$5 -> com.emerginggames.bestpuzzlegame.l:
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> a
     137:138:void onOk(java.lang.Object) -> a
     142:144:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.FacebookActivity$6 -> com.emerginggames.snappers2.m:
-    com.emerginggames.snappers2.FacebookActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$6 -> com.emerginggames.bestpuzzlegame.m:
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> a
     152:154:void onOk(java.lang.Object) -> a
     158:160:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.FacebookActivity$7 -> com.emerginggames.snappers2.n:
-    com.emerginggames.snappers2.FacebookActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$7 -> com.emerginggames.bestpuzzlegame.n:
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> a
     194:196:void run() -> run
-com.emerginggames.snappers2.FacebookActivity$8 -> com.emerginggames.snappers2.o:
-    com.emerginggames.snappers2.FacebookActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$8 -> com.emerginggames.bestpuzzlegame.o:
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> a
     java.lang.String val$message -> b
     225:226:void run() -> run
-com.emerginggames.snappers2.FacebookActivity$GiftInviteResponceListener -> com.emerginggames.snappers2.p:
-    com.emerginggames.snappers2.model.FacebookFriend friend -> a
+com.emerginggames.bestpuzzlegame.FacebookActivity$GiftInviteResponceListener -> com.emerginggames.bestpuzzlegame.p:
+    com.emerginggames.bestpuzzlegame.model.FacebookFriend friend -> a
     android.view.View v -> b
     android.view.View img -> c
-    com.emerginggames.snappers2.FacebookActivity this$0 -> d
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> d
     402:414:void onOk(java.lang.Object) -> a
     418:423:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.FacebookActivity$LoadIconForView -> com.emerginggames.snappers2.q:
+com.emerginggames.bestpuzzlegame.FacebookActivity$LoadIconForView -> com.emerginggames.bestpuzzlegame.q:
     com.emrg.view.ImageView view -> a
     long uid -> b
-    com.emerginggames.snappers2.FacebookActivity this$0 -> c
+    com.emerginggames.bestpuzzlegame.FacebookActivity this$0 -> c
     439:444:void run() -> run
-com.emerginggames.snappers2.GameActivity -> com.emerginggames.snappers2.GameActivity:
+com.emerginggames.bestpuzzlegame.GameActivity -> com.emerginggames.bestpuzzlegame.GameActivity:
     android.widget.RelativeLayout rootLayout -> l
     boolean isFinished -> m
     boolean wentTapjoy -> n
     boolean wentShop -> o
-    com.emerginggames.snappers2.data.LevelTable levelTable -> p
-    com.emerginggames.snappers2.utils.Store mStore -> q
-    com.emerginggames.snappers2.GameActivity$GameListener gameListener -> r
-    com.emerginggames.snappers2.view.AdController adController -> s
-    com.emerginggames.snappers2.gdx.Game game -> t
-    com.emerginggames.snappers2.UserPreferences prefs -> u
-    com.emerginggames.snappers2.view.TopButtonController topButtons -> v
-    com.emerginggames.snappers2.view.GameOverMessageController gameOverMessageController -> w
-    com.emerginggames.snappers2.GameActivity$LevelInfo levelInfo -> x
+    com.emerginggames.bestpuzzlegame.data.LevelTable levelTable -> p
+    com.emerginggames.bestpuzzlegame.utils.Store mStore -> q
+    com.emerginggames.bestpuzzlegame.GameActivity$GameListener gameListener -> r
+    com.emerginggames.bestpuzzlegame.view.AdController adController -> s
+    com.emerginggames.bestpuzzlegame.gdx.Game game -> t
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> u
+    com.emerginggames.bestpuzzlegame.view.TopButtonController topButtons -> v
+    com.emerginggames.bestpuzzlegame.view.GameOverMessageController gameOverMessageController -> w
+    com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo levelInfo -> x
     int currentLevel -> y
-    com.emerginggames.snappers2.model.LevelPack pack -> z
-    com.emerginggames.snappers2.view.GameDialogsController gameDialogsController -> A
+    com.emerginggames.bestpuzzlegame.model.LevelPack pack -> z
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController gameDialogsController -> A
     android.view.View helpView -> B
-    com.emerginggames.snappers2.model.Level startLevel -> C
-    com.emerginggames.snappers2.transport.FacebookTransport facebookTransport -> D
-    com.emerginggames.snappers2.UserPreferences$HintChangedListener hintChangedListener -> E
+    com.emerginggames.bestpuzzlegame.model.Level startLevel -> C
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport facebookTransport -> D
+    com.emerginggames.bestpuzzlegame.UserPreferences$HintChangedListener hintChangedListener -> E
     59:120:void onCreate(android.os.Bundle) -> onCreate
     123:137:void initViews() -> d
     141:143:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
@@ -3164,41 +3164,41 @@ com.emerginggames.snappers2.GameActivity -> com.emerginggames.snappers2.GameActi
     239:257:void showHelp() -> h
     260:273:void syncFacebook() -> i
     421:421:boolean hasFacebook() -> j
-    425:425:com.emerginggames.snappers2.view.AdController getAdController() -> k
-    429:429:com.emerginggames.snappers2.view.GameOverMessageController getGameOverMessageController() -> l
-    433:433:com.emerginggames.snappers2.gdx.Game getGame() -> m
-    437:437:com.emerginggames.snappers2.view.TopButtonController getTopButtons() -> n
-com.emerginggames.snappers2.GameActivity$1 -> com.emerginggames.snappers2.r:
-    com.emerginggames.snappers2.GameActivity this$0 -> a
+    425:425:com.emerginggames.bestpuzzlegame.view.AdController getAdController() -> k
+    429:429:com.emerginggames.bestpuzzlegame.view.GameOverMessageController getGameOverMessageController() -> l
+    433:433:com.emerginggames.bestpuzzlegame.gdx.Game getGame() -> m
+    437:437:com.emerginggames.bestpuzzlegame.view.TopButtonController getTopButtons() -> n
+com.emerginggames.bestpuzzlegame.GameActivity$1 -> com.emerginggames.bestpuzzlegame.r:
+    com.emerginggames.bestpuzzlegame.GameActivity this$0 -> a
     414:417:void onHintsChanged$255f295() -> a
-com.emerginggames.snappers2.GameActivity$2 -> com.emerginggames.snappers2.s:
-    com.emerginggames.snappers2.GameActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$2 -> com.emerginggames.bestpuzzlegame.s:
+    com.emerginggames.bestpuzzlegame.GameActivity this$0 -> a
     127:135:void run() -> run
-com.emerginggames.snappers2.GameActivity$3 -> com.emerginggames.snappers2.t:
-    com.emerginggames.snappers2.GameActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$3 -> com.emerginggames.bestpuzzlegame.t:
+    com.emerginggames.bestpuzzlegame.GameActivity this$0 -> a
     243:247:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.GameActivity$4 -> com.emerginggames.snappers2.u:
-    com.emerginggames.snappers2.GameActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$4 -> com.emerginggames.bestpuzzlegame.u:
+    com.emerginggames.bestpuzzlegame.GameActivity this$0 -> a
     263:271:void onOk(java.lang.Object) -> a
-com.emerginggames.snappers2.GameActivity$GameListener -> com.emerginggames.snappers2.v:
-    com.emerginggames.snappers2.GameActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$GameListener -> com.emerginggames.bestpuzzlegame.v:
+    com.emerginggames.bestpuzzlegame.GameActivity this$0 -> a
     281:282:void showPaused() -> a
     286:287:void showHintMenu() -> b
     291:293:void levelPackWon$44f7d4de() -> c
-    297:348:void levelSolved(com.emerginggames.snappers2.model.Level,int) -> a
-    352:352:boolean isLevelSolved(com.emerginggames.snappers2.model.Level) -> a
-    357:366:void showGameLost(com.emerginggames.snappers2.model.Level) -> b
+    297:348:void levelSolved(com.emerginggames.bestpuzzlegame.model.Level,int) -> a
+    352:352:boolean isLevelSolved(com.emerginggames.bestpuzzlegame.model.Level) -> a
+    357:366:void showGameLost(com.emerginggames.bestpuzzlegame.model.Level) -> b
     370:376:void hideGameOverMenu() -> d
     380:380:boolean isSoundEnabled() -> e
     385:387:void gotScreenSize(int,int) -> a
-    391:391:com.emerginggames.snappers2.model.Level getNextLevel(com.emerginggames.snappers2.model.Level) -> c
+    391:391:com.emerginggames.bestpuzzlegame.model.Level getNextLevel(com.emerginggames.bestpuzzlegame.model.Level) -> c
     396:398:void onInitDone() -> f
-    402:403:void updateLevelInfo(com.emerginggames.snappers2.model.Level) -> d
+    402:403:void updateLevelInfo(com.emerginggames.bestpuzzlegame.model.Level) -> d
     407:408:void updateTapsLeft(int) -> a
-com.emerginggames.snappers2.GameActivity$LevelInfo -> com.emerginggames.snappers2.w:
+com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo -> com.emerginggames.bestpuzzlegame.w:
     com.emrg.view.OutlinedTextView levelInfo -> a
     com.emrg.view.OutlinedTextView tapsLeft -> b
-    com.emerginggames.snappers2.model.Level level -> c
+    com.emerginggames.bestpuzzlegame.model.Level level -> c
     int tapsLeftN -> d
     int color -> e
     android.widget.LinearLayout layout -> f
@@ -3207,25 +3207,25 @@ com.emerginggames.snappers2.GameActivity$LevelInfo -> com.emerginggames.snappers
     java.lang.Runnable setColor -> i
     java.lang.Runnable hide -> j
     java.lang.Runnable show -> k
-    com.emerginggames.snappers2.GameActivity this$0 -> l
+    com.emerginggames.bestpuzzlegame.GameActivity this$0 -> l
     488:489:void show() -> a
     492:493:void hide() -> b
-com.emerginggames.snappers2.GameActivity$LevelInfo$1 -> com.emerginggames.snappers2.x:
-    com.emerginggames.snappers2.GameActivity$LevelInfo this$1 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo$1 -> com.emerginggames.bestpuzzlegame.x:
+    com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo this$1 -> a
     498:500:void run() -> run
-com.emerginggames.snappers2.GameActivity$LevelInfo$2 -> com.emerginggames.snappers2.y:
-    com.emerginggames.snappers2.GameActivity$LevelInfo this$1 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo$2 -> com.emerginggames.bestpuzzlegame.y:
+    com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo this$1 -> a
     506:507:void run() -> run
-com.emerginggames.snappers2.GameActivity$LevelInfo$3 -> com.emerginggames.snappers2.z:
-    com.emerginggames.snappers2.GameActivity$LevelInfo this$1 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo$3 -> com.emerginggames.bestpuzzlegame.z:
+    com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo this$1 -> a
     513:515:void run() -> run
-com.emerginggames.snappers2.GameActivity$LevelInfo$4 -> com.emerginggames.snappers2.aa:
-    com.emerginggames.snappers2.GameActivity$LevelInfo this$1 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo$4 -> com.emerginggames.bestpuzzlegame.aa:
+    com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo this$1 -> a
     521:522:void run() -> run
-com.emerginggames.snappers2.GameActivity$LevelInfo$5 -> com.emerginggames.snappers2.ab:
-    com.emerginggames.snappers2.GameActivity$LevelInfo this$1 -> a
+com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo$5 -> com.emerginggames.bestpuzzlegame.ab:
+    com.emerginggames.bestpuzzlegame.GameActivity$LevelInfo this$1 -> a
     528:529:void run() -> run
-com.emerginggames.snappers2.ImagePagerAdapter -> com.emerginggames.snappers2.ac:
+com.emerginggames.bestpuzzlegame.ImagePagerAdapter -> com.emerginggames.bestpuzzlegame.ac:
     android.content.Context context -> a
     java.util.List paramList -> b
     com.emrg.view.IOnItemSelectedListener listener -> c
@@ -3237,46 +3237,46 @@ com.emerginggames.snappers2.ImagePagerAdapter -> com.emerginggames.snappers2.ac:
     69:69:boolean isViewFromObject(android.view.View,java.lang.Object) -> a
     74:76:void onClick(android.view.View) -> onClick
     80:82:void destroyItem(android.view.ViewGroup,int,java.lang.Object) -> a
-    85:95:void changeImages(int,com.emerginggames.snappers2.model.ImageDrawInfo[]) -> a
-com.emerginggames.snappers2.InviteActivity -> com.emerginggames.snappers2.InviteActivity:
+    85:95:void changeImages(int,com.emerginggames.bestpuzzlegame.model.ImageDrawInfo[]) -> a
+com.emerginggames.bestpuzzlegame.InviteActivity -> com.emerginggames.bestpuzzlegame.InviteActivity:
     int wndWidth -> t
-    com.emerginggames.snappers2.transport.FacebookTransport facebookTransport -> u
-    com.emerginggames.snappers2.model.FacebookFriend[] friends -> v
-    com.emerginggames.snappers2.UserPreferences prefs -> w
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport facebookTransport -> u
+    com.emerginggames.bestpuzzlegame.model.FacebookFriend[] friends -> v
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> w
     android.view.View$OnClickListener friendClickListener -> x
     android.view.View$OnClickListener moreClickListener -> y
     47:66:void onCreate(android.os.Bundle) -> onCreate
     70:79:void onResume() -> onResume
-    105:114:void showFriendsList(com.emerginggames.snappers2.model.FacebookFriend[]) -> a
+    105:114:void showFriendsList(com.emerginggames.bestpuzzlegame.model.FacebookFriend[]) -> a
     122:196:void showFriendsRows$255f295(int) -> c
     224:233:void showProgress(com.emrg.view.ImageView,int) -> a
-com.emerginggames.snappers2.InviteActivity$1 -> com.emerginggames.snappers2.ad:
-    com.emerginggames.snappers2.InviteActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.InviteActivity$1 -> com.emerginggames.bestpuzzlegame.ad:
+    com.emerginggames.bestpuzzlegame.InviteActivity this$0 -> a
     201:220:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.InviteActivity$2 -> com.emerginggames.snappers2.ae:
-    com.emerginggames.snappers2.InviteActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.InviteActivity$2 -> com.emerginggames.bestpuzzlegame.ae:
+    com.emerginggames.bestpuzzlegame.InviteActivity this$0 -> a
     238:242:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.InviteActivity$3 -> com.emerginggames.snappers2.af:
-    com.emerginggames.snappers2.InviteActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.InviteActivity$3 -> com.emerginggames.bestpuzzlegame.af:
+    com.emerginggames.bestpuzzlegame.InviteActivity this$0 -> a
     85:95:void onOk(java.lang.Object) -> a
     99:100:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.InviteActivity$3$1 -> com.emerginggames.snappers2.ag:
-    com.emerginggames.snappers2.InviteActivity$3 this$1 -> a
+com.emerginggames.bestpuzzlegame.InviteActivity$3$1 -> com.emerginggames.bestpuzzlegame.ag:
+    com.emerginggames.bestpuzzlegame.InviteActivity$3 this$1 -> a
     90:92:void run() -> run
-com.emerginggames.snappers2.InviteActivity$GiftInviteResponceListener -> com.emerginggames.snappers2.ah:
-    com.emerginggames.snappers2.model.FacebookFriend friend -> a
+com.emerginggames.bestpuzzlegame.InviteActivity$GiftInviteResponceListener -> com.emerginggames.bestpuzzlegame.ah:
+    com.emerginggames.bestpuzzlegame.model.FacebookFriend friend -> a
     android.view.View v -> b
     android.view.View img -> c
-    com.emerginggames.snappers2.InviteActivity this$0 -> d
+    com.emerginggames.bestpuzzlegame.InviteActivity this$0 -> d
     258:270:void onOk(java.lang.Object) -> a
     274:278:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.InviteActivity$LoadIconForView -> com.emerginggames.snappers2.ai:
+com.emerginggames.bestpuzzlegame.InviteActivity$LoadIconForView -> com.emerginggames.bestpuzzlegame.ai:
     com.emrg.view.ImageView view -> a
     long uid -> b
-    com.emerginggames.snappers2.InviteActivity this$0 -> c
+    com.emerginggames.bestpuzzlegame.InviteActivity this$0 -> c
     294:299:void run() -> run
-com.emerginggames.snappers2.LevelPageAdapter -> com.emerginggames.snappers2.aj:
-    com.emerginggames.snappers2.model.LevelPack pack -> a
+com.emerginggames.bestpuzzlegame.LevelPageAdapter -> com.emerginggames.bestpuzzlegame.aj:
+    com.emerginggames.bestpuzzlegame.model.LevelPack pack -> a
     com.emrg.view.IOnItemSelectedListener listener -> g
     android.util.SparseArray fragments -> b
     int innerPaddingLeft -> c
@@ -3285,12 +3285,12 @@ com.emerginggames.snappers2.LevelPageAdapter -> com.emerginggames.snappers2.aj:
     int innerPaddingBottom -> f
     44:47:android.support.v4.app.Fragment getItem(int) -> a
     52:52:int getCount() -> b
-com.emerginggames.snappers2.MainScreenActivity -> com.emerginggames.snappers2.MainScreenActivity:
+com.emerginggames.bestpuzzlegame.MainScreenActivity -> com.emerginggames.bestpuzzlegame.MainScreenActivity:
     int[] DAILY_BONUS_PADDINGS -> i
     android.os.Handler handler -> a
-    com.emerginggames.snappers2.SettingsDialog settingsDialog -> b
-    com.emerginggames.snappers2.view.GameDialog messageDialog -> c
-    com.emerginggames.snappers2.UserPreferences prefs -> d
+    com.emerginggames.bestpuzzlegame.SettingsDialog settingsDialog -> b
+    com.emerginggames.bestpuzzlegame.view.GameDialog messageDialog -> c
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> d
     boolean isActive -> e
     int[] BONUS_CHANCES -> j
     int scrWidth -> f
@@ -3304,10 +3304,10 @@ com.emerginggames.snappers2.MainScreenActivity -> com.emerginggames.snappers2.Ma
     138:141:void onPlayButtonOfflineClick(android.view.View) -> onPlayButtonOfflineClick
     145:158:void onResume() -> onResume
     164:167:void onPause() -> onPause
-com.emerginggames.snappers2.MainScreenActivity$1 -> com.emerginggames.snappers2.ak:
-    com.emerginggames.snappers2.MainScreenActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.MainScreenActivity$1 -> com.emerginggames.bestpuzzlegame.ak:
+    com.emerginggames.bestpuzzlegame.MainScreenActivity this$0 -> a
     176:196:void run() -> run
-com.emerginggames.snappers2.Metrics -> com.emerginggames.snappers2.al:
+com.emerginggames.bestpuzzlegame.Metrics -> com.emerginggames.bestpuzzlegame.al:
     int snapperSize -> a
     int squareButtonSize -> b
     int fontSize -> c
@@ -3320,7 +3320,7 @@ com.emerginggames.snappers2.Metrics -> com.emerginggames.snappers2.al:
     float snapperMult4 -> j
     int screenWidth -> k
     int screenHeight -> l
-    com.emerginggames.snappers2.Metrics$SizeMode sizeMode -> m
+    com.emerginggames.bestpuzzlegame.Metrics$SizeMode sizeMode -> m
     int hintSize -> n
     int screenSizeMode -> o
     float squareButtonScale -> p
@@ -3331,51 +3331,51 @@ com.emerginggames.snappers2.Metrics -> com.emerginggames.snappers2.al:
     64:67:void setSizeByView(android.view.View,android.content.Context) -> a
     70:80:void setSize(int,int,android.content.Context) -> a
     10:10:int[] $SWITCH_TABLE$com$emerginggames$snappers2$Metrics$SizeMode() -> a
-com.emerginggames.snappers2.Metrics$SizeMode -> com.emerginggames.snappers2.am:
-    com.emerginggames.snappers2.Metrics$SizeMode modeS -> a
-    com.emerginggames.snappers2.Metrics$SizeMode modeM -> b
-    com.emerginggames.snappers2.Metrics$SizeMode modeL -> c
-    com.emerginggames.snappers2.Metrics$SizeMode[] ENUM$VALUES -> d
-    1:1:com.emerginggames.snappers2.Metrics$SizeMode[] values() -> values
-    1:1:com.emerginggames.snappers2.Metrics$SizeMode valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.PaginatedSelectorActivity -> com.emerginggames.snappers2.PaginatedSelectorActivity:
+com.emerginggames.bestpuzzlegame.Metrics$SizeMode -> com.emerginggames.bestpuzzlegame.am:
+    com.emerginggames.bestpuzzlegame.Metrics$SizeMode modeS -> a
+    com.emerginggames.bestpuzzlegame.Metrics$SizeMode modeM -> b
+    com.emerginggames.bestpuzzlegame.Metrics$SizeMode modeL -> c
+    com.emerginggames.bestpuzzlegame.Metrics$SizeMode[] ENUM$VALUES -> d
+    1:1:com.emerginggames.bestpuzzlegame.Metrics$SizeMode[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.Metrics$SizeMode valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.PaginatedSelectorActivity -> com.emerginggames.bestpuzzlegame.PaginatedSelectorActivity:
     14:20:void onCreate(android.os.Bundle) -> onCreate
-com.emerginggames.snappers2.R -> com.emerginggames.snappers2.an:
-com.emerginggames.snappers2.R$styleable -> com.emerginggames.snappers2.ao:
+com.emerginggames.bestpuzzlegame.R -> com.emerginggames.bestpuzzlegame.an:
+com.emerginggames.bestpuzzlegame.R$styleable -> com.emerginggames.bestpuzzlegame.ao:
     int[] CirclePageIndicator -> a
     int[] OutlinedTextView -> b
     int[] TitlePageIndicator -> c
     int[] ViewPagerIndicator -> d
-com.emerginggames.snappers2.SelectLevelActivity -> com.emerginggames.snappers2.SelectLevelActivity:
-    com.emerginggames.snappers2.model.LevelPack pack -> t
-    com.emerginggames.snappers2.LevelPageAdapter adapter -> v
+com.emerginggames.bestpuzzlegame.SelectLevelActivity -> com.emerginggames.bestpuzzlegame.SelectLevelActivity:
+    com.emerginggames.bestpuzzlegame.model.LevelPack pack -> t
+    com.emerginggames.bestpuzzlegame.LevelPageAdapter adapter -> v
     android.os.AsyncTask preloadTask -> u
     29:56:void onCreate(android.os.Bundle) -> onCreate
     60:62:void onResume() -> onResume
     66:72:void onItemSelected(int) -> c
     76:79:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
-com.emerginggames.snappers2.SelectLevelActivity$1 -> com.emerginggames.snappers2.ap:
-    com.emerginggames.snappers2.SelectLevelActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.SelectLevelActivity$1 -> com.emerginggames.bestpuzzlegame.ap:
+    com.emerginggames.bestpuzzlegame.SelectLevelActivity this$0 -> a
     91:95:void onPreExecute() -> onPreExecute
     1:1:void onPostExecute(java.lang.Object) -> onPostExecute
     1:1:java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
     1:1:void onProgressUpdate(java.lang.Object[]) -> onProgressUpdate
-com.emerginggames.snappers2.SelectPackActivity -> com.emerginggames.snappers2.SelectPackActivity:
-    com.emerginggames.snappers2.model.LevelPack[] levelPacks -> t
-    com.emerginggames.snappers2.ImagePagerAdapter adapter -> u
+com.emerginggames.bestpuzzlegame.SelectPackActivity -> com.emerginggames.bestpuzzlegame.SelectPackActivity:
+    com.emerginggames.bestpuzzlegame.model.LevelPack[] levelPacks -> t
+    com.emerginggames.bestpuzzlegame.ImagePagerAdapter adapter -> u
     boolean[] levelPackStatus -> v
     31:43:void onCreate(android.os.Bundle) -> onCreate
     47:64:void onItemSelected(int) -> c
     67:82:java.util.List getPaginatorParamList() -> h
     100:113:void onResume() -> onResume
     132:137:void setPagerAdapter() -> i
-com.emerginggames.snappers2.Settings -> com.emerginggames.snappers2.aq:
+com.emerginggames.bestpuzzlegame.Settings -> com.emerginggames.bestpuzzlegame.aq:
     boolean DEBUG -> a
     boolean DEBUG_BUY -> b
     boolean ENABLE_ALL_LEVELS -> c
     boolean NO_PREF_ENCRYPT -> d
     boolean GoogleInAppEnabled -> e
-    com.emerginggames.snappers2.Settings$CrashReporter CRASH_REPORTER -> f
+    com.emerginggames.bestpuzzlegame.Settings$CrashReporter CRASH_REPORTER -> f
     java.lang.String adwhirlKey -> h
     java.lang.String TJKey -> i
     java.lang.String TJSecretKey -> j
@@ -3387,18 +3387,18 @@ com.emerginggames.snappers2.Settings -> com.emerginggames.snappers2.aq:
     206:206:java.lang.String getInAppKey() -> a
     254:258:int getLevel(int) -> a
     262:264:int getLevelXp(int) -> b
-com.emerginggames.snappers2.Settings$CrashReporter -> com.emerginggames.snappers2.ar:
-    com.emerginggames.snappers2.Settings$CrashReporter HockeyApp -> a
-    com.emerginggames.snappers2.Settings$CrashReporter ACRA -> b
-    com.emerginggames.snappers2.Settings$CrashReporter ACRA_BUGSENSE -> c
-    com.emerginggames.snappers2.Settings$CrashReporter[] ENUM$VALUES -> d
-    1:1:com.emerginggames.snappers2.Settings$CrashReporter[] values() -> values
-    1:1:com.emerginggames.snappers2.Settings$CrashReporter valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.SettingsDialog -> com.emerginggames.snappers2.as:
+com.emerginggames.bestpuzzlegame.Settings$CrashReporter -> com.emerginggames.bestpuzzlegame.ar:
+    com.emerginggames.bestpuzzlegame.Settings$CrashReporter HockeyApp -> a
+    com.emerginggames.bestpuzzlegame.Settings$CrashReporter ACRA -> b
+    com.emerginggames.bestpuzzlegame.Settings$CrashReporter ACRA_BUGSENSE -> c
+    com.emerginggames.bestpuzzlegame.Settings$CrashReporter[] ENUM$VALUES -> d
+    1:1:com.emerginggames.bestpuzzlegame.Settings$CrashReporter[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.Settings$CrashReporter valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.SettingsDialog -> com.emerginggames.bestpuzzlegame.as:
     int width -> a
-    com.emerginggames.snappers2.transport.FacebookTransport facebookTransport -> b
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport facebookTransport -> b
     android.app.Activity context -> c
-    com.emerginggames.snappers2.UserPreferences prefs -> d
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> d
     boolean syncDone -> e
     boolean nameDone -> f
     android.view.View$OnClickListener loginClickListener -> g
@@ -3417,48 +3417,48 @@ com.emerginggames.snappers2.SettingsDialog -> com.emerginggames.snappers2.as:
     223:234:void getUInfo() -> f
     237:248:void sync() -> g
     251:264:void logoff() -> h
-com.emerginggames.snappers2.SettingsDialog$1 -> com.emerginggames.snappers2.at:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$1 -> com.emerginggames.bestpuzzlegame.at:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     200:204:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.SettingsDialog$10 -> com.emerginggames.snappers2.au:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$10 -> com.emerginggames.bestpuzzlegame.au:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     256:257:void onOk(java.lang.Object) -> a
     261:262:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.SettingsDialog$2 -> com.emerginggames.snappers2.av:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$2 -> com.emerginggames.bestpuzzlegame.av:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     269:272:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.SettingsDialog$3 -> com.emerginggames.snappers2.aw:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$3 -> com.emerginggames.bestpuzzlegame.aw:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     278:280:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.SettingsDialog$4 -> com.emerginggames.snappers2.ax:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$4 -> com.emerginggames.bestpuzzlegame.ax:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     286:290:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.SettingsDialog$5 -> com.emerginggames.snappers2.ay:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$5 -> com.emerginggames.bestpuzzlegame.ay:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     296:298:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.SettingsDialog$6 -> com.emerginggames.snappers2.az:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$6 -> com.emerginggames.bestpuzzlegame.az:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     111:125:void run() -> run
-com.emerginggames.snappers2.SettingsDialog$7 -> com.emerginggames.snappers2.ba:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$7 -> com.emerginggames.bestpuzzlegame.ba:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     211:213:void onOk(java.lang.Object) -> a
     217:218:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.SettingsDialog$8 -> com.emerginggames.snappers2.bb:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$8 -> com.emerginggames.bestpuzzlegame.bb:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     226:227:void onOk(java.lang.Object) -> a
     231:232:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.SettingsDialog$9 -> com.emerginggames.snappers2.bc:
-    com.emerginggames.snappers2.SettingsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.SettingsDialog$9 -> com.emerginggames.bestpuzzlegame.bc:
+    com.emerginggames.bestpuzzlegame.SettingsDialog this$0 -> a
     240:241:void onOk(java.lang.Object) -> a
     245:246:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.SnappersApplication -> com.emerginggames.snappers2.SnappersApplication:
+com.emerginggames.bestpuzzlegame.SnappersApplication -> com.emerginggames.bestpuzzlegame.SnappersApplication:
     boolean isActivityActive -> a
     boolean isSwitchingActivity -> b
     boolean isScreenOn -> c
     boolean isUnlocked -> d
     boolean isMusicEnabled -> e
     android.app.Activity currentActivity -> f
-    com.emerginggames.snappers2.SnappersApplication$Receiver screenReceiver -> g
+    com.emerginggames.bestpuzzlegame.SnappersApplication$Receiver screenReceiver -> g
     49:54:void onCreate() -> onCreate
     57:72:void musicStatusChanged() -> a
     75:78:void activityPaused() -> b
@@ -3468,44 +3468,44 @@ com.emerginggames.snappers2.SnappersApplication -> com.emerginggames.snappers2.S
     103:110:void startMusicifShould(java.lang.String) -> a
     113:115:void stopMusic() -> d
     137:138:void onTerminate() -> onTerminate
-    41:41:void access$0(com.emerginggames.snappers2.SnappersApplication,boolean) -> a
-    42:42:void access$1(com.emerginggames.snappers2.SnappersApplication,boolean) -> b
-    102:102:void access$2$25d1c0d1(com.emerginggames.snappers2.SnappersApplication) -> a
-com.emerginggames.snappers2.SnappersApplication$Receiver -> com.emerginggames.snappers2.bd:
-    com.emerginggames.snappers2.SnappersApplication this$0 -> a
+    41:41:void access$0(com.emerginggames.bestpuzzlegame.SnappersApplication,boolean) -> a
+    42:42:void access$1(com.emerginggames.bestpuzzlegame.SnappersApplication,boolean) -> b
+    102:102:void access$2$25d1c0d1(com.emerginggames.bestpuzzlegame.SnappersApplication) -> a
+com.emerginggames.bestpuzzlegame.SnappersApplication$Receiver -> com.emerginggames.bestpuzzlegame.bd:
+    com.emerginggames.bestpuzzlegame.SnappersApplication this$0 -> a
     121:132:void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.emerginggames.snappers2.SoundManager -> com.emerginggames.snappers2.be:
-    com.emerginggames.snappers2.SoundManager instance -> e
+com.emerginggames.bestpuzzlegame.SoundManager -> com.emerginggames.bestpuzzlegame.be:
+    com.emerginggames.bestpuzzlegame.SoundManager instance -> e
     android.app.Activity context -> f
     android.media.SoundPool soundPool -> a
     int buttonSoundId -> b
     android.media.MediaPlayer mediaPlayer -> c
     java.lang.String currentSoundtrack -> d
-    42:47:com.emerginggames.snappers2.SoundManager getInstance(android.app.Activity) -> a
+    42:47:com.emerginggames.bestpuzzlegame.SoundManager getInstance(android.app.Activity) -> a
     51:52:void setUp() -> a
     55:57:void playButtonSound() -> b
     72:83:void setLevelMusic(java.lang.String) -> a
     97:99:void playButtonSoundIfPossible() -> c
-com.emerginggames.snappers2.SplashGdxActivity -> com.emerginggames.snappers2.SplashGdxActivity:
+com.emerginggames.bestpuzzlegame.SplashGdxActivity -> com.emerginggames.bestpuzzlegame.SplashGdxActivity:
     boolean initTaskRan -> l
     java.lang.Runnable init -> m
     java.lang.Runnable finish -> n
     40:66:void onCreate(android.os.Bundle) -> onCreate
     89:98:void gotSize(int,int) -> a
     102:109:void onResume() -> onResume
-com.emerginggames.snappers2.SplashGdxActivity$1 -> com.emerginggames.snappers2.bf:
-    com.emerginggames.snappers2.SplashGdxActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.SplashGdxActivity$1 -> com.emerginggames.bestpuzzlegame.bf:
+    com.emerginggames.bestpuzzlegame.SplashGdxActivity this$0 -> a
     118:151:void run() -> run
-com.emerginggames.snappers2.SplashGdxActivity$2 -> com.emerginggames.snappers2.bg:
-    com.emerginggames.snappers2.SplashGdxActivity this$0 -> a
+com.emerginggames.bestpuzzlegame.SplashGdxActivity$2 -> com.emerginggames.bestpuzzlegame.bg:
+    com.emerginggames.bestpuzzlegame.SplashGdxActivity this$0 -> a
     157:159:void run() -> run
-com.emerginggames.snappers2.UserPreferences -> com.emerginggames.snappers2.bh:
+com.emerginggames.bestpuzzlegame.UserPreferences -> com.emerginggames.bestpuzzlegame.bh:
     int INITIAL_HINTS -> l
-    com.emerginggames.snappers2.UserPreferences instance -> m
+    com.emerginggames.bestpuzzlegame.UserPreferences instance -> m
     java.lang.Object editorLock -> n
-    com.emerginggames.snappers2.UserPreferences$HintChangedListener hintChangedListener -> a
+    com.emerginggames.bestpuzzlegame.UserPreferences$HintChangedListener hintChangedListener -> a
     long fbUID -> b
-    59:61:com.emerginggames.snappers2.UserPreferences getInstance(android.content.Context) -> a
+    59:61:com.emerginggames.bestpuzzlegame.UserPreferences getInstance(android.content.Context) -> a
     78:79:void setLastUsedDailyBonus(long) -> a
     82:82:long getLastUsedDailyBonus() -> a
     86:87:void setTapjoyEnabled(boolean) -> a
@@ -3519,17 +3519,17 @@ com.emerginggames.snappers2.UserPreferences -> com.emerginggames.snappers2.bh:
     126:131:void addHints(int) -> a
     134:137:void setHints(int) -> b
     140:140:boolean isPackUnlocked(int) -> c
-    144:144:boolean isPackUnlocked(com.emerginggames.snappers2.model.LevelPack) -> a
-    148:155:int getLevelUnlocked(com.emerginggames.snappers2.model.LevelPack) -> b
+    144:144:boolean isPackUnlocked(com.emerginggames.bestpuzzlegame.model.LevelPack) -> a
+    148:155:int getLevelUnlocked(com.emerginggames.bestpuzzlegame.model.LevelPack) -> b
     159:159:int getLevelUnlocked(int) -> e
-    163:171:void unlockNextLevelPack(com.emerginggames.snappers2.model.LevelPack) -> c
-    174:175:void unlockLevelPack(com.emerginggames.snappers2.model.LevelPack) -> d
-    178:179:void lockLevelPack(com.emerginggames.snappers2.model.LevelPack) -> e
+    163:171:void unlockNextLevelPack(com.emerginggames.bestpuzzlegame.model.LevelPack) -> c
+    174:175:void unlockLevelPack(com.emerginggames.bestpuzzlegame.model.LevelPack) -> d
+    178:179:void lockLevelPack(com.emerginggames.bestpuzzlegame.model.LevelPack) -> e
     182:182:int getScore() -> h
     192:196:void addScore(int) -> d
-    199:206:void unlockNextLevel(com.emerginggames.snappers2.model.Level) -> a
+    199:206:void unlockNextLevel(com.emerginggames.bestpuzzlegame.model.Level) -> a
     209:210:void unlockLevel(java.lang.String,int) -> a
-    213:213:boolean isLevelSolved(com.emerginggames.snappers2.model.Level) -> b
+    213:213:boolean isLevelSolved(com.emerginggames.bestpuzzlegame.model.Level) -> b
     217:217:boolean isAdFree() -> i
     221:222:void setAdFree(boolean) -> c
     235:236:void setMusic(boolean) -> d
@@ -3551,21 +3551,21 @@ com.emerginggames.snappers2.UserPreferences -> com.emerginggames.snappers2.bh:
     313:314:void setFbExpires(long) -> c
     317:318:void setFb(java.lang.String,long) -> a
     321:324:void logoffFb() -> v
-    327:333:void setCurrentUser(com.emerginggames.snappers2.model.FbUserInfo) -> a
+    327:333:void setCurrentUser(com.emerginggames.bestpuzzlegame.model.FbUserInfo) -> a
     341:360:void clearFbUidInfo() -> B
     363:364:java.lang.String getPackKey(java.lang.String) -> d
     368:368:boolean hadFbSync() -> w
-    382:404:com.emerginggames.snappers2.model.SyncData getSyncData() -> x
-    408:409:void saveSyncData(com.emerginggames.snappers2.model.SyncData) -> a
-    441:442:void setHintChangedListener(com.emerginggames.snappers2.UserPreferences$HintChangedListener) -> a
-com.emerginggames.snappers2.UserPreferences$HintChangedListener -> com.emerginggames.snappers2.bi:
+    382:404:com.emerginggames.bestpuzzlegame.model.SyncData getSyncData() -> x
+    408:409:void saveSyncData(com.emerginggames.bestpuzzlegame.model.SyncData) -> a
+    441:442:void setHintChangedListener(com.emerginggames.bestpuzzlegame.UserPreferences$HintChangedListener) -> a
+com.emerginggames.bestpuzzlegame.UserPreferences$HintChangedListener -> com.emerginggames.bestpuzzlegame.bi:
     void onHintsChanged$255f295() -> a
-com.emerginggames.snappers2.data.CryptHelperAES -> com.emerginggames.snappers2.a.a:
+com.emerginggames.bestpuzzlegame.data.CryptHelperAES -> com.emerginggames.bestpuzzlegame.a.a:
     12:14:java.lang.String encrypt(java.lang.String,java.lang.String) -> a
     18:21:java.lang.String decrypt(java.lang.String,java.lang.String) -> b
     25:31:byte[] getRawKey(byte[]) -> a
     67:73:java.lang.String toHex(byte[]) -> b
-com.emerginggames.snappers2.data.CryptHelperDES -> com.emerginggames.snappers2.a.b:
+com.emerginggames.bestpuzzlegame.data.CryptHelperDES -> com.emerginggames.bestpuzzlegame.a.b:
     byte[] salt -> a
     javax.crypto.SecretKey pbeKey -> b
     javax.crypto.spec.PBEParameterSpec pbeParamSpec -> c
@@ -3574,7 +3574,7 @@ com.emerginggames.snappers2.data.CryptHelperDES -> com.emerginggames.snappers2.a
     39:48:javax.crypto.SecretKey getKey(java.lang.String) -> a
     52:52:java.lang.String encrypt(java.lang.String,java.lang.String) -> a
     66:66:java.lang.String decrypt(java.lang.String,java.lang.String) -> b
-com.emerginggames.snappers2.data.DbCopyOpenHelper -> com.emerginggames.snappers2.a.c:
+com.emerginggames.bestpuzzlegame.data.DbCopyOpenHelper -> com.emerginggames.bestpuzzlegame.a.c:
     java.lang.String DB_DIR -> a
     java.lang.String DB_PATH -> b
     java.lang.String OLD_DB_PATH -> c
@@ -3587,51 +3587,51 @@ com.emerginggames.snappers2.data.DbCopyOpenHelper -> com.emerginggames.snappers2
     196:219:void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
     223:224:void onDowngrade(android.database.sqlite.SQLiteDatabase,int,int) -> onDowngrade
     233:234:void onOpen(android.database.sqlite.SQLiteDatabase) -> onOpen
-com.emerginggames.snappers2.data.FileHelper -> com.emerginggames.snappers2.a.d:
+com.emerginggames.bestpuzzlegame.data.FileHelper -> com.emerginggames.bestpuzzlegame.a.d:
     28:52:void copyFile(java.io.InputStream,java.io.OutputStream) -> a
-com.emerginggames.snappers2.data.FriendTable -> com.emerginggames.snappers2.a.e:
+com.emerginggames.bestpuzzlegame.data.FriendTable -> com.emerginggames.bestpuzzlegame.a.e:
     java.lang.String[] COLUMN_LIST -> a
     56:62:android.database.sqlite.SQLiteStatement prepareInsertStatement() -> a
     79:79:java.lang.String getTableName() -> b
     84:84:java.lang.String[] getColumnList() -> c
-    130:130:void syncWithDb(android.content.Context,com.emerginggames.snappers2.model.FacebookFriend[]) -> a
-    157:157:boolean update(android.content.Context,com.emerginggames.snappers2.model.FacebookFriend) -> a
-    168:168:com.emerginggames.snappers2.model.FacebookFriend[] getFriends(android.content.Context,long[]) -> a
+    130:130:void syncWithDb(android.content.Context,com.emerginggames.bestpuzzlegame.model.FacebookFriend[]) -> a
+    157:157:boolean update(android.content.Context,com.emerginggames.bestpuzzlegame.model.FacebookFriend) -> a
+    168:168:com.emerginggames.bestpuzzlegame.model.FacebookFriend[] getFriends(android.content.Context,long[]) -> a
     181:181:void clear(android.content.Context) -> a
-    192:192:com.emerginggames.snappers2.model.FacebookFriend[] getAll(android.content.Context) -> b
-    1:1:android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.snappers2.model.DbItem) -> a
-    1:1:android.content.ContentValues createValues(com.emerginggames.snappers2.model.DbItem) -> b
-    1:1:com.emerginggames.snappers2.model.DbItem parseFromCursor(android.database.Cursor) -> a
-com.emerginggames.snappers2.data.LevelPackTable -> com.emerginggames.snappers2.a.f:
+    192:192:com.emerginggames.bestpuzzlegame.model.FacebookFriend[] getAll(android.content.Context) -> b
+    1:1:android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.bestpuzzlegame.model.DbItem) -> a
+    1:1:android.content.ContentValues createValues(com.emerginggames.bestpuzzlegame.model.DbItem) -> b
+    1:1:com.emerginggames.bestpuzzlegame.model.DbItem parseFromCursor(android.database.Cursor) -> a
+com.emerginggames.bestpuzzlegame.data.LevelPackTable -> com.emerginggames.bestpuzzlegame.a.f:
     java.lang.String[] COLUNM_LIST -> a
-    46:46:com.emerginggames.snappers2.model.LevelPack get(int,android.content.Context) -> a
-    58:58:com.emerginggames.snappers2.model.LevelPack get(java.lang.String,android.content.Context) -> a
-    70:70:com.emerginggames.snappers2.model.LevelPack[] getAll(android.content.Context) -> a
-    82:82:com.emerginggames.snappers2.model.LevelPack[] getAllByPremium$6942d573(android.content.Context) -> b
+    46:46:com.emerginggames.bestpuzzlegame.model.LevelPack get(int,android.content.Context) -> a
+    58:58:com.emerginggames.bestpuzzlegame.model.LevelPack get(java.lang.String,android.content.Context) -> a
+    70:70:com.emerginggames.bestpuzzlegame.model.LevelPack[] getAll(android.content.Context) -> a
+    82:82:com.emerginggames.bestpuzzlegame.model.LevelPack[] getAllByPremium$6942d573(android.content.Context) -> b
     109:119:android.database.sqlite.SQLiteStatement prepareInsertStatement() -> a
     155:155:java.lang.String getTableName() -> b
     160:160:java.lang.String[] getColumnList() -> c
     170:170:java.lang.String getName() -> d
     175:175:java.lang.String getHost() -> e
-    1:1:android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.snappers2.model.DbItem) -> a
-    1:1:android.content.ContentValues createValues(com.emerginggames.snappers2.model.DbItem) -> b
-    1:1:com.emerginggames.snappers2.model.DbItem parseFromCursor(android.database.Cursor) -> a
-com.emerginggames.snappers2.data.LevelTable -> com.emerginggames.snappers2.a.g:
+    1:1:android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.bestpuzzlegame.model.DbItem) -> a
+    1:1:android.content.ContentValues createValues(com.emerginggames.bestpuzzlegame.model.DbItem) -> b
+    1:1:com.emerginggames.bestpuzzlegame.model.DbItem parseFromCursor(android.database.Cursor) -> a
+com.emerginggames.bestpuzzlegame.data.LevelTable -> com.emerginggames.bestpuzzlegame.a.g:
     java.lang.String[] COLUNM_LIST -> a
-    48:50:com.emerginggames.snappers2.model.Level getNextLevel(com.emerginggames.snappers2.model.Level) -> a
-    54:59:com.emerginggames.snappers2.model.Level getLevel(android.content.Context,int,com.emerginggames.snappers2.model.LevelPack) -> a
-    63:67:com.emerginggames.snappers2.model.Level getLevel(int,com.emerginggames.snappers2.model.LevelPack) -> a
+    48:50:com.emerginggames.bestpuzzlegame.model.Level getNextLevel(com.emerginggames.bestpuzzlegame.model.Level) -> a
+    54:59:com.emerginggames.bestpuzzlegame.model.Level getLevel(android.content.Context,int,com.emerginggames.bestpuzzlegame.model.LevelPack) -> a
+    63:67:com.emerginggames.bestpuzzlegame.model.Level getLevel(int,com.emerginggames.bestpuzzlegame.model.LevelPack) -> a
     71:76:int countLevels(android.content.Context,int) -> a
     95:95:java.lang.String getTableName() -> b
     100:100:java.lang.String[] getColumnList() -> c
     105:113:android.database.sqlite.SQLiteStatement prepareInsertStatement() -> a
-    120:130:android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.snappers2.model.Level) -> b
-    135:152:com.emerginggames.snappers2.model.Level parseFromCursor(android.database.Cursor) -> b
+    120:130:android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.bestpuzzlegame.model.Level) -> b
+    135:152:com.emerginggames.bestpuzzlegame.model.Level parseFromCursor(android.database.Cursor) -> b
     161:161:java.lang.String getMail() -> d
-    1:1:android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.snappers2.model.DbItem) -> a
-    1:1:android.content.ContentValues createValues(com.emerginggames.snappers2.model.DbItem) -> b
-    1:1:com.emerginggames.snappers2.model.DbItem parseFromCursor(android.database.Cursor) -> a
-com.emerginggames.snappers2.data.SQLiteTable -> com.emerginggames.snappers2.a.h:
+    1:1:android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.bestpuzzlegame.model.DbItem) -> a
+    1:1:android.content.ContentValues createValues(com.emerginggames.bestpuzzlegame.model.DbItem) -> b
+    1:1:com.emerginggames.bestpuzzlegame.model.DbItem parseFromCursor(android.database.Cursor) -> a
+com.emerginggames.bestpuzzlegame.data.SQLiteTable -> com.emerginggames.bestpuzzlegame.a.h:
     android.database.sqlite.SQLiteOpenHelper helper -> b
     android.content.Context context -> c
     android.database.sqlite.SQLiteDatabase db -> d
@@ -3639,21 +3639,21 @@ com.emerginggames.snappers2.data.SQLiteTable -> com.emerginggames.snappers2.a.h:
     java.lang.Object DbLock -> f
     51:61:void open(boolean) -> a
     64:67:void close() -> f
-    70:70:long insert(com.emerginggames.snappers2.model.DbItem) -> c
-    80:89:com.emerginggames.snappers2.model.DbItem getByWhereStr(java.lang.String) -> a
+    70:70:long insert(com.emerginggames.bestpuzzlegame.model.DbItem) -> c
+    80:89:com.emerginggames.bestpuzzlegame.model.DbItem getByWhereStr(java.lang.String) -> a
     102:107:int count(java.lang.String) -> b
-    121:122:boolean update(com.emerginggames.snappers2.model.DbItem) -> d
+    121:122:boolean update(com.emerginggames.bestpuzzlegame.model.DbItem) -> d
     126:127:void delete_byID(int) -> a
-    134:138:com.emerginggames.snappers2.model.DbItem[] getAll(java.lang.Class,java.lang.String) -> a
+    134:138:com.emerginggames.bestpuzzlegame.model.DbItem[] getAll(java.lang.Class,java.lang.String) -> a
     android.database.sqlite.SQLiteStatement prepareInsertStatement() -> a
-    android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.snappers2.model.DbItem) -> a
-    com.emerginggames.snappers2.model.DbItem parseFromCursor(android.database.Cursor) -> a
+    android.database.sqlite.SQLiteStatement bindToInsertStatement(com.emerginggames.bestpuzzlegame.model.DbItem) -> a
+    com.emerginggames.bestpuzzlegame.model.DbItem parseFromCursor(android.database.Cursor) -> a
     java.lang.String getTableName() -> b
     java.lang.String[] getColumnList() -> c
-    android.content.ContentValues createValues(com.emerginggames.snappers2.model.DbItem) -> b
+    android.content.ContentValues createValues(com.emerginggames.bestpuzzlegame.model.DbItem) -> b
     170:174:void bindNullable(android.database.sqlite.SQLiteStatement,int,java.lang.String) -> a
-com.emerginggames.snappers2.db.R -> com.emerginggames.snappers2.b.a:
-com.emerginggames.snappers2.db.R$string -> com.emerginggames.snappers2.b.b:
+com.emerginggames.bestpuzzlegame.db.R -> com.emerginggames.bestpuzzlegame.b.a:
+com.emerginggames.bestpuzzlegame.db.R$string -> com.emerginggames.bestpuzzlegame.b.b:
     int accessibility_style_view -> a
     int accessibility_update_button -> b
     int app_name -> c
@@ -3749,35 +3749,35 @@ com.emerginggames.snappers2.db.R$string -> com.emerginggames.snappers2.b.b:
     int youVeGotHints -> aO
     int yourCodeIs -> aP
     int your_ad_here -> aQ
-com.emerginggames.snappers2.gdx.Elements.AnimatedSprite -> com.emerginggames.snappers2.c.a.a:
+com.emerginggames.bestpuzzlegame.gdx.Elements.AnimatedSprite -> com.emerginggames.bestpuzzlegame.c.a.a:
     com.badlogic.gdx.graphics.g2d.Animation animation -> i
     boolean looping -> j
     float animationTime -> k
     float loopTime -> l
-    com.emerginggames.snappers2.gdx.Elements.IAnimationListener animationEndListener -> m
+    com.emerginggames.bestpuzzlegame.gdx.Elements.IAnimationListener animationEndListener -> m
     com.badlogic.gdx.graphics.g2d.TextureRegion[] sprites -> n
     44:47:void restartAnimation() -> e
     62:69:void act(float) -> c
-com.emerginggames.snappers2.gdx.Elements.IAnimationListener -> com.emerginggames.snappers2.c.a.b:
+com.emerginggames.bestpuzzlegame.gdx.Elements.IAnimationListener -> com.emerginggames.bestpuzzlegame.c.a.b:
     void onAnimationEnd$352f39e9() -> a
-com.emerginggames.snappers2.gdx.Elements.MovableActor -> com.emerginggames.snappers2.c.a.c:
+com.emerginggames.bestpuzzlegame.gdx.Elements.MovableActor -> com.emerginggames.bestpuzzlegame.c.a.c:
     float sourceX -> q
     float sourceY -> r
     float timePassed -> s
     float animationTime -> t
     float dx -> u
     float dy -> v
-    com.emerginggames.snappers2.gdx.helper.IPositionAnimationListener listener -> w
-    com.emerginggames.snappers2.gdx.helper.IAnimationFunction animFn -> x
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionAnimationListener listener -> w
+    com.emerginggames.bestpuzzlegame.gdx.helper.IAnimationFunction animFn -> x
     boolean animationIdle -> y
     21:33:void moveAct(float) -> b
     36:36:void draw(com.badlogic.gdx.graphics.g2d.SpriteBatch,float) -> a
     40:40:com.badlogic.gdx.scenes.scene2d.Actor hit(float,float) -> a
     void setPosition(float,float) -> b
-    61:62:void setListener(com.emerginggames.snappers2.gdx.helper.IPositionAnimationListener) -> a
+    61:62:void setListener(com.emerginggames.bestpuzzlegame.gdx.helper.IPositionAnimationListener) -> a
     65:70:void setNext(float,float,float) -> a
-    73:74:void setAnimFn(com.emerginggames.snappers2.gdx.helper.IAnimationFunction) -> a
-com.emerginggames.snappers2.gdx.Elements.SnapperView -> com.emerginggames.snappers2.c.a.d:
+    73:74:void setAnimFn(com.emerginggames.bestpuzzlegame.gdx.helper.IAnimationFunction) -> a
+com.emerginggames.bestpuzzlegame.gdx.Elements.SnapperView -> com.emerginggames.bestpuzzlegame.c.a.d:
     int halfSize -> z
     int state -> A
     int i -> B
@@ -3788,13 +3788,13 @@ com.emerginggames.snappers2.gdx.Elements.SnapperView -> com.emerginggames.snappe
     float sourceScale -> G
     float targetScale -> H
     com.badlogic.gdx.graphics.g2d.Sprite snapper -> I
-    com.emerginggames.snappers2.gdx.Elements.AnimatedSprite eyes -> J
+    com.emerginggames.bestpuzzlegame.gdx.Elements.AnimatedSprite eyes -> J
     android.view.animation.OvershootInterpolator scaleInterpolator -> K
     android.view.animation.DecelerateInterpolator explodeInterpolator -> L
-    com.emerginggames.snappers2.gdx.Elements.SnapperView$SnapperFreeListener freeListener -> M
-    com.emerginggames.snappers2.gdx.Elements.AnimatedSprite bang -> N
-    com.emerginggames.snappers2.logic.GameLogic logic -> O
-    com.emerginggames.snappers2.gdx.Elements.IAnimationListener bangListener -> P
+    com.emerginggames.bestpuzzlegame.gdx.Elements.SnapperView$SnapperFreeListener freeListener -> M
+    com.emerginggames.bestpuzzlegame.gdx.Elements.AnimatedSprite bang -> N
+    com.emerginggames.bestpuzzlegame.logic.GameLogic logic -> O
+    com.emerginggames.bestpuzzlegame.gdx.Elements.IAnimationListener bangListener -> P
     63:68:void set(int,int,int) -> a
     71:75:void setPosition() -> c
     79:83:void setPosition(float,float) -> b
@@ -3809,29 +3809,29 @@ com.emerginggames.snappers2.gdx.Elements.SnapperView -> com.emerginggames.snappe
     187:188:void setNext(float,float,float) -> a
     191:194:void setRandomStart$2e716355(int,int) -> a
     197:206:void shiftRandom(float) -> c
-com.emerginggames.snappers2.gdx.Elements.SnapperView$1 -> com.emerginggames.snappers2.c.a.e:
-    com.emerginggames.snappers2.gdx.Elements.SnapperView this$0 -> a
+com.emerginggames.bestpuzzlegame.gdx.Elements.SnapperView$1 -> com.emerginggames.bestpuzzlegame.c.a.e:
+    com.emerginggames.bestpuzzlegame.gdx.Elements.SnapperView this$0 -> a
     215:217:void onAnimationEnd$352f39e9() -> a
-com.emerginggames.snappers2.gdx.Elements.SnapperView$SnapperFreeListener -> com.emerginggames.snappers2.c.a.f:
-    void onSnapperFree(com.emerginggames.snappers2.gdx.Elements.SnapperView) -> a
-com.emerginggames.snappers2.gdx.Game -> com.emerginggames.snappers2.c.a:
-    com.emerginggames.snappers2.gdx.Game$Stages currentStageE -> a
+com.emerginggames.bestpuzzlegame.gdx.Elements.SnapperView$SnapperFreeListener -> com.emerginggames.bestpuzzlegame.c.a.f:
+    void onSnapperFree(com.emerginggames.bestpuzzlegame.gdx.Elements.SnapperView) -> a
+com.emerginggames.bestpuzzlegame.gdx.Game -> com.emerginggames.bestpuzzlegame.c.a:
+    com.emerginggames.bestpuzzlegame.gdx.Game$Stages currentStageE -> a
     int width -> b
     int height -> c
     com.badlogic.gdx.graphics.g2d.SpriteBatch batch -> p
-    com.emerginggames.snappers2.model.Level level -> d
+    com.emerginggames.bestpuzzlegame.model.Level level -> d
     com.badlogic.gdx.InputProcessor currentInputProcessor -> e
-    com.emerginggames.snappers2.gdx.stages.MyStage currentStage -> f
-    com.emerginggames.snappers2.gdx.stages.MainStage mainStage -> g
+    com.emerginggames.bestpuzzlegame.gdx.stages.MyStage currentStage -> f
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage mainStage -> g
     com.badlogic.gdx.graphics.g2d.Sprite bg -> h
     boolean isPaused -> i
-    com.emerginggames.snappers2.gdx.IAppGameListener mGameListener -> j
+    com.emerginggames.bestpuzzlegame.gdx.IAppGameListener mGameListener -> j
     com.badlogic.gdx.graphics.g2d.Sprite rays -> k
     boolean objectsCreated -> l
     boolean isSoundEnabled -> m
     boolean initDone -> n
     boolean showRays -> o
-    com.emerginggames.snappers2.gdx.IGameEventListener gameListener -> q
+    com.emerginggames.bestpuzzlegame.gdx.IGameEventListener gameListener -> q
     int[] $SWITCH_TABLE$com$emerginggames$snappers2$gdx$Game$Stages -> r
     53:55:void create() -> a
     84:92:void resize(int,int) -> a
@@ -3843,68 +3843,68 @@ com.emerginggames.snappers2.gdx.Game -> com.emerginggames.snappers2.c.a:
     152:152:boolean isHinting() -> h
     157:160:void pause() -> c
     168:169:void dispose() -> d
-    172:175:com.emerginggames.snappers2.model.Level getLevel() -> i
+    172:175:com.emerginggames.bestpuzzlegame.model.Level getLevel() -> i
     179:180:void showRays(boolean) -> b
-    200:225:void setStage(com.emerginggames.snappers2.gdx.Game$Stages) -> a
+    200:225:void setStage(com.emerginggames.bestpuzzlegame.gdx.Game$Stages) -> a
     232:232:int getMarginBottom() -> j
     236:236:int getMaxMarginBottom() -> k
     240:242:void resizeMarginBottom(int) -> a
     245:259:void backButtonPressed() -> l
     262:262:boolean isFreeHint() -> m
     21:21:int[] $SWITCH_TABLE$com$emerginggames$snappers2$gdx$Game$Stages() -> n
-com.emerginggames.snappers2.gdx.Game$1 -> com.emerginggames.snappers2.c.b:
-    com.emerginggames.snappers2.gdx.Game this$0 -> a
+com.emerginggames.bestpuzzlegame.gdx.Game$1 -> com.emerginggames.bestpuzzlegame.c.b:
+    com.emerginggames.bestpuzzlegame.gdx.Game this$0 -> a
     269:272:void gameWon() -> a
     276:277:void gameLost() -> b
     281:282:void levelPackWon() -> c
-    286:286:com.emerginggames.snappers2.gdx.IAppGameListener getAppListener() -> d
-com.emerginggames.snappers2.gdx.Game$Stages -> com.emerginggames.snappers2.c.c:
-    com.emerginggames.snappers2.gdx.Game$Stages MainStage -> a
-    com.emerginggames.snappers2.gdx.Game$Stages GameOverStage -> b
-    com.emerginggames.snappers2.gdx.Game$Stages HelpStage -> c
-    com.emerginggames.snappers2.gdx.Game$Stages HintMenu -> d
-    com.emerginggames.snappers2.gdx.Game$Stages[] ENUM$VALUES -> e
-    1:1:com.emerginggames.snappers2.gdx.Game$Stages[] values() -> values
-    1:1:com.emerginggames.snappers2.gdx.Game$Stages valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.gdx.IAppGameListener -> com.emerginggames.snappers2.c.d:
+    286:286:com.emerginggames.bestpuzzlegame.gdx.IAppGameListener getAppListener() -> d
+com.emerginggames.bestpuzzlegame.gdx.Game$Stages -> com.emerginggames.bestpuzzlegame.c.c:
+    com.emerginggames.bestpuzzlegame.gdx.Game$Stages MainStage -> a
+    com.emerginggames.bestpuzzlegame.gdx.Game$Stages GameOverStage -> b
+    com.emerginggames.bestpuzzlegame.gdx.Game$Stages HelpStage -> c
+    com.emerginggames.bestpuzzlegame.gdx.Game$Stages HintMenu -> d
+    com.emerginggames.bestpuzzlegame.gdx.Game$Stages[] ENUM$VALUES -> e
+    1:1:com.emerginggames.bestpuzzlegame.gdx.Game$Stages[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.gdx.Game$Stages valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.gdx.IAppGameListener -> com.emerginggames.bestpuzzlegame.c.d:
     void levelPackWon$44f7d4de() -> c
-    void levelSolved(com.emerginggames.snappers2.model.Level,int) -> a
-    boolean isLevelSolved(com.emerginggames.snappers2.model.Level) -> a
+    void levelSolved(com.emerginggames.bestpuzzlegame.model.Level,int) -> a
+    boolean isLevelSolved(com.emerginggames.bestpuzzlegame.model.Level) -> a
     boolean isSoundEnabled() -> e
     void gotScreenSize(int,int) -> a
-    com.emerginggames.snappers2.model.Level getNextLevel(com.emerginggames.snappers2.model.Level) -> c
+    com.emerginggames.bestpuzzlegame.model.Level getNextLevel(com.emerginggames.bestpuzzlegame.model.Level) -> c
     void onInitDone() -> f
     void showPaused() -> a
     void showHintMenu() -> b
-    void showGameLost(com.emerginggames.snappers2.model.Level) -> b
+    void showGameLost(com.emerginggames.bestpuzzlegame.model.Level) -> b
     void hideGameOverMenu() -> d
-    void updateLevelInfo(com.emerginggames.snappers2.model.Level) -> d
+    void updateLevelInfo(com.emerginggames.bestpuzzlegame.model.Level) -> d
     void updateTapsLeft(int) -> a
-com.emerginggames.snappers2.gdx.IGameEventListener -> com.emerginggames.snappers2.c.e:
+com.emerginggames.bestpuzzlegame.gdx.IGameEventListener -> com.emerginggames.bestpuzzlegame.c.e:
     void gameWon() -> a
     void gameLost() -> b
     void levelPackWon() -> c
-    com.emerginggames.snappers2.gdx.IAppGameListener getAppListener() -> d
-com.emerginggames.snappers2.gdx.Resources -> com.emerginggames.snappers2.c.f:
+    com.emerginggames.bestpuzzlegame.gdx.IAppGameListener getAppListener() -> d
+com.emerginggames.bestpuzzlegame.gdx.Resources -> com.emerginggames.bestpuzzlegame.c.f:
     java.lang.String dir -> a
     java.lang.Object syncLock -> b
     android.content.Context context -> c
     com.badlogic.gdx.graphics.g2d.TextureRegion bg -> d
-    com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas mainTextures -> e
+    com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas mainTextures -> e
     com.badlogic.gdx.graphics.g2d.TextureRegion hintCircle -> f
     com.badlogic.gdx.graphics.g2d.TextureRegion rays -> g
-    com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$AtlasRegion[] snapperBack -> h
-    com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$AtlasRegion[] eyeFrames -> i
-    com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$AtlasRegion[] blastFrames -> j
-    com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$AtlasRegion[] bangFrames -> k
-    com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$AtlasRegion[] hintFrames -> l
+    com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$AtlasRegion[] snapperBack -> h
+    com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$AtlasRegion[] eyeFrames -> i
+    com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$AtlasRegion[] blastFrames -> j
+    com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$AtlasRegion[] bangFrames -> k
+    com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$AtlasRegion[] hintFrames -> l
     com.badlogic.gdx.audio.Sound[] popSounds -> m
     com.badlogic.gdx.audio.Sound winSound -> n
     com.badlogic.gdx.audio.Sound fanfareSound -> o
     com.badlogic.gdx.audio.Sound buttonSound -> p
     com.badlogic.gdx.graphics.g2d.BitmapFont fnt1 -> q
     android.graphics.Typeface font -> r
-    com.emerginggames.snappers2.gdx.Resources$PreloadRunnable preloadRunnable -> s
+    com.emerginggames.bestpuzzlegame.gdx.Resources$PreloadRunnable preloadRunnable -> s
     int[] $SWITCH_TABLE$com$emerginggames$snappers2$Metrics$SizeMode -> t
     60:71:void init() -> a
     74:76:void loadTextures$1385ff() -> b
@@ -3918,35 +3918,35 @@ com.emerginggames.snappers2.gdx.Resources -> com.emerginggames.snappers2.c.f:
     216:218:android.graphics.Typeface getFont(android.content.Context) -> a
     222:225:void preloadResourcesInWorker$552c4e01() -> g
     27:27:int[] $SWITCH_TABLE$com$emerginggames$snappers2$Metrics$SizeMode() -> i
-com.emerginggames.snappers2.gdx.Resources$Preload -> com.emerginggames.snappers2.c.g:
+com.emerginggames.bestpuzzlegame.gdx.Resources$Preload -> com.emerginggames.bestpuzzlegame.c.g:
     com.badlogic.gdx.graphics.TextureData bg -> a
     boolean isBgLoading -> b
     java.lang.String bgName -> c
-    com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$TextureAtlasData mainTextures -> d
-com.emerginggames.snappers2.gdx.Resources$PreloadRunnable -> com.emerginggames.snappers2.c.h:
+    com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$TextureAtlasData mainTextures -> d
+com.emerginggames.bestpuzzlegame.gdx.Resources$PreloadRunnable -> com.emerginggames.bestpuzzlegame.c.h:
     java.lang.String bgName -> a
     231:236:void run() -> run
-com.emerginggames.snappers2.gdx.Splash -> com.emerginggames.snappers2.c.i:
-    com.emerginggames.snappers2.SplashGdxActivity activity -> a
+com.emerginggames.bestpuzzlegame.gdx.Splash -> com.emerginggames.bestpuzzlegame.c.i:
+    com.emerginggames.bestpuzzlegame.SplashGdxActivity activity -> a
     boolean done -> b
     22:22:void create() -> a
     26:29:void resize(int,int) -> a
     33:33:void render() -> b
     37:37:void pause() -> c
     45:45:void dispose() -> d
-com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas -> com.emerginggames.snappers2.c.b.a:
+com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas -> com.emerginggames.bestpuzzlegame.c.b.a:
     java.lang.String[] tuple -> a
     java.util.HashSet textures -> c
     java.util.ArrayList regions -> d
     java.util.Comparator indexComparator -> b
-    235:266:void load(com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$TextureAtlasData) -> a
-    295:297:com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$AtlasRegion findRegion(java.lang.String) -> a
+    235:266:void load(com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$TextureAtlasData) -> a
+    295:297:com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$AtlasRegion findRegion(java.lang.String) -> a
     394:397:void dispose() -> b
     410:413:java.lang.String readValue(java.io.BufferedReader) -> a
     417:423:void readTuple(java.io.BufferedReader) -> b
-com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$1 -> com.emerginggames.snappers2.c.b.b:
+com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$1 -> com.emerginggames.bestpuzzlegame.c.b.b:
     1:1:int compare(java.lang.Object,java.lang.Object) -> compare
-com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$AtlasRegion -> com.emerginggames.snappers2.c.b.c:
+com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$AtlasRegion -> com.emerginggames.bestpuzzlegame.c.b.c:
     int index -> a
     java.lang.String name -> b
     float offsetX -> c
@@ -3957,12 +3957,12 @@ com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$AtlasRegion -> com.
     int originalHeight -> m
     boolean rotate -> n
     482:485:void flip(boolean,boolean) -> a
-com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$TextureAtlasData -> com.emerginggames.snappers2.c.b.d:
+com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$TextureAtlasData -> com.emerginggames.bestpuzzlegame.c.b.d:
     com.badlogic.gdx.utils.Array pages -> a
     com.badlogic.gdx.utils.Array regions -> b
     188:190:void prepare() -> a
     193:196:boolean isPrepared() -> b
-com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Page -> com.emerginggames.snappers2.c.b.e:
+com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Page -> com.emerginggames.bestpuzzlegame.c.b.e:
     com.badlogic.gdx.files.FileHandle textureFile -> a
     com.badlogic.gdx.graphics.Texture texture -> b
     boolean useMipMaps -> c
@@ -3974,8 +3974,8 @@ com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Pa
     com.badlogic.gdx.graphics.TextureData textureData -> i
     60:65:void prepare() -> a
     68:68:boolean isPrepared() -> b
-com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Region -> com.emerginggames.snappers2.c.b.f:
-    com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Page page -> a
+com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Region -> com.emerginggames.bestpuzzlegame.c.b.f:
+    com.emerginggames.bestpuzzlegame.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Page page -> a
     int index -> b
     java.lang.String name -> c
     float offsetX -> d
@@ -3988,59 +3988,59 @@ com.emerginggames.snappers2.gdx.core.PrepareableTextureAtlas$TextureAtlasData$Re
     int width -> k
     int height -> l
     boolean flip -> m
-com.emerginggames.snappers2.gdx.helper.IAnimationFunction -> com.emerginggames.snappers2.c.c.a:
+com.emerginggames.bestpuzzlegame.gdx.helper.IAnimationFunction -> com.emerginggames.bestpuzzlegame.c.c.a:
     float getMult(float) -> a
-com.emerginggames.snappers2.gdx.helper.IPositionAnimationListener -> com.emerginggames.snappers2.c.c.b:
-    void onAnimationEnd(com.emerginggames.snappers2.gdx.Elements.MovableActor) -> a
-com.emerginggames.snappers2.gdx.helper.IPositionable -> com.emerginggames.snappers2.c.c.c:
+com.emerginggames.bestpuzzlegame.gdx.helper.IPositionAnimationListener -> com.emerginggames.bestpuzzlegame.c.c.b:
+    void onAnimationEnd(com.emerginggames.bestpuzzlegame.gdx.Elements.MovableActor) -> a
+com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable -> com.emerginggames.bestpuzzlegame.c.c.c:
     float getWidth() -> a
     float getHeight() -> b
     void setPosition(float,float) -> b
-com.emerginggames.snappers2.gdx.helper.IPositionable$Dir -> com.emerginggames.snappers2.c.c.d:
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir UP -> a
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir UPRIGHT -> b
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir RIGHT -> c
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir DOWNRIGHT -> d
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir DOWN -> e
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir DOWNLEFT -> f
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir LEFT -> g
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir UPLEFT -> h
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir CENTER -> i
-    com.emerginggames.snappers2.gdx.helper.IPositionable$Dir[] ENUM$VALUES -> j
-    1:1:com.emerginggames.snappers2.gdx.helper.IPositionable$Dir[] values() -> values
-    1:1:com.emerginggames.snappers2.gdx.helper.IPositionable$Dir valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.gdx.helper.PowEasingAnim -> com.emerginggames.snappers2.c.c.e:
+com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir -> com.emerginggames.bestpuzzlegame.c.c.d:
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir UP -> a
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir UPRIGHT -> b
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir RIGHT -> c
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir DOWNRIGHT -> d
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir DOWN -> e
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir DOWNLEFT -> f
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir LEFT -> g
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir UPLEFT -> h
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir CENTER -> i
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir[] ENUM$VALUES -> j
+    1:1:com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.gdx.helper.IPositionable$Dir valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.gdx.helper.PowEasingAnim -> com.emerginggames.bestpuzzlegame.c.c.e:
     double rate -> a
     float k -> b
     21:21:float getMult(float) -> a
-com.emerginggames.snappers2.gdx.stages.Hints -> com.emerginggames.snappers2.c.d.a:
-    com.emerginggames.snappers2.logic.GameLogic logic -> a
+com.emerginggames.bestpuzzlegame.gdx.stages.Hints -> com.emerginggames.bestpuzzlegame.c.d.a:
+    com.emerginggames.bestpuzzlegame.logic.GameLogic logic -> a
     int[] hints -> b
     int currentHint -> c
-    com.emerginggames.snappers2.gdx.Elements.AnimatedSprite hintSprite -> d
+    com.emerginggames.bestpuzzlegame.gdx.Elements.AnimatedSprite hintSprite -> d
     com.badlogic.gdx.graphics.g2d.Sprite backSprite -> e
     float animationTime -> f
     float backMaxScale -> g
     boolean hintWaiting -> h
     44:47:void updateLevel() -> a
     73:88:void nextHint() -> b
-com.emerginggames.snappers2.gdx.stages.MainStage -> com.emerginggames.snappers2.c.d.b:
-    com.emerginggames.snappers2.logic.GameLogic logic -> w
-    com.emerginggames.snappers2.gdx.IGameEventListener mGame -> m
+com.emerginggames.bestpuzzlegame.gdx.stages.MainStage -> com.emerginggames.bestpuzzlegame.c.d.b:
+    com.emerginggames.bestpuzzlegame.logic.GameLogic logic -> w
+    com.emerginggames.bestpuzzlegame.gdx.IGameEventListener mGame -> m
     boolean gameOverFired -> n
-    com.emerginggames.snappers2.gdx.stages.Hints hint -> o
+    com.emerginggames.bestpuzzlegame.gdx.stages.Hints hint -> o
     boolean isHinting -> p
     boolean isTutorialAvailable -> q
     boolean drawButtons -> r
     float animDelta -> s
-    com.emerginggames.snappers2.gdx.stages.MainStage$Blasts blasts -> x
-    com.emerginggames.snappers2.gdx.stages.MainStage$Snappers_ snappers -> y
-    com.emerginggames.snappers2.gdx.stages.MainStage$Sounds sounds -> z
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Blasts blasts -> x
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Snappers_ snappers -> y
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Sounds sounds -> z
     int marginBottom -> t
     int maxMarginBottom -> u
     float timeToFireWon -> v
-    com.emerginggames.snappers2.logic.ILogicListener logicListener -> A
-    76:87:void setLevel(com.emerginggames.snappers2.model.Level) -> a
+    com.emerginggames.bestpuzzlegame.logic.ILogicListener logicListener -> A
+    76:87:void setLevel(com.emerginggames.bestpuzzlegame.model.Level) -> a
     113:117:void resizeGameRect(int) -> b
     121:153:void act(float) -> a
     157:160:boolean touchUp(int,int,int,int) -> a
@@ -4048,64 +4048,64 @@ com.emerginggames.snappers2.gdx.stages.MainStage -> com.emerginggames.snappers2.
     180:192:void showHints$1385ff() -> f
     195:196:void restartLevel() -> g
     199:205:void nextLevel() -> h
-    208:208:com.emerginggames.snappers2.logic.GameLogic getLogic() -> i
+    208:208:com.emerginggames.bestpuzzlegame.logic.GameLogic getLogic() -> i
     212:212:boolean areSnappersTouched() -> j
     216:217:void setDrawButtons(boolean) -> a
-    55:55:com.emerginggames.snappers2.gdx.stages.MainStage$Snappers_ access$0(com.emerginggames.snappers2.gdx.stages.MainStage) -> a
-    42:42:com.emerginggames.snappers2.logic.GameLogic access$1(com.emerginggames.snappers2.gdx.stages.MainStage) -> b
-    34:34:com.badlogic.gdx.graphics.g2d.SpriteBatch access$2(com.emerginggames.snappers2.gdx.stages.MainStage) -> c
-com.emerginggames.snappers2.gdx.stages.MainStage$1 -> com.emerginggames.snappers2.c.d.c:
-    com.emerginggames.snappers2.gdx.stages.MainStage this$0 -> a
+    55:55:com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Snappers_ access$0(com.emerginggames.bestpuzzlegame.gdx.stages.MainStage) -> a
+    42:42:com.emerginggames.bestpuzzlegame.logic.GameLogic access$1(com.emerginggames.bestpuzzlegame.gdx.stages.MainStage) -> b
+    34:34:com.badlogic.gdx.graphics.g2d.SpriteBatch access$2(com.emerginggames.bestpuzzlegame.gdx.stages.MainStage) -> c
+com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$1 -> com.emerginggames.bestpuzzlegame.c.d.c:
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage this$0 -> a
     222:228:void snapperHit(int,int) -> a
     232:239:void tap() -> a
     243:243:boolean canTap(int,int) -> b
-com.emerginggames.snappers2.gdx.stages.MainStage$Blasts -> com.emerginggames.snappers2.c.d.d:
+com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Blasts -> com.emerginggames.bestpuzzlegame.c.d.d:
     com.badlogic.gdx.graphics.g2d.Animation blastAnimation -> b
-    com.emerginggames.snappers2.gdx.stages.MainStage this$0 -> a
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage this$0 -> a
     int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Blast$Direction -> c
     296:303:void draw() -> a
     287:287:int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Blast$Direction() -> b
-com.emerginggames.snappers2.gdx.stages.MainStage$Snappers_ -> com.emerginggames.snappers2.c.d.e:
+com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Snappers_ -> com.emerginggames.bestpuzzlegame.c.d.e:
     com.badlogic.gdx.utils.Array activeSnappers -> d
     com.badlogic.gdx.utils.Pool snapperViewPool -> e
-    com.emerginggames.snappers2.gdx.helper.IAnimationFunction snapperAnimFn -> a
-    com.emerginggames.snappers2.gdx.helper.IPositionAnimationListener snapperAnimationListener -> b
-    com.emerginggames.snappers2.gdx.stages.MainStage this$0 -> c
+    com.emerginggames.bestpuzzlegame.gdx.helper.IAnimationFunction snapperAnimFn -> a
+    com.emerginggames.bestpuzzlegame.gdx.helper.IPositionAnimationListener snapperAnimationListener -> b
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage this$0 -> c
     336:345:void act(float) -> a
     348:348:void updatePositions() -> a
     355:360:void defineSnapperViews() -> b
     384:386:void draw() -> c
-    394:401:com.emerginggames.snappers2.gdx.Elements.SnapperView find(int,int) -> a
-    421:421:void onSnapperFree(com.emerginggames.snappers2.gdx.Elements.SnapperView) -> a
-com.emerginggames.snappers2.gdx.stages.MainStage$Snappers_$1 -> com.emerginggames.snappers2.c.d.f:
-    com.emerginggames.snappers2.gdx.stages.MainStage$Snappers_ this$1 -> a
-    414:416:void onAnimationEnd(com.emerginggames.snappers2.gdx.Elements.MovableActor) -> a
-com.emerginggames.snappers2.gdx.stages.MainStage$Snappers_$2 -> com.emerginggames.snappers2.c.d.g:
-    com.emerginggames.snappers2.gdx.stages.MainStage$Snappers_ this$1 -> a
+    394:401:com.emerginggames.bestpuzzlegame.gdx.Elements.SnapperView find(int,int) -> a
+    421:421:void onSnapperFree(com.emerginggames.bestpuzzlegame.gdx.Elements.SnapperView) -> a
+com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Snappers_$1 -> com.emerginggames.bestpuzzlegame.c.d.f:
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Snappers_ this$1 -> a
+    414:416:void onAnimationEnd(com.emerginggames.bestpuzzlegame.gdx.Elements.MovableActor) -> a
+com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Snappers_$2 -> com.emerginggames.bestpuzzlegame.c.d.g:
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Snappers_ this$1 -> a
     1:1:java.lang.Object newObject() -> a
-com.emerginggames.snappers2.gdx.stages.MainStage$Sounds -> com.emerginggames.snappers2.c.d.h:
+com.emerginggames.bestpuzzlegame.gdx.stages.MainStage$Sounds -> com.emerginggames.bestpuzzlegame.c.d.h:
     float sincePopped -> a
     int toPop -> b
-    com.emerginggames.snappers2.gdx.stages.MainStage this$0 -> c
+    com.emerginggames.bestpuzzlegame.gdx.stages.MainStage this$0 -> c
     430:433:void act(float,int) -> a
-com.emerginggames.snappers2.gdx.stages.MyStage -> com.emerginggames.snappers2.c.d.i:
-com.emerginggames.snappers2.logic.GameLogic -> com.emerginggames.snappers2.d.a:
-    com.emerginggames.snappers2.model.Snappers snappers -> a
+com.emerginggames.bestpuzzlegame.gdx.stages.MyStage -> com.emerginggames.bestpuzzlegame.c.d.i:
+com.emerginggames.bestpuzzlegame.logic.GameLogic -> com.emerginggames.bestpuzzlegame.d.a:
+    com.emerginggames.bestpuzzlegame.model.Snappers snappers -> a
     int width -> b
     int height -> c
     float xSnapperMargin -> d
     float ySnapperMargin -> e
     android.graphics.Rect snappersRect -> n
-    com.emerginggames.snappers2.model.Level level -> f
+    com.emerginggames.bestpuzzlegame.model.Level level -> f
     int tapRemains -> g
-    com.emerginggames.snappers2.logic.ILogicListener snapperListener -> h
+    com.emerginggames.bestpuzzlegame.logic.ILogicListener snapperListener -> h
     boolean hintUsed -> i
     int snapperTouchedI -> j
     int snapperTouchedJ -> k
     long startTime -> l
-    com.emerginggames.snappers2.logic.GameLogic$Blasts blasts -> m
+    com.emerginggames.bestpuzzlegame.logic.GameLogic$Blasts blasts -> m
     43:50:void setScreen(int,int,android.graphics.Rect) -> a
-    53:59:void startLevel(com.emerginggames.snappers2.model.Level) -> a
+    53:59:void startLevel(com.emerginggames.bestpuzzlegame.model.Level) -> a
     62:71:void tapSnapper(int,int) -> a
     74:81:boolean hitSnapper(int,int) -> b
     85:85:int getSnapperXPosision(int) -> a
@@ -4115,9 +4115,9 @@ com.emerginggames.snappers2.logic.GameLogic -> com.emerginggames.snappers2.d.a:
     111:111:boolean isGameLost() -> b
     139:139:java.util.List getBlasts() -> c
     143:143:int countBlasts() -> d
-com.emerginggames.snappers2.logic.GameLogic$Blasts -> com.emerginggames.snappers2.d.b:
+com.emerginggames.bestpuzzlegame.logic.GameLogic$Blasts -> com.emerginggames.bestpuzzlegame.d.b:
     java.util.List blastsToKill -> a
-    com.emerginggames.snappers2.logic.Pool blastPool -> b
+    com.emerginggames.bestpuzzlegame.logic.Pool blastPool -> b
     java.util.List activeBlasts -> c
     java.util.List newBlasts -> d
     float grainSpeedX -> f
@@ -4125,107 +4125,107 @@ com.emerginggames.snappers2.logic.GameLogic$Blasts -> com.emerginggames.snappers
     float syncTime -> h
     int syncTimeInt -> i
     int SYNC_TIME_INT -> j
-    com.emerginggames.snappers2.logic.GameLogic this$0 -> e
+    com.emerginggames.bestpuzzlegame.logic.GameLogic this$0 -> e
     int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Blast$Direction -> k
     178:180:void setSpeed() -> a
     191:197:void launchBlasts(int,int) -> a
-    200:212:com.emerginggames.snappers2.model.Blast launchBlast2(int,int,com.emerginggames.snappers2.model.Blast$Direction,int,int) -> a
-    217:240:void setNextBlastDestination(com.emerginggames.snappers2.model.Blast) -> a
+    200:212:com.emerginggames.bestpuzzlegame.model.Blast launchBlast2(int,int,com.emerginggames.bestpuzzlegame.model.Blast$Direction,int,int) -> a
+    217:240:void setNextBlastDestination(com.emerginggames.bestpuzzlegame.model.Blast) -> a
     243:259:int advanceBlasts(float) -> a
     146:146:int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Blast$Direction() -> b
-com.emerginggames.snappers2.logic.GameLogic$Blasts$1 -> com.emerginggames.snappers2.d.c:
-    com.emerginggames.snappers2.logic.GameLogic$Blasts this$1 -> a
+com.emerginggames.bestpuzzlegame.logic.GameLogic$Blasts$1 -> com.emerginggames.bestpuzzlegame.d.c:
+    com.emerginggames.bestpuzzlegame.logic.GameLogic$Blasts this$1 -> a
     1:1:java.lang.Object createObject() -> a
-com.emerginggames.snappers2.logic.ILogicListener -> com.emerginggames.snappers2.d.d:
+com.emerginggames.bestpuzzlegame.logic.ILogicListener -> com.emerginggames.bestpuzzlegame.d.d:
     void snapperHit(int,int) -> a
     void tap() -> a
     boolean canTap(int,int) -> b
-com.emerginggames.snappers2.logic.Pool -> com.emerginggames.snappers2.d.e:
+com.emerginggames.bestpuzzlegame.logic.Pool -> com.emerginggames.bestpuzzlegame.d.e:
     java.util.List freeObjects -> a
-    com.emerginggames.snappers2.logic.PoolObjectFactory factory -> b
+    com.emerginggames.bestpuzzlegame.logic.PoolObjectFactory factory -> b
     int maxSize -> c
     24:29:java.lang.Object newObject() -> a
     33:35:void free(java.lang.Object) -> a
-com.emerginggames.snappers2.logic.PoolObjectFactory -> com.emerginggames.snappers2.d.f:
+com.emerginggames.bestpuzzlegame.logic.PoolObjectFactory -> com.emerginggames.bestpuzzlegame.d.f:
     java.lang.Object createObject() -> a
-com.emerginggames.snappers2.model.Blast -> com.emerginggames.snappers2.e.a:
+com.emerginggames.bestpuzzlegame.model.Blast -> com.emerginggames.bestpuzzlegame.e.a:
     float dest -> a
     float x -> b
     float y -> c
-    com.emerginggames.snappers2.model.Blast$Direction direction -> d
+    com.emerginggames.bestpuzzlegame.model.Blast$Direction direction -> d
     int destI -> e
     int destJ -> f
     float source -> g
     float age -> h
     int checkAge -> i
-com.emerginggames.snappers2.model.Blast$Direction -> com.emerginggames.snappers2.e.b:
-    com.emerginggames.snappers2.model.Blast$Direction Up -> a
-    com.emerginggames.snappers2.model.Blast$Direction Right -> b
-    com.emerginggames.snappers2.model.Blast$Direction Down -> c
-    com.emerginggames.snappers2.model.Blast$Direction Left -> d
-    com.emerginggames.snappers2.model.Blast$Direction[] ENUM$VALUES -> e
-    1:1:com.emerginggames.snappers2.model.Blast$Direction[] values() -> values
-    1:1:com.emerginggames.snappers2.model.Blast$Direction valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.model.DbItem -> com.emerginggames.snappers2.e.c:
+com.emerginggames.bestpuzzlegame.model.Blast$Direction -> com.emerginggames.bestpuzzlegame.e.b:
+    com.emerginggames.bestpuzzlegame.model.Blast$Direction Up -> a
+    com.emerginggames.bestpuzzlegame.model.Blast$Direction Right -> b
+    com.emerginggames.bestpuzzlegame.model.Blast$Direction Down -> c
+    com.emerginggames.bestpuzzlegame.model.Blast$Direction Left -> d
+    com.emerginggames.bestpuzzlegame.model.Blast$Direction[] ENUM$VALUES -> e
+    1:1:com.emerginggames.bestpuzzlegame.model.Blast$Direction[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.model.Blast$Direction valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.model.DbItem -> com.emerginggames.bestpuzzlegame.e.c:
     int id -> a
-com.emerginggames.snappers2.model.FacebookFriend -> com.emerginggames.snappers2.e.d:
+com.emerginggames.bestpuzzlegame.model.FacebookFriend -> com.emerginggames.bestpuzzlegame.e.d:
     long facebook_id -> b
     java.lang.String first_name -> c
     boolean installed -> d
     int xp_count -> e
     long lastSendGift -> f
-com.emerginggames.snappers2.model.FbUserInfo -> com.emerginggames.snappers2.e.e:
+com.emerginggames.bestpuzzlegame.model.FbUserInfo -> com.emerginggames.bestpuzzlegame.e.e:
     long fbUID -> a
     java.lang.String name -> b
-com.emerginggames.snappers2.model.Goods -> com.emerginggames.snappers2.e.f:
-    com.emerginggames.snappers2.model.Goods HintPack1 -> a
-    com.emerginggames.snappers2.model.Goods HintPack10 -> b
-    com.emerginggames.snappers2.model.Goods HintPack3 -> c
-    com.emerginggames.snappers2.model.Goods HintPack25 -> d
-    com.emerginggames.snappers2.model.Goods HintPack75 -> e
-    com.emerginggames.snappers2.model.Goods LevelPack2 -> f
-    com.emerginggames.snappers2.model.Goods LevelPack3 -> g
-    com.emerginggames.snappers2.model.Goods LevelPack4 -> h
-    com.emerginggames.snappers2.model.Goods LevelPack5 -> i
-    com.emerginggames.snappers2.model.Goods LevelPack6 -> j
-    com.emerginggames.snappers2.model.Goods LevelPack7 -> k
-    com.emerginggames.snappers2.model.Goods PremiumLevelPack1 -> l
-    com.emerginggames.snappers2.model.Goods PremiumLevelPack2 -> m
-    com.emerginggames.snappers2.model.Goods PremiumLevelPack3 -> n
-    com.emerginggames.snappers2.model.Goods PremiumLevelPack4 -> o
-    com.emerginggames.snappers2.model.Goods AdFree -> p
-    com.emerginggames.snappers2.model.Goods AdFree6hours -> q
+com.emerginggames.bestpuzzlegame.model.Goods -> com.emerginggames.bestpuzzlegame.e.f:
+    com.emerginggames.bestpuzzlegame.model.Goods HintPack1 -> a
+    com.emerginggames.bestpuzzlegame.model.Goods HintPack10 -> b
+    com.emerginggames.bestpuzzlegame.model.Goods HintPack3 -> c
+    com.emerginggames.bestpuzzlegame.model.Goods HintPack25 -> d
+    com.emerginggames.bestpuzzlegame.model.Goods HintPack75 -> e
+    com.emerginggames.bestpuzzlegame.model.Goods LevelPack2 -> f
+    com.emerginggames.bestpuzzlegame.model.Goods LevelPack3 -> g
+    com.emerginggames.bestpuzzlegame.model.Goods LevelPack4 -> h
+    com.emerginggames.bestpuzzlegame.model.Goods LevelPack5 -> i
+    com.emerginggames.bestpuzzlegame.model.Goods LevelPack6 -> j
+    com.emerginggames.bestpuzzlegame.model.Goods LevelPack7 -> k
+    com.emerginggames.bestpuzzlegame.model.Goods PremiumLevelPack1 -> l
+    com.emerginggames.bestpuzzlegame.model.Goods PremiumLevelPack2 -> m
+    com.emerginggames.bestpuzzlegame.model.Goods PremiumLevelPack3 -> n
+    com.emerginggames.bestpuzzlegame.model.Goods PremiumLevelPack4 -> o
+    com.emerginggames.bestpuzzlegame.model.Goods AdFree -> p
+    com.emerginggames.bestpuzzlegame.model.Goods AdFree6hours -> q
     int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Goods -> r
-    com.emerginggames.snappers2.model.Goods[] ENUM$VALUES -> s
+    com.emerginggames.bestpuzzlegame.model.Goods[] ENUM$VALUES -> s
     72:94:java.lang.String getLevelPackName() -> a
-    98:120:com.emerginggames.snappers2.model.Goods$Type getType() -> b
-    1:1:com.emerginggames.snappers2.model.Goods[] values() -> values
-    1:1:com.emerginggames.snappers2.model.Goods valueOf(java.lang.String) -> valueOf
+    98:120:com.emerginggames.bestpuzzlegame.model.Goods$Type getType() -> b
+    1:1:com.emerginggames.bestpuzzlegame.model.Goods[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.model.Goods valueOf(java.lang.String) -> valueOf
     9:9:int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Goods() -> c
-com.emerginggames.snappers2.model.Goods$Type -> com.emerginggames.snappers2.e.g:
-    com.emerginggames.snappers2.model.Goods$Type Hint -> a
-    com.emerginggames.snappers2.model.Goods$Type LevelPack -> b
-    com.emerginggames.snappers2.model.Goods$Type adFree -> c
-    com.emerginggames.snappers2.model.Goods$Type[] ENUM$VALUES -> d
-    1:1:com.emerginggames.snappers2.model.Goods$Type[] values() -> values
-    1:1:com.emerginggames.snappers2.model.Goods$Type valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.model.ImageDrawInfo -> com.emerginggames.snappers2.e.h:
+com.emerginggames.bestpuzzlegame.model.Goods$Type -> com.emerginggames.bestpuzzlegame.e.g:
+    com.emerginggames.bestpuzzlegame.model.Goods$Type Hint -> a
+    com.emerginggames.bestpuzzlegame.model.Goods$Type LevelPack -> b
+    com.emerginggames.bestpuzzlegame.model.Goods$Type adFree -> c
+    com.emerginggames.bestpuzzlegame.model.Goods$Type[] ENUM$VALUES -> d
+    1:1:com.emerginggames.bestpuzzlegame.model.Goods$Type[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.model.Goods$Type valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.model.ImageDrawInfo -> com.emerginggames.bestpuzzlegame.e.h:
     int id -> a
     boolean isTransparent -> b
     boolean isHighQuality -> c
-com.emerginggames.snappers2.model.ImagePaginatorParam -> com.emerginggames.snappers2.e.i:
-    com.emerginggames.snappers2.model.ImageDrawInfo[] images -> a
+com.emerginggames.bestpuzzlegame.model.ImagePaginatorParam -> com.emerginggames.bestpuzzlegame.e.i:
+    com.emerginggames.bestpuzzlegame.model.ImageDrawInfo[] images -> a
     int retParam -> b
-    31:64:com.emerginggames.snappers2.model.ImageDrawInfo[] getLevelImageIds(int) -> a
-com.emerginggames.snappers2.model.Level -> com.emerginggames.snappers2.e.j:
+    31:64:com.emerginggames.bestpuzzlegame.model.ImageDrawInfo[] getLevelImageIds(int) -> a
+com.emerginggames.bestpuzzlegame.model.Level -> com.emerginggames.bestpuzzlegame.e.j:
     int number -> b
     int complexity -> c
     java.lang.String zappers -> d
     java.lang.String solutions -> e
     int tapsCount -> f
     int packNumber -> g
-    com.emerginggames.snappers2.model.LevelPack pack -> h
-com.emerginggames.snappers2.model.LevelPack -> com.emerginggames.snappers2.e.k:
+    com.emerginggames.bestpuzzlegame.model.LevelPack pack -> h
+com.emerginggames.bestpuzzlegame.model.LevelPack -> com.emerginggames.bestpuzzlegame.e.k:
     java.lang.String background -> b
     boolean shadows -> c
     java.lang.String title -> d
@@ -4235,11 +4235,11 @@ com.emerginggames.snappers2.model.LevelPack -> com.emerginggames.snappers2.e.k:
     boolean isGold -> h
     boolean isPremium -> i
     int levelCount -> j
-com.emerginggames.snappers2.model.Snappers -> com.emerginggames.snappers2.e.l:
+com.emerginggames.bestpuzzlegame.model.Snappers -> com.emerginggames.bestpuzzlegame.e.l:
     int[][] snappers -> a
     int snappersCount -> b
     39:39:boolean isValidSnapper(int,int) -> a
-com.emerginggames.snappers2.model.SyncData -> com.emerginggames.snappers2.e.m:
+com.emerginggames.bestpuzzlegame.model.SyncData -> com.emerginggames.bestpuzzlegame.e.m:
     int hint_count -> a
     int xp_count -> b
     int xp_level -> c
@@ -4249,114 +4249,114 @@ com.emerginggames.snappers2.model.SyncData -> com.emerginggames.snappers2.e.m:
     java.util.Map levelUnlocks -> g
     52:58:void setGifts(java.lang.String) -> a
     61:79:org.json.JSONObject toJson() -> a
-com.emerginggames.snappers2.transport.FacebookTransport -> com.emerginggames.snappers2.f.a:
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport -> com.emerginggames.bestpuzzlegame.f.a:
     com.facebook.android.Facebook facebook -> a
     android.app.Activity context -> b
     com.facebook.android.AsyncFacebookRunner mAsyncRunner -> d
-    com.emerginggames.snappers2.UserPreferences prefs -> c
-    48:56:void sync(com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener) -> a
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> c
+    48:56:void sync(com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener) -> a
     60:60:com.facebook.android.Facebook getFB() -> a
-    64:66:void getFriends(com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener) -> b
-    69:71:void invite(long,java.lang.String,com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener) -> a
-    74:83:void gift(com.emerginggames.snappers2.model.FacebookFriend,com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener) -> a
-    86:88:void checkPromo(java.lang.String,com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener) -> a
+    64:66:void getFriends(com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener) -> b
+    69:71:void invite(long,java.lang.String,com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener) -> a
+    74:83:void gift(com.emerginggames.bestpuzzlegame.model.FacebookFriend,com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener) -> a
+    86:88:void checkPromo(java.lang.String,com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener) -> a
     91:96:void share$28ce863f() -> b
-    109:110:void getUserInfo(com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener) -> c
+    109:110:void getUserInfo(com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener) -> c
     113:113:boolean isLoggedIn() -> c
     117:130:void extendAccessTokenIfNeeded() -> d
-    133:159:void login(com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener) -> d
-    162:189:void logoff(com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener) -> e
-com.emerginggames.snappers2.transport.FacebookTransport$1 -> com.emerginggames.snappers2.f.b:
-    com.emerginggames.snappers2.transport.FacebookTransport this$0 -> a
+    133:159:void login(com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener) -> d
+    162:189:void logoff(com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener) -> e
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$1 -> com.emerginggames.bestpuzzlegame.f.b:
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport this$0 -> a
     52:54:void onOk(java.lang.Object) -> a
-com.emerginggames.snappers2.transport.FacebookTransport$2 -> com.emerginggames.snappers2.f.c:
-    com.emerginggames.snappers2.transport.FacebookTransport this$0 -> a
-    com.emerginggames.snappers2.model.FacebookFriend val$friend -> c
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$2 -> com.emerginggames.bestpuzzlegame.f.c:
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport this$0 -> a
+    com.emerginggames.bestpuzzlegame.model.FacebookFriend val$friend -> c
     78:81:void onOk(java.lang.Object) -> a
-com.emerginggames.snappers2.transport.FacebookTransport$3 -> com.emerginggames.snappers2.f.d:
-    com.emerginggames.snappers2.transport.FacebookTransport this$0 -> a
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$3 -> com.emerginggames.bestpuzzlegame.f.d:
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport this$0 -> a
     120:121:void onComplete$79e5e33f() -> a
-com.emerginggames.snappers2.transport.FacebookTransport$4 -> com.emerginggames.snappers2.f.e:
-    com.emerginggames.snappers2.transport.FacebookTransport this$0 -> a
-    com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener val$listener1 -> b
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$4 -> com.emerginggames.bestpuzzlegame.f.e:
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport this$0 -> a
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener val$listener1 -> b
     136:139:void onComplete(android.os.Bundle) -> a
     143:145:void onFacebookError(com.facebook.android.FacebookError) -> a
     149:151:void onError(com.facebook.android.DialogError) -> a
     155:157:void onCancel() -> a
-com.emerginggames.snappers2.transport.FacebookTransport$5 -> com.emerginggames.snappers2.f.f:
-    com.emerginggames.snappers2.transport.FacebookTransport this$0 -> a
-    com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener val$listener -> b
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$5 -> com.emerginggames.bestpuzzlegame.f.f:
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport this$0 -> a
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener val$listener -> b
     165:167:void onComplete(java.lang.String,java.lang.Object) -> a
     171:172:void onIOException$7e5565fb(java.io.IOException) -> a
     176:177:void onFileNotFoundException$64f06040(java.io.FileNotFoundException) -> a
     181:182:void onMalformedURLException$11b5f444(java.net.MalformedURLException) -> a
     186:187:void onFacebookError$50ae9279(com.facebook.android.FacebookError) -> a
-com.emerginggames.snappers2.transport.FacebookTransport$FacebookJsonListener -> com.emerginggames.snappers2.f.g:
-    com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener listener -> a
-    com.emerginggames.snappers2.transport.FacebookTransport this$0 -> b
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$FacebookJsonListener -> com.emerginggames.bestpuzzlegame.f.g:
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener listener -> a
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport this$0 -> b
     200:209:void onError(java.lang.Exception) -> a
     213:220:void onOk(java.lang.Object) -> a
-    192:192:com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener access$0(com.emerginggames.snappers2.transport.FacebookTransport$FacebookJsonListener) -> a
-com.emerginggames.snappers2.transport.FacebookTransport$FacebookJsonListener$1 -> com.emerginggames.snappers2.f.h:
-    com.emerginggames.snappers2.transport.FacebookTransport$FacebookJsonListener this$1 -> a
+    192:192:com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener access$0(com.emerginggames.bestpuzzlegame.transport.FacebookTransport$FacebookJsonListener) -> a
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$FacebookJsonListener$1 -> com.emerginggames.bestpuzzlegame.f.h:
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport$FacebookJsonListener this$1 -> a
     java.lang.Exception val$error -> b
     206:207:void run() -> run
-com.emerginggames.snappers2.transport.FacebookTransport$FacebookJsonListener$2 -> com.emerginggames.snappers2.f.i:
-    com.emerginggames.snappers2.transport.FacebookTransport$FacebookJsonListener this$1 -> a
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$FacebookJsonListener$2 -> com.emerginggames.bestpuzzlegame.f.i:
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport$FacebookJsonListener this$1 -> a
     java.lang.Object val$responce -> b
     217:218:void run() -> run
-com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener -> com.emerginggames.snappers2.f.j:
+com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener -> com.emerginggames.bestpuzzlegame.f.j:
     100:100:void onOk(java.lang.Object) -> a
     103:103:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.transport.JsonResponseHandler -> com.emerginggames.snappers2.f.k:
+com.emerginggames.bestpuzzlegame.transport.JsonResponseHandler -> com.emerginggames.bestpuzzlegame.f.k:
     void onOk(java.lang.Object) -> a
     void onError(java.lang.Exception) -> a
-com.emerginggames.snappers2.transport.JsonTransport -> com.emerginggames.snappers2.f.l:
-com.emerginggames.snappers2.transport.JsonTransport$FriendsRequest -> com.emerginggames.snappers2.f.m:
+com.emerginggames.bestpuzzlegame.transport.JsonTransport -> com.emerginggames.bestpuzzlegame.f.l:
+com.emerginggames.bestpuzzlegame.transport.JsonTransport$FriendsRequest -> com.emerginggames.bestpuzzlegame.f.m:
     137:146:void onSuccess(java.lang.Object) -> a
     150:150:boolean isResponceOk(org.json.JSONObject) -> a
-com.emerginggames.snappers2.transport.JsonTransport$OkRequest -> com.emerginggames.snappers2.f.n:
+com.emerginggames.bestpuzzlegame.transport.JsonTransport$OkRequest -> com.emerginggames.bestpuzzlegame.f.n:
     java.lang.String okType -> a
     172:172:boolean isResponceOk(org.json.JSONObject) -> a
     177:178:void onSuccess(java.lang.Object) -> a
-com.emerginggames.snappers2.transport.JsonTransport$PromoRequest -> com.emerginggames.snappers2.f.o:
+com.emerginggames.bestpuzzlegame.transport.JsonTransport$PromoRequest -> com.emerginggames.bestpuzzlegame.f.o:
     191:196:void onSuccess(java.lang.Object) -> a
     200:200:boolean isResponceOk(org.json.JSONObject) -> a
-com.emerginggames.snappers2.transport.JsonTransport$SyncRequest -> com.emerginggames.snappers2.f.p:
+com.emerginggames.bestpuzzlegame.transport.JsonTransport$SyncRequest -> com.emerginggames.bestpuzzlegame.f.p:
     115:119:void onSuccess(java.lang.Object) -> a
     123:123:boolean isResponceOk(org.json.JSONObject) -> a
-com.emerginggames.snappers2.transport.MyJsonRequest -> com.emerginggames.snappers2.f.q:
+com.emerginggames.bestpuzzlegame.transport.MyJsonRequest -> com.emerginggames.bestpuzzlegame.f.q:
     boolean isPost -> b
     boolean debug -> c
     org.json.JSONObject jsonParam -> d
     java.util.Map params -> e
-    com.emerginggames.snappers2.transport.JsonResponseHandler handler -> f
+    com.emerginggames.bestpuzzlegame.transport.JsonResponseHandler handler -> f
     java.lang.String methodName -> g
     void onSuccess(java.lang.Object) -> a
     boolean isResponceOk(org.json.JSONObject) -> a
-    47:48:void setHandler(com.emerginggames.snappers2.transport.JsonResponseHandler) -> a
+    47:48:void setHandler(com.emerginggames.bestpuzzlegame.transport.JsonResponseHandler) -> a
     62:79:void run() -> run
     134:143:org.apache.http.client.HttpClient getClient(org.apache.http.params.HttpParams) -> a
     147:158:org.json.JSONObject mapToJson(java.util.Map) -> a
     163:175:java.lang.String mapToString(java.util.Map) -> b
     179:180:void setDebug(boolean) -> a
-com.emerginggames.snappers2.transport.TrustAllManager -> com.emerginggames.snappers2.f.r:
+com.emerginggames.bestpuzzlegame.transport.TrustAllManager -> com.emerginggames.bestpuzzlegame.f.r:
     19:19:void checkClientTrusted(java.security.cert.X509Certificate[],java.lang.String) -> checkClientTrusted
     24:24:void checkServerTrusted(java.security.cert.X509Certificate[],java.lang.String) -> checkServerTrusted
     28:28:java.security.cert.X509Certificate[] getAcceptedIssuers() -> getAcceptedIssuers
-com.emerginggames.snappers2.transport.TrustAllSSLSocketFactory -> com.emerginggames.snappers2.f.s:
+com.emerginggames.bestpuzzlegame.transport.TrustAllSSLSocketFactory -> com.emerginggames.bestpuzzlegame.f.s:
     javax.net.ssl.SSLSocketFactory factory -> a
     55:55:java.net.Socket createSocket() -> createSocket
     62:62:java.net.Socket createSocket(java.net.Socket,java.lang.String,int,boolean) -> createSocket
-com.emerginggames.snappers2.transport.UserInfoRequestListener -> com.emerginggames.snappers2.f.t:
+com.emerginggames.bestpuzzlegame.transport.UserInfoRequestListener -> com.emerginggames.bestpuzzlegame.f.t:
     android.content.Context context -> a
-    com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener listener -> b
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener listener -> b
     34:52:void onComplete(java.lang.String,java.lang.Object) -> a
     56:58:void onFacebookError$50ae9279(com.facebook.android.FacebookError) -> a
     62:64:void onIOException$7e5565fb(java.io.IOException) -> a
     68:70:void onFileNotFoundException$64f06040(java.io.FileNotFoundException) -> a
     74:76:void onMalformedURLException$11b5f444(java.net.MalformedURLException) -> a
-com.emerginggames.snappers2.utils.Base64 -> com.emerginggames.snappers2.utils.a:
+com.emerginggames.bestpuzzlegame.utils.Base64 -> com.emerginggames.bestpuzzlegame.utils.a:
     byte[] ALPHABET -> b
     byte[] WEBSAFE_ALPHABET -> c
     byte[] DECODABET -> d
@@ -4364,10 +4364,10 @@ com.emerginggames.snappers2.utils.Base64 -> com.emerginggames.snappers2.utils.a:
     boolean $assertionsDisabled -> a
     378:406:int decode4to3$355785af(byte[],byte[],int,byte[]) -> a
     419:420:byte[] decode(java.lang.String) -> a
-com.emerginggames.snappers2.utils.Base64DecoderException -> com.emerginggames.snappers2.utils.b:
-com.emerginggames.snappers2.utils.BillingReceiver -> com.emerginggames.snappers2.utils.BillingReceiver:
+com.emerginggames.bestpuzzlegame.utils.Base64DecoderException -> com.emerginggames.bestpuzzlegame.utils.b:
+com.emerginggames.bestpuzzlegame.utils.BillingReceiver -> com.emerginggames.bestpuzzlegame.utils.BillingReceiver:
     49:68:void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.emerginggames.snappers2.utils.BillingService -> com.emerginggames.snappers2.utils.BillingService:
+com.emerginggames.bestpuzzlegame.utils.BillingService -> com.emerginggames.bestpuzzlegame.utils.BillingService:
     com.android.vending.billing.IMarketBillingService mService -> a
     java.util.LinkedList mPendingRequests -> b
     java.util.HashMap mSentRequests -> c
@@ -4381,15 +4381,15 @@ com.emerginggames.snappers2.utils.BillingService -> com.emerginggames.snappers2.
     461:461:boolean confirmNotifications(int,java.lang.String[]) -> a
     577:579:void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
     585:587:void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
-    396:396:boolean access$0(com.emerginggames.snappers2.utils.BillingService) -> a
+    396:396:boolean access$0(com.emerginggames.bestpuzzlegame.utils.BillingService) -> a
     58:58:java.util.LinkedList access$1() -> c
     52:52:com.android.vending.billing.IMarketBillingService access$2() -> d
     65:65:java.util.HashMap access$3() -> e
     52:52:void access$4$78d40d3f() -> f
-com.emerginggames.snappers2.utils.BillingService$BillingRequest -> com.emerginggames.snappers2.utils.c:
+com.emerginggames.bestpuzzlegame.utils.BillingService$BillingRequest -> com.emerginggames.bestpuzzlegame.utils.c:
     int mStartId -> c
     long mRequestId -> a
-    com.emerginggames.snappers2.utils.BillingService this$0 -> b
+    com.emerginggames.bestpuzzlegame.utils.BillingService this$0 -> b
     85:85:int getStartId() -> a
     94:103:boolean runRequest() -> b
     115:129:boolean runIfConnected() -> c
@@ -4398,102 +4398,102 @@ com.emerginggames.snappers2.utils.BillingService$BillingRequest -> com.emergingg
     155:155:void responseCodeReceived$18afca33() -> e
     158:162:android.os.Bundle makeRequestBundle(java.lang.String) -> a
     167:171:void logResponseCode$5dc9c75(android.os.Bundle) -> a
-com.emerginggames.snappers2.utils.BillingService$CheckBillingSupported -> com.emerginggames.snappers2.utils.d:
-    com.emerginggames.snappers2.utils.BillingService this$0 -> c
+com.emerginggames.bestpuzzlegame.utils.BillingService$CheckBillingSupported -> com.emerginggames.bestpuzzlegame.utils.d:
+    com.emerginggames.bestpuzzlegame.utils.BillingService this$0 -> c
     187:196:long run() -> d
-com.emerginggames.snappers2.utils.BillingService$ConfirmNotifications -> com.emerginggames.snappers2.utils.e:
+com.emerginggames.bestpuzzlegame.utils.BillingService$ConfirmNotifications -> com.emerginggames.bestpuzzlegame.utils.e:
     java.lang.String[] mNotifyIds -> c
-    com.emerginggames.snappers2.utils.BillingService this$0 -> d
+    com.emerginggames.bestpuzzlegame.utils.BillingService this$0 -> d
     260:264:long run() -> d
-com.emerginggames.snappers2.utils.BillingService$GetPurchaseInformation -> com.emerginggames.snappers2.utils.f:
+com.emerginggames.bestpuzzlegame.utils.BillingService$GetPurchaseInformation -> com.emerginggames.bestpuzzlegame.utils.f:
     long mNonce -> c
     java.lang.String[] mNotifyIds -> d
-    com.emerginggames.snappers2.utils.BillingService this$0 -> e
+    com.emerginggames.bestpuzzlegame.utils.BillingService this$0 -> e
     283:290:long run() -> d
     296:298:void onRemoteException(android.os.RemoteException) -> a
-com.emerginggames.snappers2.utils.BillingService$RequestPurchase -> com.emerginggames.snappers2.utils.g:
+com.emerginggames.bestpuzzlegame.utils.BillingService$RequestPurchase -> com.emerginggames.bestpuzzlegame.utils.g:
     java.lang.String mProductId -> c
     java.lang.String mDeveloperPayload -> d
-    com.emerginggames.snappers2.utils.BillingService this$0 -> e
+    com.emerginggames.bestpuzzlegame.utils.BillingService this$0 -> e
     222:237:long run() -> d
     243:244:void responseCodeReceived$18afca33() -> e
-com.emerginggames.snappers2.utils.BillingService$RestoreTransactions -> com.emerginggames.snappers2.utils.h:
+com.emerginggames.bestpuzzlegame.utils.BillingService$RestoreTransactions -> com.emerginggames.bestpuzzlegame.utils.h:
     long mNonce -> c
-    com.emerginggames.snappers2.utils.BillingService this$0 -> d
+    com.emerginggames.bestpuzzlegame.utils.BillingService this$0 -> d
     316:322:long run() -> d
     328:330:void onRemoteException(android.os.RemoteException) -> a
     334:335:void responseCodeReceived$18afca33() -> e
-com.emerginggames.snappers2.utils.DeviceUuidFactory -> com.emerginggames.snappers2.utils.i:
+com.emerginggames.bestpuzzlegame.utils.DeviceUuidFactory -> com.emerginggames.bestpuzzlegame.utils.i:
     java.util.UUID uuid -> a
     73:73:java.util.UUID getDeviceUuid() -> a
-com.emerginggames.snappers2.utils.GInAppStore -> com.emerginggames.snappers2.utils.j:
-    com.emerginggames.snappers2.utils.BillingService mBillingService -> a
-    com.emerginggames.snappers2.utils.GInAppStore$GoogleInAppStoreObserver mObserver -> b
+com.emerginggames.bestpuzzlegame.utils.GInAppStore -> com.emerginggames.bestpuzzlegame.utils.j:
+    com.emerginggames.bestpuzzlegame.utils.BillingService mBillingService -> a
+    com.emerginggames.bestpuzzlegame.utils.GInAppStore$GoogleInAppStoreObserver mObserver -> b
     int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Goods -> k
-    31:33:com.emerginggames.snappers2.utils.Store getInstance(android.content.Context) -> a
-    48:48:boolean buy(com.emerginggames.snappers2.model.Goods) -> a
-    107:107:void access$0(com.emerginggames.snappers2.utils.GInAppStore) -> a
+    31:33:com.emerginggames.bestpuzzlegame.utils.Store getInstance(android.content.Context) -> a
+    48:48:boolean buy(com.emerginggames.bestpuzzlegame.model.Goods) -> a
+    107:107:void access$0(com.emerginggames.bestpuzzlegame.utils.GInAppStore) -> a
     14:14:int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Goods() -> a
-com.emerginggames.snappers2.utils.GInAppStore$GoogleInAppStoreObserver -> com.emerginggames.snappers2.utils.k:
-    com.emerginggames.snappers2.utils.GInAppStore this$0 -> a
+com.emerginggames.bestpuzzlegame.utils.GInAppStore$GoogleInAppStoreObserver -> com.emerginggames.bestpuzzlegame.utils.k:
+    com.emerginggames.bestpuzzlegame.utils.GInAppStore this$0 -> a
     119:123:void onBillingSupported(boolean) -> a
-    127:132:void onPurchaseStateChange$294186ec(com.emerginggames.snappers2.Consts$PurchaseState,java.lang.String) -> a
+    127:132:void onPurchaseStateChange$294186ec(com.emerginggames.bestpuzzlegame.Consts$PurchaseState,java.lang.String) -> a
     137:137:void onRequestPurchaseResponse$298a0211() -> a
     141:142:void onRestoreTransactionsResponse$78008464() -> b
-com.emerginggames.snappers2.utils.IStoreListener -> com.emerginggames.snappers2.utils.l:
-com.emerginggames.snappers2.utils.OnlineSettings -> com.emerginggames.snappers2.utils.m:
-    com.emerginggames.snappers2.utils.OnlineSettings instance -> a
+com.emerginggames.bestpuzzlegame.utils.IStoreListener -> com.emerginggames.bestpuzzlegame.utils.l:
+com.emerginggames.bestpuzzlegame.utils.OnlineSettings -> com.emerginggames.bestpuzzlegame.utils.m:
+    com.emerginggames.bestpuzzlegame.utils.OnlineSettings instance -> a
     android.content.Context mContext -> b
     android.os.HandlerThread thread -> c
     android.os.Looper looper -> d
     android.os.Handler handler -> e
     43:46:void update(android.content.Context) -> a
     50:63:void run() -> run
-    73:100:com.emerginggames.snappers2.utils.OnlineSettings$CountrySettings getSettingsFromStream(java.io.InputStream,java.lang.String) -> a
-com.emerginggames.snappers2.utils.OnlineSettings$CountrySettings -> com.emerginggames.snappers2.utils.n:
+    73:100:com.emerginggames.bestpuzzlegame.utils.OnlineSettings$CountrySettings getSettingsFromStream(java.io.InputStream,java.lang.String) -> a
+com.emerginggames.bestpuzzlegame.utils.OnlineSettings$CountrySettings -> com.emerginggames.bestpuzzlegame.utils.n:
     java.lang.String locale -> a
     boolean tapJoy -> b
     boolean inGameAds -> c
     int defaultHints -> d
-    110:123:com.emerginggames.snappers2.utils.OnlineSettings$CountrySettings parse(org.xmlpull.v1.XmlPullParser) -> a
-com.emerginggames.snappers2.utils.PurchaseDatabase -> com.emerginggames.snappers2.utils.o:
+    110:123:com.emerginggames.bestpuzzlegame.utils.OnlineSettings$CountrySettings parse(org.xmlpull.v1.XmlPullParser) -> a
+com.emerginggames.bestpuzzlegame.utils.PurchaseDatabase -> com.emerginggames.bestpuzzlegame.utils.o:
     java.lang.String[] HISTORY_COLUMNS -> a
     java.lang.String[] PURCHASED_COLUMNS -> b
     android.database.sqlite.SQLiteDatabase mDb -> c
-    com.emerginggames.snappers2.utils.PurchaseDatabase$DatabaseHelper mDatabaseHelper -> d
+    com.emerginggames.bestpuzzlegame.utils.PurchaseDatabase$DatabaseHelper mDatabaseHelper -> d
     73:74:void close() -> a
-    130:156:int updatePurchase(java.lang.String,java.lang.String,com.emerginggames.snappers2.Consts$PurchaseState,long,java.lang.String) -> a
-com.emerginggames.snappers2.utils.PurchaseDatabase$DatabaseHelper -> com.emerginggames.snappers2.utils.p:
-    com.emerginggames.snappers2.utils.PurchaseDatabase this$0 -> a
+    130:156:int updatePurchase(java.lang.String,java.lang.String,com.emerginggames.bestpuzzlegame.Consts$PurchaseState,long,java.lang.String) -> a
+com.emerginggames.bestpuzzlegame.utils.PurchaseDatabase$DatabaseHelper -> com.emerginggames.bestpuzzlegame.utils.p:
+    com.emerginggames.bestpuzzlegame.utils.PurchaseDatabase this$0 -> a
     178:179:void onCreate(android.database.sqlite.SQLiteDatabase) -> onCreate
     186:194:void onUpgrade(android.database.sqlite.SQLiteDatabase,int,int) -> onUpgrade
     197:206:void createPurchaseTable(android.database.sqlite.SQLiteDatabase) -> a
-com.emerginggames.snappers2.utils.PurchaseObserver -> com.emerginggames.snappers2.utils.q:
+com.emerginggames.bestpuzzlegame.utils.PurchaseObserver -> com.emerginggames.bestpuzzlegame.utils.q:
     android.content.Context mContext -> a
     java.lang.Class[] START_INTENT_SENDER_SIG -> b
     void onBillingSupported(boolean) -> a
-    void onPurchaseStateChange$294186ec(com.emerginggames.snappers2.Consts$PurchaseState,java.lang.String) -> a
+    void onPurchaseStateChange$294186ec(com.emerginggames.bestpuzzlegame.Consts$PurchaseState,java.lang.String) -> a
     void onRequestPurchaseResponse$298a0211() -> a
     void onRestoreTransactionsResponse$78008464() -> b
     95:99:void startBuyPageActivity(android.app.PendingIntent,android.content.Intent) -> a
-com.emerginggames.snappers2.utils.ResponseHandler -> com.emerginggames.snappers2.utils.r:
-    com.emerginggames.snappers2.utils.PurchaseObserver sPurchaseObserver -> a
-    42:43:void register(com.emerginggames.snappers2.utils.PurchaseObserver) -> a
+com.emerginggames.bestpuzzlegame.utils.ResponseHandler -> com.emerginggames.bestpuzzlegame.utils.r:
+    com.emerginggames.bestpuzzlegame.utils.PurchaseObserver sPurchaseObserver -> a
+    42:43:void register(com.emerginggames.bestpuzzlegame.utils.PurchaseObserver) -> a
     62:65:void checkBillingSupportedResponse(boolean) -> a
     78:85:void buyPageIntentResponse(android.app.PendingIntent,android.content.Intent) -> a
-    116:131:void purchaseResponse(android.content.Context,com.emerginggames.snappers2.Consts$PurchaseState,java.lang.String,java.lang.String,long,java.lang.String) -> a
+    116:131:void purchaseResponse(android.content.Context,com.emerginggames.bestpuzzlegame.Consts$PurchaseState,java.lang.String,java.lang.String,long,java.lang.String) -> a
     149:152:void responseCodeReceived$380fad3$298a0211() -> a
     166:169:void responseCodeReceived$18694c26$78008464() -> b
-    34:34:com.emerginggames.snappers2.utils.PurchaseObserver access$0() -> c
-com.emerginggames.snappers2.utils.ResponseHandler$1 -> com.emerginggames.snappers2.utils.s:
+    34:34:com.emerginggames.bestpuzzlegame.utils.PurchaseObserver access$0() -> c
+com.emerginggames.bestpuzzlegame.utils.ResponseHandler$1 -> com.emerginggames.bestpuzzlegame.utils.s:
     android.content.Context val$context -> a
     java.lang.String val$orderId -> b
     java.lang.String val$productId -> c
-    com.emerginggames.snappers2.Consts$PurchaseState val$purchaseState -> d
+    com.emerginggames.bestpuzzlegame.Consts$PurchaseState val$purchaseState -> d
     long val$purchaseTime -> e
     java.lang.String val$developerPayload -> f
     118:125:void run() -> run
-com.emerginggames.snappers2.utils.Security -> com.emerginggames.snappers2.utils.t:
+com.emerginggames.bestpuzzlegame.utils.Security -> com.emerginggames.bestpuzzlegame.utils.t:
     java.security.SecureRandom RANDOM -> a
     java.util.HashSet sKnownNonces -> b
     70:72:long generateNonce() -> a
@@ -4501,59 +4501,59 @@ com.emerginggames.snappers2.utils.Security -> com.emerginggames.snappers2.utils.
     96:178:java.util.ArrayList verifyPurchase(java.lang.String,java.lang.String) -> a
     190:200:java.security.PublicKey generatePublicKey(java.lang.String) -> a
     219:236:boolean verify(java.security.PublicKey,java.lang.String,java.lang.String) -> a
-com.emerginggames.snappers2.utils.Security$VerifiedPurchase -> com.emerginggames.snappers2.utils.u:
-    com.emerginggames.snappers2.Consts$PurchaseState purchaseState -> a
+com.emerginggames.bestpuzzlegame.utils.Security$VerifiedPurchase -> com.emerginggames.bestpuzzlegame.utils.u:
+    com.emerginggames.bestpuzzlegame.Consts$PurchaseState purchaseState -> a
     java.lang.String notificationId -> b
     java.lang.String productId -> c
     java.lang.String orderId -> d
     long purchaseTime -> e
     java.lang.String developerPayload -> f
-com.emerginggames.snappers2.utils.Store -> com.emerginggames.snappers2.utils.v:
-    com.emerginggames.snappers2.utils.Store instance -> c
+com.emerginggames.bestpuzzlegame.utils.Store -> com.emerginggames.bestpuzzlegame.utils.v:
+    com.emerginggames.bestpuzzlegame.utils.Store instance -> c
     android.content.Context context -> d
-    com.emerginggames.snappers2.utils.Store$BillingSupported isBillingSupported -> e
-    com.emerginggames.snappers2.utils.IStoreListener mStoreListener -> f
+    com.emerginggames.bestpuzzlegame.utils.Store$BillingSupported isBillingSupported -> e
+    com.emerginggames.bestpuzzlegame.utils.IStoreListener mStoreListener -> f
     android.os.Handler mHandler -> g
-    com.emerginggames.snappers2.utils.Store$PostableRunable runOnBillingSupported -> h
-    com.emerginggames.snappers2.utils.Store$PostableRunable runOnItemBought -> i
-    com.emerginggames.snappers2.utils.Store$PostableRunable runOnItemRefund -> j
+    com.emerginggames.bestpuzzlegame.utils.Store$PostableRunable runOnBillingSupported -> h
+    com.emerginggames.bestpuzzlegame.utils.Store$PostableRunable runOnItemBought -> i
+    com.emerginggames.bestpuzzlegame.utils.Store$PostableRunable runOnItemRefund -> j
     int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Goods -> a
     int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Goods$Type -> b
-    boolean buy(com.emerginggames.snappers2.model.Goods) -> a
-    48:91:boolean itemBought$227c0b82(com.emerginggames.snappers2.model.Goods) -> b
-    95:129:boolean itemReturned$227c0b82(com.emerginggames.snappers2.model.Goods) -> c
+    boolean buy(com.emerginggames.bestpuzzlegame.model.Goods) -> a
+    48:91:boolean itemBought$227c0b82(com.emerginggames.bestpuzzlegame.model.Goods) -> b
+    95:129:boolean itemReturned$227c0b82(com.emerginggames.bestpuzzlegame.model.Goods) -> c
     16:16:int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Goods() -> a
     16:16:int[] $SWITCH_TABLE$com$emerginggames$snappers2$model$Goods$Type() -> b
-com.emerginggames.snappers2.utils.Store$1 -> com.emerginggames.snappers2.utils.w:
-    com.emerginggames.snappers2.utils.Store this$0 -> a
+com.emerginggames.bestpuzzlegame.utils.Store$1 -> com.emerginggames.bestpuzzlegame.utils.w:
+    com.emerginggames.bestpuzzlegame.utils.Store this$0 -> a
     148:149:void run() -> run
-com.emerginggames.snappers2.utils.Store$2 -> com.emerginggames.snappers2.utils.x:
-    com.emerginggames.snappers2.utils.Store this$0 -> a
+com.emerginggames.bestpuzzlegame.utils.Store$2 -> com.emerginggames.bestpuzzlegame.utils.x:
+    com.emerginggames.bestpuzzlegame.utils.Store this$0 -> a
     155:156:void run() -> run
-com.emerginggames.snappers2.utils.Store$3 -> com.emerginggames.snappers2.utils.y:
-    com.emerginggames.snappers2.utils.Store this$0 -> a
+com.emerginggames.bestpuzzlegame.utils.Store$3 -> com.emerginggames.bestpuzzlegame.utils.y:
+    com.emerginggames.bestpuzzlegame.utils.Store this$0 -> a
     162:163:void run() -> run
-com.emerginggames.snappers2.utils.Store$BillingSupported -> com.emerginggames.snappers2.utils.z:
-    com.emerginggames.snappers2.utils.Store$BillingSupported YES -> a
-    com.emerginggames.snappers2.utils.Store$BillingSupported NO -> b
-    com.emerginggames.snappers2.utils.Store$BillingSupported UNKNOWN -> c
-    com.emerginggames.snappers2.utils.Store$BillingSupported[] ENUM$VALUES -> d
-    1:1:com.emerginggames.snappers2.utils.Store$BillingSupported[] values() -> values
-    1:1:com.emerginggames.snappers2.utils.Store$BillingSupported valueOf(java.lang.String) -> valueOf
-com.emerginggames.snappers2.utils.Store$PostableRunable -> com.emerginggames.snappers2.utils.aa:
-    com.emerginggames.snappers2.utils.IStoreListener mListener -> b
+com.emerginggames.bestpuzzlegame.utils.Store$BillingSupported -> com.emerginggames.bestpuzzlegame.utils.z:
+    com.emerginggames.bestpuzzlegame.utils.Store$BillingSupported YES -> a
+    com.emerginggames.bestpuzzlegame.utils.Store$BillingSupported NO -> b
+    com.emerginggames.bestpuzzlegame.utils.Store$BillingSupported UNKNOWN -> c
+    com.emerginggames.bestpuzzlegame.utils.Store$BillingSupported[] ENUM$VALUES -> d
+    1:1:com.emerginggames.bestpuzzlegame.utils.Store$BillingSupported[] values() -> values
+    1:1:com.emerginggames.bestpuzzlegame.utils.Store$BillingSupported valueOf(java.lang.String) -> valueOf
+com.emerginggames.bestpuzzlegame.utils.Store$PostableRunable -> com.emerginggames.bestpuzzlegame.utils.aa:
+    com.emerginggames.bestpuzzlegame.utils.IStoreListener mListener -> b
     java.lang.Object mPayload -> c
-    com.emerginggames.snappers2.utils.Store this$0 -> d
-    136:142:void postMe(android.os.Handler,com.emerginggames.snappers2.utils.IStoreListener,java.lang.Object) -> a
-com.emerginggames.snappers2.utils.TapjoyPointsListener -> com.emerginggames.snappers2.utils.ab:
-    com.emerginggames.snappers2.UserPreferences prefs -> a
+    com.emerginggames.bestpuzzlegame.utils.Store this$0 -> d
+    136:142:void postMe(android.os.Handler,com.emerginggames.bestpuzzlegame.utils.IStoreListener,java.lang.Object) -> a
+com.emerginggames.bestpuzzlegame.utils.TapjoyPointsListener -> com.emerginggames.bestpuzzlegame.utils.ab:
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> a
     32:36:void getUpdatePoints$505cff1c(int) -> a
     45:47:void earnedTapPoints(int) -> b
-com.emerginggames.snappers2.utils.UserPreferencesBase -> com.emerginggames.snappers2.utils.ac:
+com.emerginggames.bestpuzzlegame.utils.UserPreferencesBase -> com.emerginggames.bestpuzzlegame.utils.ac:
     android.content.Context context -> c
     android.content.SharedPreferences prefs -> d
     android.content.SharedPreferences$Editor editor -> e
-    com.emerginggames.snappers2.utils.DeviceUuidFactory factory -> f
+    com.emerginggames.bestpuzzlegame.utils.DeviceUuidFactory factory -> f
     java.lang.String Key1 -> g
     java.lang.String Key11 -> h
     java.lang.String Key21 -> i
@@ -4577,35 +4577,35 @@ com.emerginggames.snappers2.utils.UserPreferencesBase -> com.emerginggames.snapp
     159:161:java.lang.String getKey3() -> a
     165:167:java.lang.String getKey12() -> z
     171:174:java.lang.String getKey2() -> A
-com.emerginggames.snappers2.utils.WorkerThread -> com.emerginggames.snappers2.utils.ad:
-    com.emerginggames.snappers2.utils.WorkerThread instance -> d
+com.emerginggames.bestpuzzlegame.utils.WorkerThread -> com.emerginggames.bestpuzzlegame.utils.ad:
+    com.emerginggames.bestpuzzlegame.utils.WorkerThread instance -> d
     android.os.HandlerThread thread -> a
     android.os.Looper looper -> b
     android.os.Handler handler -> c
-    27:29:com.emerginggames.snappers2.utils.WorkerThread getInstance() -> a
+    27:29:com.emerginggames.bestpuzzlegame.utils.WorkerThread getInstance() -> a
     33:34:void post(java.lang.Runnable) -> a
-com.emerginggames.snappers2.utils.WorkerThreads -> com.emerginggames.snappers2.utils.ae:
-    com.emerginggames.snappers2.utils.WorkerThreads instance -> a
+com.emerginggames.bestpuzzlegame.utils.WorkerThreads -> com.emerginggames.bestpuzzlegame.utils.ae:
+    com.emerginggames.bestpuzzlegame.utils.WorkerThreads instance -> a
     com.badlogic.gdx.utils.Array activeHandlers -> b
-    25:28:com.emerginggames.snappers2.utils.WorkerThreads$HandlerWrapper getFreeHandler() -> a
-    32:32:com.emerginggames.snappers2.utils.WorkerThreads$HandlerWrapper getHandler() -> b
-    55:55:void killHandler(com.emerginggames.snappers2.utils.WorkerThreads$HandlerWrapper) -> a
+    25:28:com.emerginggames.bestpuzzlegame.utils.WorkerThreads$HandlerWrapper getFreeHandler() -> a
+    32:32:com.emerginggames.bestpuzzlegame.utils.WorkerThreads$HandlerWrapper getHandler() -> b
+    55:55:void killHandler(com.emerginggames.bestpuzzlegame.utils.WorkerThreads$HandlerWrapper) -> a
     61:62:void run(java.lang.Runnable) -> a
     65:72:void run(java.lang.Runnable[]) -> a
-com.emerginggames.snappers2.utils.WorkerThreads$1 -> com.emerginggames.snappers2.utils.af:
+com.emerginggames.bestpuzzlegame.utils.WorkerThreads$1 -> com.emerginggames.bestpuzzlegame.utils.af:
     java.lang.Runnable[] val$runnables -> a
     68:70:void run() -> run
-com.emerginggames.snappers2.utils.WorkerThreads$HandlerWrapper -> com.emerginggames.snappers2.utils.ag:
+com.emerginggames.bestpuzzlegame.utils.WorkerThreads$HandlerWrapper -> com.emerginggames.bestpuzzlegame.utils.ag:
     android.os.Handler handler -> a
     android.os.HandlerThread thread -> b
     int queueLength -> c
-    com.emerginggames.snappers2.utils.WorkerThreads this$0 -> d
+    com.emerginggames.bestpuzzlegame.utils.WorkerThreads this$0 -> d
     85:97:void run(java.lang.Runnable) -> a
-com.emerginggames.snappers2.utils.WorkerThreads$HandlerWrapper$1 -> com.emerginggames.snappers2.utils.ah:
-    com.emerginggames.snappers2.utils.WorkerThreads$HandlerWrapper this$1 -> a
+com.emerginggames.bestpuzzlegame.utils.WorkerThreads$HandlerWrapper$1 -> com.emerginggames.bestpuzzlegame.utils.ah:
+    com.emerginggames.bestpuzzlegame.utils.WorkerThreads$HandlerWrapper this$1 -> a
     java.lang.Runnable val$r -> b
     89:95:void run() -> run
-com.emerginggames.snappers2.view.AdController -> com.emerginggames.snappers2.g.a:
+com.emerginggames.bestpuzzlegame.view.AdController -> com.emerginggames.bestpuzzlegame.g.a:
     android.widget.RelativeLayout$LayoutParams lpUp -> a
     android.widget.RelativeLayout$LayoutParams lpDown -> b
     boolean isShowingAd -> c
@@ -4613,8 +4613,8 @@ com.emerginggames.snappers2.view.AdController -> com.emerginggames.snappers2.g.a
     boolean canShowAd -> e
     boolean shouldShowIngameAd -> f
     boolean canShowIngameAd -> g
-    com.emerginggames.snappers2.UserPreferences prefs -> h
-    com.emerginggames.snappers2.GameActivity activity -> i
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> h
+    com.emerginggames.bestpuzzlegame.GameActivity activity -> i
     android.widget.RelativeLayout rootLayout -> j
     com.emrg.view.MyAdView adView -> q
     int width -> k
@@ -4633,30 +4633,30 @@ com.emerginggames.snappers2.view.AdController -> com.emerginggames.snappers2.g.a
     193:198:void onFailedToReceiveAd$7b642d25() -> g
     214:221:void onMeasured(int,int) -> a
     248:260:java.lang.String md5(java.lang.String) -> a
-    38:38:com.emrg.view.MyAdView access$0(com.emerginggames.snappers2.view.AdController) -> a
-com.emerginggames.snappers2.view.AdController$1 -> com.emerginggames.snappers2.g.b:
-    com.emerginggames.snappers2.view.AdController this$0 -> a
+    38:38:com.emrg.view.MyAdView access$0(com.emerginggames.bestpuzzlegame.view.AdController) -> a
+com.emerginggames.bestpuzzlegame.view.AdController$1 -> com.emerginggames.bestpuzzlegame.g.b:
+    com.emerginggames.bestpuzzlegame.view.AdController this$0 -> a
     137:145:void run() -> run
-com.emerginggames.snappers2.view.AdController$2 -> com.emerginggames.snappers2.g.c:
-    com.emerginggames.snappers2.view.AdController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.AdController$2 -> com.emerginggames.bestpuzzlegame.g.c:
+    com.emerginggames.bestpuzzlegame.view.AdController this$0 -> a
     151:158:void run() -> run
-com.emerginggames.snappers2.view.AdController$3 -> com.emerginggames.snappers2.g.d:
-    com.emerginggames.snappers2.view.AdController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.AdController$3 -> com.emerginggames.bestpuzzlegame.g.d:
+    com.emerginggames.bestpuzzlegame.view.AdController this$0 -> a
     164:167:void run() -> run
-com.emerginggames.snappers2.view.AdController$4 -> com.emerginggames.snappers2.g.e:
-    com.emerginggames.snappers2.view.AdController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.AdController$4 -> com.emerginggames.bestpuzzlegame.g.e:
+    com.emerginggames.bestpuzzlegame.view.AdController this$0 -> a
     173:175:void run() -> run
-com.emerginggames.snappers2.view.BuyHintsDialog -> com.emerginggames.snappers2.g.f:
+com.emerginggames.bestpuzzlegame.view.BuyHintsDialog -> com.emerginggames.bestpuzzlegame.g.f:
     java.lang.String[] amounts -> k
     java.lang.String[] prices -> l
     int bestBuy -> m
     int wndWidth -> a
     android.view.View$OnClickListener clickListener -> b
-com.emerginggames.snappers2.view.BuyHintsDialog$1 -> com.emerginggames.snappers2.g.g:
-    com.emerginggames.snappers2.view.BuyHintsDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.view.BuyHintsDialog$1 -> com.emerginggames.bestpuzzlegame.g.g:
+    com.emerginggames.bestpuzzlegame.view.BuyHintsDialog this$0 -> a
     80:94:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.view.GameDialog -> com.emerginggames.snappers2.g.h:
-    com.emerginggames.snappers2.view.GameDialog$OnDialogEventListener btnClickListener -> c
+com.emerginggames.bestpuzzlegame.view.GameDialog -> com.emerginggames.bestpuzzlegame.g.h:
+    com.emerginggames.bestpuzzlegame.view.GameDialog$OnDialogEventListener btnClickListener -> c
     int itemSpacing -> d
     boolean isTwoButtonsARow -> e
     int buttons -> f
@@ -4664,7 +4664,7 @@ com.emerginggames.snappers2.view.GameDialog -> com.emerginggames.snappers2.g.h:
     int width -> h
     android.view.View$OnClickListener clickListener -> i
     android.view.View$OnClickListener closeBtnListener -> j
-    48:49:void setBtnClickListener(com.emerginggames.snappers2.view.GameDialog$OnDialogEventListener) -> a
+    48:49:void setBtnClickListener(com.emerginggames.bestpuzzlegame.view.GameDialog$OnDialogEventListener) -> a
     52:53:void setItemSpacing(int) -> a
     56:57:void setTwoButtonsARow(boolean) -> a
     60:64:void addOkButton() -> a
@@ -4679,21 +4679,21 @@ com.emerginggames.snappers2.view.GameDialog -> com.emerginggames.snappers2.g.h:
     156:160:void setMessage(int,int) -> a
     163:167:void setMessage(java.lang.CharSequence,int) -> a
     194:197:void onBackPressed() -> onBackPressed
-com.emerginggames.snappers2.view.GameDialog$1 -> com.emerginggames.snappers2.g.i:
-    com.emerginggames.snappers2.view.GameDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialog$1 -> com.emerginggames.bestpuzzlegame.g.i:
+    com.emerginggames.bestpuzzlegame.view.GameDialog this$0 -> a
     184:189:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.view.GameDialog$2 -> com.emerginggames.snappers2.g.j:
-    com.emerginggames.snappers2.view.GameDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialog$2 -> com.emerginggames.bestpuzzlegame.g.j:
+    com.emerginggames.bestpuzzlegame.view.GameDialog this$0 -> a
     202:206:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.view.GameDialog$OnDialogEventListener -> com.emerginggames.snappers2.g.k:
+com.emerginggames.bestpuzzlegame.view.GameDialog$OnDialogEventListener -> com.emerginggames.bestpuzzlegame.g.k:
     void onButtonClick(int) -> a
     void onCancel() -> a
-com.emerginggames.snappers2.view.GameDialogsController -> com.emerginggames.snappers2.g.l:
-    com.emerginggames.snappers2.view.GameDialog dlg -> a
-    com.emerginggames.snappers2.view.BuyHintsDialog buyHintsDlg -> b
-    com.emerginggames.snappers2.view.NewLevelDialog newLevelDialog -> c
-    com.emerginggames.snappers2.GameActivity mActivity -> d
-    com.emerginggames.snappers2.UserPreferences prefs -> e
+com.emerginggames.bestpuzzlegame.view.GameDialogsController -> com.emerginggames.bestpuzzlegame.g.l:
+    com.emerginggames.bestpuzzlegame.view.GameDialog dlg -> a
+    com.emerginggames.bestpuzzlegame.view.BuyHintsDialog buyHintsDlg -> b
+    com.emerginggames.bestpuzzlegame.view.NewLevelDialog newLevelDialog -> c
+    com.emerginggames.bestpuzzlegame.GameActivity mActivity -> d
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> e
     int mCurrentLevel -> f
     java.lang.Runnable showPausedDialog -> g
     java.lang.Runnable showBuyHintsMenu -> h
@@ -4703,7 +4703,7 @@ com.emerginggames.snappers2.view.GameDialogsController -> com.emerginggames.snap
     java.lang.Runnable showShareDialog -> l
     java.lang.Runnable showRateDialog -> m
     java.lang.Runnable showLikeDialog -> n
-    com.emerginggames.snappers2.view.GameDialog$OnDialogEventListener dialogButtonListener -> o
+    com.emerginggames.bestpuzzlegame.view.GameDialog$OnDialogEventListener dialogButtonListener -> o
     32:38:void dismiss() -> a
     41:42:void showPauseDialog() -> b
     45:46:void showHintMenu() -> c
@@ -4713,60 +4713,60 @@ com.emerginggames.snappers2.view.GameDialogsController -> com.emerginggames.snap
     70:72:void showLikeDialog() -> f
     176:181:void initDialog() -> g
     184:191:void showNeedFacebookMessage() -> h
-com.emerginggames.snappers2.view.GameDialogsController$1 -> com.emerginggames.snappers2.g.m:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$1 -> com.emerginggames.bestpuzzlegame.g.m:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     78:89:void run() -> run
-com.emerginggames.snappers2.view.GameDialogsController$2 -> com.emerginggames.snappers2.g.n:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$2 -> com.emerginggames.bestpuzzlegame.g.n:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     95:102:void run() -> run
-com.emerginggames.snappers2.view.GameDialogsController$3 -> com.emerginggames.snappers2.g.o:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$3 -> com.emerginggames.bestpuzzlegame.g.o:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     108:122:void run() -> run
-com.emerginggames.snappers2.view.GameDialogsController$4 -> com.emerginggames.snappers2.g.p:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$4 -> com.emerginggames.bestpuzzlegame.g.p:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     128:146:void run() -> run
-com.emerginggames.snappers2.view.GameDialogsController$5 -> com.emerginggames.snappers2.g.q:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$5 -> com.emerginggames.bestpuzzlegame.g.q:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     196:218:void run() -> run
-    193:193:com.emerginggames.snappers2.view.GameDialogsController access$0(com.emerginggames.snappers2.view.GameDialogsController$5) -> a
-com.emerginggames.snappers2.view.GameDialogsController$5$1 -> com.emerginggames.snappers2.g.r:
-    com.emerginggames.snappers2.view.GameDialogsController$5 this$1 -> a
+    193:193:com.emerginggames.bestpuzzlegame.view.GameDialogsController access$0(com.emerginggames.bestpuzzlegame.view.GameDialogsController$5) -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$5$1 -> com.emerginggames.bestpuzzlegame.g.r:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController$5 this$1 -> a
     205:207:void onButtonClick(int) -> a
     211:213:void onCancel() -> a
-com.emerginggames.snappers2.view.GameDialogsController$6 -> com.emerginggames.snappers2.g.s:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$6 -> com.emerginggames.bestpuzzlegame.g.s:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     224:231:void run() -> run
-com.emerginggames.snappers2.view.GameDialogsController$7 -> com.emerginggames.snappers2.g.t:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$7 -> com.emerginggames.bestpuzzlegame.g.t:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     237:244:void run() -> run
-com.emerginggames.snappers2.view.GameDialogsController$8 -> com.emerginggames.snappers2.g.u:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$8 -> com.emerginggames.bestpuzzlegame.g.u:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     250:257:void run() -> run
-com.emerginggames.snappers2.view.GameDialogsController$9 -> com.emerginggames.snappers2.g.v:
-    com.emerginggames.snappers2.view.GameDialogsController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameDialogsController$9 -> com.emerginggames.bestpuzzlegame.g.v:
+    com.emerginggames.bestpuzzlegame.view.GameDialogsController this$0 -> a
     263:346:void onButtonClick(int) -> a
     350:354:void onCancel() -> a
-com.emerginggames.snappers2.view.GameOverMessageController -> com.emerginggames.snappers2.g.w:
+com.emerginggames.bestpuzzlegame.view.GameOverMessageController -> com.emerginggames.bestpuzzlegame.g.w:
     android.widget.RelativeLayout layout -> a
     com.emrg.view.OutlinedTextView title -> b
     com.emrg.view.OutlinedTextView message -> c
     boolean isWon -> d
     int msgValue -> e
-    com.emerginggames.snappers2.view.GameOverMessageController$StarsController stars -> f
-    com.emerginggames.snappers2.GameActivity mActivity -> g
+    com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController stars -> f
+    com.emerginggames.bestpuzzlegame.GameActivity mActivity -> g
     android.widget.RelativeLayout mRootLayout -> h
     java.lang.Runnable show -> i
     java.lang.Runnable hide -> j
     58:61:void show(boolean,int) -> a
     73:74:void hide() -> a
     77:78:void setAdVisible(boolean) -> a
-com.emerginggames.snappers2.view.GameOverMessageController$1 -> com.emerginggames.snappers2.g.x:
-    com.emerginggames.snappers2.view.GameOverMessageController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameOverMessageController$1 -> com.emerginggames.bestpuzzlegame.g.x:
+    com.emerginggames.bestpuzzlegame.view.GameOverMessageController this$0 -> a
     93:106:void run() -> run
-com.emerginggames.snappers2.view.GameOverMessageController$2 -> com.emerginggames.snappers2.g.y:
-    com.emerginggames.snappers2.view.GameOverMessageController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.GameOverMessageController$2 -> com.emerginggames.bestpuzzlegame.g.y:
+    com.emerginggames.bestpuzzlegame.view.GameOverMessageController this$0 -> a
     112:113:void run() -> run
-com.emerginggames.snappers2.view.GameOverMessageController$StarsController -> com.emerginggames.snappers2.g.z:
+com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController -> com.emerginggames.bestpuzzlegame.g.z:
     android.widget.RelativeLayout$LayoutParams starLP -> a
     com.badlogic.gdx.utils.Array activeStars -> h
     com.badlogic.gdx.utils.Pool starsPool -> i
@@ -4775,27 +4775,27 @@ com.emerginggames.snappers2.view.GameOverMessageController$StarsController -> co
     android.view.animation.Interpolator interpolatorOut -> d
     java.lang.Runnable freeStars -> e
     android.view.animation.Animation$AnimationListener animListener -> f
-    com.emerginggames.snappers2.view.GameOverMessageController this$0 -> g
+    com.emerginggames.bestpuzzlegame.view.GameOverMessageController this$0 -> g
     168:185:void showScoreStars(int) -> a
-    118:118:com.badlogic.gdx.utils.Array access$0(com.emerginggames.snappers2.view.GameOverMessageController$StarsController) -> a
-    119:119:com.badlogic.gdx.utils.Pool access$1(com.emerginggames.snappers2.view.GameOverMessageController$StarsController) -> b
-com.emerginggames.snappers2.view.GameOverMessageController$StarsController$1 -> com.emerginggames.snappers2.g.aa:
-    com.emerginggames.snappers2.view.GameOverMessageController$StarsController this$1 -> a
+    118:118:com.badlogic.gdx.utils.Array access$0(com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController) -> a
+    119:119:com.badlogic.gdx.utils.Pool access$1(com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController) -> b
+com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController$1 -> com.emerginggames.bestpuzzlegame.g.aa:
+    com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController this$1 -> a
     143:146:void run() -> run
-com.emerginggames.snappers2.view.GameOverMessageController$StarsController$2 -> com.emerginggames.snappers2.g.ab:
-    com.emerginggames.snappers2.view.GameOverMessageController$StarsController this$1 -> a
+com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController$2 -> com.emerginggames.bestpuzzlegame.g.ab:
+    com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController this$1 -> a
     152:155:void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
     158:158:void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
     160:160:void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
-com.emerginggames.snappers2.view.GameOverMessageController$StarsController$3 -> com.emerginggames.snappers2.g.ac:
-    com.emerginggames.snappers2.view.GameOverMessageController$StarsController this$1 -> a
+com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController$3 -> com.emerginggames.bestpuzzlegame.g.ac:
+    com.emerginggames.bestpuzzlegame.view.GameOverMessageController$StarsController this$1 -> a
     1:1:java.lang.Object newObject() -> a
-com.emerginggames.snappers2.view.LevelListFragment -> com.emerginggames.snappers2.g.ad:
+com.emerginggames.bestpuzzlegame.view.LevelListFragment -> com.emerginggames.bestpuzzlegame.g.ad:
     int[] bgPaddings -> U
     int startFromLevel -> V
     com.emrg.view.IOnItemSelectedListener itemSelectedListener -> W
     int maxAvailableLevel -> X
-    com.emerginggames.snappers2.model.LevelPack pack -> N
+    com.emerginggames.bestpuzzlegame.model.LevelPack pack -> N
     android.util.SparseArray items -> O
     int innerPaddingLeft -> P
     int innerPaddingTop -> Q
@@ -4812,28 +4812,28 @@ com.emerginggames.snappers2.view.LevelListFragment -> com.emerginggames.snappers
     164:166:void onClick(android.view.View) -> onClick
     170:170:void onViewCreated$65f1d89() -> l
     26:26:int[] $SWITCH_TABLE$com$emerginggames$snappers2$Metrics$SizeMode() -> D
-com.emerginggames.snappers2.view.NewLevelDialog -> com.emerginggames.snappers2.g.ae:
+com.emerginggames.bestpuzzlegame.view.NewLevelDialog -> com.emerginggames.bestpuzzlegame.g.ae:
     44:45:void setLevel(int) -> d
-com.emerginggames.snappers2.view.PromoDialog -> com.emerginggames.snappers2.g.af:
+com.emerginggames.bestpuzzlegame.view.PromoDialog -> com.emerginggames.bestpuzzlegame.g.af:
     int width -> a
-    com.emerginggames.snappers2.transport.FacebookTransport facebookTransport -> b
-    com.emerginggames.snappers2.view.GameDialog messageDialog -> c
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport facebookTransport -> b
+    com.emerginggames.bestpuzzlegame.view.GameDialog messageDialog -> c
     android.view.View$OnClickListener closeBtnListener -> d
     android.view.View$OnClickListener okBtnListener -> e
-    com.emerginggames.snappers2.transport.FacebookTransport$ResponseListener senderListener -> f
+    com.emerginggames.bestpuzzlegame.transport.FacebookTransport$ResponseListener senderListener -> f
     140:147:void showMessageDialog(java.lang.String) -> a
     151:154:void dismiss() -> dismiss
-com.emerginggames.snappers2.view.PromoDialog$1 -> com.emerginggames.snappers2.g.ag:
-    com.emerginggames.snappers2.view.PromoDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.view.PromoDialog$1 -> com.emerginggames.bestpuzzlegame.g.ag:
+    com.emerginggames.bestpuzzlegame.view.PromoDialog this$0 -> a
     84:86:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.view.PromoDialog$2 -> com.emerginggames.snappers2.g.ah:
-    com.emerginggames.snappers2.view.PromoDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.view.PromoDialog$2 -> com.emerginggames.bestpuzzlegame.g.ah:
+    com.emerginggames.bestpuzzlegame.view.PromoDialog this$0 -> a
     92:112:void onClick(android.view.View) -> onClick
-com.emerginggames.snappers2.view.PromoDialog$3 -> com.emerginggames.snappers2.g.ai:
-    com.emerginggames.snappers2.view.PromoDialog this$0 -> a
+com.emerginggames.bestpuzzlegame.view.PromoDialog$3 -> com.emerginggames.bestpuzzlegame.g.ai:
+    com.emerginggames.bestpuzzlegame.view.PromoDialog this$0 -> a
     118:125:void onOk(java.lang.Object) -> a
     129:135:void onError(java.lang.Throwable) -> a
-com.emerginggames.snappers2.view.ScoreCounter -> com.emerginggames.snappers2.g.aj:
+com.emerginggames.bestpuzzlegame.view.ScoreCounter -> com.emerginggames.bestpuzzlegame.g.aj:
     int width -> a
     int height -> b
     android.widget.RelativeLayout root -> c
@@ -4851,10 +4851,10 @@ com.emerginggames.snappers2.view.ScoreCounter -> com.emerginggames.snappers2.g.a
     96:110:void setScore(int) -> a
     113:113:android.view.View getView() -> a
     117:118:void setVisibility(int) -> b
-com.emerginggames.snappers2.view.ScoreCounter$1 -> com.emerginggames.snappers2.g.ak:
-    com.emerginggames.snappers2.view.ScoreCounter this$0 -> a
+com.emerginggames.bestpuzzlegame.view.ScoreCounter$1 -> com.emerginggames.bestpuzzlegame.g.ak:
+    com.emerginggames.bestpuzzlegame.view.ScoreCounter this$0 -> a
     123:130:void run() -> run
-com.emerginggames.snappers2.view.TopButtonController -> com.emerginggames.snappers2.g.al:
+com.emerginggames.bestpuzzlegame.view.TopButtonController -> com.emerginggames.bestpuzzlegame.g.al:
     android.widget.RelativeLayout layout -> a
     com.emrg.view.ImageView pauseBtn -> b
     com.emrg.view.OutlinedTextView hintBtn -> c
@@ -4864,10 +4864,10 @@ com.emerginggames.snappers2.view.TopButtonController -> com.emerginggames.snappe
     com.emrg.view.ImageView helpBtn -> g
     android.widget.RelativeLayout$LayoutParams rlpTop -> h
     android.widget.RelativeLayout$LayoutParams rlpUnderView -> i
-    com.emerginggames.snappers2.view.ScoreCounter scoreCounter -> j
-    com.emerginggames.snappers2.GameActivity activity -> k
-    com.emerginggames.snappers2.UserPreferences prefs -> l
-    com.emerginggames.snappers2.gdx.Game game -> m
+    com.emerginggames.bestpuzzlegame.view.ScoreCounter scoreCounter -> j
+    com.emerginggames.bestpuzzlegame.GameActivity activity -> k
+    com.emerginggames.bestpuzzlegame.UserPreferences prefs -> l
+    com.emerginggames.bestpuzzlegame.gdx.Game game -> m
     java.lang.Runnable updateHints -> n
     java.lang.Runnable showMainButtons -> o
     java.lang.Runnable showWonMenu -> p
@@ -4884,26 +4884,26 @@ com.emerginggames.snappers2.view.TopButtonController -> com.emerginggames.snappe
     119:120:void showScore() -> f
     123:124:void hideScore() -> g
     127:133:void hideAll() -> h
-com.emerginggames.snappers2.view.TopButtonController$1 -> com.emerginggames.snappers2.g.am:
-    com.emerginggames.snappers2.view.TopButtonController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.TopButtonController$1 -> com.emerginggames.bestpuzzlegame.g.am:
+    com.emerginggames.bestpuzzlegame.view.TopButtonController this$0 -> a
     138:139:void run() -> run
-com.emerginggames.snappers2.view.TopButtonController$2 -> com.emerginggames.snappers2.g.an:
-    com.emerginggames.snappers2.view.TopButtonController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.TopButtonController$2 -> com.emerginggames.bestpuzzlegame.g.an:
+    com.emerginggames.bestpuzzlegame.view.TopButtonController this$0 -> a
     145:148:void run() -> run
-com.emerginggames.snappers2.view.TopButtonController$3 -> com.emerginggames.snappers2.g.ao:
-    com.emerginggames.snappers2.view.TopButtonController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.TopButtonController$3 -> com.emerginggames.bestpuzzlegame.g.ao:
+    com.emerginggames.bestpuzzlegame.view.TopButtonController this$0 -> a
     154:157:void run() -> run
-com.emerginggames.snappers2.view.TopButtonController$4 -> com.emerginggames.snappers2.g.ap:
-    com.emerginggames.snappers2.view.TopButtonController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.TopButtonController$4 -> com.emerginggames.bestpuzzlegame.g.ap:
+    com.emerginggames.bestpuzzlegame.view.TopButtonController this$0 -> a
     163:167:void run() -> run
-com.emerginggames.snappers2.view.TopButtonController$5 -> com.emerginggames.snappers2.g.aq:
-    com.emerginggames.snappers2.view.TopButtonController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.TopButtonController$5 -> com.emerginggames.bestpuzzlegame.g.aq:
+    com.emerginggames.bestpuzzlegame.view.TopButtonController this$0 -> a
     173:175:void run() -> run
-com.emerginggames.snappers2.view.TopButtonController$6 -> com.emerginggames.snappers2.g.ar:
-    com.emerginggames.snappers2.view.TopButtonController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.TopButtonController$6 -> com.emerginggames.bestpuzzlegame.g.ar:
+    com.emerginggames.bestpuzzlegame.view.TopButtonController this$0 -> a
     181:182:void run() -> run
-com.emerginggames.snappers2.view.TopButtonController$7 -> com.emerginggames.snappers2.g.as:
-    com.emerginggames.snappers2.view.TopButtonController this$0 -> a
+com.emerginggames.bestpuzzlegame.view.TopButtonController$7 -> com.emerginggames.bestpuzzlegame.g.as:
+    com.emerginggames.bestpuzzlegame.view.TopButtonController this$0 -> a
     188:217:void onClick(android.view.View) -> onClick
 com.emrg.view.FixedRatioPager -> com.emrg.view.FixedRatioPager:
     float mRatio -> a

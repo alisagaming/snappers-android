@@ -45,6 +45,7 @@
     <orderEntry type="library" name="ACRA" level="project" />
     <orderEntry type="module" module-name="TapJoy" />
     <orderEntry type="library" name="chartboost" level="project" />
+    <orderEntry type="library" name="LeadBolt" level="project" />
   </component>
 </module>
 

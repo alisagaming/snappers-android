@@ -67,6 +67,10 @@ public class Settings {
     private static final String TJ_ID_AMAZON = "607b67c4-7ed9-45b7-a8af-5d7bd2f79e80";
     private static final String TJ_KEY_AMAZON = "9HXNeI0GoXuXMLofCYhO";
 
+    public static final String GOOGLE_MARKET_URL_BASE = "market://details?id=";
+    public static final String AMAZON_MARKET_URL_BASE = "http://www.amazon.com/gp/mas/dl/android?p=";
+    public static final String STORE_BASE = IS_AMAZON ? AMAZON_MARKET_URL_BASE : GOOGLE_MARKET_URL_BASE;
+
 
 
 

@@ -12,6 +12,6 @@ HockeySDK/gen
 TapJoy/bin
 TapJoy/gen
 temp
-Snappers*.apk
+*.apk
 trace.txt
 untrace.bat

@@ -96,7 +96,7 @@ public class GameDialogsController {
                 buyHintsDlg = new BuyHintsDialog(mActivity, Metrics.screenWidth * 95 / 100);
             }
 
-            buyHintsDlg.setTitle(R.string.hints);
+            buyHintsDlg.setTitle(R.string.buy_hints);
 
             buyHintsDlg.show();
         }
@@ -340,7 +340,7 @@ public class GameDialogsController {
 
                 case R.drawable.button_rate_long:
                 case R.drawable.button_rate:
-                    mActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mActivity.getString(R.string.marketUrl))));
+                    mActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Settings.STORE_BASE + mActivity.getPackageName())));
                     prefs.addHints(Settings.BONUS_FOR_RATE);
                     prefs.setRated(true);
                     dlg.hide();

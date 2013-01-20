@@ -22,6 +22,7 @@
 
     <string name="game_paused">Game paused</string>
     <string name="hints">Hints</string>
+    <string name="buy_hints">Buy hints</string>
     <string name="free_hints">Free hints</string>
 
     <string name="youHaveOneHint">You have 1 hint.\nUse it?</string>
@@ -60,7 +61,6 @@
     <string name="received_bonus_hints" formatted="false">You\'ve received %d bonus hints!</string>
     <string name="likeUrl" >http://www.facebook.com/SnappersApp</string>
     <string name="followUrl" >http://www.facebook.com/SnappersApp</string>
-    <string name="marketUrl" >market://details?id=com.emerginggames.snappers</string>
 
     <string name="friends">Friends</string>
     <string name="invite">Invite</string>
